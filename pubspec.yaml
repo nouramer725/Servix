@@ -1,0 +1,199 @@
+name: servix
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+  lottie: ^3.2.0
+  firebase_core: ^3.11.0
+  firebase_analytics: ^11.4.2
+  cloud_firestore: ^5.6.3
+  firebase_auth: ^5.4.2
+  provider: ^6.1.2
+  google_fonts: ^6.2.1
+  image_picker: ^1.1.2
+  firebase_storage: ^12.4.2
+  permission_handler: ^11.3.1
+  flutter_launcher_icons: ^0.14.3
+  google_sign_in: ^6.2.2
+  flutter_facebook_auth: ^7.1.1
+
+
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/Application/Servix.png"  # Replace with your actual icon path
+  adaptive_icon_foreground: "assets/Application/Servix.png"
+  adaptive_icon_background: "#821717"  # Background color matching your theme
+  remove_alpha_ios: true
+
+
+#  adaptive_icon_background: "#821717"
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^4.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+#    - assets/images/care/Elder.jpg
+#    - assets/images/care/children.jpg
+#    - assets/images/care/nursing.jpg
+#    - assets/images/care/pet.jpg
+#    - assets/images/care/disability.jpg
+#
+#    - assets/images/delivery/school.jpg
+#    - assets/images/delivery/spend.png
+#    - assets/images/delivery/Taxi.jpg
+#    - assets/images/delivery/bus.jpg
+#    - assets/images/delivery/truck.jpg
+#    - assets/images/delivery/scooter.jpg
+#    - assets/images/delivery/loader.jpg
+
+#    - assets/images/devices/fan.jpg
+#    - assets/images/devices/water-heating.jpg
+#    - assets/images/devices/microwave.jpg
+#    - assets/images/devices/computer.jpg
+#    - assets/images/devices/mobile.jpg
+#    - assets/images/devices/screen.jpg
+#    - assets/images/devices/Washing.jpg
+#    - assets/images/devices/stove.jpg
+#    - assets/images/devices/air.jpg
+#    - assets/images/devices/fridge.jpg
+#
+#    - assets/images/home/home-service.png
+#    - assets/images/home/private_teaching.png
+#    - assets/images/home/care.png
+#    - assets/images/home/woman.png
+#    - assets/images/home/man.png
+#    - assets/images/home/devices.jpg
+#    - assets/images/home/delivery.png
+#
+
+    #    - assets/images/home-service/cleaning.jpg
+    #    - assets/images/home-service/Carpentry.jpg
+    #    - assets/images/home-service/Electricity.png
+    #    - assets/images/home-service/Plumbing.jpg
+    #    - assets/images/home-service/Kitchen-technician.png
+    #    - assets/images/home-service/Painting.jpg
+    #    - assets/images/home-service/camera.jpg
+    #    - assets/images/home-service/LandScaper.jpg
+#    - assets/images/intro/servix.json
+#
+#    - assets/images/lang-member/langmem.png
+#
+#    - assets/images/location/Egypt.png
+#
+#    - assets/images/men/Shaving.jpg
+#    - assets/images/men/Privatecoach-man.jpeg
+#    - assets/images/men/Tailoring-man.jpg
+#    - assets/images/men/massage-man.jpg
+#
+#    - assets/images/notification/notification.png
+#
+#    - assets/images/offers/noOffers.png
+#
+#    - assets/images/on-boarding/explore.png
+#    - assets/images/on-boarding/logo.png
+#    - assets/images/on-boarding/robot.png
+#    - assets/images/on-boarding/tech.png
+#
+#    - assets/images/private-teaching/primary.jpg
+#    - assets/images/private-teaching/Preparatory.jpg
+#    - assets/images/private-teaching/Secondary.jpg
+#    - assets/images/private-teaching/musical-instruments.jpg
+#    - assets/images/private-teaching/Religion.jpg
+#    - assets/images/private-teaching/Languages.jpg
+
+    - assets/images/sign/in.png
+    - assets/images/sign/up.png
+    - assets/images/social_media/facebook.png
+    - assets/images/social_media/google.png
+#
+#    - assets/images/woman/Pedicure.png
+#    - assets/images/woman/Nails.png
+#    - assets/images/woman/Privatecoach-woman.jpg
+#    - assets/images/woman/Makeup.jpg
+#    - assets/images/woman/Tailoring.png
+#    - assets/images/woman/massage-woman.jpg
+#    - assets/images/woman/Hair.png
+#    - assets/images/woman/henna.jpg
+
+
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package

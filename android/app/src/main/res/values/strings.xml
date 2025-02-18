@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="facebook_app_id">1834571677279015</string>
+    <string name="app_name">Servix</string>
+    <string name="fb_login_protocol_scheme">fb1653a44f490b7238bbcdff84d6a0c63a</string>
+    <string name="facebook_client_token">1653a44f490b7238bbcdff84d6a0c63a</string>
+
+
+    <!-- Other string resources -->
+</resources>
