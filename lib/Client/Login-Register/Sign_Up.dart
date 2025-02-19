@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -129,46 +130,61 @@ class _SignUpState extends State<SignUp> {
         _phoneError = "Please enter your phone number";
       });
       isValid = false;
+    } else if (!RegExp(r'^\+?[0-9]{7,15}$')
+        .hasMatch(_PhoneNumberController.text)) {
+      setState(() {
+        _phoneError = "Enter a valid phone number";
+      });
+      isValid = false;
     }
 
     // If all validations pass, proceed with Firebase Authentication
     if (isValid) {
       setState(() {
-        _isLoading = true; // Show loading spinner
+        _isLoading = true; // Show CircularProgressIndicator instead of button
       });
 
       try {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
+        UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: password,
         );
 
-        // Send email verification after user signs up
+        // Send email verification
         await userCredential.user?.sendEmailVerification();
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Sign Up Successful! Check your email for verification.")),
-        );
-
-        // Prompt user to verify email first
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SignIn(),
-          ),
-        );
-
-        // Continuously check for email verification status
-        FirebaseAuth.instance.authStateChanges().listen((User? user) async {
-          if (user != null && user.emailVerified) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => Home()),
-            );
-          }
+        // Store user data in Firestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user?.uid)
+            .set({
+          'first_name': _FirstNameController.text.trim(),
+          'last_name': _LastNameController.text.trim(),
+          'email': _emailController.text.trim(),
+          'phone': _PhoneNumberController.text.trim(),
+          'gender': gender?.trim(),
+          'created_at': Timestamp.now(),
         });
 
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text(
+                "Sign Up Successful! Check your email for verification.",
+                style: TextStyle(
+                  color: Colors.green,
+                ),
+              )),
+        );
+
+        // Continuously check for email verification
+        User? user = FirebaseAuth.instance.currentUser;
+        while (user != null && !user.emailVerified) {
+          await Future.delayed(
+              Duration(seconds: 3)); // Wait 3 seconds before checking again
+          await user.reload(); // Refresh user data
+          user = FirebaseAuth.instance.currentUser;
+        }
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Error: ${e.message}")),
@@ -181,20 +197,19 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
-
-  Future<void> loginWithFacebook() async {
-    final LoginResult result = await FacebookAuth.instance.login(
-      permissions: ['email'], // Explicitly request the email permission
-    );
-
-    if (result.status == LoginStatus.success) {
-      final userData = await FacebookAuth.instance.getUserData();
-      print("Logged in as: ${userData['name']}");
-      print("User email: ${userData['email']}");
-    } else {
-      print("Login failed: ${result.status}");
-    }
-  }
+  // Future<void> loginWithFacebook() async {
+  //   final LoginResult result = await FacebookAuth.instance.login(
+  //     permissions: ['email'], // Explicitly request the email permission
+  //   );
+  //
+  //   if (result.status == LoginStatus.success) {
+  //     final userData = await FacebookAuth.instance.getUserData();
+  //     print("Logged in as: ${userData['name']}");
+  //     print("User email: ${userData['email']}");
+  //   } else {
+  //     print("Login failed: ${result.status}");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -274,34 +289,36 @@ class _SignUpState extends State<SignUp> {
                         });
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 30),
                     GradientButton(
                       onPressed: _isLoading ? null : _validateAndSubmit,
-                      text: "Sign Up",
+                      text: "Verify",
                       isLoading: _isLoading, // Pass loading state
                     ),
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "Already have an account? ",
-                          style: GoogleFonts.charisSil(
-                            fontSize: 20,
+                        Flexible(
+                          child: Text(
+                            "Already have an account? ",
+                            style: GoogleFonts.charisSil(
+                              fontSize: 20,
+                            ),
+                            overflow:
+                            TextOverflow.ellipsis, // Prevents overflow
                           ),
                         ),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      SignIn()),
+                              MaterialPageRoute(builder: (context) => SignIn()),
                             );
                           },
                           child: Text(
                             "SignIn",
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.charisSil(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF9A2B2B),
@@ -314,19 +331,32 @@ class _SignUpState extends State<SignUp> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SocialMediaLoginButton(
-                            imagePath: 'assets/images/social_media/facebook.png',
-                            onTap: () async {
-                              await loginWithFacebook();
-                            }
-                        ),
+                        // SocialMediaLoginButton(
+                        //     imagePath: 'assets/images/social_media/facebook.png',
+                        //     onTap: () async {
+                        //       await loginWithFacebook();
+                        //     }
+                        // ),
                         SizedBox(width: 20),
                         SocialMediaLoginButton(
                           imagePath: 'assets/images/social_media/google.png',
                           onTap: () async {
-                            User? user = await _authService.signInWithGoogle();
-                            if (user != null) {
-                              print("Signed in as: ${user.displayName}");
+                            try {
+                              User? user = await _authService.signInWithGoogle();
+                              if (user != null) {
+                                // Navigate only if user is not null
+                                if (mounted) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Home()),
+                                  );
+                                }
+                              } else {
+                                print("User sign-in failed");
+                              }
+                            } catch (e) {
+                              print("Error signing in: $e");
                             }
                           },
                         ),
