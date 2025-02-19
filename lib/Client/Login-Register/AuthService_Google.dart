@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -6,29 +7,38 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Future<User?> signInWithGoogle() async {
-    try {
-      // Start Google Sign-In
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return null;
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) return null; // User canceled the sign-in
 
-      // Get authentication details
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final OAuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+    final GoogleSignInAuthentication googleAuth = await googleUser
+        .authentication;
+    final OAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
 
-      // Sign in to Firebase
-      final UserCredential userCredential = await _auth.signInWithCredential(credential);
-      return userCredential.user;
-    } catch (e) {
-      print("Google Sign-In Error: $e");
-      return null;
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithCredential(credential);
+    User? user = userCredential.user;
+
+    if (user != null) {
+      // Check if user exists in Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      if (!userDoc.exists) {
+        // Save user data to Firestore if not exists
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'first_name': user.displayName?.split(' ')[0] ?? '',
+          'last_name': user.displayName?.split(' ')[1] ?? '',
+          'email': user.email,
+          'phone': user.phoneNumber ?? '',
+          'gender': '', // Optional, can be updated later
+        });
+      }
     }
-  }
-
-  Future<void> signOut() async {
-    await _googleSignIn.signOut();
-    await _auth.signOut();
+    return user;
   }
 }
