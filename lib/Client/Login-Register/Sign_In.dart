@@ -65,7 +65,7 @@ class _SignInState extends State<SignIn> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Home()),
+          MaterialPageRoute(builder: (context) =>  Home()),
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -80,24 +80,24 @@ class _SignInState extends State<SignIn> {
   }
 
 
-  Future<void> loginWithFacebook() async {
-    // Request the email permission
-    final LoginResult result = await FacebookAuth.instance.login(
-      permissions: ['email'], // Explicitly request the email permission
-    );
-
-    if (result.status == LoginStatus.success) {
-      // Logged in successfully, you can retrieve user data
-      final userData = await FacebookAuth.instance.getUserData();
-      print("Logged in as: ${userData['name']}");
-      print("User email: ${userData['email']}");
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
-
-    } else {
-      // Handle login error
-      print("Login failed: ${result.status}");
-    }
-  }
+  // Future<void> loginWithFacebook() async {
+  //   // Request the email permission
+  //   final LoginResult result = await FacebookAuth.instance.login(
+  //     permissions: ['email'], // Explicitly request the email permission
+  //   );
+  //
+  //   if (result.status == LoginStatus.success) {
+  //     // Logged in successfully, you can retrieve user data
+  //     final userData = await FacebookAuth.instance.getUserData();
+  //     print("Logged in as: ${userData['name']}");
+  //     print("User email: ${userData['email']}");
+  //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
+  //
+  //   } else {
+  //     // Handle login error
+  //     print("Login failed: ${result.status}");
+  //   }
+  // }
 
 
   @override
@@ -161,33 +161,34 @@ class _SignInState extends State<SignIn> {
                       ],
                     ),
                     const SizedBox(height: 80),
-                  GradientButton(
-                    onPressed: _isLoading ? null : _validateAndSubmit,
-                    text: "Sign In",
-                    isLoading: _isLoading, // Pass loading state
-                  ),
+                    GradientButton(
+                      onPressed: _isLoading ? null : _validateAndSubmit,
+                      text: "Sign In",
+                      isLoading: _isLoading, // Pass loading state
+                    ),
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "Don't have an account? ",
-                          style: GoogleFonts.charisSil(
-                            fontSize: 20,
+                        Flexible(
+                          child: Text(
+                            "Don't have an account? ",
+                            style: GoogleFonts.charisSil(
+                              fontSize: 20,
+                            ),
+                            overflow: TextOverflow.ellipsis, // Prevents overflow
                           ),
                         ),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      SignUp()),
+                              MaterialPageRoute(builder: (context) => SignUp()),
                             );
                           },
                           child: Text(
                             "SignUp",
-                            style: GoogleFonts.inter(
+                            style: GoogleFonts.charisSil(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: const Color(0xFF9A2B2B),
@@ -200,12 +201,12 @@ class _SignInState extends State<SignIn> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SocialMediaLoginButton(
-                          imagePath: 'assets/images/social_media/facebook.png',
-                          onTap: () async {
-                            await loginWithFacebook();
-                          },
-                        ),
+                        // SocialMediaLoginButton(
+                        //   imagePath: 'assets/images/social_media/facebook.png',
+                        //   onTap: () async {
+                        //     await loginWithFacebook();
+                        //   },
+                        // ),
                         const SizedBox(width: 20),
                         SocialMediaLoginButton(
                           imagePath: 'assets/images/social_media/google.png',
@@ -213,7 +214,7 @@ class _SignInState extends State<SignIn> {
                             User? user = await _authService.signInWithGoogle();
                             if (user != null) {
                               print("Signed in as: ${user.displayName}");
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  Home()));
 
                             }
                           },
