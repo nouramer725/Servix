@@ -43,19 +43,9 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Row(
           children: [
-            // Center(
-            //   child: userData == null
-            //       ? CircularProgressIndicator() // Show loading until data is available
-            //       : CircleAvatar(
-            //     backgroundImage: userData!['profile_pic'] != null
-            //         ? NetworkImage(userData!['profile_pic'])
-            //         : AssetImage('assets/images/sign/in.png')
-            //     as ImageProvider, // Default image
-            //   ),
-            // ),
             SizedBox(width: 10),
             Text(userData != null
-                ? "Welcome ${userData!['first_name'] ['last_name']}!"
+                ? "Welcome ${userData!['first_name']} ${userData!['last_name']}!"
                 : "Welcome"),
           ],
         ),
@@ -71,7 +61,8 @@ class _HomeState extends State<Home> {
       ),
       body: userData == null
           ? const Center(
-          child: CircularProgressIndicator()) // Show loader until data loads
+          child: CircularProgressIndicator()
+      ) // Show loader until data loads
           : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
