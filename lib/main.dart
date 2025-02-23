@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:servix/Client/Home.dart';
 import 'package:servix/Client/Login-Register/Sign_In.dart';
 
+import 'On-Boarding/On_Boarding_Screen.dart';
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,10 +24,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home:AuthChecker(),
+      home: AuthChecker(),
     );
   }
 }
+
 class AuthChecker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -32,11 +36,11 @@ class AuthChecker extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator()); // Loading screen
+          return const Center(child: CircularProgressIndicator()); // Loading screen
         } else if (snapshot.hasData) {
           return Home(); // User is signed in, go to HomePage
         } else {
-          return SignIn(); // User is not signed in, go to SignIn page
+          return const OnboardingScreen(); // User is not signed in, go to SignIn page
         }
       },
     );
