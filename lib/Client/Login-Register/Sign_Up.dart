@@ -3,14 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:servix/Client/Home.dart';
-import 'package:servix/Client/Login-Register/Sign_In.dart';
 import '../../Components/Buttons.dart';
 import '../../Components/Country Code and Phone Number.dart';
 import '../../Components/Gender Dropdown.dart';
 import '../../Components/SocialMediaLoginButton.dart';
 import '../../Components/TextFormFiels_SignUp.dart';
+import '../Home.dart';
 import 'AuthService_Google.dart';
+import 'Sign_In.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -22,8 +22,7 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _LastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _ConfirmpasswordController =
-  TextEditingController();
+  final TextEditingController _ConfirmpasswordController = TextEditingController();
   final TextEditingController _PhoneNumberController = TextEditingController();
 
   final AuthService _authService = AuthService();
@@ -39,7 +38,7 @@ class _SignUpState extends State<SignUp> {
   String? _confirmError;
   String? _phoneError;
 
-  bool _isLoading = false; // Add this at the class level
+  bool _isLoading = false;
 
   void _validateAndSubmit() async {
     setState(() {
@@ -54,9 +53,9 @@ class _SignUpState extends State<SignUp> {
     bool isValid = true;
 
     // Email Validation
-    if (_emailController.text.isEmpty) {
+    if (!_emailController.text.contains(RegExp(r'\S+@\S+\.\S+'))) {
       setState(() {
-        _emailError = "Please enter your email";
+        _emailError = "Please enter a valid email address";
       });
       isValid = false;
     }
@@ -130,31 +129,28 @@ class _SignUpState extends State<SignUp> {
         _phoneError = "Please enter your phone number";
       });
       isValid = false;
-    } else if (!RegExp(r'^\+?[0-9]{7,15}$')
-        .hasMatch(_PhoneNumberController.text)) {
+    } else if (!RegExp(r'^\+?[0-9]{7,15}$').hasMatch(_PhoneNumberController.text)) {
       setState(() {
         _phoneError = "Enter a valid phone number";
       });
       isValid = false;
     }
 
-    // If all validations pass, proceed with Firebase Authentication
     if (isValid) {
       setState(() {
-        _isLoading = true; // Show CircularProgressIndicator instead of button
+        _isLoading = true;
       });
 
       try {
-        UserCredential userCredential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        // Create user with email and password
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: password,
         );
 
-        // Send email verification
+        // Send verification email
         await userCredential.user?.sendEmailVerification();
 
-        // Store user data in Firestore
         await FirebaseFirestore.instance
             .collection('users')
             .doc(userCredential.user?.uid)
@@ -167,49 +163,54 @@ class _SignUpState extends State<SignUp> {
           'created_at': Timestamp.now(),
         });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text(
-                "Sign Up Successful! Check your email for verification.",
-                style: TextStyle(
-                  color: Colors.green,
+        // Show popup dialog asking the user to verify their email
+        await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Row(
+                children: [
+                  Image.asset(
+                    "assets/images/sign/popUpMessage.png",
+                    width: 30,
+                  ),
+                  SizedBox(width: 10),
+                  Text("Email Verification"),
+                ],
+              ),
+              content: Container(
+                child: const Text(
+                  "Sign Up Successful! Please check your email and verify your account.",
                 ),
-              )),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("OK", style: TextStyle(color: Color(0xFF9A2B2B))),
+                ),
+              ],
+            );
+          },
         );
 
-        // Continuously check for email verification
-        User? user = FirebaseAuth.instance.currentUser;
-        while (user != null && !user.emailVerified) {
-          await Future.delayed(
-              Duration(seconds: 3)); // Wait 3 seconds before checking again
-          await user.reload(); // Refresh user data
-          user = FirebaseAuth.instance.currentUser;
-        }
+        // Navigate to the SignIn page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SignIn()),
+        );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Error: ${e.message}")),
         );
       } finally {
         setState(() {
-          _isLoading = false; // Hide loading spinner
+          _isLoading = false;
         });
       }
     }
   }
-
-  // Future<void> loginWithFacebook() async {
-  //   final LoginResult result = await FacebookAuth.instance.login(
-  //     permissions: ['email'], // Explicitly request the email permission
-  //   );
-  //
-  //   if (result.status == LoginStatus.success) {
-  //     final userData = await FacebookAuth.instance.getUserData();
-  //     print("Logged in as: ${userData['name']}");
-  //     print("User email: ${userData['email']}");
-  //   } else {
-  //     print("Login failed: ${result.status}");
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -292,8 +293,8 @@ class _SignUpState extends State<SignUp> {
                     const SizedBox(height: 30),
                     GradientButton(
                       onPressed: _isLoading ? null : _validateAndSubmit,
-                      text: "Verify",
-                      isLoading: _isLoading, // Pass loading state
+                      text: "Sign UP",
+                      isLoading: _isLoading,
                     ),
                     const SizedBox(height: 10),
                     Row(
@@ -302,11 +303,8 @@ class _SignUpState extends State<SignUp> {
                         Flexible(
                           child: Text(
                             "Already have an account? ",
-                            style: GoogleFonts.charisSil(
-                              fontSize: 20,
-                            ),
-                            overflow:
-                            TextOverflow.ellipsis, // Prevents overflow
+                            style: GoogleFonts.charisSil(fontSize: 20),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         GestureDetector(
@@ -327,29 +325,21 @@ class _SignUpState extends State<SignUp> {
                         )
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // SocialMediaLoginButton(
-                        //     imagePath: 'assets/images/social_media/facebook.png',
-                        //     onTap: () async {
-                        //       await loginWithFacebook();
-                        //     }
-                        // ),
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         SocialMediaLoginButton(
                           imagePath: 'assets/images/social_media/google.png',
                           onTap: () async {
                             try {
                               User? user = await _authService.signInWithGoogle();
                               if (user != null) {
-                                // Navigate only if user is not null
                                 if (mounted) {
                                   Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Home()),
+                                    MaterialPageRoute(builder: (context) => Home()),
                                   );
                                 }
                               } else {

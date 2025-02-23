@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -16,7 +17,6 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final AuthService _authService = AuthService();
-
   final _formKey = GlobalKey<FormState>();
   var _obscureText = true;
   bool _rememberMe = false;
@@ -31,7 +31,7 @@ class _SignInState extends State<SignIn> {
     setState(() {
       _emailError = null;
       _passwordError = null;
-      _isLoading = true; // Show the red CircularProgressIndicator
+      _isLoading = true;
     });
 
     bool isValid = true;
@@ -61,44 +61,112 @@ class _SignInState extends State<SignIn> {
           password: _passwordController.text.trim(),
         );
 
-        await Future.delayed(const Duration(seconds: 3)); // Wait for 1 second before navigating
+        User? user = userCredential.user;
+        if (user != null) {
+          // Check if email is verified
+          if (user.emailVerified) {
+            // Retrieve extra sign up data passed via route arguments.
+            final Map<String, dynamic>? signUpData =
+            ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) =>  Home()),
-        );
+            // If data exists, save/merge it to Firestore.
+            if (signUpData != null) {
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user.uid)
+                  .set(signUpData, SetOptions(merge: true));
+            }
+
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            );
+          } else {
+            // Email not verified: sign out and show alert dialog.
+            await FirebaseAuth.instance.signOut();
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (context) {
+                return Dialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF821717), // Red background
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          "Email not verified. Please verify your account via the email sent to you.",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            "OK",
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+        }
       } on FirebaseAuthException catch (e) {
+        String errorMessage;
+        if (e.code == 'wrong-password') {
+          errorMessage = "The password is incorrect. Please try again.";
+        } else if (e.code == 'user-not-found') {
+          errorMessage = "No user found for that email address.";
+        } else if (e.code == 'invalid-email') {
+          errorMessage = "The email address is invalid.";
+        } else {
+          errorMessage = "The password is incorrect. Please try again.";
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("${e.message}", style: const TextStyle(color: Colors.red))),
+          SnackBar(
+            content: Text(
+              errorMessage,
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
         );
-      }
+
+    }
 
       setState(() {
-        _isLoading = false; // Hide the loader
+        _isLoading = false;
       });
     }
   }
-
-
-  // Future<void> loginWithFacebook() async {
-  //   // Request the email permission
-  //   final LoginResult result = await FacebookAuth.instance.login(
-  //     permissions: ['email'], // Explicitly request the email permission
-  //   );
-  //
-  //   if (result.status == LoginStatus.success) {
-  //     // Logged in successfully, you can retrieve user data
-  //     final userData = await FacebookAuth.instance.getUserData();
-  //     print("Logged in as: ${userData['name']}");
-  //     print("User email: ${userData['email']}");
-  //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
-  //
-  //   } else {
-  //     // Handle login error
-  //     print("Login failed: ${result.status}");
-  //   }
-  // }
-
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +232,7 @@ class _SignInState extends State<SignIn> {
                     GradientButton(
                       onPressed: _isLoading ? null : _validateAndSubmit,
                       text: "Sign In",
-                      isLoading: _isLoading, // Pass loading state
+                      isLoading: _isLoading,
                     ),
                     const SizedBox(height: 10),
                     Row(
@@ -173,10 +241,8 @@ class _SignInState extends State<SignIn> {
                         Flexible(
                           child: Text(
                             "Don't have an account? ",
-                            style: GoogleFonts.charisSil(
-                              fontSize: 20,
-                            ),
-                            overflow: TextOverflow.ellipsis, // Prevents overflow
+                            style: GoogleFonts.charisSil(fontSize: 20),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         GestureDetector(
@@ -201,21 +267,20 @@ class _SignInState extends State<SignIn> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // SocialMediaLoginButton(
-                        //   imagePath: 'assets/images/social_media/facebook.png',
-                        //   onTap: () async {
-                        //     await loginWithFacebook();
-                        //   },
-                        // ),
                         const SizedBox(width: 20),
                         SocialMediaLoginButton(
                           imagePath: 'assets/images/social_media/google.png',
                           onTap: () async {
                             User? user = await _authService.signInWithGoogle();
                             if (user != null) {
-                              print("Signed in as: ${user.displayName}");
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  Home()));
-
+                              if (mounted) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Home()),
+                                );
+                              }
+                            } else {
+                              print("User sign-in failed");
                             }
                           },
                         ),
