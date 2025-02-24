@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:servix/Client/Login-Register/Sign_In.dart';
+import 'package:servix/Language/Language.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Onboarding {
@@ -58,7 +58,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => SignIn()),
+                    MaterialPageRoute(builder: (context) => const Language()),
                   );
                 },
                 child: Text(
@@ -126,7 +126,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       // Navigate to SignIn when onboarding is finished.
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => SignIn()),
+                        MaterialPageRoute(builder: (context) => const Language()),
                       );
                     } else {
                       swipeController.nextPage(

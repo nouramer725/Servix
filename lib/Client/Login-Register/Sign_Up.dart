@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:easy_localization/easy_localization.dart'; // Import EasyLocalization
 import '../../Components/Buttons.dart';
 import '../../Components/Country Code and Phone Number.dart';
 import '../../Components/Gender Dropdown.dart';
@@ -55,7 +55,7 @@ class _SignUpState extends State<SignUp> {
     // Email Validation
     if (!_emailController.text.contains(RegExp(r'\S+@\S+\.\S+'))) {
       setState(() {
-        _emailError = "Please enter a valid email address";
+        _emailError = "Please Enter a valid email address".tr();
       });
       isValid = false;
     }
@@ -64,32 +64,32 @@ class _SignUpState extends State<SignUp> {
     String password = _passwordController.text.trim();
     if (password.isEmpty) {
       setState(() {
-        _passwordError = "Please enter your password";
+        _passwordError = "Please enter your password".tr();
       });
       isValid = false;
     } else if (password.length < 8) {
       setState(() {
-        _passwordError = "Password must be at least 8 characters long";
+        _passwordError = "Password must be at least 8 characters long".tr();
       });
       isValid = false;
     } else if (!RegExp(r'^(?=.*[A-Z])').hasMatch(password)) {
       setState(() {
-        _passwordError = "Password must contain at least one uppercase letter";
+        _passwordError = "Password must contain at least one uppercase letter".tr();
       });
       isValid = false;
     } else if (!RegExp(r'^(?=.*[a-z])').hasMatch(password)) {
       setState(() {
-        _passwordError = "Password must contain at least one lowercase letter";
+        _passwordError = "Password must contain at least_one lowercase letter".tr();
       });
       isValid = false;
     } else if (!RegExp(r'^(?=.*\d)').hasMatch(password)) {
       setState(() {
-        _passwordError = "Password must contain at least one digit";
+        _passwordError = "Password must contain at least one digit".tr();
       });
       isValid = false;
     } else if (!RegExp("^(?=.*[@#%^&+=])").hasMatch(password)) {
       setState(() {
-        _passwordError = "Password must contain at least one special character";
+        _passwordError = "Password must contain at least one special character".tr();
       });
       isValid = false;
     }
@@ -97,12 +97,12 @@ class _SignUpState extends State<SignUp> {
     // Confirm Password Validation
     if (_ConfirmpasswordController.text.isEmpty) {
       setState(() {
-        _confirmError = "Please confirm your password";
+        _confirmError = "Please confirm your password".tr();
       });
       isValid = false;
     } else if (_passwordController.text != _ConfirmpasswordController.text) {
       setState(() {
-        _confirmError = "Passwords do not match";
+        _confirmError = "Passwords do not match".tr();
       });
       isValid = false;
     }
@@ -110,7 +110,7 @@ class _SignUpState extends State<SignUp> {
     // First Name Validation
     if (_FirstNameController.text.isEmpty) {
       setState(() {
-        _FnameError = "Please enter your first name";
+        _FnameError = "Please enter your first name".tr();
       });
       isValid = false;
     }
@@ -118,7 +118,7 @@ class _SignUpState extends State<SignUp> {
     // Last Name Validation
     if (_LastNameController.text.isEmpty) {
       setState(() {
-        _LnameError = "Please enter your last name";
+        _LnameError = "Please enter your last name".tr();
       });
       isValid = false;
     }
@@ -126,12 +126,12 @@ class _SignUpState extends State<SignUp> {
     // Phone Number Validation
     if (_PhoneNumberController.text.isEmpty) {
       setState(() {
-        _phoneError = "Please enter your phone number";
+        _phoneError = "Please enter your phone number".tr();
       });
       isValid = false;
     } else if (!RegExp(r'^\+?[0-9]{7,15}$').hasMatch(_PhoneNumberController.text)) {
       setState(() {
-        _phoneError = "Enter a valid phone number";
+        _phoneError = "Enter a valid phone number".tr();
       });
       isValid = false;
     }
@@ -174,13 +174,13 @@ class _SignUpState extends State<SignUp> {
                     "assets/images/sign/popUpMessage.png",
                     width: 30,
                   ),
-                  SizedBox(width: 10),
-                  Text("Email Verification"),
+                  const SizedBox(width: 10),
+                  Text("Email Verification".tr()),
                 ],
               ),
               content: Container(
-                child: const Text(
-                  "Sign Up Successful! Please check your email and verify your account.",
+                child:  Text(
+                  tr("Sign Up Successful! Please check your email and verify your account."),
                 ),
               ),
               actions: [
@@ -188,7 +188,7 @@ class _SignUpState extends State<SignUp> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text("OK", style: TextStyle(color: Color(0xFF9A2B2B))),
+                  child:  Text("Ok".tr(), style: TextStyle(color: Color(0xFF9A2B2B))),
                 ),
               ],
             );
@@ -202,7 +202,7 @@ class _SignUpState extends State<SignUp> {
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error: ${e.message}")),
+          SnackBar(content: Text("error".tr(args: [e.message ?? ""]))),
         );
       } finally {
         setState(() {
@@ -222,7 +222,9 @@ class _SignUpState extends State<SignUp> {
               Padding(
                 padding: const EdgeInsets.only(right: 30),
                 child: Image.asset(
-                  "assets/images/sign/up.png",
+                  context.locale.languageCode == 'ar'
+                      ? "assets/images/sign/upArabic.png"
+                      : "assets/images/sign/up.png",
                   alignment: Alignment.topLeft,
                   width: 502,
                 ),
@@ -234,28 +236,28 @@ class _SignUpState extends State<SignUp> {
                     customTextField(
                       controller: _FirstNameController,
                       keyboardTypee: TextInputType.name,
-                      labelText: "First Name",
+                      labelText: "First Name".tr(),
                       prefixIcon: const Icon(Icons.person_outline_rounded),
                       errorText: _FnameError,
                     ),
                     customTextField(
                       controller: _LastNameController,
                       keyboardTypee: TextInputType.name,
-                      labelText: "Last Name",
+                      labelText: "Last Name".tr(),
                       prefixIcon: const Icon(Icons.person_outline_rounded),
                       errorText: _LnameError,
                     ),
                     customTextField(
                       controller: _emailController,
                       keyboardTypee: TextInputType.emailAddress,
-                      labelText: "Email",
+                      labelText: "Email".tr(),
                       prefixIcon: const Icon(Icons.email, color: Colors.black),
                       errorText: _emailError,
                     ),
                     customTextField(
                       controller: _passwordController,
                       keyboardTypee: TextInputType.visiblePassword,
-                      labelText: "Password",
+                      labelText: "Password".tr(),
                       obscureText: _obscureText,
                       prefixIcon: const Icon(Icons.lock, color: Colors.black),
                       errorText: _passwordError,
@@ -268,7 +270,7 @@ class _SignUpState extends State<SignUp> {
                     customTextField(
                       controller: _ConfirmpasswordController,
                       keyboardTypee: TextInputType.visiblePassword,
-                      labelText: "Confirm Password",
+                      labelText: "Confirm Password".tr(),
                       obscureText: _obscureConfirmText,
                       prefixIcon: const Icon(Icons.lock, color: Colors.black),
                       errorText: _confirmError,
@@ -293,7 +295,7 @@ class _SignUpState extends State<SignUp> {
                     const SizedBox(height: 30),
                     GradientButton(
                       onPressed: _isLoading ? null : _validateAndSubmit,
-                      text: "Sign UP",
+                      text: "Sign Up".tr(),
                       isLoading: _isLoading,
                     ),
                     const SizedBox(height: 10),
@@ -302,7 +304,7 @@ class _SignUpState extends State<SignUp> {
                       children: [
                         Flexible(
                           child: Text(
-                            "Already have an account? ",
+                            "Already have an account? ".tr(),
                             style: GoogleFonts.charisSil(fontSize: 20),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -315,11 +317,11 @@ class _SignUpState extends State<SignUp> {
                             );
                           },
                           child: Text(
-                            "SignIn",
+                            " SignIn".tr(),
                             style: GoogleFonts.charisSil(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF9A2B2B),
+                              color: const Color(0xFF9A2B2B),
                             ),
                           ),
                         )

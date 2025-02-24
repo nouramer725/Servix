@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../Components/Buttons.dart';
 import '../../Components/SocialMediaLoginButton.dart';
@@ -38,7 +38,7 @@ class _SignInState extends State<SignIn> {
 
     if (_emailController.text.isEmpty) {
       setState(() {
-        _emailError = "Please enter your email";
+        _emailError = "Please enter your email".tr();
         _isLoading = false;
       });
       isValid = false;
@@ -46,7 +46,7 @@ class _SignInState extends State<SignIn> {
 
     if (_passwordController.text.isEmpty) {
       setState(() {
-        _passwordError = "Please enter your password";
+        _passwordError = "Please enter your password".tr();
         _isLoading = false;
       });
       isValid = false;
@@ -107,8 +107,8 @@ class _SignInState extends State<SignIn> {
                           size: 40,
                         ),
                         const SizedBox(height: 8),
-                        const Text(
-                          "Email not verified. Please verify your account via the email sent to you.",
+                         Text(
+                          "Email not verified. Please verify your account via the email sent to you.".tr(),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -123,8 +123,8 @@ class _SignInState extends State<SignIn> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: const Text(
-                            "OK",
+                          child:  Text(
+                            "OK".tr(),
                             style: TextStyle(
                               color: Colors.black87,
                               fontWeight: FontWeight.bold,
@@ -141,14 +141,14 @@ class _SignInState extends State<SignIn> {
         }
       } on FirebaseAuthException catch (e) {
         String errorMessage;
-        if (e.code == 'wrong-password') {
-          errorMessage = "The password is incorrect. Please try again.";
-        } else if (e.code == 'user-not-found') {
-          errorMessage = "No user found for that email address.";
-        } else if (e.code == 'invalid-email') {
-          errorMessage = "The email address is invalid.";
+        if (e.code == 'wrong-password'.tr()) {
+          errorMessage = "The password is incorrect. Please try again.".tr();
+        } else if (e.code == 'user-not-found'.tr()) {
+          errorMessage = "No user found for that email address.".tr();
+        } else if (e.code == 'invalid-email'.tr()) {
+          errorMessage = "The email address is invalid.".tr();
         } else {
-          errorMessage = "The password is incorrect. Please try again.";
+          errorMessage = "The password is incorrect. Please try again.".tr();
         }
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -179,7 +179,9 @@ class _SignInState extends State<SignIn> {
               Padding(
                 padding: const EdgeInsets.only(right: 30),
                 child: Image.asset(
-                  "assets/images/sign/in.png",
+                  context.locale.languageCode == 'ar'
+                      ? "assets/images/sign/inArabic.png"
+                      : "assets/images/sign/in.png",
                   alignment: Alignment.topLeft,
                   width: 502,
                 ),
@@ -190,7 +192,7 @@ class _SignInState extends State<SignIn> {
                 child: Column(
                   children: [
                     CustomTextFormField(
-                      label: "Email",
+                      label: "Email".tr(),
                       controller: _emailController,
                       icon: Icons.email,
                       errorText: _emailError,
@@ -198,7 +200,7 @@ class _SignInState extends State<SignIn> {
                     ),
                     const SizedBox(height: 17),
                     CustomTextFormField(
-                      label: "Password",
+                      label: "Password".tr(),
                       controller: _passwordController,
                       icon: Icons.lock,
                       obscureText: _obscureText,
@@ -221,7 +223,7 @@ class _SignInState extends State<SignIn> {
                           },
                         ),
                         Text(
-                          "Remember Me",
+                          "Remember Me".tr(),
                           style: GoogleFonts.charisSil(
                             fontSize: 18,
                           ),
@@ -231,7 +233,7 @@ class _SignInState extends State<SignIn> {
                     const SizedBox(height: 80),
                     GradientButton(
                       onPressed: _isLoading ? null : _validateAndSubmit,
-                      text: "Sign In",
+                      text: "Sign In".tr(),
                       isLoading: _isLoading,
                     ),
                     const SizedBox(height: 10),
@@ -240,7 +242,7 @@ class _SignInState extends State<SignIn> {
                       children: [
                         Flexible(
                           child: Text(
-                            "Don't have an account? ",
+                            "Don't have an account? ".tr(),
                             style: GoogleFonts.charisSil(fontSize: 20),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -252,8 +254,9 @@ class _SignInState extends State<SignIn> {
                               MaterialPageRoute(builder: (context) => SignUp()),
                             );
                           },
+
                           child: Text(
-                            "SignUp",
+                            " SignUp".tr(),
                             style: GoogleFonts.charisSil(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -280,7 +283,7 @@ class _SignInState extends State<SignIn> {
                                 );
                               }
                             } else {
-                              print("User sign-in failed");
+                              print("User sign-in failed".tr());
                             }
                           },
                         ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,9 +18,9 @@ Widget countryCodePhoneField({
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Center(
+            child:  Center(
               child: Text(
-                "+20",
+                "+20".tr(),
                 style: TextStyle(fontSize: 16),
               ),
             ),
@@ -30,7 +31,7 @@ Widget countryCodePhoneField({
               controller: controller,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
-                labelText: "Phone Number",
+                labelText: "Phone Number".tr(),
                 labelStyle: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.w400,

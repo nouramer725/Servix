@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 Widget genderDropdown({
@@ -16,8 +17,8 @@ Widget genderDropdown({
         borderRadius: BorderRadius.circular(8),
       ),
     ),
-    hint: const Text("Gender"),
-    items: ["Male", "Female"].map((String category) {
+    hint:  Text("Gender".tr()),
+    items: ["Male".tr(), "Female".tr()].map((String category) {
       return DropdownMenuItem(
         value: category,
         child: Text(category),

@@ -51,6 +51,7 @@ dependencies:
   smooth_page_indicator: ^1.2.1
   video_player: ^2.9.3
   shared_preferences: ^2.5.2
+  easy_localization: ^3.0.7+1
 
 
 
@@ -92,8 +93,13 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+
+
     - assets/Application/SplashServix.mp4
-#    - assets/images/care/Elder.jpg
+    - assets/Translation/ar.json
+    - assets/Translation/en.json
+
+    #    - assets/images/care/Elder.jpg
 #    - assets/images/care/children.jpg
 #    - assets/images/care/nursing.jpg
 #    - assets/images/care/pet.jpg
@@ -135,9 +141,11 @@ flutter:
     #    - assets/images/home-service/Painting.jpg
     #    - assets/images/home-service/camera.jpg
     #    - assets/images/home-service/LandScaper.jpg
+
+
 #    - assets/images/intro/servix.json
 #
-#    - assets/images/lang-member/langmem.png
+    - assets/images/lang-member/langmem.png
 #
 #    - assets/images/location/Egypt.png
 #
@@ -163,6 +171,8 @@ flutter:
 
     - assets/images/sign/in.png
     - assets/images/sign/up.png
+    - assets/images/sign/inArabic.png
+    - assets/images/sign/upArabic.png
     - assets/images/social_media/facebook.png
     - assets/images/social_media/google.png
     - assets/images/sign/popUpMessage.png
