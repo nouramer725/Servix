@@ -7,15 +7,15 @@ import '../../Components/Buttons.dart';
 import '../../Components/SocialMediaLoginButton.dart';
 import '../../Components/TextFormField_SignIn.dart';
 import '../Home.dart';
-import 'AuthService_Google.dart';
-import 'Sign_Up.dart';
+import '../../Components/AuthService_Google.dart';
+import 'Sign_Up_Client.dart';
 
-class SignIn extends StatefulWidget {
+class SignInClient extends StatefulWidget {
   @override
-  _SignInState createState() => _SignInState();
+  _SignInClientState createState() => _SignInClientState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInClientState extends State<SignInClient> {
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
   var _obscureText = true;
@@ -234,7 +234,6 @@ class _SignInState extends State<SignIn> {
                     GradientButton(
                       onPressed: _isLoading ? null : _validateAndSubmit,
                       text: "Sign In".tr(),
-                      isLoading: _isLoading,
                     ),
                     const SizedBox(height: 10),
                     Row(
@@ -251,7 +250,7 @@ class _SignInState extends State<SignIn> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => SignUp()),
+                              MaterialPageRoute(builder: (context) => SignUpClient()),
                             );
                           },
 

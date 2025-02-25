@@ -9,20 +9,21 @@ import '../../Components/Gender Dropdown.dart';
 import '../../Components/SocialMediaLoginButton.dart';
 import '../../Components/TextFormFiels_SignUp.dart';
 import '../Home.dart';
-import 'AuthService_Google.dart';
-import 'Sign_In.dart';
+import '../../Components/AuthService_Google.dart';
+import 'Sign_In_Client.dart';
 
-class SignUp extends StatefulWidget {
+class SignUpClient extends StatefulWidget {
   @override
-  _SignUpState createState() => _SignUpState();
+  _SignUpClientState createState() => _SignUpClientState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignUpClientState extends State<SignUpClient> {
   final TextEditingController _FirstNameController = TextEditingController();
   final TextEditingController _LastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _ConfirmpasswordController = TextEditingController();
+  final TextEditingController _ConfirmpasswordController =
+      TextEditingController();
   final TextEditingController _PhoneNumberController = TextEditingController();
 
   final AuthService _authService = AuthService();
@@ -74,12 +75,14 @@ class _SignUpState extends State<SignUp> {
       isValid = false;
     } else if (!RegExp(r'^(?=.*[A-Z])').hasMatch(password)) {
       setState(() {
-        _passwordError = "Password must contain at least one uppercase letter".tr();
+        _passwordError =
+            "Password must contain at least one uppercase letter".tr();
       });
       isValid = false;
     } else if (!RegExp(r'^(?=.*[a-z])').hasMatch(password)) {
       setState(() {
-        _passwordError = "Password must contain at least_one lowercase letter".tr();
+        _passwordError =
+            "Password must contain at least_one lowercase letter".tr();
       });
       isValid = false;
     } else if (!RegExp(r'^(?=.*\d)').hasMatch(password)) {
@@ -89,7 +92,8 @@ class _SignUpState extends State<SignUp> {
       isValid = false;
     } else if (!RegExp("^(?=.*[@#%^&+=])").hasMatch(password)) {
       setState(() {
-        _passwordError = "Password must contain at least one special character".tr();
+        _passwordError =
+            "Password must contain at least one special character".tr();
       });
       isValid = false;
     }
@@ -129,7 +133,8 @@ class _SignUpState extends State<SignUp> {
         _phoneError = "Please enter your phone number".tr();
       });
       isValid = false;
-    } else if (!RegExp(r'^\+?[0-9]{7,15}$').hasMatch(_PhoneNumberController.text)) {
+    } else if (!RegExp(r'^\+?[0-9]{7,15}$')
+        .hasMatch(_PhoneNumberController.text)) {
       setState(() {
         _phoneError = "Enter a valid phone number".tr();
       });
@@ -143,7 +148,8 @@ class _SignUpState extends State<SignUp> {
 
       try {
         // Create user with email and password
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: password,
         );
@@ -179,7 +185,7 @@ class _SignUpState extends State<SignUp> {
                 ],
               ),
               content: Container(
-                child:  Text(
+                child: Text(
                   tr("Sign Up Successful! Please check your email and verify your account."),
                 ),
               ),
@@ -188,7 +194,8 @@ class _SignUpState extends State<SignUp> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child:  Text("Ok".tr(), style: TextStyle(color: Color(0xFF9A2B2B))),
+                  child: Text("Ok".tr(),
+                      style: TextStyle(color: Color(0xFF9A2B2B))),
                 ),
               ],
             );
@@ -198,11 +205,11 @@ class _SignUpState extends State<SignUp> {
         // Navigate to the SignIn page
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => SignIn()),
+          MaterialPageRoute(builder: (context) => SignInClient()),
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("error".tr(args: [e.message ?? ""]))),
+          SnackBar(content: Text(e.message ?? "").tr()),
         );
       } finally {
         setState(() {
@@ -296,7 +303,6 @@ class _SignUpState extends State<SignUp> {
                     GradientButton(
                       onPressed: _isLoading ? null : _validateAndSubmit,
                       text: "Sign Up".tr(),
-                      isLoading: _isLoading,
                     ),
                     const SizedBox(height: 10),
                     Row(
@@ -313,7 +319,8 @@ class _SignUpState extends State<SignUp> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => SignIn()),
+                              MaterialPageRoute(
+                                  builder: (context) => SignInClient()),
                             );
                           },
                           child: Text(
@@ -336,12 +343,14 @@ class _SignUpState extends State<SignUp> {
                           imagePath: 'assets/images/social_media/google.png',
                           onTap: () async {
                             try {
-                              User? user = await _authService.signInWithGoogle();
+                              User? user =
+                                  await _authService.signInWithGoogle();
                               if (user != null) {
                                 if (mounted) {
                                   Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => Home()),
+                                    MaterialPageRoute(
+                                        builder: (context) => Home()),
                                   );
                                 }
                               } else {

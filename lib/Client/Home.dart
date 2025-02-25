@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'Login-Register/Sign_In.dart';
+import 'package:servix/Member/MemberShip.dart';
+import 'Login-Register/Sign_In_Client.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -54,7 +55,7 @@ class _HomeState extends State<Home> {
             icon: Icon(Icons.logout),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignIn()));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MemberShip()));
             },
           )
         ],

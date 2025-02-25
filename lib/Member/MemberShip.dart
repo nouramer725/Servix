@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:servix/Client/Login-Register/Sign_In.dart';
+import 'package:servix/Client/Login-Register/Sign_In_Client.dart';
+import 'package:servix/Technician/Login-Register/Sign_In_Tech.dart';
 import '../Components/Buttons.dart';
 
 class MemberShip extends StatelessWidget {
@@ -55,7 +56,7 @@ class MemberShip extends StatelessWidget {
                       // Navigate to SignIn when onboarding is finished.
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SignIn()),
+                        MaterialPageRoute(builder: (context) => SignInTechnician()),
                       );
                     }, // Disable button when loading
                     style: ElevatedButton.styleFrom(
@@ -84,7 +85,7 @@ class MemberShip extends StatelessWidget {
                 GradientButton(onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SignIn()),
+                    MaterialPageRoute(builder: (context) => SignInClient()),
                   );
                 }, text: tr("Client"))
               ],
