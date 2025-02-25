@@ -16,7 +16,7 @@ Widget countryCodePhoneField({
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(3),
             ),
             child:  Center(
               child: Text(
@@ -40,11 +40,9 @@ Widget countryCodePhoneField({
                 prefixIcon: const Icon(Icons.phone, color: Colors.black),
                 enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
-                  borderRadius: BorderRadius.circular(8),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
-                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
             ),

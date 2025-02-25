@@ -12,12 +12,15 @@ Widget genderDropdown({
         borderRadius: BorderRadius.circular(8),
         borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
       ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
-        borderRadius: BorderRadius.circular(8),
+      enabledBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
       ),
     ),
     hint:  Text("Gender".tr()),
+    dropdownColor: Colors.white, // This sets the dropdown list background to white
     items: ["Male".tr(), "Female".tr()].map((String category) {
       return DropdownMenuItem(
         value: category,
@@ -25,5 +28,6 @@ Widget genderDropdown({
       );
     }).toList(),
     onChanged: onChanged,
+
   );
 }
