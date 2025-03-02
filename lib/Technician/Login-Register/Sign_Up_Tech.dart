@@ -201,14 +201,20 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
       });
       isValid = false;
     }
-
-// Main Service Validation
-    if (_mainServiceController.text.isEmpty ||_subServiceController.text.isEmpty) {
+    // Main Service Validation
+    if (selectedMainService == null) {
       setState(() {
-        _mainServiceError = "Please select your services".tr();
+        _mainServiceError = "Please select a main service".tr();
       });
       isValid = false;
     }
+    // Sub Service Validation
+    if (selectedSubService == null) {
+      setState(() {
+        _subServiceError = "Please select a sub service".tr();
+      });
+      isValid = false;
+      }
 
 
     if (isValid) {
@@ -280,7 +286,8 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
         // Navigate to the SignIn page
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => PersonalInformation()),
+          MaterialPageRoute(builder: (context) => PersonalInformation(
+          )),
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
