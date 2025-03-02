@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:servix/Member/MemberShip.dart';
 import 'package:easy_localization/easy_localization.dart';
+import '../Login-Register/Database for personal information.dart';
 
 class HomeTechnician extends StatefulWidget {
   @override
@@ -32,13 +34,12 @@ class _HomeTechnicianState extends State<HomeTechnician> {
 
   void _loadUserData() async {
     var data = await getUserData();
-    if (!mounted) return; // Prevent setState() after widget is disposed
+    if (!mounted) return;
     setState(() {
       userData = data;
     });
   }
 
-  /// Calculates the age from the given date string in "yyyy-MM-dd" format.
   int calculateAge(String dobString) {
     try {
       DateTime dob = DateTime.parse(dobString);
@@ -50,13 +51,12 @@ class _HomeTechnicianState extends State<HomeTechnician> {
       }
       return age;
     } catch (e) {
-      return 0; // Fallback in case of parsing error
+      return 0;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // If userData is loaded and date_of_birth exists, calculate the age.
     String dobDisplay = "N/A";
     String ageDisplay = "N/A";
     if (userData != null && userData!['date_of_birth'] != null) {
@@ -67,14 +67,18 @@ class _HomeTechnicianState extends State<HomeTechnician> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           children: [
             const SizedBox(width: 10),
-            Text(
-              userData != null
-                  ? "Welcome".tr() +
-                      " ${userData!['first_name']} ${userData!['last_name']}!"
-                  : "Welcome".tr(),
+            Expanded(
+              child: Text(
+                userData != null
+                    ? "Welcome".tr() +
+                        " ${userData!['first_name']} ${userData!['last_name']}!"
+                    : "Welcome".tr(),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
         ),
@@ -93,28 +97,131 @@ class _HomeTechnicianState extends State<HomeTechnician> {
       ),
       body: userData == null
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
+          : SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 16),
-                  Text("First Name: ".tr() +
-                      "${userData?['first_name'] ?? 'N/A'}"),
-                  Text("Last Name: ".tr() +
-                      "${userData?['last_name'] ?? 'N/A'}"),
-                  Text("Email: ".tr() + "${userData?['email'] ?? 'N/A'}"),
-                  Text("Phone: ".tr() + "${userData?['phone'] ?? 'N/A'}"),
-                  Text("Gender: ".tr() + "${userData?['gender'] ?? 'N/A'}"),
-                  Text("Main Service: ".tr() +
-                      "${userData?['main_service'] ?? 'N/A'}"),
-                  Text("Sub Service: ".tr() +
-                      "${userData?['sub_service'] ?? 'N/A'}"),
-                  Text("Date of Birth: ".tr() + "$dobDisplay"),
-                  Text("Age: ".tr() + "$ageDisplay"),
+                  _buildInfoCard(userData!, dobDisplay, ageDisplay),
+                  const SizedBox(height: 20),
+                  _buildUserImages(),
                 ],
               ),
             ),
     );
+  }
+
+  Widget _buildInfoCard(Map<String, dynamic> data, String dob, String age) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildInfoRow("First Name", data['first_name']),
+            _buildInfoRow("Last Name", data['last_name']),
+            _buildInfoRow("Email", data['email']),
+            _buildInfoRow("Phone", data['phone']),
+            _buildInfoRow("Gender", data['gender']),
+            _buildInfoRow("Main Service", data['main_service']),
+            _buildInfoRow("Sub Service", data['sub_service']),
+            _buildInfoRow("Date of Birth", dob),
+            _buildInfoRow("Age", age),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String? value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "$label: ",
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ).tr(),
+          Text(value ?? 'N/A'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserImages() {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: DatabaseHelper().getUserData(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData)
+          return const Center(child: CircularProgressIndicator());
+
+        final userData = snapshot.data!.isNotEmpty ? snapshot.data!.last : null;
+        if (userData == null)
+          return const Center(child: Text("No data available"));
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "National ID: ${userData['nationalID']}",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ).tr(),
+            ),
+            _buildLabeledImage("Personal Image", userData['personalImage']),
+            _buildLabeledImage("Front ID", userData['frontID']),
+            _buildLabeledImage("Back ID", userData['backID']),
+            _buildLabeledImage("Criminal Record", userData['criminalRecord']),
+            const SizedBox(height: 10),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildLabeledImage(String label, String imagePath) {
+    return Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: const TextStyle(fontWeight: FontWeight.bold))
+                  .tr(),
+              const SizedBox(height: 5),
+              Container(
+                width: double.infinity, // Full width
+                height: 300,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: imagePath.isNotEmpty
+                    ? Image.file(
+                        File(imagePath),
+                        width: double.infinity,
+                        height: 150,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                            child: Icon(Icons.broken_image,
+                                size: 50, color: Colors.grey),
+                          );
+                        },
+                      )
+                    : const Center(
+                        child: Icon(Icons.image_not_supported,
+                            size: 50, color: Colors.grey)),
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
+        ));
   }
 }
