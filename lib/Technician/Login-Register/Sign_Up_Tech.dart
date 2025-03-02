@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:servix/Technician/HomeTechnician.dart';
+import 'package:servix/Technician/Home/HomeTechnician.dart';
 import 'package:servix/Technician/Login-Register/Personal%20Info%20tech.dart';
 import 'package:servix/Technician/Login-Register/Sign_In_Tech.dart';
 import '../../Components/AuthService_Google.dart';
