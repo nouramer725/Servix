@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:servix/Client/Home.dart';
 import 'package:servix/Client/Login-Register/Sign_Up_Client.dart';
+import 'package:servix/Language/Language.dart';
 import 'package:servix/Member/MemberShip.dart';
 import 'package:servix/On-Boarding/On_Boarding_Screen.dart';
 import 'package:servix/Technician/Home/HomeTechnician.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
             routes: {
               "/": (context) => CheckUserState(),
               "/onboarding": (context) => OnboardingScreen(),
-              "/signinChoice": (context) => MemberShip(), // Choose Client or Tech
+              "/signinChoice": (context) => Language(), // Choose Client or Tech
               "/signinClient": (context) => SignInClient(),
               "/signinTech": (context) => SignInTechnician(),
               "/signupClient": (context) => SignUpClient(),
