@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Language/Language.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Onboarding {
@@ -24,25 +25,33 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       image: 'assets/images/on-boarding/explore.png',
       title: 'Explore Our Services',
       body:
-          'Our app offers a seamless experience, connecting you with skilled technicians for home repairs and maintenance. Additionally you need a quick fix or expert guidance, we’ve got you covered!',
+      'Our app offers a seamless experience, connecting you with skilled technicians for home repairs and maintenance.',
     ),
     Onboarding(
       image: 'assets/images/on-boarding/tech.png',
       title: 'Find Skilled Technicians',
       body:
-          'Need a repair, installation, or maintenance service? Our platform connects you with certified and experienced technicians in various fields, including electrical work, plumbing, and more. Each professional is verified for quality and reliability, ensuring you receive fast, efficient, and trustworthy service whenever you need it.',
+      'Need a repair, installation, or maintenance service? Our platform connects you with certified and experienced technicians.',
     ),
     Onboarding(
       image: 'assets/images/on-boarding/robot.png',
-      title: 'Smart AI ',
+      title: 'Smart AI',
       body:
-          'Our AI assistant helps you with instant troubleshooting, smart recommendations, and automated support for various tasks. Whether it\'s answering queries, or optimizing your experience, our AI is here to assist you every step of the way!',
+      'Our AI assistant helps with instant troubleshooting, smart recommendations, and automated support for various tasks.',
     ),
   ];
 
   var swipeController = PageController();
   bool isLast = false;
-  int currentPage = 0;
+
+  Future<void> completeOnboarding() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('hasSeenOnboarding', true);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const Language()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,27 +59,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-       title:
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Language()),
-                  );
-                },
-                child: Text(
-                  'Skip',
-                  style: GoogleFonts.charisSil(
-                    fontSize: 26,
-                    color: Colors.white,
-                  ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+              onPressed: completeOnboarding, // Skip onboarding
+              child: Text(
+                'Skip',
+                style: GoogleFonts.charisSil(
+                  fontSize: 26,
+                  color: Colors.white,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ),
       extendBodyBehindAppBar: true,
       body: Container(
@@ -95,7 +98,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 controller: swipeController,
                 onPageChanged: (index) {
                   setState(() {
-                    currentPage = index;
                     isLast = index == boarding.length - 1;
                   });
                 },
@@ -123,11 +125,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   backgroundColor: Colors.white,
                   onPressed: () {
                     if (isLast) {
-                      // Navigate to SignIn when onboarding is finished.
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Language()),
-                      );
+                      completeOnboarding();
                     } else {
                       swipeController.nextPage(
                         duration: const Duration(milliseconds: 500),
@@ -152,11 +150,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: Center(
         child: Column(
           children: [
-            const SizedBox(height: 100), // Spacing from top (adjust as needed)
+            const SizedBox(height: 100),
             Center(
               child: Text(
                 model.title,
-                style: GoogleFonts.charisSil(fontSize: 30, color: Colors.white,fontWeight: FontWeight.bold),
+                style: GoogleFonts.charisSil(
+                  fontSize: 30,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Center(
@@ -169,7 +171,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Text(
               model.body,
               style: GoogleFonts.baskervville(fontSize: 17, color: Colors.white),
-
             ),
           ],
         ),
