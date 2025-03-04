@@ -1,10 +1,8 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:servix/Member/MemberShip.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../Login-Register/Database for personal information.dart';
 
 class HomeTechnician extends StatefulWidget {
   @override
@@ -103,8 +101,8 @@ class _HomeTechnicianState extends State<HomeTechnician> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildInfoCard(userData!, dobDisplay, ageDisplay),
-                  const SizedBox(height: 20),
-                  _buildUserImages(),
+                  const SizedBox(height: 100),
+                  _buildFilesOfImages()
                 ],
               ),
             ),
@@ -151,77 +149,77 @@ class _HomeTechnicianState extends State<HomeTechnician> {
     );
   }
 
-  Widget _buildUserImages() {
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: DatabaseHelper().getUserData(),
+  Widget _buildFilesOfImages() {
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection("user-files")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("uploads")
+          .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return const Center(child: CircularProgressIndicator());
+        if (snapshot.hasData) {
+          List userUploadedFiles = snapshot.data!.docs;
+          if (userUploadedFiles.isEmpty) {
+            return Center(
+              child: Text("No files uploaded"),
+            );
+          } else {
+            return GridView.builder(
+              shrinkWrap: true, // ✅ Allows GridView to fit inside another scrollable widget
+              physics: NeverScrollableScrollPhysics(), // ✅ Prevents nested scrolling issues
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1, // ✅ Ensures 2 images per row
+                childAspectRatio: 3, // ✅ Adjust this to control height-to-width ratio
+                crossAxisSpacing: 10, // ✅ Spacing between columns
+                mainAxisSpacing: 10, // ✅ Spacing between rows
+              ),
+              itemCount: userUploadedFiles.length,
+              itemBuilder: (context, index) {
+                String backIDUrl = userUploadedFiles[index]['backIDUrl'];
+                String criminalRecordUrl = userUploadedFiles[index]['criminalRecordUrl'];
+                String frontIDUrl = userUploadedFiles[index]['frontIDUrl'];
+                String personalFileUrl = userUploadedFiles[index]['personalFileUrl'];
+                String nationalId = userUploadedFiles[index]['nationalId'];
 
-        final userData = snapshot.data!.isNotEmpty ? snapshot.data!.last : null;
-        if (userData == null)
-          return const Center(child: Text("No data available"));
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: Image.network(
+                        personalFileUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Expanded(
+                      child: Image.network(
+                      frontIDUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Expanded(
+                      child: Image.network(
+                        backIDUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Expanded(
+                      child: Image.network(
+                        criminalRecordUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "National ID: ${userData['nationalID']}",
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ).tr(),
-            ),
-            _buildLabeledImage("Personal Image", userData['personalImage']),
-            _buildLabeledImage("Front ID", userData['frontID']),
-            _buildLabeledImage("Back ID", userData['backID']),
-            _buildLabeledImage("Criminal Record", userData['criminalRecord']),
-            const SizedBox(height: 10),
-          ],
+          }
+        }
+        return Center(
+          child: CircularProgressIndicator(),
         );
       },
     );
-  }
-
-  Widget _buildLabeledImage(String label, String imagePath) {
-    return Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label, style: const TextStyle(fontWeight: FontWeight.bold))
-                  .tr(),
-              const SizedBox(height: 5),
-              Container(
-                width: double.infinity, // Full width
-                height: 300,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: imagePath.isNotEmpty
-                    ? Image.file(
-                        File(imagePath),
-                        width: double.infinity,
-                        height: 150,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Center(
-                            child: Icon(Icons.broken_image,
-                                size: 50, color: Colors.grey),
-                          );
-                        },
-                      )
-                    : const Center(
-                        child: Icon(Icons.image_not_supported,
-                            size: 50, color: Colors.grey)),
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
-        ));
   }
 }
