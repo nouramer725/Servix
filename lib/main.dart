@@ -4,21 +4,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:servix/Client/Home.dart';
 import 'package:servix/Client/Login-Register/Sign_Up_Client.dart';
 import 'package:servix/Language/Language.dart';
-import 'package:servix/Member/MemberShip.dart';
 import 'package:servix/On-Boarding/On_Boarding_Screen.dart';
 import 'package:servix/Technician/Home/HomeTechnician.dart';
+import 'package:servix/Technician/Login-Register/Personal%20Info%20tech.dart';
 import 'package:servix/Technician/Login-Register/Sign_In_Tech.dart';
 import 'package:servix/Technician/Login-Register/Sign_Up_Tech.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Client/Login-Register/Sign_In_Client.dart';
+import 'firebase_options.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await dotenv.load(fileName: ".env");
   await EasyLocalization.ensureInitialized();
 
   runApp(
@@ -49,6 +52,7 @@ class MyApp extends StatelessWidget {
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
+
             routes: {
               "/": (context) => CheckUserState(),
               "/onboarding": (context) => OnboardingScreen(),
@@ -91,22 +95,7 @@ class _CheckUserStateState extends State<CheckUserState> {
     } else if (user == null) {
       Navigator.pushReplacementNamed(context, "/signinChoice"); // Choose client or tech
     } else {
-      // ✅ Get user type from Firestore
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection("users")
-          .doc(user.uid)
-          .get();
-
-      if (userDoc.exists) {
-        String userType = userDoc["userType"];
-        if (userType == "client") {
-          Navigator.pushReplacementNamed(context, "/clientHome");
-        } else {
           Navigator.pushReplacementNamed(context, "/techHome");
-        }
-      } else {
-        Navigator.pushReplacementNamed(context, "/signinChoice");
-      }
     }
   }
 
