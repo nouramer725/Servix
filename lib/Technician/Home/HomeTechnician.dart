@@ -66,19 +66,46 @@ class _HomeTechnicianState extends State<HomeTechnician> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                userData != null
-                    ? "Welcome".tr() +
-                        " ${userData!['first_name']} ${userData!['last_name']}!"
-                    : "Welcome".tr(),
-                overflow: TextOverflow.ellipsis,
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+
+              // ✅ Display Circular Profile Image
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("user-files")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .collection("uploads")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                    String personalFileUrl = snapshot.data!.docs.first['personalFileUrl'];
+                    return CircleAvatar(
+                      radius: 20, // ✅ Adjust size
+                      backgroundImage: NetworkImage(personalFileUrl), // ✅ Fetch from Firestore
+                    );
+                  }
+                  return CircleAvatar(
+                    radius: 20,
+                    backgroundImage: AssetImage("assets/images/lang-member/langmem.png"), // ✅ Default image
+                  );
+                },
               ),
-            ),
-          ],
+
+              const SizedBox(width: 10), // ✅ Add spacing
+
+              // ✅ "Welcome" text with name
+              Expanded(
+                child: Text(
+                  userData != null
+                      ? "Welcome".tr() + " ${userData!['first_name']} ${userData!['last_name']}!"
+                      : "Welcome".tr(),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           IconButton(
@@ -102,7 +129,6 @@ class _HomeTechnicianState extends State<HomeTechnician> {
                 children: [
                   _buildInfoCard(userData!, dobDisplay, ageDisplay),
                   const SizedBox(height: 100),
-                  _buildFilesOfImages()
                 ],
               ),
             ),
@@ -146,80 +172,6 @@ class _HomeTechnicianState extends State<HomeTechnician> {
           Text(value ?? 'N/A'),
         ],
       ),
-    );
-  }
-
-  Widget _buildFilesOfImages() {
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection("user-files")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection("uploads")
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          List userUploadedFiles = snapshot.data!.docs;
-          if (userUploadedFiles.isEmpty) {
-            return Center(
-              child: Text("No files uploaded"),
-            );
-          } else {
-            return GridView.builder(
-              shrinkWrap: true, // ✅ Allows GridView to fit inside another scrollable widget
-              physics: NeverScrollableScrollPhysics(), // ✅ Prevents nested scrolling issues
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1, // ✅ Ensures 2 images per row
-                childAspectRatio: 3, // ✅ Adjust this to control height-to-width ratio
-                crossAxisSpacing: 10, // ✅ Spacing between columns
-                mainAxisSpacing: 10, // ✅ Spacing between rows
-              ),
-              itemCount: userUploadedFiles.length,
-              itemBuilder: (context, index) {
-                String backIDUrl = userUploadedFiles[index]['backIDUrl'];
-                String criminalRecordUrl = userUploadedFiles[index]['criminalRecordUrl'];
-                String frontIDUrl = userUploadedFiles[index]['frontIDUrl'];
-                String personalFileUrl = userUploadedFiles[index]['personalFileUrl'];
-                String nationalId = userUploadedFiles[index]['nationalId'];
-
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Image.network(
-                        personalFileUrl,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Expanded(
-                      child: Image.network(
-                      frontIDUrl,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Expanded(
-                      child: Image.network(
-                        backIDUrl,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Expanded(
-                      child: Image.network(
-                        criminalRecordUrl,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
-
-          }
-        }
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      },
     );
   }
 }
