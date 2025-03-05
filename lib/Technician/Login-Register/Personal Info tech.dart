@@ -134,7 +134,9 @@ class _PersonalInformationState extends State<PersonalInformation> {
       File(personalFile!),
       File(frontID!),
       File(backID!),
-      File(criminalRecord!)
+      File(criminalRecord!),
+      if (armyCertificate != null) File(armyCertificate!),
+      if (skillsCertificate != null) File(skillsCertificate!),
     ];
 
     List<String> imageUrls = [];
@@ -150,10 +152,11 @@ class _PersonalInformationState extends State<PersonalInformation> {
     }
 
     // Ensure all images uploaded successfully
-    if (imageUrls.length != 4) {
-      print("Error: Not all images uploaded successfully.");
+    if (personalFile == null || frontID == null || backID == null || criminalRecord == null) {
+      print("Error: Not all required images uploaded successfully.");
       return;
     }
+
 
     // Save data to Firestore
     await FirebaseFirestore.instance
@@ -166,35 +169,14 @@ class _PersonalInformationState extends State<PersonalInformation> {
       "frontIDUrl": imageUrls[1],
       "backIDUrl": imageUrls[2],
       "criminalRecordUrl": imageUrls[3],
+      "armyCertificateUrl": armyCertificate != null ? imageUrls[4] : null,
+      "skillsCertificateUrl":
+          skillsCertificate != null ? imageUrls[5] : null,
       "timestamp": FieldValue.serverTimestamp(),
     });
 
 
     print("Data successfully uploaded to Firestore!");
-    AlertDialog(
-      title: Row(
-        children: [
-          const SizedBox(width: 10),
-          Text("Email Verification".tr()),
-        ],
-      ),
-      content: Text(
-        "Data successfully uploaded!"
-            .tr(),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text(
-            "Ok".tr(),
-            style: const TextStyle(color: Color(0xFF821717)),
-          ),
-        ),
-      ],
-    );
-
     // Navigate to the next screen
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => SignInTechnician()));
