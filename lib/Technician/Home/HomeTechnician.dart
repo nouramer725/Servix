@@ -70,7 +70,6 @@ class _HomeTechnicianState extends State<HomeTechnician> {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-
               // ✅ Display Circular Profile Image
               StreamBuilder(
                 stream: FirebaseFirestore.instance

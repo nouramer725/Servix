@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart'; // Import EasyLocaliz
 import '../../Components/Buttons.dart';
 import '../../Components/Country Code and Phone Number.dart';
 import '../../Components/Gender Dropdown.dart';
+import '../../Components/RoleDropDownClient.dart';
 import '../../Components/SocialMediaLoginButton.dart';
 import '../../Components/TextFormFiels_SignUp.dart';
 import '../Home.dart';
@@ -29,6 +30,7 @@ class _SignUpClientState extends State<SignUpClient> {
   final AuthService _authService = AuthService();
 
   String? gender;
+  String? role = "Client"; // Default role is 'Client'
   var _obscureText = true;
   var _obscureConfirmText = true;
 
@@ -166,6 +168,7 @@ class _SignUpClientState extends State<SignUpClient> {
           'email': _emailController.text.trim(),
           'phone': _PhoneNumberController.text.trim(),
           'gender': gender?.trim(),
+          'role': role,
           'created_at': Timestamp.now(),
         });
 
@@ -299,6 +302,9 @@ class _SignUpClientState extends State<SignUpClient> {
                         });
                       },
                     ),
+                    const SizedBox(height: 17),
+                    roleDropdown(selectedValue: "Client"),
+
                     const SizedBox(height: 30),
                     GradientButton(
                       onPressed: _isLoading ? null : _validateAndSubmit,
