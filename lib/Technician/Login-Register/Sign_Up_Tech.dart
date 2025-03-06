@@ -310,194 +310,201 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Form(
-          child: Column(
-            children: [
-              // Top Image
-              Padding(
-                padding: const EdgeInsets.only(right: 30),
-                child: Image.asset(
-                  context.locale.languageCode == 'ar'
-                      ? "assets/images/sign/upArabic.png"
-                      : "assets/images/sign/up.png",
-                  alignment: Alignment.topLeft,
-                  width: 502,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+          child: Form(
+            child: Column(
+              children: [
+                // Top Image
+                Padding(
+                  padding: const EdgeInsets.only(right: 30),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Image.asset(
+                      context.locale.languageCode == 'ar'
+                          ? "assets/images/sign/upArabic.png"
+                          : "assets/images/sign/up.png",
+                      alignment: Alignment.topLeft,
+                      width: 502,
+                    ),
+                  ),
                 ),
-              ),
-              // Form Fields
-              Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Column(
-                  children: [
-                    // First Name
-                    customTextField(
-                      controller: _FirstNameController,
-                      keyboardTypee: TextInputType.name,
-                      labelText: "First Name".tr(),
-                      prefixIcon: const Icon(Icons.person_outline_rounded),
-                      errorText: _FnameError,
-                    ),
-                    // Last Name
-                    customTextField(
-                      controller: _LastNameController,
-                      keyboardTypee: TextInputType.name,
-                      labelText: "Last Name".tr(),
-                      prefixIcon: const Icon(Icons.person_outline_rounded),
-                      errorText: _LnameError,
-                    ),
-                    // Email
-                    customTextField(
-                      controller: _emailController,
-                      keyboardTypee: TextInputType.emailAddress,
-                      labelText: "Email".tr(),
-                      prefixIcon: const Icon(Icons.email, color: Colors.black),
-                      errorText: _emailError,
-                    ),
-                    // Password
-                    customTextField(
-                      controller: _passwordController,
-                      keyboardTypee: TextInputType.visiblePassword,
-                      labelText: "Password".tr(),
-                      obscureText: _obscureText,
-                      prefixIcon: const Icon(Icons.lock, color: Colors.black),
-                      errorText: _passwordError,
-                      onVisibilityToggle: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    ),
-                    // Confirm Password
-                    customTextField(
-                      controller: _ConfirmpasswordController,
-                      keyboardTypee: TextInputType.visiblePassword,
-                      labelText: "Confirm Password".tr(),
-                      obscureText: _obscureConfirmText,
-                      prefixIcon: const Icon(Icons.lock, color: Colors.black),
-                      errorText: _confirmError,
-                      onVisibilityToggle: () {
-                        setState(() {
-                          _obscureConfirmText = !_obscureConfirmText;
-                        });
-                      },
-                    ),
-                    // Phone
-                    countryCodePhoneField(
-                      controller: _PhoneNumberController,
-                      errorText: _phoneError,
-                    ),
-                    genderDropdown(
-                      selectedValue: gender,
-                      onChanged: (newValue) {
-                        setState(() {
-                          gender = newValue;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 17),
-                    // Date of Birth
-                    customDOBField(
-                      controller: _dobController,
-                      labelText: "Date of Birth".tr(),
-                      errorText: _dobError, // If you have an error variable
-                      onTap: _pickDateOfBirth, // Your function to pick the date
-                    ),
-                    ServicesRow(
-                      mainServices: mainServices,
-                      subServicesMap: subServicesMap,
-                      selectedMainService: selectedMainService,
-                      selectedSubService: selectedSubService,
-                      mainServiceError: _mainServiceError,
-                      onMainChanged: (String? newMain) {
-                        setState(() {
-                          selectedMainService = newMain;
-                          selectedSubService =
-                              null; // Reset sub service when main changes
-                        });
-                      },
-                      onSubChanged: (String? newSub) {
-                        setState(() {
-                          selectedSubService = newSub;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 17),
-                    // Role
-                    roleDropdownTech(selectedValue: "Technician"),
-                    const SizedBox(height: 30),
-                    // Sign Up Button
-                    GradientButton(
-                      onPressed: _isLoading ? null : _validateAndSubmit,
-                      text: "Sign Up".tr(),
-                    ),
-                    const SizedBox(height: 10),
-                    // Already have an account?
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            "Already have an account? ".tr(),
-                            style: GoogleFonts.charisSil(fontSize: 20),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignInTechnician()),
-                            );
-                          },
-                          child: Text(
-                            " SignIn".tr(),
-                            style: GoogleFonts.charisSil(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF9A2B2B),
+                // Form Fields
+                Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    children: [
+                      // First Name
+                      customTextField(
+                        controller: _FirstNameController,
+                        keyboardTypee: TextInputType.name,
+                        labelText: "First Name".tr(),
+                        prefixIcon: const Icon(Icons.person_outline_rounded),
+                        errorText: _FnameError,
+                      ),
+                      // Last Name
+                      customTextField(
+                        controller: _LastNameController,
+                        keyboardTypee: TextInputType.name,
+                        labelText: "Last Name".tr(),
+                        prefixIcon: const Icon(Icons.person_outline_rounded),
+                        errorText: _LnameError,
+                      ),
+                      // Email
+                      customTextField(
+                        controller: _emailController,
+                        keyboardTypee: TextInputType.emailAddress,
+                        labelText: "Email".tr(),
+                        prefixIcon: const Icon(Icons.email, color: Colors.black),
+                        errorText: _emailError,
+                      ),
+                      // Password
+                      customTextField(
+                        controller: _passwordController,
+                        keyboardTypee: TextInputType.visiblePassword,
+                        labelText: "Password".tr(),
+                        obscureText: _obscureText,
+                        prefixIcon: const Icon(Icons.lock, color: Colors.black),
+                        errorText: _passwordError,
+                        onVisibilityToggle: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      ),
+                      // Confirm Password
+                      customTextField(
+                        controller: _ConfirmpasswordController,
+                        keyboardTypee: TextInputType.visiblePassword,
+                        labelText: "Confirm Password".tr(),
+                        obscureText: _obscureConfirmText,
+                        prefixIcon: const Icon(Icons.lock, color: Colors.black),
+                        errorText: _confirmError,
+                        onVisibilityToggle: () {
+                          setState(() {
+                            _obscureConfirmText = !_obscureConfirmText;
+                          });
+                        },
+                      ),
+                      // Phone
+                      countryCodePhoneField(
+                        controller: _PhoneNumberController,
+                        errorText: _phoneError,
+                      ),
+                      genderDropdown(
+                        selectedValue: gender,
+                        onChanged: (newValue) {
+                          setState(() {
+                            gender = newValue;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 17),
+                      // Date of Birth
+                      customDOBField(
+                        controller: _dobController,
+                        labelText: "Date of Birth".tr(),
+                        errorText: _dobError, // If you have an error variable
+                        onTap: _pickDateOfBirth, // Your function to pick the date
+                      ),
+                      ServicesRow(
+                        mainServices: mainServices,
+                        subServicesMap: subServicesMap,
+                        selectedMainService: selectedMainService,
+                        selectedSubService: selectedSubService,
+                        mainServiceError: _mainServiceError,
+                        onMainChanged: (String? newMain) {
+                          setState(() {
+                            selectedMainService = newMain;
+                            selectedSubService =
+                                null; // Reset sub service when main changes
+                          });
+                        },
+                        onSubChanged: (String? newSub) {
+                          setState(() {
+                            selectedSubService = newSub;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 17),
+                      // Role
+                      roleDropdownTech(selectedValue: "Technician"),
+                      const SizedBox(height: 30),
+                      // Sign Up Button
+                      GradientButton(
+                        onPressed: _isLoading ? null : _validateAndSubmit,
+                        text: "Sign Up".tr(),
+                      ),
+                      const SizedBox(height: 10),
+                      // Already have an account?
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              "Already have an account? ".tr(),
+                              style: GoogleFonts.charisSil(fontSize: 20),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    // Social Media Buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(width: 20),
-                        SocialMediaLoginButton(
-                          imagePath: 'assets/images/social_media/google.png',
-                          onTap: () async {
-                            try {
-                              User? user =
-                                  await _authService.signInWithGoogle();
-                              if (user != null) {
-                                if (mounted) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeTechnician()),
-                                  );
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignInTechnician()),
+                              );
+                            },
+                            child: Text(
+                              " SignIn".tr(),
+                              style: GoogleFonts.charisSil(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF9A2B2B),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      // Social Media Buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(width: 20),
+                          SocialMediaLoginButton(
+                            imagePath: 'assets/images/social_media/google.png',
+                            onTap: () async {
+                              try {
+                                User? user =
+                                    await _authService.signInWithGoogle();
+                                if (user != null) {
+                                  if (mounted) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomeTechnician()),
+                                    );
+                                  }
+                                } else {
+                                  print("User sign-in failed");
                                 }
-                              } else {
-                                print("User sign-in failed");
+                              } catch (e) {
+                                print("Error signing in: $e");
                               }
-                            } catch (e) {
-                              print("Error signing in: $e");
-                            }
-                          },
-                        ),
-                      ],
-                    )
-                  ],
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
+    ],
       ),
     );
   }

@@ -101,98 +101,25 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/images/sign/
+    - assets/images/care/
+    - assets/images/delivery/
+    - assets/images/devices/
+    - assets/images/home/
+    - assets/images/home-service/
+    - assets/images/intro/
+    - assets/images/lang-member/
+    - assets/images/location/
+    - assets/images/men/
+    - assets/images/notification/
+    - assets/images/offers/
+    - assets/images/on-boarding/
+    - assets/images/private-teaching/
+    - assets/images/woman/
     - assets/Application/SplashServix.mp4
     - assets/Translation/ar.json
     - assets/Translation/en.json
     - .env
-
-    #    - assets/images/care/Elder.jpg
-#    - assets/images/care/children.jpg
-#    - assets/images/care/nursing.jpg
-#    - assets/images/care/pet.jpg
-#    - assets/images/care/disability.jpg
-#
-#    - assets/images/delivery/school.jpg
-#    - assets/images/delivery/spend.png
-#    - assets/images/delivery/Taxi.jpg
-#    - assets/images/delivery/bus.jpg
-#    - assets/images/delivery/truck.jpg
-#    - assets/images/delivery/scooter.jpg
-#    - assets/images/delivery/loader.jpg
-
-#    - assets/images/devices/fan.jpg
-#    - assets/images/devices/water-heating.jpg
-#    - assets/images/devices/microwave.jpg
-#    - assets/images/devices/computer.jpg
-#    - assets/images/devices/mobile.jpg
-#    - assets/images/devices/screen.jpg
-#    - assets/images/devices/Washing.jpg
-#    - assets/images/devices/stove.jpg
-#    - assets/images/devices/air.jpg
-#    - assets/images/devices/fridge.jpg
-#
-#    - assets/images/home/home-service.png
-#    - assets/images/home/private_teaching.png
-#    - assets/images/home/care.png
-#    - assets/images/home/woman.png
-#    - assets/images/home/man.png
-#    - assets/images/home/devices.jpg
-#    - assets/images/home/delivery.png
-#
-
-    #    - assets/images/home-service/cleaning.jpg
-    #    - assets/images/home-service/Carpentry.jpg
-    #    - assets/images/home-service/Electricity.png
-    #    - assets/images/home-service/Plumbing.jpg
-    #    - assets/images/home-service/Kitchen-technician.png
-    #    - assets/images/home-service/Painting.jpg
-    #    - assets/images/home-service/camera.jpg
-    #    - assets/images/home-service/LandScaper.jpg
-
-
-#    - assets/images/intro/servix.json
-#
-    - assets/images/lang-member/langmem.png
-#
-#    - assets/images/location/Egypt.png
-#
-#    - assets/images/men/Shaving.jpg
-#    - assets/images/men/Privatecoach-man.jpeg
-#    - assets/images/men/Tailoring-man.jpg
-#    - assets/images/men/massage-man.jpg
-#
-#    - assets/images/notification/notification.png
-#
-#    - assets/images/offers/noOffers.png
-#
-    - assets/images/on-boarding/explore.png
-    - assets/images/on-boarding/robot.png
-    - assets/images/on-boarding/tech.png
-
-#    - assets/images/private-teaching/primary.jpg
-#    - assets/images/private-teaching/Preparatory.jpg
-#    - assets/images/private-teaching/Secondary.jpg
-#    - assets/images/private-teaching/musical-instruments.jpg
-#    - assets/images/private-teaching/Religion.jpg
-#    - assets/images/private-teaching/Languages.jpg
-
-    - assets/images/sign/in.png
-    - assets/images/sign/up.png
-    - assets/images/sign/inArabic.png
-    - assets/images/sign/upArabic.png
-    - assets/images/social_media/facebook.png
-    - assets/images/social_media/google.png
-    - assets/images/sign/popUpMessage.png
-#
-#    - assets/images/woman/Pedicure.png
-#    - assets/images/woman/Nails.png
-#    - assets/images/woman/Privatecoach-woman.jpg
-#    - assets/images/woman/Makeup.jpg
-#    - assets/images/woman/Tailoring.png
-#    - assets/images/woman/massage-woman.jpg
-#    - assets/images/woman/Hair.png
-#    - assets/images/woman/henna.jpg
-
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

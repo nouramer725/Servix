@@ -240,130 +240,137 @@ class _SignInTechnicianState extends State<SignInTechnician> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 30),
-                child: Image.asset(
-                  context.locale.languageCode == 'ar'
-                      ? "assets/images/sign/inArabic.png"
-                      : "assets/images/sign/in.png",
-                  alignment: Alignment.topLeft,
-                  width: 502,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 30),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Image.asset(
+                      context.locale.languageCode == 'ar'
+                          ? "assets/images/sign/inArabic.png"
+                          : "assets/images/sign/in.png",
+                      alignment: Alignment.topLeft,
+                      width: 502,
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 50),
-              Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Column(
-                  children: [
-                    CustomTextFormField(
-                      label: "Email".tr(),
-                      controller: _emailController,
-                      icon: Icons.email,
-                      errorText: _emailError,
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    const SizedBox(height: 17),
-                    CustomTextFormField(
-                      label: "Password".tr(),
-                      controller: _passwordController,
-                      icon: Icons.lock,
-                      obscureText: _obscureText,
-                      errorText: _passwordError,
-                      onTapSuffix: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    ),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: _rememberMe,
-                          activeColor: const Color(0xFF9A2B2B),
-                          onChanged: (value) {
-                            setState(() {
-                              _rememberMe = value!;
-                            });
-                          },
-                        ),
-                        Text(
-                          "Remember Me".tr(),
-                          style: GoogleFonts.charisSil(
-                            fontSize: 18,
+                const SizedBox(height: 50),
+                Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    children: [
+                      CustomTextFormField(
+                        label: "Email".tr(),
+                        controller: _emailController,
+                        icon: Icons.email,
+                        errorText: _emailError,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      const SizedBox(height: 17),
+                      CustomTextFormField(
+                        label: "Password".tr(),
+                        controller: _passwordController,
+                        icon: Icons.lock,
+                        obscureText: _obscureText,
+                        errorText: _passwordError,
+                        onTapSuffix: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _rememberMe,
+                            activeColor: const Color(0xFF9A2B2B),
+                            onChanged: (value) {
+                              setState(() {
+                                _rememberMe = value!;
+                              });
+                            },
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 80),
-                    GradientButton(
-                      onPressed: _isLoading ? null : _validateAndSubmit,
-                      text: "Sign In".tr(),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            "Don't have an account? ".tr(),
-                            style: GoogleFonts.charisSil(fontSize: 20),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignUpTechnician()),
-                            );
-                          },
-                          child: Text(
-                            " SignUp".tr(),
+                          Text(
+                            "Remember Me".tr(),
                             style: GoogleFonts.charisSil(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF9A2B2B),
+                              fontSize: 18,
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(width: 20),
-                        SocialMediaLoginButton(
-                          imagePath: 'assets/images/social_media/google.png',
-                          onTap: () async {
-                            User? user = await _authService.signInWithGoogle();
-                            if (user != null) {
-                              if (mounted) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => HomeTechnician()),
-                                );
+                        ],
+                      ),
+                      const SizedBox(height: 80),
+                      GradientButton(
+                        onPressed: _isLoading ? null : _validateAndSubmit,
+                        text: "Sign In".tr(),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              "Don't have an account? ".tr(),
+                              style: GoogleFonts.charisSil(fontSize: 20),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUpTechnician()),
+                              );
+                            },
+                            child: Text(
+                              " SignUp".tr(),
+                              style: GoogleFonts.charisSil(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF9A2B2B),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(width: 20),
+                          SocialMediaLoginButton(
+                            imagePath: 'assets/images/social_media/google.png',
+                            onTap: () async {
+                              User? user = await _authService.signInWithGoogle();
+                              if (user != null) {
+                                if (mounted) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeTechnician()),
+                                  );
+                                }
+                              } else {
+                                print("User sign-in failed".tr());
                               }
-                            } else {
-                              print("User sign-in failed".tr());
-                            }
-                          },
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              )
-            ],
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
+    ],
       ),
     );
   }

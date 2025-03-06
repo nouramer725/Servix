@@ -225,156 +225,163 @@ class _SignUpClientState extends State<SignUpClient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Form(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 30),
-                child: Image.asset(
-                  context.locale.languageCode == 'ar'
-                      ? "assets/images/sign/upArabic.png"
-                      : "assets/images/sign/up.png",
-                  alignment: Alignment.topLeft,
-                  width: 502,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+          child: Form(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 30),
+                  child: Align(
+                      alignment: Alignment.topLeft,
+                    child: Image.asset(
+                      context.locale.languageCode == 'ar'
+                          ? "assets/images/sign/upArabic.png"
+                          : "assets/images/sign/up.png",
+                      alignment: Alignment.topLeft,
+                      width: 502,
+                    ),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Column(
-                  children: [
-                    customTextField(
-                      controller: _FirstNameController,
-                      keyboardTypee: TextInputType.name,
-                      labelText: "First Name".tr(),
-                      prefixIcon: const Icon(Icons.person_outline_rounded),
-                      errorText: _FnameError,
-                    ),
-                    customTextField(
-                      controller: _LastNameController,
-                      keyboardTypee: TextInputType.name,
-                      labelText: "Last Name".tr(),
-                      prefixIcon: const Icon(Icons.person_outline_rounded),
-                      errorText: _LnameError,
-                    ),
-                    customTextField(
-                      controller: _emailController,
-                      keyboardTypee: TextInputType.emailAddress,
-                      labelText: "Email".tr(),
-                      prefixIcon: const Icon(Icons.email, color: Colors.black),
-                      errorText: _emailError,
-                    ),
-                    customTextField(
-                      controller: _passwordController,
-                      keyboardTypee: TextInputType.visiblePassword,
-                      labelText: "Password".tr(),
-                      obscureText: _obscureText,
-                      prefixIcon: const Icon(Icons.lock, color: Colors.black),
-                      errorText: _passwordError,
-                      onVisibilityToggle: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    ),
-                    customTextField(
-                      controller: _ConfirmpasswordController,
-                      keyboardTypee: TextInputType.visiblePassword,
-                      labelText: "Confirm Password".tr(),
-                      obscureText: _obscureConfirmText,
-                      prefixIcon: const Icon(Icons.lock, color: Colors.black),
-                      errorText: _confirmError,
-                      onVisibilityToggle: () {
-                        setState(() {
-                          _obscureConfirmText = !_obscureConfirmText;
-                        });
-                      },
-                    ),
-                    countryCodePhoneField(
-                      controller: _PhoneNumberController,
-                      errorText: _phoneError,
-                    ),
-                    genderDropdown(
-                      selectedValue: gender,
-                      onChanged: (newValue) {
-                        setState(() {
-                          gender = newValue;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 17),
-                    roleDropdown(selectedValue: "Client"),
+                Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    children: [
+                      customTextField(
+                        controller: _FirstNameController,
+                        keyboardTypee: TextInputType.name,
+                        labelText: "First Name".tr(),
+                        prefixIcon: const Icon(Icons.person_outline_rounded),
+                        errorText: _FnameError,
+                      ),
+                      customTextField(
+                        controller: _LastNameController,
+                        keyboardTypee: TextInputType.name,
+                        labelText: "Last Name".tr(),
+                        prefixIcon: const Icon(Icons.person_outline_rounded),
+                        errorText: _LnameError,
+                      ),
+                      customTextField(
+                        controller: _emailController,
+                        keyboardTypee: TextInputType.emailAddress,
+                        labelText: "Email".tr(),
+                        prefixIcon: const Icon(Icons.email, color: Colors.black),
+                        errorText: _emailError,
+                      ),
+                      customTextField(
+                        controller: _passwordController,
+                        keyboardTypee: TextInputType.visiblePassword,
+                        labelText: "Password".tr(),
+                        obscureText: _obscureText,
+                        prefixIcon: const Icon(Icons.lock, color: Colors.black),
+                        errorText: _passwordError,
+                        onVisibilityToggle: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      ),
+                      customTextField(
+                        controller: _ConfirmpasswordController,
+                        keyboardTypee: TextInputType.visiblePassword,
+                        labelText: "Confirm Password".tr(),
+                        obscureText: _obscureConfirmText,
+                        prefixIcon: const Icon(Icons.lock, color: Colors.black),
+                        errorText: _confirmError,
+                        onVisibilityToggle: () {
+                          setState(() {
+                            _obscureConfirmText = !_obscureConfirmText;
+                          });
+                        },
+                      ),
+                      countryCodePhoneField(
+                        controller: _PhoneNumberController,
+                        errorText: _phoneError,
+                      ),
+                      genderDropdown(
+                        selectedValue: gender,
+                        onChanged: (newValue) {
+                          setState(() {
+                            gender = newValue;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 17),
+                      roleDropdown(selectedValue: "Client"),
 
-                    const SizedBox(height: 30),
-                    GradientButton(
-                      onPressed: _isLoading ? null : _validateAndSubmit,
-                      text: "Sign Up".tr(),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            "Already have an account? ".tr(),
-                            style: GoogleFonts.charisSil(fontSize: 20),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignInClient()),
-                            );
-                          },
-                          child: Text(
-                            " SignIn".tr(),
-                            style: GoogleFonts.charisSil(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF9A2B2B),
+                      const SizedBox(height: 30),
+                      GradientButton(
+                        onPressed: _isLoading ? null : _validateAndSubmit,
+                        text: "Sign Up".tr(),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              "Already have an account? ".tr(),
+                              style: GoogleFonts.charisSil(fontSize: 20),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(width: 20),
-                        SocialMediaLoginButton(
-                          imagePath: 'assets/images/social_media/google.png',
-                          onTap: () async {
-                            try {
-                              User? user =
-                                  await _authService.signInWithGoogle();
-                              if (user != null) {
-                                if (mounted) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Home()),
-                                  );
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignInClient()),
+                              );
+                            },
+                            child: Text(
+                              " SignIn".tr(),
+                              style: GoogleFonts.charisSil(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF9A2B2B),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(width: 20),
+                          SocialMediaLoginButton(
+                            imagePath: 'assets/images/social_media/google.png',
+                            onTap: () async {
+                              try {
+                                User? user =
+                                    await _authService.signInWithGoogle();
+                                if (user != null) {
+                                  if (mounted) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()),
+                                    );
+                                  }
+                                } else {
+                                  print("User sign-in failed");
                                 }
-                              } else {
-                                print("User sign-in failed");
+                              } catch (e) {
+                                print("Error signing in: $e");
                               }
-                            } catch (e) {
-                              print("Error signing in: $e");
-                            }
-                          },
-                        ),
-                      ],
-                    )
-                  ],
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
+    ],
       ),
     );
   }
