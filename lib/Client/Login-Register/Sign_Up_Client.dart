@@ -6,7 +6,6 @@ import 'package:easy_localization/easy_localization.dart'; // Import EasyLocaliz
 import '../../Components/Buttons.dart';
 import '../../Components/Country Code and Phone Number.dart';
 import '../../Components/Gender Dropdown.dart';
-import '../../Components/RoleDropDownClient.dart';
 import '../../Components/SocialMediaLoginButton.dart';
 import '../../Components/TextFormFiels_SignUp.dart';
 import '../Home.dart';
@@ -307,8 +306,8 @@ class _SignUpClientState extends State<SignUpClient> {
                           });
                         },
                       ),
-                      const SizedBox(height: 17),
-                      roleDropdown(selectedValue: "Client"),
+                      // const SizedBox(height: 17),
+                      // roleDropdown(selectedValue: "Client"),
 
                       const SizedBox(height: 30),
                       GradientButton(

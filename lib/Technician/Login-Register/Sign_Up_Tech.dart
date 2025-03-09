@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:servix/Components/RoleDropDownTechnician.dart';
 import 'package:servix/Technician/Home/HomeTechnician.dart';
 import 'package:servix/Technician/Login-Register/Personal%20Info%20tech.dart';
 import 'package:servix/Technician/Login-Register/Sign_In_Tech.dart';
@@ -12,7 +11,6 @@ import '../../Components/Buttons.dart';
 import '../../Components/Country Code and Phone Number.dart';
 import '../../Components/Gender Dropdown.dart';
 import '../../Components/List of Service.dart';
-import '../../Components/RoleDropDownClient.dart';
 import '../../Components/SocialMediaLoginButton.dart';
 import '../../Components/TextFormFiels_SignUp.dart';
 import '../../Components/Date of birth.dart';
@@ -427,9 +425,6 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                           });
                         },
                       ),
-                      const SizedBox(height: 17),
-                      // Role
-                      roleDropdownTech(selectedValue: "Technician"),
                       const SizedBox(height: 30),
                       // Sign Up Button
                       GradientButton(
