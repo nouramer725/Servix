@@ -116,6 +116,7 @@ flutter:
     - assets/images/on-boarding/
     - assets/images/private-teaching/
     - assets/images/woman/
+    - assets/images/social_media/
     - assets/Application/SplashServix.mp4
     - assets/Translation/ar.json
     - assets/Translation/en.json
