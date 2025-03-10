@@ -56,7 +56,7 @@ class _SignInTechnicianState extends State<SignInTechnician> {
       _formKey.currentState!.save();
       try {
         UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
@@ -101,13 +101,11 @@ class _SignInTechnicianState extends State<SignInTechnician> {
                         ),
                         SizedBox(height: 16),
                         Text(
-                          "BUT WITH DIFFERENT EMAIL ADDRESS "
-                              .tr(),
+                          "BUT WITH DIFFERENT EMAIL ADDRESS ".tr(),
                           style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
-                          ),
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 16),
@@ -135,8 +133,9 @@ class _SignInTechnicianState extends State<SignInTechnician> {
           // Now, check if the email is verified.
           if (user.emailVerified) {
             // Retrieve extra sign-up data passed via route arguments.
-            final Map<String, dynamic>? signUpData =
-            ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+            final Map<String, dynamic>? signUpData = ModalRoute.of(context)
+                ?.settings
+                .arguments as Map<String, dynamic>?;
 
             // If data exists, save/merge it to Firestore.
             if (signUpData != null) {
@@ -177,7 +176,8 @@ class _SignInTechnicianState extends State<SignInTechnician> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "Email not verified. Please verify your account via the email sent to you.".tr(),
+                          "Email not verified. Please verify your account via the email sent to you."
+                              .tr(),
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -236,6 +236,82 @@ class _SignInTechnicianState extends State<SignInTechnician> {
     }
   }
 
+  void _showResetPasswordDialog(BuildContext context) {
+    TextEditingController emailController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Reset Password".tr(),
+              style: GoogleFonts.charisSil(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF821717),
+              )),
+          content: TextField(
+            controller: emailController,
+            decoration: InputDecoration(
+              labelText: "Enter your email".tr(),
+              focusColor: Color(0xFF821717),
+              border: const OutlineInputBorder(),
+            ),
+            keyboardType: TextInputType.emailAddress,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cancel".tr(),
+                  style: GoogleFonts.charisSil(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  )),
+            ),
+            TextButton(
+              onPressed: () {
+                _resetPassword(emailController.text.trim());
+                Navigator.pop(context);
+              },
+              child: Text("Send Reset Email".tr(),
+                  style: GoogleFonts.charisSil(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF821717),
+                  )),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _resetPassword(String email) async {
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please enter your email".tr())),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Password reset link sent! Check your email.".tr()),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error: ${e.toString()}".tr()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -243,134 +319,153 @@ class _SignInTechnicianState extends State<SignInTechnician> {
       body: Stack(
         children: [
           SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 30),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Image.asset(
-                      context.locale.languageCode == 'ar'
-                          ? "assets/images/sign/inArabic.png"
-                          : "assets/images/sign/in.png",
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 30),
+                    child: Align(
                       alignment: Alignment.topLeft,
-                      width: 502,
+                      child: Image.asset(
+                        context.locale.languageCode == 'ar'
+                            ? "assets/images/sign/inArabic.png"
+                            : "assets/images/sign/in.png",
+                        alignment: Alignment.topLeft,
+                        width: 502,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Column(
-                    children: [
-                      CustomTextFormField(
-                        label: "Email".tr(),
-                        controller: _emailController,
-                        icon: Icons.email,
-                        errorText: _emailError,
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      const SizedBox(height: 17),
-                      CustomTextFormField(
-                        label: "Password".tr(),
-                        controller: _passwordController,
-                        icon: Icons.lock,
-                        obscureText: _obscureText,
-                        errorText: _passwordError,
-                        onTapSuffix: () {
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: _rememberMe,
-                            activeColor: const Color(0xFF9A2B2B),
-                            onChanged: (value) {
-                              setState(() {
-                                _rememberMe = value!;
-                              });
-                            },
-                          ),
-                          Text(
-                            "Remember Me".tr(),
-                            style: GoogleFonts.charisSil(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 80),
-                      GradientButton(
-                        onPressed: _isLoading ? null : _validateAndSubmit,
-                        text: "Sign In".tr(),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              "Don't have an account? ".tr(),
-                              style: GoogleFonts.charisSil(fontSize: 20),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignUpTechnician()),
-                              );
+                  const SizedBox(height: 50),
+                  Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: Column(
+                      children: [
+                        CustomTextFormField(
+                          label: "Email".tr(),
+                          controller: _emailController,
+                          icon: Icons.email,
+                          errorText: _emailError,
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(height: 17),
+                        CustomTextFormField(
+                          label: "Password".tr(),
+                          controller: _passwordController,
+                          icon: Icons.lock,
+                          obscureText: _obscureText,
+                          errorText: _passwordError,
+                          onTapSuffix: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              _showResetPasswordDialog(context);
                             },
                             child: Text(
-                              " SignUp".tr(),
+                              "Forgot Password?".tr(),
                               style: GoogleFonts.charisSil(
-                                fontSize: 20,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: const Color(0xFF9A2B2B),
+                                color: const Color(0xFF821717),
                               ),
                             ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(width: 20),
-                          SocialMediaLoginButton(
-                            imagePath: 'assets/images/social_media/google.png',
-                            onTap: () async {
-                              User? user = await _authService.signInWithGoogle();
-                              if (user != null) {
-                                if (mounted) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeTechnician()),
-                                  );
-                                }
-                              } else {
-                                print("User sign-in failed".tr());
-                              }
-                            },
                           ),
-                        ],
-                      )
-                    ],
-                  ),
-                )
-              ],
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _rememberMe,
+                              activeColor: const Color(0xFF821717),
+                              onChanged: (value) {
+                                setState(() {
+                                  _rememberMe = value!;
+                                });
+                              },
+                            ),
+                            Text(
+                              "Remember Me".tr(),
+                              style: GoogleFonts.charisSil(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 80),
+                        GradientButton(
+                          onPressed: _isLoading ? null : _validateAndSubmit,
+                          text: "Sign In".tr(),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                "Don't have an account? ".tr(),
+                                style: GoogleFonts.charisSil(fontSize: 20),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUpTechnician()),
+                                );
+                              },
+                              child: Text(
+                                " SignUp".tr(),
+                                style: GoogleFonts.charisSil(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xFF821717),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(width: 20),
+                            SocialMediaLoginButton(
+                              imagePath:
+                                  'assets/images/social_media/google.png',
+                              onTap: () async {
+                                User? user =
+                                    await _authService.signInWithGoogle();
+                                if (user != null) {
+                                  if (mounted) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              HomeTechnician()),
+                                    );
+                                  }
+                                } else {
+                                  print("User sign-in failed".tr());
+                                }
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-    ],
+        ],
       ),
     );
   }

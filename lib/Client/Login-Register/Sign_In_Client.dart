@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../Components/Buttons.dart';
 import '../../Components/SocialMediaLoginButton.dart';
 import '../../Components/TextFormField_SignIn.dart';
-import '../Home.dart'; // Client Home Screen
+import '../Home.dart';
 import '../../Components/AuthService_Google.dart';
 import 'Sign_Up_Client.dart';
 
@@ -55,8 +55,8 @@ class _SignInClientState extends State<SignInClient> {
     if (isValid) {
       _formKey.currentState!.save();
       try {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
@@ -113,6 +113,81 @@ class _SignInClientState extends State<SignInClient> {
     }
   }
 
+  void _showResetPasswordDialog(BuildContext context) {
+    TextEditingController emailController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Reset Password".tr(),
+              style: GoogleFonts.charisSil(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF821717),
+              )),
+          content: TextField(
+            controller: emailController,
+            decoration: InputDecoration(
+              labelText: "Enter your email".tr(),
+              focusColor: Color(0xFF821717),
+              border: const OutlineInputBorder(),
+            ),
+            keyboardType: TextInputType.emailAddress,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cancel".tr(),
+                  style: GoogleFonts.charisSil(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  )),
+            ),
+            TextButton(
+              onPressed: () {
+                _resetPassword(emailController.text.trim());
+                Navigator.pop(context);
+              },
+              child: Text("Send Reset Email".tr(),
+                  style: GoogleFonts.charisSil(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF821717),
+                  )),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _resetPassword(String email) async {
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please enter your email".tr())),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Password reset link sent! Check your email.".tr()),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error: ${e.toString()}".tr()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,11 +199,13 @@ class _SignInClientState extends State<SignInClient> {
               key: _formKey,
               child: Column(
                 children: [
-                  const SizedBox(height: 20), // Add some spacing for better layout
+                  const SizedBox(
+                      height: 20), // Add some spacing for better layout
                   Padding(
                     padding: const EdgeInsets.only(right: 30),
                     child: Align(
-                      alignment: Alignment.topLeft, // Ensures image stays at top-left
+                      alignment:
+                          Alignment.topLeft, // Ensures image stays at top-left
                       child: Image.asset(
                         context.locale.languageCode == 'ar'
                             ? "assets/images/sign/inArabic.png"
@@ -160,6 +237,22 @@ class _SignInClientState extends State<SignInClient> {
                               _obscureText = !_obscureText;
                             });
                           },
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              _showResetPasswordDialog(context);
+                            },
+                            child: Text(
+                              "Forgot Password?".tr(),
+                              style: GoogleFonts.charisSil(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF821717),
+                              ),
+                            ),
+                          ),
                         ),
                         Row(
                           children: [
@@ -200,7 +293,8 @@ class _SignInClientState extends State<SignInClient> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => SignUpClient()),
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUpClient()),
                                 );
                               },
                               child: Text(
@@ -211,6 +305,32 @@ class _SignInClientState extends State<SignInClient> {
                                   color: const Color(0xFF9A2B2B),
                                 ),
                               ),
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(width: 20),
+                                SocialMediaLoginButton(
+                                  imagePath:
+                                      'assets/images/social_media/google.png',
+                                  onTap: () async {
+                                    User? user =
+                                        await _authService.signInWithGoogle();
+                                    if (user != null) {
+                                      if (mounted) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Home()),
+                                        );
+                                      }
+                                    } else {
+                                      print("User sign-in failed".tr());
+                                    }
+                                  },
+                                ),
+                              ],
                             )
                           ],
                         ),
