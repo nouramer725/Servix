@@ -192,6 +192,7 @@ class _SignInClientState extends State<SignInClient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -199,8 +200,6 @@ class _SignInClientState extends State<SignInClient> {
               key: _formKey,
               child: Column(
                 children: [
-                  const SizedBox(
-                      height: 20), // Add some spacing for better layout
                   Padding(
                     padding: const EdgeInsets.only(right: 30),
                     child: Align(
@@ -210,6 +209,8 @@ class _SignInClientState extends State<SignInClient> {
                         context.locale.languageCode == 'ar'
                             ? "assets/images/sign/inArabic.png"
                             : "assets/images/sign/in.png",
+                        alignment: Alignment.topLeft,
+                        width: 502,
                       ),
                     ),
                   ),
@@ -273,7 +274,7 @@ class _SignInClientState extends State<SignInClient> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 80),
+                        const SizedBox(height: 45),
                         GradientButton(
                           onPressed: _isLoading ? null : _validateAndSubmit,
                           text: "Sign In".tr(),
@@ -288,6 +289,9 @@ class _SignInClientState extends State<SignInClient> {
                                 style: GoogleFonts.charisSil(fontSize: 20),
                                 overflow: TextOverflow.ellipsis,
                               ),
+                            ),
+                            SizedBox(
+                              width: 5,
                             ),
                             GestureDetector(
                               onTap: () {
@@ -306,34 +310,33 @@ class _SignInClientState extends State<SignInClient> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 20),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const SizedBox(width: 20),
-                                SocialMediaLoginButton(
-                                  imagePath:
-                                      'assets/images/social_media/google.png',
-                                  onTap: () async {
-                                    User? user =
-                                        await _authService.signInWithGoogle();
-                                    if (user != null) {
-                                      if (mounted) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Home()),
-                                        );
-                                      }
-                                    } else {
-                                      print("User sign-in failed".tr());
-                                    }
-                                  },
-                                ),
-                              ],
-                            )
                           ],
                         ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SocialMediaLoginButton(
+                              imagePath:
+                              'assets/images/social_media/google.png',
+                              onTap: () async {
+                                User? user =
+                                await _authService.signInWithGoogle();
+                                if (user != null) {
+                                  if (mounted) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()),
+                                    );
+                                  }
+                                } else {
+                                  print("User sign-in failed".tr());
+                                }
+                              },
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   )

@@ -396,7 +396,7 @@ class _SignInTechnicianState extends State<SignInTechnician> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 80),
+                        const SizedBox(height: 45),
                         GradientButton(
                           onPressed: _isLoading ? null : _validateAndSubmit,
                           text: "Sign In".tr(),
@@ -411,6 +411,9 @@ class _SignInTechnicianState extends State<SignInTechnician> {
                                 style: GoogleFonts.charisSil(fontSize: 20),
                                 overflow: TextOverflow.ellipsis,
                               ),
+                            ),
+                            SizedBox(
+                              width: 5,
                             ),
                             GestureDetector(
                               onTap: () {
@@ -435,7 +438,6 @@ class _SignInTechnicianState extends State<SignInTechnician> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const SizedBox(width: 20),
                             SocialMediaLoginButton(
                               imagePath:
                                   'assets/images/social_media/google.png',

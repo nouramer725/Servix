@@ -224,6 +224,7 @@ class _SignUpClientState extends State<SignUpClient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           SingleChildScrollView(

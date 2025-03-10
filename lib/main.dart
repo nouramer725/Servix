@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,7 +9,6 @@ import 'package:servix/Client/Login-Register/Sign_Up_Client.dart';
 import 'package:servix/Language/Language.dart';
 import 'package:servix/On-Boarding/On_Boarding_Screen.dart';
 import 'package:servix/Technician/Home/HomeTechnician.dart';
-import 'package:servix/Technician/Login-Register/Personal%20Info%20tech.dart';
 import 'package:servix/Technician/Login-Register/Sign_In_Tech.dart';
 import 'package:servix/Technician/Login-Register/Sign_Up_Tech.dart';
 import 'package:shared_preferences/shared_preferences.dart';
