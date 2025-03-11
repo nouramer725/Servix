@@ -158,9 +158,9 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
                   onPressed: () {
                     final String userType = ModalRoute.of(context)!.settings.arguments as String;
                     if (userType == "client") {
-                      Navigator.pushReplacementNamed(context, '/signInClient');
+                      Navigator.pushReplacementNamed(context, '/signinClient');
                     } else if (userType == "technician") {
-                      Navigator.pushReplacementNamed(context, '/signInTechnician');
+                      Navigator.pushReplacementNamed(context, '/signinTech');
                     }
                   },
                   text: "Save Address",
