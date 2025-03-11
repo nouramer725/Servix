@@ -23,6 +23,7 @@ class GradientButton extends StatelessWidget {
       ),
     )
         : Container(
+      height: 57,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -50,9 +51,10 @@ class GradientButton extends StatelessWidget {
           child: Text(
             text,
             style: GoogleFonts.charisSil(
-              fontSize: 30,
+              fontSize: 25,
               color: Colors.white,
             ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),

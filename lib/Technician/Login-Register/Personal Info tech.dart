@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:servix/Components/Buttons.dart';
-import 'package:servix/Technician/Login-Register/Sign_In_Tech.dart';
+import 'package:servix/Location/Access_Location1.dart';
 import '../../Components/TextField for National ID.dart';
 
 class PersonalInformation extends StatefulWidget {
@@ -179,7 +178,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
     print("Data successfully uploaded to Firestore!");
     // Navigate to the next screen
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SignInTechnician()));
+        context, MaterialPageRoute(builder: (context) => LocationRequestScreen()));
   }
 
   Future<String?> uploadToCloudinary(File imageFile) async {
