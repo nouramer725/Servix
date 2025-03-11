@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:servix/Components/Buttons.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:servix/Client/Login-Register/Sign_In_Client.dart';
+import '../Components/Buttons.dart';
+import '../Components/location textfield.dart';
 
 class SaveAddressScreen extends StatefulWidget {
   @override
@@ -14,91 +16,60 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
   final TextEditingController _directionsController = TextEditingController();
   final TextEditingController _labelController = TextEditingController();
 
-  LatLng _initialPosition =
-      const LatLng(31.2001, 29.9187); // Default: Alexandria, Egypt
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text("Save Address"),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
+      extendBodyBehindAppBar: false,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(25.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Google Map View
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    const BoxShadow(color: Colors.black26, blurRadius: 5)
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: GoogleMap(
-                    initialCameraPosition: CameraPosition(
-                      target: _initialPosition,
-                      zoom: 14,
-                    ),
-                    markers: {
-                      Marker(
-                        markerId: const MarkerId("selected_location"),
-                        position: _initialPosition,
-                      ),
-                    },
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-
+              const SizedBox(height: 50),
               // Area & Street Name
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Color(0xFFF9F4F4),
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
-                    const BoxShadow(color: Colors.black12, blurRadius: 4)
+                    const BoxShadow(color: Colors.black12, blurRadius: 4),
                   ],
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.location_pin, color: Colors.red),
+                    Icon(Icons.location_pin, color: Color(0xFF821717)),
                     SizedBox(width: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Area",
-                            style: TextStyle(fontSize: 14, color: Colors.grey)),
-                        Text("Kafr Abdo",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                          "Area",
+                          style: GoogleFonts.charisSil(
+                            fontSize: 20,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          "Kafr Abdo",
+                          style: GoogleFonts.castoro(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF676565),
+                          ),
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
-
               // Building Name
-              TextFormField(
+              CustomTextFormFieldLocation(
                 controller: _buildingController,
-                decoration: const InputDecoration(
-                  labelText: "Building Name",
-                  border: OutlineInputBorder(),
-                ),
+                label: 'Building Name',
               ),
               const SizedBox(height: 12),
 
@@ -106,75 +77,77 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: TextFormField(
+                    child: CustomTextFormFieldLocation(
                       controller: _aptController,
-                      decoration: const InputDecoration(
-                        labelText: "Apt. no.",
-                        border: OutlineInputBorder(),
-                      ),
+                      label: "Apt. no.",
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: TextFormField(
+                    child: CustomTextFormFieldLocation(
                       controller: _floorController,
-                      decoration: const InputDecoration(
-                        labelText: "Floor (Optional)",
-                        border: OutlineInputBorder(),
-                      ),
+                      label: "Floor (Optional)",
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 12),
-              // Street Name
-              TextFormField(
+
+              // Street Name (Read-Only)
+              CustomTextFormFieldLocation(
                 readOnly: true,
                 initialValue: "Mahmoud Abou El Ela",
-                decoration: const InputDecoration(
-                  labelText: "Street",
-                  border: OutlineInputBorder(),
-                ),
+                label: "Street",
               ),
               const SizedBox(height: 12),
 
               // Additional Directions
-              TextFormField(
+              CustomTextFormFieldLocation(
                 controller: _directionsController,
-                decoration: const InputDecoration(
-                  labelText: "Additional directions (optional)",
-                  border: OutlineInputBorder(),
-                ),
+                label: "Additional directions (optional)",
               ),
               const SizedBox(height: 12),
 
               // Phone Number
               Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 14,
+                  horizontal: 12,
+                ),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey.shade400),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
                   children: [
-                    Image.asset("assets/images/location/Egypt.png",
-                        width: 24), // Add an Egypt flag image to assets
-                    const SizedBox(width: 8),
-                    const Text("+20 1274554479",
-                        style: TextStyle(fontSize: 16)),
+                    Image.asset(
+                      "assets/images/location/Egypt.png",
+                      width: 40,
+                      height: 40,
+                    ), // Ensure the asset exists
+                    const SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Phone Number",
+                          style: GoogleFonts.inter(fontSize: 11, color: Color(0xFF545353)),
+                        ),
+                        Text(
+                          "+20 1274554479",
+                          style: GoogleFonts.inter(fontSize: 15,color: Color(0xFF545353)),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
               const SizedBox(height: 12),
 
               // Address Label
-              TextFormField(
+              CustomTextFormFieldLocation(
                 controller: _labelController,
-                decoration: const InputDecoration(
-                  labelText: "Address label (Optional)",
-                  border: OutlineInputBorder(),
-                ),
+                label: "Address label (Optional)",
               ),
               const SizedBox(height: 20),
 
@@ -182,10 +155,16 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
               SizedBox(
                 width: double.infinity,
                 child: GradientButton(
-                    onPressed: () {
-                      // Handle address saving logic
-                    },
-                    text: "Save Address"),
+                  onPressed: () {
+                    final String userType = ModalRoute.of(context)!.settings.arguments as String;
+                    if (userType == "client") {
+                      Navigator.pushReplacementNamed(context, '/signInClient');
+                    } else if (userType == "technician") {
+                      Navigator.pushReplacementNamed(context, '/signInTechnician');
+                    }
+                  },
+                  text: "Save Address",
+                ),
               ),
             ],
           ),

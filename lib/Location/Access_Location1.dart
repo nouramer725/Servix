@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../Components/Buttons.dart';
+import '../Components/Buttons.dart';
+import 'Google Maps.dart' show GoogleMap;
 
 class LocationRequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      extendBodyBehindAppBar: false,
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: Center(
@@ -17,25 +20,32 @@ class LocationRequestScreen extends StatelessWidget {
                   width: 391,
                   height: 346,
                 ),
-                SizedBox(height: 60),
+                SizedBox(height: 100),
                 Text(
                   "By allowing access , you consent to share your personal info with Google maps as stated in the",
                   style: GoogleFonts.charisSil(
-                      fontSize: 16,
-                      color: Color(0xFF7D7C7C)),
+                    fontSize: 16,
+                    color: Color(0xFF7D7C7C),
+                  ),
+                  textAlign: TextAlign.center,
                 ),
                 Text(
                   "Privacy Policy",
                   style: GoogleFonts.charisSil(
-                      decoration: TextDecoration.underline,
-                      fontSize: 16,
-                      color: Color(0xFF6D6C6C)),
+                    decoration: TextDecoration.underline,
+                    fontSize: 16,
+                    color: Color(0xFF6D6C6C),
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 GradientButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => GoogleMap()),
+                    );
+                  },
                   text: "Allow Access",
                 ),
               ],
