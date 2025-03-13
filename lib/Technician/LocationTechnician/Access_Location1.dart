@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../Components/Buttons.dart';
+import '../../Components/Buttons.dart';
 import 'Google Maps.dart';
 
-class LocationRequestScreen extends StatelessWidget {
+class LocationRequestScreenTech extends StatelessWidget {
   final String phoneNumber;
 
-  const LocationRequestScreen({super.key, required this.phoneNumber});
+  const LocationRequestScreenTech ({super.key, required this.phoneNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +48,7 @@ class LocationRequestScreen extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => GoogleMapScreen(
+                        builder: (context) => GoogleMapScreenTech (
                           phoneNumber: phoneNumber,
                         ),
                       ),

@@ -4,17 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
-import '../Components/Buttons.dart';
-import '../Components/location textfield.dart';
+import 'package:servix/Technician/Waiting_Screen.dart';
 
-class SaveAddressScreen extends StatefulWidget {
+import '../../Components/Buttons.dart';
+import '../../Components/location textfield.dart';
+
+class SaveAddressScreenTech extends StatefulWidget {
   final String areaName;
   final String streetName;
   final double latitude;
   final double longitude;
   final String phoneNumber;
 
-  const SaveAddressScreen({
+  const SaveAddressScreenTech({
     Key? key,
     required this.areaName,
     required this.streetName,
@@ -24,10 +26,10 @@ class SaveAddressScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SaveAddressScreenState createState() => _SaveAddressScreenState();
+  _SaveAddressScreenTechState createState() => _SaveAddressScreenTechState();
 }
 
-class _SaveAddressScreenState extends State<SaveAddressScreen> {
+class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
   User? user = FirebaseAuth.instance.currentUser;
 
   final TextEditingController _buildingController = TextEditingController();
@@ -63,6 +65,7 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
     });
 
     try {
+      // Save the address in Firestore
       await FirebaseFirestore.instance
           .collection("user-files")
           .doc(user!.uid)
@@ -81,7 +84,12 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
       });
 
       print("Address saved successfully!");
-      Navigator.pop(context);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WaitingScreen(),
+          ),
+          (route) => false);
     } catch (e) {
       print("Error saving address: $e");
     } finally {
@@ -256,7 +264,8 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
 
               // **Label**
               CustomTextFormFieldLocation(
-                  controller: _labelController, label: "Address Label (optional)"),
+                  controller: _labelController,
+                  label: "Address Label (optional)"),
               const SizedBox(height: 12),
 
               // **Save Address Button**

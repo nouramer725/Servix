@@ -101,27 +101,33 @@ class _HomeState extends State<Home> {
                             personalFileUrl), // ✅ Fetch from Firestore
                       );
                     }
-                    return CircleAvatar(
+                    return const CircleAvatar(
                       radius: 25,
                       backgroundImage: AssetImage(
                           "assets/images/lang-member/langmem.png"), // ✅ Default image
                     );
                   }),
             },
-            SizedBox(width: 10),
-            Text(userData != null
-                ? "Welcome ${userData!['first_name']} ${userData!['last_name']}!"
-                : "Welcome"),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                  userData != null
+                  ? "Welcome ${userData!['first_name']} ${userData!['last_name']}!"
+                  : "Welcome",
+                maxLines: 2,
+              ),
+            ),
           ],
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => MemberShip()),
+                MaterialPageRoute(builder: (context) => const MemberShip()),
+                (route) => false,
               );
             },
           )
@@ -136,7 +142,7 @@ class _HomeState extends State<Home> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   // Display user information
                   Text("First Name: ${userData?['first_name'] ?? 'N/A'}"),
                   Text("Last Name: ${userData?['last_name'] ?? 'N/A'}"),
@@ -144,13 +150,13 @@ class _HomeState extends State<Home> {
                   Text("Phone: ${userData?['phone'] ?? 'N/A'}"),
                   Text("Gender: ${userData?['gender'] ?? 'N/A'}"),
 
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   if (isTechnician) ...[
 
                     Text("Date of Birth: ${userData?['date_of_birth'] ?? 'N/A'}"),
                     Text("Age: ${ageDisplay} "),
-                    Text("Role: Technnician"),
+                    const Text("Role: Technnician"),
                     Text("Main Service: ${userData?['main_service'] ?? 'N/A'}"),
                     Text("Sub Service: ${userData?['sub_service'] ?? 'N/A'}"),
 

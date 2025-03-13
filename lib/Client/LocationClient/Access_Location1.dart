@@ -1,0 +1,67 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../Components/Buttons.dart';
+import 'Google Maps.dart';
+
+class LocationRequestScreenClient extends StatelessWidget {
+  final String phoneNumber;
+
+  const LocationRequestScreenClient({super.key, required this.phoneNumber});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      extendBodyBehindAppBar: false,
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Image.asset(
+                  "assets/images/location/img.png",
+                  width: 391,
+                  height: 346,
+                ),
+                SizedBox(height: 100),
+                Text(
+                  "By allowing access , you consent to share your personal info with Google maps as stated in the",
+                  style: GoogleFonts.charisSil(
+                    fontSize: 16,
+                    color: Color(0xFF7D7C7C),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  "Privacy Policy",
+                  style: GoogleFonts.charisSil(
+                    decoration: TextDecoration.underline,
+                    fontSize: 16,
+                    color: Color(0xFF6D6C6C),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 20),
+                GradientButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GoogleMapScreenClient(
+                          phoneNumber: phoneNumber,
+                        ),
+                      ),
+                      (route) => false, // Removes all previous routes
+                    );
+                  },
+                  text: "Allow Access",
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:servix/Components/Buttons.dart';
-import 'package:servix/Location/Access_Location1.dart';
 import '../../Components/TextField for National ID.dart';
+import '../LocationTechnician/Access_Location1.dart';
 
 class PersonalInformation extends StatefulWidget {
   final String phoneNumber;
@@ -186,10 +186,12 @@ class _PersonalInformationState extends State<PersonalInformation> {
     print("Data successfully uploaded to Firestore!");
     setState(() => _isLoading = false); // Stop loading
     // Navigate to the next screen
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LocationRequestScreen(
+    Navigator.pushAndRemoveUntil(
+        context, MaterialPageRoute(builder: (context) => LocationRequestScreenTech(
       phoneNumber: widget.phoneNumber,
-    )));
+    ))
+        , (route) => false
+    );
   }
 
   Future<String?> uploadToCloudinary(File imageFile) async {

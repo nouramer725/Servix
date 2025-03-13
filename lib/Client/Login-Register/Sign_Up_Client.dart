@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart'; // Import EasyLocalization
-import 'package:servix/Location/Access_Location1.dart';
+import 'package:servix/Client/LocationClient/Access_Location1.dart';
 import '../../Components/Buttons.dart';
 import '../../Components/Country Code and Phone Number.dart';
 import '../../Components/Gender Dropdown.dart';
@@ -209,7 +209,7 @@ class _SignUpClientState extends State<SignUpClient> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => LocationRequestScreen(
+              builder: (context) => LocationRequestScreenClient(
                     phoneNumber: _PhoneNumberController.text.trim(),
                   )),
         );

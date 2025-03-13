@@ -111,9 +111,10 @@ class _HomeTechnicianState extends State<HomeTechnician> {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
-              Navigator.pushReplacement(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => MemberShip()),
+                (route) => false,
               );
             },
           )

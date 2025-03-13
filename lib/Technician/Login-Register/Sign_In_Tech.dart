@@ -131,82 +131,81 @@ class _SignInTechnicianState extends State<SignInTechnician> {
           }
 
           // Now, check if the email is verified.
-          if (user.emailVerified) {
-            // Retrieve extra sign-up data passed via route arguments.
-            final Map<String, dynamic>? signUpData = ModalRoute.of(context)
-                ?.settings
-                .arguments as Map<String, dynamic>?;
-
-            // If data exists, save/merge it to Firestore.
-            if (signUpData != null) {
-              await FirebaseFirestore.instance
-                  .collection('technician')
-                  .doc(user.uid)
-                  .set(signUpData, SetOptions(merge: true));
-            }
-
+          // if (user.emailVerified) {
+          //   // Retrieve extra sign-up data passed via route arguments.
+          //   final Map<String, dynamic>? signUpData = ModalRoute.of(context)
+          //       ?.settings
+          //       .arguments as Map<String, dynamic>?;
+          //
+          //   // If data exists, save/merge it to Firestore.
+          //   if (signUpData != null) {
+          //     await FirebaseFirestore.instance
+          //         .collection('technician')
+          //         .doc(user.uid)
+          //         .set(signUpData, SetOptions(merge: true));
+          //   }
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => HomeTechnician()),
             );
-          } else {
-            // Email not verified: sign out and show alert dialog.
-            await FirebaseAuth.instance.signOut();
-            showDialog(
-              context: context,
-              barrierDismissible: true,
-              builder: (context) {
-                return Dialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF821717), // Red background
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                          size: 40,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "Email not verified. Please verify your account via the email sent to you."
-                              .tr(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            "OK".tr(),
-                            style: const TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
-          }
+          // } else {
+          //   // Email not verified: sign out and show alert dialog.
+          //   await FirebaseAuth.instance.signOut();
+          //   showDialog(
+          //     context: context,
+          //     barrierDismissible: true,
+          //     builder: (context) {
+          //       return Dialog(
+          //         shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(10),
+          //         ),
+          //         child: Container(
+          //           padding: const EdgeInsets.all(16),
+          //           decoration: BoxDecoration(
+          //             color: const Color(0xFF821717), // Red background
+          //             borderRadius: BorderRadius.circular(10),
+          //           ),
+          //           child: Column(
+          //             mainAxisSize: MainAxisSize.min,
+          //             children: [
+          //               const Icon(
+          //                 Icons.close,
+          //                 color: Colors.white,
+          //                 size: 40,
+          //               ),
+          //               const SizedBox(height: 8),
+          //               Text(
+          //                 "Email not verified. Please verify your account via the email sent to you."
+          //                     .tr(),
+          //                 style: const TextStyle(
+          //                   color: Colors.white,
+          //                   fontSize: 16,
+          //                 ),
+          //                 textAlign: TextAlign.center,
+          //               ),
+          //               const SizedBox(height: 16),
+          //               ElevatedButton(
+          //                 style: ElevatedButton.styleFrom(
+          //                   backgroundColor: Colors.white,
+          //                 ),
+          //                 onPressed: () {
+          //                   Navigator.of(context).pop();
+          //                 },
+          //                 child: Text(
+          //                   "OK".tr(),
+          //                   style: const TextStyle(
+          //                     color: Colors.black87,
+          //                     fontWeight: FontWeight.bold,
+          //                   ),
+          //                 ),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       );
+          //     },
+          //   );
+          // }
         }
       } on FirebaseAuthException catch (e) {
         String errorMessage;

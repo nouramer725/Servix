@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../Components/Buttons.dart';
 import '../../Components/SocialMediaLoginButton.dart';
 import '../../Components/TextFormField_SignIn.dart';
@@ -78,13 +79,65 @@ class _SignInClientState extends State<SignInClient> {
               ),
             );
           } else {
-            // User is a Client → Can only access ClientHome
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Home(),
-              ),
-            );
+            if (user.emailVerified) {
+              // User is a Client → Allow access to ClientHome
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => Home()));
+            } else {
+              showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (context) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF821717), // Red background
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              "Email not verified. Please verify your account via the email sent to you."
+                                  .tr(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                "OK".tr(),
+                                style: const TextStyle(
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+            }
           }
         }
       } on FirebaseAuthException catch (e) {
@@ -318,10 +371,10 @@ class _SignInClientState extends State<SignInClient> {
                           children: [
                             SocialMediaLoginButton(
                               imagePath:
-                              'assets/images/social_media/google.png',
+                                  'assets/images/social_media/google.png',
                               onTap: () async {
                                 User? user =
-                                await _authService.signInWithGoogle();
+                                    await _authService.signInWithGoogle();
                                 if (user != null) {
                                   if (mounted) {
                                     Navigator.pushReplacement(

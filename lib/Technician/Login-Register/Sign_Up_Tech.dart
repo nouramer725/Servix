@@ -233,7 +233,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
         );
 
         // Send verification email
-        await userCredential.user?.sendEmailVerification();
+        // await userCredential.user?.sendEmailVerification();
 
         // Save data to Firestore, including date of birth and services
         await FirebaseFirestore.instance
@@ -252,50 +252,19 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
           'created_at': Timestamp.now(),
         });
 
-        // Show popup dialog asking the user to verify their email
-        await showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Row(
-                children: [
-                  Image.asset(
-                    "assets/images/sign/popUpMessage.png",
-                    width: 30,
-                  ),
-                  const SizedBox(width: 10),
-                  Text("Email Verification".tr()),
-                ],
-              ),
-              content: Text(
-                "Sign Up Successful! Please check your email and verify your account."
-                    .tr(),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "Ok".tr(),
-                    style: const TextStyle(color: Color(0xFF821717)),
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-
-        // Navigate to the SignIn page
-        Navigator.pushReplacement(
+        // Navigate to the Personal Information page
+        Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => PersonalInformation(
-            phoneNumber: _PhoneNumberController.text.trim(),
-          )),
+          MaterialPageRoute(
+            builder: (context) => PersonalInformation(
+              phoneNumber: _PhoneNumberController.text.trim(),
+            ),
+          ),
+              (route) => false,
         );
-      } on FirebaseAuthException catch (e) {
+      } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message ?? "").tr()),
+          SnackBar(content: Text("Error saving data: ${e.toString()}".tr())),
         );
       } finally {
         setState(() {

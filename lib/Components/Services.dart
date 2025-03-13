@@ -70,13 +70,17 @@ class ServicesRow extends StatelessWidget {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
-                    value: selectedSubService,
+                    value: (selectedSubService != null &&
+                        subServicesMap[selectedMainService]?.contains(selectedSubService) == true)
+                        ? selectedSubService
+                        : null, // Ensure selectedSubService is valid
                     hint: Text("Sub Service".tr()),
                     dropdownColor: Colors.white,
                     isExpanded: true,
-                    items: (selectedMainService == null)
+                    items: (selectedMainService == null || subServicesMap[selectedMainService] == null)
                         ? []
                         : subServicesMap[selectedMainService]!
+                        .toSet() // Remove duplicates
                         .map((String service) {
                       return DropdownMenuItem<String>(
                         value: service,

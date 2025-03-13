@@ -11,10 +11,10 @@ import 'package:servix/On-Boarding/On_Boarding_Screen.dart';
 import 'package:servix/Technician/Home/HomeTechnician.dart';
 import 'package:servix/Technician/Login-Register/Sign_In_Tech.dart';
 import 'package:servix/Technician/Login-Register/Sign_Up_Tech.dart';
+import 'package:servix/Technician/Waiting_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Client/Login-Register/Sign_In_Client.dart';
 import 'firebase_options.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,14 +43,13 @@ class MyApp extends StatelessWidget {
           statusBarIconBrightness: Brightness.dark,
         ),
         child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            useMaterial3: true,
-          ),
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              useMaterial3: true,
+            ),
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
             routes: {
               "/": (context) => CheckUserState(),
               "/onboarding": (context) => OnboardingScreen(),
@@ -60,12 +59,12 @@ class MyApp extends StatelessWidget {
               "/signupClient": (context) => SignUpClient(),
               "/signupTech": (context) => SignUpTechnician(),
               "/clientHome": (context) => Home(),
-              "/techHome": (context) => HomeTechnician(),
-            }
-        )
-    );
+              // "/techHome": (context) => HomeTechnician(),
+              "/waiting": (context) => WaitingScreen()
+            }));
   }
 }
+
 class CheckUserState extends StatefulWidget {
   const CheckUserState({super.key});
 
@@ -89,17 +88,21 @@ class _CheckUserStateState extends State<CheckUserState> {
 
     if (seenOnboarding == null || !seenOnboarding) {
       prefs.setBool("seenOnboarding", true);
-      Navigator.pushNamedAndRemoveUntil(context, "/onboarding", (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+          context, "/onboarding", (route) => false);
     } else if (user == null) {
-      Navigator.pushNamedAndRemoveUntil(context, "/signinChoice", (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+          context, "/signinChoice", (route) => false);
     } else {
-      // Retrieve user role from SharedPreferences
-      String? userRole = prefs.getString("userRole");
+      // Retrieve collection name from SharedPreferences
+      String? collectionName = prefs.getString("collectionName");
 
-      if (userRole == "technician") {
-        Navigator.pushNamedAndRemoveUntil(context, "/techHome", (route) => false);
+      if (collectionName == "technician") {
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/waiting", (route) => false);
       } else {
-        Navigator.pushNamedAndRemoveUntil(context, "/clientHome", (route) => false);
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/clientHome", (route) => false);
       }
     }
   }
