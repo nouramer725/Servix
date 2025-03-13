@@ -198,10 +198,51 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
               ),
               const SizedBox(height: 12),
 
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 14,
+                  horizontal: 12,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade400),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      "assets/images/location/Egypt.png",
+                      width: 40,
+                      height: 40,
+                    ), // Ensure the asset exists
+                    const SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Phone Number",
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            color: Color(0xFF545353),
+                          ),
+                        ),
+                        Text(
+                          "+20 1274554479",
+                          style: GoogleFonts.inter(
+                            fontSize: 15,
+                            color: Color(0xFF545353),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+
               // Label
               CustomTextFormFieldLocation(
                 controller: _labelController,
-                label: "Label (optional)",
+                label: "Address Label (optional)",
               ),
               const SizedBox(height: 12),
 
