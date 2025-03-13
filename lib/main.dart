@@ -89,11 +89,18 @@ class _CheckUserStateState extends State<CheckUserState> {
 
     if (seenOnboarding == null || !seenOnboarding) {
       prefs.setBool("seenOnboarding", true);
-      Navigator.pushReplacementNamed(context, "/onboarding");
+      Navigator.pushNamedAndRemoveUntil(context, "/onboarding", (route) => false);
     } else if (user == null) {
-      Navigator.pushReplacementNamed(context, "/signinChoice"); // Choose client or tech
+      Navigator.pushNamedAndRemoveUntil(context, "/signinChoice", (route) => false);
     } else {
-          Navigator.pushReplacementNamed(context, "/techHome");
+      // Retrieve user role from SharedPreferences
+      String? userRole = prefs.getString("userRole");
+
+      if (userRole == "technician") {
+        Navigator.pushNamedAndRemoveUntil(context, "/techHome", (route) => false);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(context, "/clientHome", (route) => false);
+      }
     }
   }
 

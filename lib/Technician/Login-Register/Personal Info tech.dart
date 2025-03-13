@@ -11,6 +11,9 @@ import 'package:servix/Location/Access_Location1.dart';
 import '../../Components/TextField for National ID.dart';
 
 class PersonalInformation extends StatefulWidget {
+  final String phoneNumber;
+
+  const PersonalInformation({super.key, required this.phoneNumber});
   @override
   _PersonalInformationState createState() => _PersonalInformationState();
 }
@@ -24,6 +27,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
       armyCertificate,
       skillsCertificate;
   final TextEditingController nationalIdController = TextEditingController();
+  bool _isLoading = false; // Add isLoading state variable
 
   bool personalFileError = false,
       frontIDError = false,
@@ -105,6 +109,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
 
   void onSubmit() async {
     setState(() {
+        _isLoading = true; // Start loading
       personalFileError = personalFile == null;
       frontIDError = frontID == null;
       backIDError = backID == null;
@@ -119,12 +124,14 @@ class _PersonalInformationState extends State<PersonalInformation> {
         criminalRecordError ||
         nationalIdError) {
       print("Error: Missing required fields.");
+      setState(() => _isLoading = false); // Stop loading
       return;
     }
 
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       print("Error: No user logged in.");
+      setState(() => _isLoading = false); // Stop loading
       return;
     }
 
@@ -146,6 +153,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
         imageUrls.add(imageUrl);
       } else {
         print("Error uploading image: ${image.path}");
+        setState(() => _isLoading = false); // Stop loading
         return;
       }
     }
@@ -176,9 +184,12 @@ class _PersonalInformationState extends State<PersonalInformation> {
 
 
     print("Data successfully uploaded to Firestore!");
+    setState(() => _isLoading = false); // Stop loading
     // Navigate to the next screen
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LocationRequestScreen()));
+        context, MaterialPageRoute(builder: (context) => LocationRequestScreen(
+      phoneNumber: widget.phoneNumber,
+    )));
   }
 
   Future<String?> uploadToCloudinary(File imageFile) async {
@@ -241,7 +252,13 @@ class _PersonalInformationState extends State<PersonalInformation> {
                   labelText: "Enter your National ID",
                   showError: nationalIdError),
               const SizedBox(height: 20),
-              GradientButton(onPressed: onSubmit, text: "Confirm"),
+              SizedBox(
+                width: double.infinity,
+                child: GradientButton(
+                  onPressed: _isLoading ? null : onSubmit,
+                  text: _isLoading ? "Processing..." : "Confirm",
+                ),
+              )
             ],
           ),
         ),

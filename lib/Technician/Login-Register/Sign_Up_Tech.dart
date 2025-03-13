@@ -290,6 +290,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => PersonalInformation(
+            phoneNumber: _PhoneNumberController.text.trim(),
           )),
         );
       } on FirebaseAuthException catch (e) {

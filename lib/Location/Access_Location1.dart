@@ -4,8 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import '../Components/Buttons.dart';
 import 'Google Maps.dart';
 
-
 class LocationRequestScreen extends StatelessWidget {
+  final String phoneNumber;
+
+  const LocationRequestScreen({super.key, required this.phoneNumber});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +49,9 @@ class LocationRequestScreen extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => GoogleMapScreen(),
+                        builder: (context) => GoogleMapScreen(
+                          phoneNumber: phoneNumber,
+                        ),
                       ),
                       (route) => false, // Removes all previous routes
                     );

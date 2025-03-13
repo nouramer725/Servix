@@ -10,6 +10,10 @@ import 'Google maps Components/Search Bar.dart';
 import 'Save_Address.dart';
 
 class GoogleMapScreen extends StatefulWidget {
+  final String phoneNumber;
+
+  const GoogleMapScreen({super.key, required this.phoneNumber}); // Add this
+
   @override
   _GoogleMapScreenState createState() => _GoogleMapScreenState();
 }
@@ -17,7 +21,8 @@ class GoogleMapScreen extends StatefulWidget {
 class _GoogleMapScreenState extends State<GoogleMapScreen> {
   final TextEditingController _searchController = TextEditingController();
   late MapController _mapController;
-  LatLng _currentLocation = LatLng(31.2001, 29.9187); // Default to Alexandria, Egypt
+  LatLng _currentLocation =
+      LatLng(31.2001, 29.9187); // Default to Alexandria, Egypt
   String _streetName = "Unknown Street";
   String _areaName = "Unknown Area";
 
@@ -39,19 +44,16 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
 
   // Function to fetch address from coordinates using Reverse Geocoding API
   Future<void> _fetchAddress(LatLng location) async {
-    final url = Uri.parse(
-        "https://nominatim.openstreetmap.org/reverse?"
-            "lat=${location.latitude}&lon=${location.longitude}"
-            "&format=json"
-            "&addressdetails=1"
-            "&zoom=16"
-            "&accept-language=en"
-    );
+    final url = Uri.parse("https://nominatim.openstreetmap.org/reverse?"
+        "lat=${location.latitude}&lon=${location.longitude}"
+        "&format=json"
+        "&addressdetails=1"
+        "&zoom=16"
+        "&accept-language=en");
 
     try {
-      final response = await http.get(url, headers: {
-        "User-Agent": "YourAppName/1.0 (your@email.com)"
-      });
+      final response = await http.get(url,
+          headers: {"User-Agent": "YourAppName/1.0 (your@email.com)"});
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -64,11 +66,15 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
           String suburb = address['suburb'] ??
               address['city_district'] ??
               address['neighbourhood'] ??
-              address['hamlet'] ??  // Add hamlet as a backup
+              address['hamlet'] ?? // Add hamlet as a backup
               address['village'] ??
-              address['town'] ?? "";
+              address['town'] ??
+              "";
 
-          String city = address['city'] ?? address['county'] ?? address['state'] ?? "Unknown City";
+          String city = address['city'] ??
+              address['county'] ??
+              address['state'] ??
+              "Unknown City";
 
           // If suburb is found, include it
           if (suburb.isNotEmpty) {
@@ -127,13 +133,16 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => SaveAddressScreen(
-                    areaName: _areaName,
-                    streetName: _streetName,
-                    latitude: _currentLocation.latitude,
-                    longitude: _currentLocation.longitude,
-                  )),
-                      (route) => false,
+                  MaterialPageRoute(
+                      builder: (context) => SaveAddressScreen(
+                            areaName: _areaName,
+                            streetName: _streetName,
+                            latitude: _currentLocation.latitude,
+                            longitude: _currentLocation.longitude,
+                            phoneNumber:
+                                widget.phoneNumber, // Pass the phone number
+                          )),
+                  (route) => false,
                 );
               },
               text: "Enter Completed Address",
