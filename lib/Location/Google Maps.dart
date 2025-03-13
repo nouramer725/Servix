@@ -44,7 +44,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
             "lat=${location.latitude}&lon=${location.longitude}"
             "&format=json"
             "&addressdetails=1"
-            "&zoom=18"
+            "&zoom=16"
             "&accept-language=en"
     );
 
@@ -59,7 +59,24 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
 
         setState(() {
           _streetName = address['road'] ?? "Unknown Street";
-          _areaName = address['suburb'] ?? address['city'] ?? "Unknown Area";
+
+          // Check multiple fields for the suburb
+          String suburb = address['suburb'] ??
+              address['city_district'] ??
+              address['neighbourhood'] ??
+              address['hamlet'] ??  // Add hamlet as a backup
+              address['village'] ??
+              address['town'] ?? "";
+
+          String city = address['city'] ?? address['county'] ?? address['state'] ?? "Unknown City";
+
+          // If suburb is found, include it
+          if (suburb.isNotEmpty) {
+            _areaName = "$city, $suburb";
+          } else {
+            _areaName = city;
+          }
+
           _searchController.text = "$_streetName, $_areaName";
           print("Street Name: $_streetName");
           print("Area Name: $_areaName");

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
-
 import '../Components/Buttons.dart';
 import '../Components/location textfield.dart';
 
@@ -38,7 +37,7 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
   bool _validateFields() {
     setState(() {
       _buildingError =
-          _buildingController.text.isEmpty ? 'Building Name is required' : null;
+      _buildingController.text.isEmpty ? 'Building Name is required' : null;
       _aptError = _aptController.text.isEmpty ? 'Apt. No. is required' : null;
     });
 
@@ -75,7 +74,7 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
                     children: [
                       TileLayer(
                         urlTemplate:
-                            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                         subdomains: ['a', 'b', 'c'],
                       ),
                       MarkerLayer(
@@ -112,25 +111,31 @@ class _SaveAddressScreenState extends State<SaveAddressScreen> {
                       size: 30,
                     ),
                     SizedBox(width: 8),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Area",
-                          style: GoogleFonts.charisSil(
-                            fontSize: 20,
-                            color: Colors.grey,
+
+                    // Use Expanded to prevent overflow
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Area",
+                            style: GoogleFonts.charisSil(
+                              fontSize: 20,
+                              color: Colors.grey,
+                            ),
                           ),
-                        ),
-                        Text(
-                          widget.areaName,
-                          style: GoogleFonts.castoro(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF676565),
+                          Text(
+                            widget.areaName,
+                            style: GoogleFonts.castoro(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF676565),
+                            ),
+                            overflow: TextOverflow.ellipsis, // Avoids overflow
+                            maxLines: 3, // Restricts text to one line
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
