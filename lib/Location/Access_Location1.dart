@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../Components/Buttons.dart';
-import 'Google Maps.dart' show GoogleMap;
+import 'Google Maps.dart';
+
 
 class LocationRequestScreen extends StatelessWidget {
   @override
@@ -41,9 +43,12 @@ class LocationRequestScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 GradientButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => GoogleMap()),
+                      MaterialPageRoute(
+                        builder: (context) => GoogleMapScreen(),
+                      ),
+                      (route) => false, // Removes all previous routes
                     );
                   },
                   text: "Allow Access",

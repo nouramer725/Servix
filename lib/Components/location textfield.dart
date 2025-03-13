@@ -28,31 +28,31 @@ class CustomTextFormFieldLocation extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFormField(
-          keyboardType: keyboardType,
-          controller: controller,
-          initialValue: controller == null ? initialValue : null, // Ensure one is used
-          obscureText: obscureText,
-          readOnly: readOnly,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-            labelText: label,
-            labelStyle: GoogleFonts.inter(
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
-              color: Colors.black.withOpacity(0.22),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            filled: true,
-            fillColor: Colors.transparent,
+            keyboardType: keyboardType,
+            controller: controller,
+            initialValue: controller == null ? initialValue : null, // Ensure one is used
+            obscureText: obscureText,
+            readOnly: readOnly,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+              labelText: label,
+              labelStyle: GoogleFonts.inter(
+                fontSize: 17,
+                fontWeight: FontWeight.w400,
+                color: Colors.black.withOpacity(0.22),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              filled: true,
+              fillColor: Colors.transparent,
             )
-          ),
+        ),
         if (errorText != null)
           Padding(
             padding: const EdgeInsets.only(top: 5, left: 5),
