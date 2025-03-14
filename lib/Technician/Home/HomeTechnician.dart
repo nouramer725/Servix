@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:servix/Member/MemberShip.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:servix/constents/constent.dart';
 
 class HomeTechnician extends StatefulWidget {
   @override
@@ -121,7 +122,9 @@ class _HomeTechnicianState extends State<HomeTechnician> {
         ],
       ),
       body: userData == null
-          ? const Center(child: CircularProgressIndicator())
+          ?  Center(child: CircularProgressIndicator(
+        color: ApplicationColor
+      ))
           : SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(

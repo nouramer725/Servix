@@ -85,12 +85,12 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
       });
 
       print("Address saved successfully!");
-      Navigator.pushAndRemoveUntil(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => WaitingScreen(),
           ),
-          (route) => false);
+      );
     } catch (e) {
       print("Error saving address: $e");
     } finally {

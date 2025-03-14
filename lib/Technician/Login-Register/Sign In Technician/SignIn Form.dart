@@ -131,10 +131,10 @@ class _SignInFormTechState extends State<SignInFormTech> {
               },
             );
           }
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => HomeTechnician()),
-          // );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeTechnician()),
+          );
         }
       } on FirebaseAuthException catch (e) {
         String errorMessage;
