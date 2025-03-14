@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
-import '../../Components/Buttons.dart';
+import '../../../Components/Buttons.dart';
 import 'Google maps Components/Current Location Button.dart';
 import 'Google maps Components/Map Widget.dart';
 import 'Google maps Components/Search Bar.dart';
 import 'Save_Address.dart';
 
-class GoogleMapScreenTech  extends StatefulWidget {
+class GoogleMapScreenClient extends StatefulWidget {
   final String phoneNumber;
 
-  const GoogleMapScreenTech ({super.key, required this.phoneNumber}); // Add this
+  const GoogleMapScreenClient({super.key, required this.phoneNumber}); // Add this
 
   @override
-  _GoogleMapScreenTechState createState() => _GoogleMapScreenTechState();
+  _GoogleMapScreenClientState createState() => _GoogleMapScreenClientState();
 }
 
-class _GoogleMapScreenTechState extends State<GoogleMapScreenTech > {
+class _GoogleMapScreenClientState extends State<GoogleMapScreenClient> {
   final TextEditingController _searchController = TextEditingController();
   late MapController _mapController;
   LatLng _currentLocation =
@@ -134,7 +134,7 @@ class _GoogleMapScreenTechState extends State<GoogleMapScreenTech > {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SaveAddressScreenTech (
+                      builder: (context) => SaveAddressScreenClient(
                             areaName: _areaName,
                             streetName: _streetName,
                             latitude: _currentLocation.latitude,

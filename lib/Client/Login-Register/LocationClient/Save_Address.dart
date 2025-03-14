@@ -6,9 +6,9 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:servix/Client/Login-Register/Sign%20In/Sign_In_Client.dart';
 
-import '../../Components/Buttons.dart';
-import '../../Components/location textfield.dart';
-import '../../constents/constent.dart';
+import '../../../Components/Buttons.dart';
+import '../../../Components/location textfield.dart';
+import '../../../constents/constent.dart';
 
 class SaveAddressScreenClient extends StatefulWidget {
   final String areaName;

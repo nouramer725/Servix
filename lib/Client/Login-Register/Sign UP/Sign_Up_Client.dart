@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:easy_localization/easy_localization.dart'; // Import EasyLocalization
-import 'package:servix/Client/LocationClient/Access_Location1.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import '../../../Components/AuthService_Google.dart';
 import '../../../Components/Buttons.dart';
 import '../../../Components/Country Code and Phone Number.dart';
@@ -13,6 +11,7 @@ import '../../../Components/SocialMediaLoginButton.dart';
 import '../../../Components/TextFormFiels_SignUp.dart';
 import '../../../constents/constent.dart';
 import '../../Home.dart';
+import '../LocationClient/Access_Location1.dart';
 import '../Sign In/Sign_In_Client.dart';
 
 class SignUpClient extends StatefulWidget {

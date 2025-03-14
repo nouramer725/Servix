@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Client/Login-Register/Sign%20In/Sign_In_Client.dart';
-import 'package:servix/Technician/Login-Register/Sign_In_Tech.dart';
+import 'package:servix/Technician/Login-Register/Sign%20In%20Technician/Sign_In_Tech.dart';
 import '../Components/Buttons.dart';
 
 class MemberShip extends StatelessWidget {
