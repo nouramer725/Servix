@@ -8,6 +8,7 @@ import '../../Components/AuthService_Google.dart';
 import '../../Components/Buttons.dart';
 import '../../Components/SocialMediaLoginButton.dart';
 import '../../Components/TextFormField_SignIn.dart';
+import '../../constents/constent.dart';
 import 'Sign_Up_Tech.dart';
 
 class SignInTechnician extends StatefulWidget {
@@ -83,7 +84,7 @@ class _SignInTechnicianState extends State<SignInTechnician> {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF821717), // Red background
+                      color:  ApplicationColor, // Red background
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
@@ -246,13 +247,13 @@ class _SignInTechnicianState extends State<SignInTechnician> {
               style: GoogleFonts.charisSil(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF821717),
+                color:  ApplicationColor,
               )),
           content: TextField(
             controller: emailController,
             decoration: InputDecoration(
               labelText: "Enter your email".tr(),
-              focusColor: Color(0xFF821717),
+              focusColor: ApplicationColor,
               border: const OutlineInputBorder(),
             ),
             keyboardType: TextInputType.emailAddress,
@@ -276,7 +277,7 @@ class _SignInTechnicianState extends State<SignInTechnician> {
                   style: GoogleFonts.charisSil(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFF821717),
+                    color: ApplicationColor,
                   )),
             ),
           ],
@@ -371,7 +372,7 @@ class _SignInTechnicianState extends State<SignInTechnician> {
                               style: GoogleFonts.charisSil(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: const Color(0xFF821717),
+                                color: ApplicationColor,
                               ),
                             ),
                           ),
@@ -380,7 +381,7 @@ class _SignInTechnicianState extends State<SignInTechnician> {
                           children: [
                             Checkbox(
                               value: _rememberMe,
-                              activeColor: const Color(0xFF821717),
+                              activeColor: ApplicationColor,
                               onChanged: (value) {
                                 setState(() {
                                   _rememberMe = value!;
@@ -427,7 +428,7 @@ class _SignInTechnicianState extends State<SignInTechnician> {
                                 style: GoogleFonts.charisSil(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: const Color(0xFF821717),
+                                  color: ApplicationColor,
                                 ),
                               ),
                             )

@@ -4,6 +4,8 @@ import 'package:servix/Language/Language.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../constents/constent.dart';
+
 class Onboarding {
   final String image;
   final String title;
@@ -77,16 +79,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
       extendBodyBehindAppBar: true,
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF821717), // Deep red
-              Color(0xFF5D1010), // Lighter red
-              Color(0xFF1C0505), // Even lighter red
+              ApplicationColor, // Deep red
+              ApplicationColor4, // Lighter red
+              ApplicationColor3, // Darker red
             ],
-            stops: [0.09, 0.45, 1.0],
+            stops: const [0.09, 0.45, 1.0],
           ),
         ),
         padding: const EdgeInsets.all(25.0),
@@ -133,8 +135,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       );
                     }
                   },
-                  child: const Icon(Icons.arrow_forward_ios,
-                      color: Color(0xFF821717)),
+                  child:  Icon(Icons.arrow_forward_ios,
+                      color: ApplicationColor),
                   elevation: 5,
                 ),
               ],

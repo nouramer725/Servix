@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../constents/constent.dart';
+
 class SearchBarLocation extends StatefulWidget {
   final TextEditingController searchController;
   final Function(Map<String, dynamic>?) onLocationSelected;
@@ -83,9 +85,9 @@ class _SearchBarLocationState extends State<SearchBarLocation> {
                 padding: const EdgeInsets.only(left: 12.0),
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.location_on,
-                      color: Color(0xFF821717),
+                      color: ApplicationColor,
                       size: 30,
                     ),
                     const SizedBox(width: 8),

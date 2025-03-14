@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../../constents/constent.dart';
+
 class MapWidget extends StatelessWidget {
   final MapController mapController;
   final LatLng currentLocation;
@@ -43,9 +45,9 @@ class MapWidget extends StatelessWidget {
               point: currentLocation,
               width: 50,
               height: 50,
-              child: const Icon(
+              child:  Icon(
                 Icons.location_on,
-                color: Color(0xFF821717),
+                color:ApplicationColor,
                 size: 50,
               ),
             ),

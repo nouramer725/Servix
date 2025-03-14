@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:servix/constents/constent.dart';
 
 class CurrentLocationButton extends StatelessWidget {
   final Function(LatLng) onLocationUpdated;
@@ -56,7 +57,7 @@ class CurrentLocationButton extends StatelessWidget {
       bottom: 100,
       right: 20,
       child: FloatingActionButton(
-        backgroundColor: Color(0xFF821717),
+        backgroundColor: ApplicationColor,
         child: Icon(Icons.my_location, color: Colors.white),
         onPressed: () => _getCurrentLocation(context),
       ),

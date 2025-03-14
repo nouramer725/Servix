@@ -8,6 +8,7 @@ import 'package:servix/Technician/Waiting_Screen.dart';
 
 import '../../Components/Buttons.dart';
 import '../../Components/location textfield.dart';
+import '../../constents/constent.dart';
 
 class SaveAddressScreenTech extends StatefulWidget {
   final String areaName;
@@ -138,9 +139,9 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
                         markers: [
                           Marker(
                             point: LatLng(widget.latitude, widget.longitude),
-                            child: const Icon(
+                            child:  Icon(
                               Icons.location_pin,
-                              color: Color(0xFF821717),
+                              color: ApplicationColor,
                               size: 40,
                             ),
                           ),
@@ -164,8 +165,8 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.location_pin,
-                        color: Color(0xFF821717), size: 30),
+                     Icon(Icons.location_pin,
+                        color: ApplicationColor, size: 30),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(

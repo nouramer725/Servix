@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:servix/Client/Login-Register/Sign_In_Client.dart';
+import 'package:servix/Client/Login-Register/Sign%20In/Sign_In_Client.dart';
 
 import '../../Components/Buttons.dart';
 import '../../Components/location textfield.dart';
+import '../../constents/constent.dart';
 
 class SaveAddressScreenClient extends StatefulWidget {
   final String areaName;
@@ -134,9 +135,9 @@ class _SaveAddressScreenClientState extends State<SaveAddressScreenClient> {
                         markers: [
                           Marker(
                             point: LatLng(widget.latitude, widget.longitude),
-                            child: const Icon(
+                            child:  Icon(
                               Icons.location_pin,
-                              color: Color(0xFF821717),
+                              color:ApplicationColor,
                               size: 40,
                             ),
                           ),
@@ -160,8 +161,8 @@ class _SaveAddressScreenClientState extends State<SaveAddressScreenClient> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.location_pin,
-                        color: Color(0xFF821717), size: 30),
+                     Icon(Icons.location_pin,
+                        color: ApplicationColor, size: 30),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(

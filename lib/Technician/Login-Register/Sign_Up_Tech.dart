@@ -15,6 +15,7 @@ import '../../Components/SocialMediaLoginButton.dart';
 import '../../Components/TextFormFiels_SignUp.dart';
 import '../../Components/Date of birth.dart';
 import '../../Components/Services.dart';
+import '../../constents/constent.dart';
 
 class SignUpTechnician extends StatefulWidget {
   @override
@@ -80,7 +81,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.light(
-              primary: const Color(0xFF821717),
+              primary: ApplicationColor,
             ),
           ),
           child: child!,
@@ -426,7 +427,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                               style: GoogleFonts.charisSil(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF9A2B2B),
+                                color: ApplicationColor,
                               ),
                             ),
                           )

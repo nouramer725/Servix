@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../constents/constent.dart';
+
 Widget customDOBField({
   required TextEditingController controller,
   required String labelText,
@@ -21,7 +23,7 @@ Widget customDOBField({
             fontWeight: FontWeight.w400,
             color: Colors.black.withOpacity(0.31),
           ),
-          prefixIcon: const Icon(Icons.calendar_today_outlined, color: Color(0xFF821717)),
+          prefixIcon:  Icon(Icons.calendar_today_outlined, color: ApplicationColor),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
           ),

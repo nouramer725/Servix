@@ -4,14 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart'; // Import EasyLocalization
 import 'package:servix/Client/LocationClient/Access_Location1.dart';
-import '../../Components/Buttons.dart';
-import '../../Components/Country Code and Phone Number.dart';
-import '../../Components/Gender Dropdown.dart';
-import '../../Components/SocialMediaLoginButton.dart';
-import '../../Components/TextFormFiels_SignUp.dart';
-import '../Home.dart';
-import '../../Components/AuthService_Google.dart';
-import 'Sign_In_Client.dart';
+
+import '../../../Components/AuthService_Google.dart';
+import '../../../Components/Buttons.dart';
+import '../../../Components/Country Code and Phone Number.dart';
+import '../../../Components/Gender Dropdown.dart';
+import '../../../Components/SocialMediaLoginButton.dart';
+import '../../../Components/TextFormFiels_SignUp.dart';
+import '../../../constents/constent.dart';
+import '../../Home.dart';
+import '../Sign In/Sign_In_Client.dart';
 
 class SignUpClient extends StatefulWidget {
   @override
@@ -24,7 +26,7 @@ class _SignUpClientState extends State<SignUpClient> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _ConfirmpasswordController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _PhoneNumberController = TextEditingController();
 
   final AuthService _authService = AuthService();
@@ -151,7 +153,7 @@ class _SignUpClientState extends State<SignUpClient> {
       try {
         // Create user with email and password
         UserCredential userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: password,
         );
@@ -198,7 +200,7 @@ class _SignUpClientState extends State<SignUpClient> {
                     Navigator.of(context).pop();
                   },
                   child: Text("Ok".tr(),
-                      style: TextStyle(color: Color(0xFF9A2B2B))),
+                      style: TextStyle(color: ApplicationColor)),
                 ),
               ],
             );
@@ -210,8 +212,8 @@ class _SignUpClientState extends State<SignUpClient> {
           context,
           MaterialPageRoute(
               builder: (context) => LocationRequestScreenClient(
-                    phoneNumber: _PhoneNumberController.text.trim(),
-                  )),
+                phoneNumber: _PhoneNumberController.text.trim(),
+              )),
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -271,7 +273,7 @@ class _SignUpClientState extends State<SignUpClient> {
                           keyboardTypee: TextInputType.emailAddress,
                           labelText: "Email".tr(),
                           prefixIcon:
-                              const Icon(Icons.email, color: Colors.black),
+                          const Icon(Icons.email, color: Colors.black),
                           errorText: _emailError,
                         ),
                         customTextField(
@@ -280,7 +282,7 @@ class _SignUpClientState extends State<SignUpClient> {
                           labelText: "Password".tr(),
                           obscureText: _obscureText,
                           prefixIcon:
-                              const Icon(Icons.lock, color: Colors.black),
+                          const Icon(Icons.lock, color: Colors.black),
                           errorText: _passwordError,
                           onVisibilityToggle: () {
                             setState(() {
@@ -294,7 +296,7 @@ class _SignUpClientState extends State<SignUpClient> {
                           labelText: "Confirm Password".tr(),
                           obscureText: _obscureConfirmText,
                           prefixIcon:
-                              const Icon(Icons.lock, color: Colors.black),
+                          const Icon(Icons.lock, color: Colors.black),
                           errorText: _confirmError,
                           onVisibilityToggle: () {
                             setState(() {
@@ -346,7 +348,7 @@ class _SignUpClientState extends State<SignUpClient> {
                                 style: GoogleFonts.charisSil(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: const Color(0xFF9A2B2B),
+                                  color:  ApplicationColor,
                                 ),
                               ),
                             )
@@ -359,11 +361,11 @@ class _SignUpClientState extends State<SignUpClient> {
                             const SizedBox(width: 20),
                             SocialMediaLoginButton(
                               imagePath:
-                                  'assets/images/social_media/google.png',
+                              'assets/images/social_media/google.png',
                               onTap: () async {
                                 try {
                                   User? user =
-                                      await _authService.signInWithGoogle();
+                                  await _authService.signInWithGoogle();
                                   if (user != null) {
                                     if (mounted) {
                                       Navigator.pushReplacement(

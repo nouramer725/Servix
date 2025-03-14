@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../constents/constent.dart';
+
 class WaitingScreen extends StatefulWidget {
   const WaitingScreen({super.key});
 
@@ -83,7 +85,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
                 child: Container(
                   height: 400,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF821717),
+                    color: ApplicationColor,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Column(

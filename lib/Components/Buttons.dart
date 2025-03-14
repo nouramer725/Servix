@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:servix/constents/constent.dart';
 
 class GradientButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -18,7 +19,7 @@ class GradientButton extends StatelessWidget {
     return isLoading
         ? Center( // Show the CircularProgressIndicator instead of the button
       child: CircularProgressIndicator(
-        color: Color(0xFF821717),
+        color: ApplicationColor,
         strokeWidth: 5,
       ),
     )
@@ -27,9 +28,9 @@ class GradientButton extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color(0xFF9A2B2B),
-            Color(0xFF821717),
-            Color(0xFF1C0505),
+            ApplicationColor2,
+            ApplicationColor,
+            ApplicationColor3,
           ],
           stops: [0.19, 0.46, 1.0],
           begin: Alignment.centerLeft,
@@ -51,7 +52,7 @@ class GradientButton extends StatelessWidget {
           child: Text(
             text,
             style: GoogleFonts.charisSil(
-              fontSize: 25,
+              fontSize: 30,
               color: Colors.white,
             ),
             textAlign: TextAlign.center,

@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:servix/Client/Home.dart';
-import 'package:servix/Client/Login-Register/Sign_Up_Client.dart';
+import 'package:servix/Client/Login-Register/Sign%20UP/Sign_Up_Client.dart';
 import 'package:servix/Language/Language.dart';
 import 'package:servix/On-Boarding/On_Boarding_Screen.dart';
-import 'package:servix/Technician/Home/HomeTechnician.dart';
 import 'package:servix/Technician/Login-Register/Sign_In_Tech.dart';
 import 'package:servix/Technician/Login-Register/Sign_Up_Tech.dart';
 import 'package:servix/Technician/Waiting_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Client/Login-Register/Sign_In_Client.dart';
+import 'Client/Login-Register/Sign In/Sign_In_Client.dart';
+import 'constents/constent.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -109,8 +109,10 @@ class _CheckUserStateState extends State<CheckUserState> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
+    return Scaffold(
+      body: Center(child: CircularProgressIndicator(
+        color: ApplicationColor,
+      )),
     );
   }
 }
