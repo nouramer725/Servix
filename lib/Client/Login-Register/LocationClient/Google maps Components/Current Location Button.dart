@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../../constents/constent.dart';
+import '../../../../constents/constent.dart';
 
 class CurrentLocationButton extends StatelessWidget {
   final Function(LatLng) onLocationUpdated;

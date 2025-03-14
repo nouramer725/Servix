@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../constents/constent.dart';
+import '../../../../constents/constent.dart';
 
 class SearchBarLocation extends StatefulWidget {
   final TextEditingController searchController;
