@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Technician/Login-Register/SignUP/Sign_Up_Tech.dart';
 import '../../../../Components/Buttons.dart';
 import '../../../../Components/TextFormField_SignIn.dart';
-import '../../../Client/Login-Register/Sign UP/Sign_Up_Client.dart';
 import '../../../Components/AuthService_Google.dart';
 import '../../../Components/Remember me checkbox.dart';
 import '../../../Components/ShowResetPasswordDiaglog.dart';
@@ -25,32 +24,32 @@ class _SignInFormTechState extends State<SignInFormTech> {
   bool _obscureText = true;
   bool _rememberMe = false;
   bool _isLoading = false;
-  String? _emailError;
-  String? _passwordError;
+  String? emailError;
+  String? passwordError;
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   void _validateAndSubmit() async {
     setState(() {
-      _emailError = null;
-      _passwordError = null;
+      emailError = null;
+      passwordError = null;
       _isLoading = true;
     });
 
     bool isValid = true;
 
-    if (_emailController.text.isEmpty) {
+    if (emailController.text.isEmpty) {
       setState(() {
-        _emailError = "Please enter your email".tr();
+        emailError = "Please enter your email".tr();
         _isLoading = false;
       });
       isValid = false;
     }
 
-    if (_passwordController.text.isEmpty) {
+    if (passwordController.text.isEmpty) {
       setState(() {
-        _passwordError = "Please enter your password".tr();
+        passwordError = "Please enter your password".tr();
         _isLoading = false;
       });
       isValid = false;
@@ -61,8 +60,8 @@ class _SignInFormTechState extends State<SignInFormTech> {
       try {
         UserCredential userCredential =
             await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
         );
 
         User? user = userCredential.user;
@@ -131,12 +130,11 @@ class _SignInFormTechState extends State<SignInFormTech> {
                 );
               },
             );
-            return; // Exit without proceeding further.
           }
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => HomeTechnician()),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => HomeTechnician()),
+          // );
         }
       } on FirebaseAuthException catch (e) {
         String errorMessage;
@@ -176,13 +174,15 @@ class _SignInFormTechState extends State<SignInFormTech> {
           children: [
             CustomTextFormField(
               label: "Email".tr(),
-              controller: _emailController,
+              controller: emailController,
+              errorText: emailError,
               icon: Icons.email,
             ),
             const SizedBox(height: 17),
             CustomTextFormField(
               label: "Password".tr(),
-              controller: _passwordController,
+              controller: passwordController,
+              errorText: passwordError,
               icon: Icons.lock,
               obscureText: _obscureText,
               onTapSuffix: () => setState(() => _obscureText = !_obscureText),
@@ -209,7 +209,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
               value: _rememberMe,
               onChanged: (value) => setState(() => _rememberMe = value!),
             ),
-            const SizedBox(height: 45),
+            const SizedBox(height: 50),
             GradientButton(
               onPressed: _isLoading ? null : _validateAndSubmit,
               text: "Sign In".tr(),
