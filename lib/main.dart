@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,11 +9,12 @@ import 'package:servix/Client/Home.dart';
 import 'package:servix/Client/Login-Register/Sign%20UP/Sign_Up_Client.dart';
 import 'package:servix/Language/Language.dart';
 import 'package:servix/On-Boarding/On_Boarding_Screen.dart';
-import 'package:servix/Technician/Login-Register/Sign_In_Tech.dart';
-import 'package:servix/Technician/Login-Register/Sign_Up_Tech.dart';
-import 'package:servix/Technician/Waiting_Screen.dart';
+import 'package:servix/Technician/Login-Register/Sign%20In%20Technician/Sign_In_Tech.dart';
+import 'package:servix/Technician/Login-Register/SignUP/Sign_Up_Tech.dart';
+import 'package:servix/Technician/Login-Register/Waiting%20Screen/Waiting_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Client/Login-Register/Sign In/Sign_In_Client.dart';
+import 'Technician/Home/HomeTechnician.dart';
 import 'constents/constent.dart';
 import 'firebase_options.dart';
 
@@ -59,7 +61,7 @@ class MyApp extends StatelessWidget {
               "/signupClient": (context) => SignUpClient(),
               "/signupTech": (context) => SignUpTechnician(),
               "/clientHome": (context) => Home(),
-              // "/techHome": (context) => HomeTechnician(),
+              "/techHome": (context) => HomeTechnician(),
               "/waiting": (context) => WaitingScreen()
             }));
   }
@@ -90,21 +92,45 @@ class _CheckUserStateState extends State<CheckUserState> {
       prefs.setBool("seenOnboarding", true);
       Navigator.pushNamedAndRemoveUntil(
           context, "/onboarding", (route) => false);
-    } else if (user == null) {
+      return;
+    }
+
+    if (user == null) {
       Navigator.pushNamedAndRemoveUntil(
           context, "/signinChoice", (route) => false);
-    } else {
-      // Retrieve collection name from SharedPreferences
-      String? collectionName = prefs.getString("collectionName");
-
-      if (collectionName == "technician") {
-        Navigator.pushNamedAndRemoveUntil(
-            context, "/waiting", (route) => false);
-      } else {
-        Navigator.pushNamedAndRemoveUntil(
-            context, "/clientHome", (route) => false);
-      }
+      return;
     }
+
+    // Check if user exists in "technician" collection
+    DocumentSnapshot technicianDoc = await FirebaseFirestore.instance
+        .collection('technician')
+        .doc(user.uid)
+        .get();
+
+    if (technicianDoc.exists) {
+      // If user is a technician, go to WaitingScreen
+      Navigator.pushNamedAndRemoveUntil(
+          context, "/waiting", (route) => false);
+      return;
+    }
+
+    // If not a technician, check if user exists in "users" collection
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+    if (userDoc.exists) {
+      // If user exists in "users" collection, go to Home screen
+      Navigator.pushNamedAndRemoveUntil(
+          context, "/clientHome", (route) => false);
+      return;
+    }
+
+    // If user is not found in either collection, log them out & send to sign-in choice
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushNamedAndRemoveUntil(
+        context, "/signinChoice", (route) => false);
   }
 
   @override
@@ -112,7 +138,8 @@ class _CheckUserStateState extends State<CheckUserState> {
     return Scaffold(
       body: Center(child: CircularProgressIndicator(
         color: ApplicationColor,
-      )),
+      )
+      ),
     );
   }
 }
