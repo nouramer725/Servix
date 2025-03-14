@@ -218,7 +218,7 @@ class _SignInFormState extends State<SignInForm> {
               value: _rememberMe,
               onChanged: (value) => setState(() => _rememberMe = value!),
             ),
-            const SizedBox(height: 100),
+            const SizedBox(height: 50),
             GradientButton(
                 onPressed: _isLoading ? null : _validateAndSubmit,
                 text: "Sign In".tr()),
