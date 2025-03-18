@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:confetti/confetti.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../../constents/constent.dart';
 
 class WaitingScreen extends StatefulWidget {
@@ -14,21 +12,6 @@ class WaitingScreen extends StatefulWidget {
 }
 
 class _WaitingScreenState extends State<WaitingScreen> {
-  late ConfettiController _confettiController;
-
-  @override
-  void initState() {
-    super.initState();
-    _confettiController =
-        ConfettiController(duration: const Duration(seconds: 3));
-    _confettiController.play(); // Start confetti animation
-  }
-
-  @override
-  void dispose() {
-    _confettiController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,46 +24,6 @@ class _WaitingScreenState extends State<WaitingScreen> {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: ConfettiWidget(
-                  confettiController: _confettiController,
-                  blastDirectionality: BlastDirectionality.explosive,
-                  shouldLoop: false,
-                  numberOfParticles: 20,
-                  gravity: 0.2,
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: ConfettiWidget(
-                  confettiController: _confettiController,
-                  blastDirectionality: BlastDirectionality.explosive,
-                  shouldLoop: false,
-                  numberOfParticles: 20,
-                  gravity: 0.2,
-                ),
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: ConfettiWidget(
-                  confettiController: _confettiController,
-                  blastDirectionality: BlastDirectionality.explosive,
-                  shouldLoop: false,
-                  numberOfParticles: 20,
-                  gravity: 0.2,
-                ),
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: ConfettiWidget(
-                  confettiController: _confettiController,
-                  blastDirectionality: BlastDirectionality.explosive,
-                  shouldLoop: false,
-                  numberOfParticles: 20,
-                  gravity: 0.2,
-                ),
-              ),
               Center(
                 child: Container(
                   decoration: BoxDecoration(
