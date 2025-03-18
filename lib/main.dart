@@ -108,9 +108,19 @@ class _CheckUserStateState extends State<CheckUserState> {
         .get();
 
     if (technicianDoc.exists) {
-      // If user is a technician, go to WaitingScreen
-      Navigator.pushNamedAndRemoveUntil(
-          context, "/waiting", (route) => false);
+      final data = technicianDoc.data() as Map<String, dynamic>?;
+
+      String status = data?['status'] ?? 'pending';
+
+      if (status == "approved") {
+        // ✅ Always navigate to HomeTechnician if approved
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/techHome", (route) => false);
+      } else {
+        // ❌ Stay on WaitingScreen if rejected or pending
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/waiting", (route) => false);
+      }
       return;
     }
 
@@ -136,10 +146,10 @@ class _CheckUserStateState extends State<CheckUserState> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: CircularProgressIndicator(
+      body: Center(
+          child: CircularProgressIndicator(
         color: ApplicationColor,
-      )
-      ),
+      )),
     );
   }
 }
