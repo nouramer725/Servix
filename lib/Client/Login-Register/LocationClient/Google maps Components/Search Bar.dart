@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:easy_localization/easy_localization.dart'; // Import easy_localization
 
 import '../../../../constents/constent.dart';
+
 class SearchBarLocation extends StatefulWidget {
   final TextEditingController searchController;
   final Function(Map<String, dynamic>?) onLocationSelected;
@@ -41,16 +43,15 @@ class _SearchBarLocationState extends State<SearchBarLocation> {
 
         if (data.isNotEmpty) {
           setState(() {
-            locationResults =
-                data
-                    .map<Map<String, dynamic>>(
-                      (result) => {
-                        "label": result['display_name'],
-                        "latitude": result['lat'],
-                        "longitude": result['lon'],
-                      },
-                    )
-                    .toList();
+            locationResults = data
+                .map<Map<String, dynamic>>(
+                  (result) => {
+                    "label": result['display_name'],
+                    "latitude": result['lat'],
+                    "longitude": result['lon'],
+                  },
+                )
+                .toList();
           });
         } else {
           setState(() => locationResults = []);
@@ -84,7 +85,7 @@ class _SearchBarLocationState extends State<SearchBarLocation> {
                 padding: const EdgeInsets.only(left: 12.0),
                 child: Row(
                   children: [
-                     Icon(
+                    Icon(
                       Icons.location_on,
                       color: ApplicationColor,
                       size: 30,
@@ -98,7 +99,8 @@ class _SearchBarLocationState extends State<SearchBarLocation> {
                           setState(() {}); // Refresh the widget when typing
                         },
                         decoration: InputDecoration(
-                          hintText: "Search for a location",
+                          hintText:
+                              "Search for a location".tr(), // Translatable text
                           hintStyle: GoogleFonts.cantataOne(color: Colors.grey),
                           border: InputBorder.none,
                         ),
@@ -114,7 +116,8 @@ class _SearchBarLocationState extends State<SearchBarLocation> {
                       onPressed: () {
                         if (widget.searchController.text.isNotEmpty) {
                           widget.searchController.clear();
-                          setState(() => locationResults = []); // Clear suggestions
+                          setState(
+                              () => locationResults = []); // Clear suggestions
                         }
                       },
                     ),
@@ -129,15 +132,15 @@ class _SearchBarLocationState extends State<SearchBarLocation> {
                     children: locationResults
                         .map(
                           (location) => ListTile(
-                        leading: const Icon(Icons.location_on),
-                        title: Text(location['label']),
-                        onTap: () {
-                          widget.searchController.text = location['label'];
-                          widget.onLocationSelected(location);
-                          setState(() => locationResults = []);
-                        },
-                      ),
-                    )
+                            leading: const Icon(Icons.location_on),
+                            title: Text(location['label']),
+                            onTap: () {
+                              widget.searchController.text = location['label'];
+                              widget.onLocationSelected(location);
+                              setState(() => locationResults = []);
+                            },
+                          ),
+                        )
                         .toList(),
                   ),
                 ),

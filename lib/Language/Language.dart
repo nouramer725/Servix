@@ -80,9 +80,10 @@ class Language extends StatelessWidget {
                     // Set locale to English
                     context.setLocale(const Locale('en'));
                     // Navigate to MemberShip screen after changing locale
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => const MemberShip()),
+                      (route) => false,
                     );
                   },
                   text: "English",

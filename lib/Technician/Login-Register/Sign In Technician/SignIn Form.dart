@@ -261,7 +261,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
                           );
                         }
                       } else {
-                        print("User sign-in failed");
+                        print("User sign-in failed".tr());
                       }
                     } catch (e) {
                       print("Error signing in: $e");

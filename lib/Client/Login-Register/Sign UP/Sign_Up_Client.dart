@@ -190,7 +190,7 @@ class _SignUpClientState extends State<SignUpClient> {
               ),
               content: Container(
                 child: Text(
-                  tr("Sign Up Successful! Please check your email and verify your account."),
+                  tr("Sign Up Successful! Please check your email and verify your account.".tr()),
                 ),
               ),
               actions: [
@@ -374,7 +374,7 @@ class _SignUpClientState extends State<SignUpClient> {
                                       );
                                     }
                                   } else {
-                                    print("User sign-in failed");
+                                    print("User sign-in failed".tr());
                                   }
                                 } catch (e) {
                                   print("Error signing in: $e");

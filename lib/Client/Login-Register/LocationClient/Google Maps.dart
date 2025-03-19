@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
+import 'package:easy_localization/easy_localization.dart'; // Import easy_localization
 import '../../../Components/Buttons.dart';
 import 'Google maps Components/Current Location Button.dart';
 import 'Google maps Components/Map Widget.dart';
@@ -12,7 +13,7 @@ import 'Save_Address.dart';
 class GoogleMapScreenClient extends StatefulWidget {
   final String phoneNumber;
 
-  const GoogleMapScreenClient({super.key, required this.phoneNumber}); // Add this
+  const GoogleMapScreenClient({super.key, required this.phoneNumber});
 
   @override
   _GoogleMapScreenClientState createState() => _GoogleMapScreenClientState();
@@ -139,13 +140,12 @@ class _GoogleMapScreenClientState extends State<GoogleMapScreenClient> {
                             streetName: _streetName,
                             latitude: _currentLocation.latitude,
                             longitude: _currentLocation.longitude,
-                            phoneNumber:
-                                widget.phoneNumber, // Pass the phone number
+                            phoneNumber: widget.phoneNumber,
                           )),
                   (route) => false,
                 );
               },
-              text: "Enter Completed Address",
+              text: "Enter Completed Address".tr(),
             ),
           ),
         ],

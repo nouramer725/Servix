@@ -458,7 +458,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                                       );
                                     }
                                   } else {
-                                    print("User sign-in failed");
+                                    print("User sign-in failed".tr());
                                   }
                                 } catch (e) {
                                   print("Error signing in: $e");

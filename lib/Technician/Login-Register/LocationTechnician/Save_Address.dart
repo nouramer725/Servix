@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,9 +46,11 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
 
   bool _validateFields() {
     setState(() {
-      _buildingError =
-          _buildingController.text.isEmpty ? 'Building Name is required' : null;
-      _aptError = _aptController.text.isEmpty ? 'Apt. No. is required' : null;
+      _buildingError = _buildingController.text.isEmpty
+          ? 'Building Name is required'.tr()
+          : null;
+      _aptError =
+          _aptController.text.isEmpty ? 'Apt. No. is required'.tr() : null;
     });
 
     return _buildingError == null && _aptError == null;
@@ -57,7 +60,7 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
     if (!_validateFields()) return;
 
     if (user == null) {
-      print("Error: No user logged in.");
+      print("Error: No user logged in.".tr());
       return;
     }
 
@@ -84,12 +87,12 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
         "timestamp": FieldValue.serverTimestamp(),
       });
 
-      print("Address saved successfully!");
+      print("Address saved successfully!".tr());
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => WaitingScreen(),
-          ),
+        context,
+        MaterialPageRoute(
+          builder: (context) => WaitingScreen(),
+        ),
       );
     } catch (e) {
       print("Error saving address: $e");
@@ -139,7 +142,7 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
                         markers: [
                           Marker(
                             point: LatLng(widget.latitude, widget.longitude),
-                            child:  Icon(
+                            child: Icon(
                               Icons.location_pin,
                               color: ApplicationColor,
                               size: 40,
@@ -165,15 +168,14 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
                 ),
                 child: Row(
                   children: [
-                     Icon(Icons.location_pin,
-                        color: ApplicationColor, size: 30),
+                    Icon(Icons.location_pin, color: ApplicationColor, size: 30),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Area",
+                            "Area".tr(),
                             style: GoogleFonts.charisSil(
                                 fontSize: 20, color: Colors.grey),
                           ),
@@ -197,7 +199,7 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
 
               // **Building Name (Required)**
               CustomTextFormFieldLocation(
-                  controller: _buildingController, label: 'Building Name'),
+                  controller: _buildingController, label: 'Building Name'.tr()),
               if (_buildingError != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 5),
@@ -211,13 +213,13 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
                 children: [
                   Expanded(
                     child: CustomTextFormFieldLocation(
-                        controller: _aptController, label: "Apt. no."),
+                        controller: _aptController, label: "Apt. no.".tr()),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: CustomTextFormFieldLocation(
                         controller: _floorController,
-                        label: "Floor (Optional)"),
+                        label: "Floor (Optional)".tr()),
                   ),
                 ],
               ),
@@ -233,13 +235,13 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
               CustomTextFormFieldLocation(
                   readOnly: true,
                   initialValue: widget.streetName,
-                  label: "Street"),
+                  label: "Street".tr()),
               const SizedBox(height: 12),
 
               // **Additional Directions**
               CustomTextFormFieldLocation(
                   controller: _directionsController,
-                  label: "Additional directions (optional)"),
+                  label: "Additional directions (optional)".tr()),
               const SizedBox(height: 12),
 
               // **Phone Number**
@@ -266,7 +268,7 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
               // **Label**
               CustomTextFormFieldLocation(
                   controller: _labelController,
-                  label: "Address Label (optional)"),
+                  label: "Address Label (optional)".tr()),
               const SizedBox(height: 12),
 
               // **Save Address Button**
@@ -274,7 +276,7 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
                 width: double.infinity,
                 child: GradientButton(
                   onPressed: _isLoading ? null : _saveAddress,
-                  text: _isLoading ? "Saving..." : "Save Address",
+                  text: _isLoading ? "Saving...".tr() : "Save Address".tr(),
                 ),
               ),
             ],

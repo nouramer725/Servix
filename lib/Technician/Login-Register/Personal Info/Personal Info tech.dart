@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -98,9 +99,9 @@ class _PersonalInformationState extends State<PersonalInformation> {
           ),
         ),
         if (showError)
-          const Padding(
+           Padding(
             padding: EdgeInsets.only(left: 12, top: 4),
-            child: Text("This field is required",
+            child: Text("This field is required".tr(),
                 style: TextStyle(color: Colors.red, fontSize: 14)),
           ),
       ],
@@ -232,33 +233,33 @@ class _PersonalInformationState extends State<PersonalInformation> {
                   personalFile,
                   (file) => setState(() => personalFile = file),
                   personalFileError),
-              buildFilePicker("Front ID Image *", frontID,
+              buildFilePicker("Front ID Image *".tr(), frontID,
                   (file) => setState(() => frontID = file), frontIDError),
-              buildFilePicker("Back ID Image *", backID,
+              buildFilePicker("Back ID Image *".tr(), backID,
                   (file) => setState(() => backID = file), backIDError),
               buildFilePicker(
-                  "Criminal Record Image *",
+                  "Criminal Record Image *".tr(),
                   criminalRecord,
                   (file) => setState(() => criminalRecord = file),
                   criminalRecordError),
-              buildFilePicker("Army Certificate", armyCertificate,
+              buildFilePicker("Army Certificate".tr(), armyCertificate,
                   (file) => setState(() => armyCertificate = file), false),
               buildFilePicker(
-                  "Skills Measurements Certificate",
+                  "Skills Measurements Certificate".tr(),
                   skillsCertificate,
                   (file) => setState(() => skillsCertificate = file),
                   false),
               const SizedBox(height: 20),
               customTextFieldNational(
                   controller: nationalIdController,
-                  labelText: "Enter your National ID",
+                  labelText: "Enter your National ID".tr(),
                   showError: nationalIdError),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: GradientButton(
                   onPressed: _isLoading ? null : onSubmit,
-                  text: _isLoading ? "Processing..." : "Confirm",
+                  text: _isLoading ? "Processing...".tr() : "Confirm".tr(),
                 ),
               )
             ],

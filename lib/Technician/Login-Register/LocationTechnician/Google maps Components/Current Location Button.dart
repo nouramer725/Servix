@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -16,7 +17,7 @@ class CurrentLocationButton extends StatelessWidget {
     if (!serviceEnabled) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Enable location services.")));
+      ).showSnackBar(SnackBar(content: Text("Enable location services.".tr())));
       return;
     }
 
@@ -26,14 +27,14 @@ class CurrentLocationButton extends StatelessWidget {
       if (permission == LocationPermission.denied) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text("Location permission denied.")));
+        ).showSnackBar(SnackBar(content: Text("Location permission denied.".tr())));
         return;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Permissions are permanently denied.")),
+        SnackBar(content: Text("Permissions are permanently denied.".tr())),
       );
       return;
     }
@@ -47,7 +48,7 @@ class CurrentLocationButton extends StatelessWidget {
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Error fetching location: $e")));
+      ).showSnackBar(SnackBar(content: Text("Error fetching location: $e".tr())));
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
@@ -112,7 +113,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
               return Center(child: CircularProgressIndicator());
             }
             if (!snapshot.hasData || !snapshot.data!.exists) {
-              return Center(child: Text("User data not found."));
+              return Center(child: Text("User data not found.".tr()));
             }
 
             var userData = snapshot.data!.data() as Map<String, dynamic>;
@@ -187,7 +188,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
                               // ✅ Status Message
                               if (status == "approved") ...[
                                 Text(
-                                  "🎉 Congratulations! You’re officially approved! 🚀 Enjoy full access to our platform and start your journey today!",
+                                  "🎉 Congratulations! You’re officially approved! 🚀 Enjoy full access to our platform and start your journey today!".tr(),
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.cantataOne(
                                     color: Colors.green,
@@ -197,7 +198,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
                                 ),
                               ] else if (status == "rejected") ...[
                                 Text(
-                                  "❌ Unfortunately, your application was not approved. If you believe this is a mistake, please contact support for further assistance.",
+                                  "❌ Unfortunately, your application was not approved. If you believe this is a mistake, please contact support for further assistance.".tr(),
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.cantataOne(
                                     color: Colors.red,
@@ -207,7 +208,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
                                 ),
                               ] else ...[
                                 Text(
-                                  "Thank you for registering as a technician. Your application is currently under review by our administration team. You will receive a notification once your account has been approved.",
+                                  "Thank you for registering as a technician. Your application is currently under review by our administration team. You will receive a notification once your account has been approved.".tr(),
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.cantataOne(
                                     color: Colors.white,

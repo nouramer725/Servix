@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../Components/Buttons.dart';
@@ -26,7 +27,7 @@ class LocationRequestScreenTech extends StatelessWidget {
                 ),
                 SizedBox(height: 100),
                 Text(
-                  "By allowing access , you consent to share your personal info with Google maps as stated in the",
+                  "By allowing access , you consent to share your personal info with Google maps as stated in the".tr(),
                   style: GoogleFonts.charisSil(
                     fontSize: 16,
                     color: Color(0xFF7D7C7C),
@@ -34,7 +35,7 @@ class LocationRequestScreenTech extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  "Privacy Policy",
+                  "Privacy Policy".tr(),
                   style: GoogleFonts.charisSil(
                     decoration: TextDecoration.underline,
                     fontSize: 16,
@@ -55,7 +56,7 @@ class LocationRequestScreenTech extends StatelessWidget {
                       (route) => false, // Removes all previous routes
                     );
                   },
-                  text: "Allow Access",
+                  text: "Allow Access".tr(),
                 ),
               ],
             ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +31,7 @@ Widget customTextFieldNational({
             borderSide: BorderSide(color: ApplicationColor, width: 0.5), // Highlighted when focused
             borderRadius: BorderRadius.circular(5),
           ),
-          errorText: showError ? 'National ID must be exactly 14 digits' : null,
+          errorText: showError ? 'National ID must be exactly 14 digits'.tr() : null,
           counterText: "", // Hides character counter
         ),
       ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -60,7 +61,7 @@ class _SearchBarLocationState extends State<SearchBarLocation> {
         setState(() => locationResults = []);
       }
     } catch (e) {
-      print("Error fetching suggestions: $e");
+      print("Error fetching suggestions: $e".tr());
     } finally {
       setState(() => isLoading = false);
     }
@@ -99,7 +100,7 @@ class _SearchBarLocationState extends State<SearchBarLocation> {
                           setState(() {}); // Refresh the widget when typing
                         },
                         decoration: InputDecoration(
-                          hintText: "Search for a location",
+                          hintText: "Search for a location".tr(),
                           hintStyle: GoogleFonts.cantataOne(color: Colors.grey),
                           border: InputBorder.none,
                         ),

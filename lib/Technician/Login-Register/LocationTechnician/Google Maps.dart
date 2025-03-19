@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -23,8 +24,8 @@ class _GoogleMapScreenTechState extends State<GoogleMapScreenTech > {
   late MapController _mapController;
   LatLng _currentLocation =
       LatLng(31.2001, 29.9187); // Default to Alexandria, Egypt
-  String _streetName = "Unknown Street";
-  String _areaName = "Unknown Area";
+  String _streetName = "Unknown Street".tr();
+  String _areaName = "Unknown Area".tr();
 
   @override
   void initState() {
@@ -60,7 +61,7 @@ class _GoogleMapScreenTechState extends State<GoogleMapScreenTech > {
         final address = data['address'] ?? {};
 
         setState(() {
-          _streetName = address['road'] ?? "Unknown Street";
+          _streetName = address['road'] ?? "Unknown Street".tr();
 
           // Check multiple fields for the suburb
           String suburb = address['suburb'] ??
@@ -145,7 +146,7 @@ class _GoogleMapScreenTechState extends State<GoogleMapScreenTech > {
                   (route) => false,
                 );
               },
-              text: "Enter Completed Address",
+              text: "Enter Completed Address".tr(),
             ),
           ),
         ],
