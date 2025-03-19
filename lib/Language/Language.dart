@@ -53,9 +53,10 @@ class Language extends StatelessWidget {
                       // Set locale to Arabic
                       context.setLocale(const Locale('ar'));
                       // Navigate to MemberShip screen after changing locale
-                      Navigator.push(
+                      Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => const MemberShip()),
+                        (route) => false,
                       );
                     },
                     style: ElevatedButton.styleFrom(
