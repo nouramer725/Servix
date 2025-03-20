@@ -14,6 +14,7 @@ class SignInClient extends StatelessWidget {
             child: Column(
               children: [
                 SignInHeader(),
+                const SizedBox(height: 50),
                 SignInForm(),
               ],
             ),

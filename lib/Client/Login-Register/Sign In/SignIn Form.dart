@@ -155,9 +155,9 @@ class _SignInFormState extends State<SignInForm> {
           msg: message,
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.SNACKBAR,
-          backgroundColor: ApplicationColor,
+          backgroundColor: ApplicationColorWithOpacity,
           textColor: Colors.white,
-          fontSize: 12.0,
+          fontSize: 15.0,
         );
       }
       catch(e){
