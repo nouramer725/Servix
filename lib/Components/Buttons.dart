@@ -17,48 +17,59 @@ class GradientButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? Center( // Show the CircularProgressIndicator instead of the button
-      child: CircularProgressIndicator(
-        color: ApplicationColor,
-        strokeWidth: 5,
-      ),
-    )
-        : Container(
-      height: 57,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            ApplicationColor2,
-            ApplicationColor,
-            ApplicationColor3,
-          ],
-          stops: [0.19, 0.46, 1.0],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: ElevatedButton(
-        onPressed: isLoading ? null : onPressed, // Disable button when loading
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: GoogleFonts.charisSil(
-              fontSize: 30,
-              color: Colors.white,
+        ? Center(
+            // Show the CircularProgressIndicator instead of the button
+            child: CircularProgressIndicator(
+              color: ApplicationColor,
+              strokeWidth: 5,
             ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
-    );
+          )
+        : Container(
+            constraints: BoxConstraints(
+              minHeight: 0, // Allow shrinking if needed
+            ),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  ApplicationColor2,
+                  ApplicationColor,
+                  ApplicationColor3,
+                ],
+                stops: [0.19, 0.46, 1.0],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.37),
+                  spreadRadius: 0,
+                  blurRadius: 4,
+                  offset: const Offset(0, 4), // Moves shadow 4 pixels downward
+                ),
+              ],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ElevatedButton(
+              onPressed:
+                  isLoading ? null : onPressed, // Disable button when loading
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                text,
+                style: GoogleFonts.charisSil(
+                  fontSize: 30,
+                  color: Colors.white,
+                ),
+                maxLines: 3,
+              ),
+            ),
+          );
   }
 }

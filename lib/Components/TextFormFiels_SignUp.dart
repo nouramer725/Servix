@@ -32,11 +32,10 @@ Widget customTextField({
           ),
           suffixIcon: onVisibilityToggle != null
               ? IconButton(
-            icon: Icon(obscureText
-                ? Icons.visibility
-                : Icons.visibility_off),
-            onPressed: onVisibilityToggle,
-          )
+                  icon: Icon(
+                      obscureText ? Icons.visibility : Icons.visibility_off),
+                  onPressed: onVisibilityToggle,
+                )
               : null,
         ),
       ),
@@ -46,9 +45,16 @@ Widget customTextField({
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                errorText,
-                style: const TextStyle(color: Colors.red, fontSize: 14),
+              Expanded(
+                child: Text(
+                  errorText,
+                  style: const TextStyle(
+                    color: Colors.red,
+                    fontSize: 14,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 5,
+                ),
               ),
             ],
           ),

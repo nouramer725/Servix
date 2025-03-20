@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../Components/Buttons.dart';
+import '../../../Settings/Privacy Policy.dart';
 import 'Google Maps.dart';
 
 class LocationRequestScreenTech extends StatelessWidget {
@@ -34,14 +35,23 @@ class LocationRequestScreenTech extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                Text(
-                  "Privacy Policy".tr(),
-                  style: GoogleFonts.charisSil(
-                    decoration: TextDecoration.underline,
-                    fontSize: 16,
-                    color: Color(0xFF6D6C6C),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PrivacyPolicy(),
+                        ));
+                  },
+                  child: Text(
+                    "Privacy Policy".tr(),
+                    style: GoogleFonts.charisSil(
+                      decoration: TextDecoration.underline,
+                      fontSize: 16,
+                      color: Color(0xFF6D6C6C),
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 20),
                 GradientButton(

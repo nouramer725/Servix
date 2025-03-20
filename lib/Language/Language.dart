@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Components/Buttons.dart';
 import 'package:servix/Member/MemberShip.dart';
+import '../Components/White Buttons.dart';
 
 class Language extends StatelessWidget {
   const Language({super.key});
@@ -35,55 +36,25 @@ class Language extends StatelessWidget {
                   style: GoogleFonts.castoro(fontSize: 30),
                 ),
                 const SizedBox(height: 60),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.37),
-                        spreadRadius: 0,
-                        blurRadius: 4,
-                        offset: const Offset(0, 4),
-                      )
-                    ],
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Set locale to Arabic
-                      context.setLocale(const Locale('ar'));
-                      // Navigate to MemberShip screen after changing locale
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MemberShip()),
-                        (route) => false,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "العربية",
-                        style: GoogleFonts.charisSil(fontSize: 30, color: Colors.black),
-                      ),
-                    ),
-                  ),
+                WhiteButton(
+                  text: "العربية",
+                  onPressed: () {
+                    context.setLocale(const Locale('ar'));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MemberShip()),
+                    );
+                  },
                 ),
                 const SizedBox(height: 20),
                 GradientButton(
                   onPressed: () {
-                    // Set locale to English
                     context.setLocale(const Locale('en'));
-                    // Navigate to MemberShip screen after changing locale
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => const MemberShip()),
+                      MaterialPageRoute(
+                          builder: (context) => const MemberShip()),
                       (route) => false,
                     );
                   },

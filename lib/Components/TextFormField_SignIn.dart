@@ -38,33 +38,39 @@ class CustomTextFormField extends StatelessWidget {
             ),
             prefixIcon: Icon(icon, color: Colors.black),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+              borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
               borderRadius: BorderRadius.circular(8),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+              borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
               borderRadius: BorderRadius.circular(8),
             ),
             filled: true,
             fillColor: Colors.transparent,
             suffixIcon: onTapSuffix != null
                 ? IconButton(
-              icon: Icon(obscureText
-                  ? Icons.visibility
-                  : Icons.visibility_off),
-              onPressed: onTapSuffix,
-            )
+                    icon: Icon(
+                        obscureText ? Icons.visibility : Icons.visibility_off),
+                    onPressed: onTapSuffix,
+                  )
                 : null,
           ),
         ),
         if (errorText != null)
           Padding(
-            padding: EdgeInsets.only(top: 5, left: 5),
+            padding: const EdgeInsets.only(top: 5, left: 5),
             child: Row(
               children: [
-                Text(
-                  errorText!,
-                  style: TextStyle(color: Colors.red, fontSize: 14),
+                Expanded(
+                  child: Text(
+                    errorText!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    maxLines: 5,
+                  ),
                 ),
               ],
             ),

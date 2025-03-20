@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:servix/Settings/Privacy%20Policy.dart';
 import '../../../Components/Buttons.dart';
 import 'Google Maps.dart';
 
@@ -27,21 +28,31 @@ class LocationRequestScreenClient extends StatelessWidget {
                 ),
                 SizedBox(height: 100),
                 Text(
-                  "By allowing access , you consent to share your personal info with Google maps as stated in the".tr(),
+                  "By allowing access , you consent to share your personal info with Google maps as stated in the"
+                      .tr(),
                   style: GoogleFonts.charisSil(
                     fontSize: 16,
                     color: Color(0xFF7D7C7C),
                   ),
                   textAlign: TextAlign.center,
                 ),
-                Text(
-                  "Privacy Policy".tr(),
-                  style: GoogleFonts.charisSil(
-                    decoration: TextDecoration.underline,
-                    fontSize: 16,
-                    color: Color(0xFF6D6C6C),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PrivacyPolicy(),
+                        ));
+                  },
+                  child: Text(
+                    "Privacy Policy".tr(),
+                    style: GoogleFonts.charisSil(
+                      decoration: TextDecoration.underline,
+                      fontSize: 16,
+                      color: Color(0xFF6D6C6C),
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 20),
                 GradientButton(

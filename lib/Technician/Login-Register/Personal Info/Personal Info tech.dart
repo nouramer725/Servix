@@ -50,12 +50,15 @@ class _PersonalInformationState extends State<PersonalInformation> {
   Widget buildFilePicker(String title, String? filePath,
       Function(String?) onFilePicked, bool showError) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
           onTap: () => pickFile(onFilePicked),
           child: Container(
-            height: 125,
+            constraints: const BoxConstraints(
+              minHeight: 0,
+            ),
+            width: double.infinity,
             margin: const EdgeInsets.symmetric(vertical: 10),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -99,7 +102,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
           ),
         ),
         if (showError)
-           Padding(
+          Padding(
             padding: EdgeInsets.only(left: 12, top: 4),
             child: Text("This field is required".tr(),
                 style: TextStyle(color: Colors.red, fontSize: 14)),
@@ -110,7 +113,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
 
   void onSubmit() async {
     setState(() {
-        _isLoading = true; // Start loading
+      _isLoading = true; // Start loading
       personalFileError = personalFile == null;
       frontIDError = frontID == null;
       backIDError = backID == null;
@@ -160,11 +163,13 @@ class _PersonalInformationState extends State<PersonalInformation> {
     }
 
     // Ensure all images uploaded successfully
-    if (personalFile == null || frontID == null || backID == null || criminalRecord == null) {
+    if (personalFile == null ||
+        frontID == null ||
+        backID == null ||
+        criminalRecord == null) {
       print("Error: Not all required images uploaded successfully.");
       return;
     }
-
 
     // Save data to Firestore
     await FirebaseFirestore.instance
@@ -178,21 +183,20 @@ class _PersonalInformationState extends State<PersonalInformation> {
       "backIDUrl": imageUrls[2],
       "criminalRecordUrl": imageUrls[3],
       "armyCertificateUrl": armyCertificate != null ? imageUrls[4] : null,
-      "skillsCertificateUrl":
-          skillsCertificate != null ? imageUrls[5] : null,
+      "skillsCertificateUrl": skillsCertificate != null ? imageUrls[5] : null,
       "timestamp": FieldValue.serverTimestamp(),
     });
-
 
     print("Data successfully uploaded to Firestore!");
     setState(() => _isLoading = false); // Stop loading
     // Navigate to the next screen
     Navigator.pushAndRemoveUntil(
-        context, MaterialPageRoute(builder: (context) => LocationRequestScreenTech(
-      phoneNumber: widget.phoneNumber,
-    ))
-        , (route) => false
-    );
+        context,
+        MaterialPageRoute(
+            builder: (context) => LocationRequestScreenTech(
+                  phoneNumber: widget.phoneNumber,
+                )),
+        (route) => false);
   }
 
   Future<String?> uploadToCloudinary(File imageFile) async {
