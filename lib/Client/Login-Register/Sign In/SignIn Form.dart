@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Client/Login-Register/Sign%20UP/Sign_Up_Client.dart';
 import '../../../Components/AuthService_Google.dart';
@@ -142,24 +143,25 @@ class _SignInFormState extends State<SignInForm> {
             }
           }
         }
-      } on FirebaseAuthException catch (e) {
-        String errorMessage;
-        if (e.code == 'wrong-password'.tr()) {
-          errorMessage = "The password is incorrect. Please try again.".tr();
-        } else if (e.code == 'user-not-found'.tr()) {
-          errorMessage = "No user found for that email address.".tr();
-        } else if (e.code == 'invalid-email'.tr()) {
-          errorMessage = "The email address is invalid.".tr();
-        } else {
-          errorMessage = "An unexpected error occurred. Please try again.".tr();
+      }  on FirebaseAuthException catch(e) {
+        print(e);
+        String message = '';
+        if (e.code == 'invalid-email') {
+          message = 'No user found for that email.';
+        } else if (e.code == 'invalid-credential') {
+          message = 'Wrong password or email address provided for that user.';
         }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(errorMessage),
-            backgroundColor: Colors.red,
-          ),
+        Fluttertoast.showToast(
+          msg: message,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          backgroundColor: ApplicationColor,
+          textColor: Colors.white,
+          fontSize: 12.0,
         );
+      }
+      catch(e){
+        print(e);
       }
 
       setState(() {

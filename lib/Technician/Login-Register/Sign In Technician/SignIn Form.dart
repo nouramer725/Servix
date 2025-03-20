@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Technician/Login-Register/SignUP/Sign_Up_Tech.dart';
 import '../../../../Components/Buttons.dart';
@@ -136,27 +137,27 @@ class _SignInFormTechState extends State<SignInFormTech> {
             MaterialPageRoute(builder: (context) => HomeTechnician()),
           );
         }
-      } on FirebaseAuthException catch (e) {
-        String errorMessage;
-        if (e.code == 'wrong-password') {
-          errorMessage = "The password is incorrect. Please try again.".tr();
-        } else if (e.code == 'user-not-found') {
-          errorMessage = "No user found for that email address.".tr();
-        } else if (e.code == 'invalid-email') {
-          errorMessage = "The email address is invalid.".tr();
-        } else {
-          errorMessage = "An unknown error occurred. Please try again.".tr();
+      } on FirebaseAuthException catch(e) {
+        print(e);
+        String message = '';
+        if (e.code == 'invalid-email') {
+          message = 'No user found for that email.';
+        } else if (e.code == 'invalid-credential') {
+          message = 'Wrong password or email address provided for that user.';
         }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              errorMessage,
-              style: const TextStyle(color: Colors.red),
-            ),
-          ),
+        Fluttertoast.showToast(
+          msg: message,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          backgroundColor: ApplicationColor,
+          textColor: Colors.white,
+          fontSize: 12.0,
         );
       }
+      catch(e){
+        print(e);
+      }
+
 
       setState(() {
         _isLoading = false;
@@ -175,6 +176,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
             CustomTextFormField(
               label: "Email".tr(),
               controller: emailController,
+              keyboardType: TextInputType.emailAddress,
               errorText: emailError,
               icon: Icons.email,
             ),
@@ -182,6 +184,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
             CustomTextFormField(
               label: "Password".tr(),
               controller: passwordController,
+              keyboardType: TextInputType.visiblePassword,
               errorText: passwordError,
               icon: Icons.lock,
               obscureText: _obscureText,
