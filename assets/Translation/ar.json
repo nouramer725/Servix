@@ -162,6 +162,28 @@
   "User data not found.": "لم يتم العثور على بيانات المستخدم.",
   "🎉 Congratulations! You’re officially approved! 🚀 Enjoy full access to our platform and start your journey today!": "🎉 تهانينا! لقد تمت الموافقة عليك رسميًا! 🚀 استمتع بوصول كامل إلى منصتنا وابدأ رحلتك اليوم!",
   "❌ Unfortunately, your application was not approved. If you believe this is a mistake, please contact support for further assistance.": "❌ للأسف، لم تتم الموافقة على طلبك. إذا كنت تعتقد أن هناك خطأ، يرجى الاتصال بالدعم للحصول على مزيد من المساعدة.",
-  "Thank you for registering as a technician. Your application is currently under review by our administration team. You will receive a notification once your account has been approved.": "شكرًا لتسجيلك كفني. طلبك قيد المراجعة حاليًا من قبل فريق الإدارة. ستتلقى إشعارًا بمجرد الموافقة على حسابك."
+  "Thank you for registering as a technician. Your application is currently under review by our administration team. You will receive a notification once your account has been approved.": "شكرًا لتسجيلك كفني. طلبك قيد المراجعة حاليًا من قبل فريق الإدارة. ستتلقى إشعارًا بمجرد الموافقة على حسابك.",
+  "The SERVIX ": "تطبيق SERVIX ",
+  " application is considered a link between customers and service providers without any legal, physical or financial responsibility.\n":
+  "يُعتبر رابطًا بين العملاء ومقدمي الخدمات دون أي مسؤولية قانونية أو مادية أو مالية.\n",
+  "We are not responsible ": "نحن غير مسؤولين ",
+  "for the quality of service provided by service providers to customers required using the ":
+  "عن جودة الخدمة التي يقدمها مقدمو الخدمات للعملاء عند استخدام ",
+  "SERVIX ": "تطبيق SERVIX ",
+  " application or the service and do not bear responsibility in this aspect, provided that the ":
+  "التطبيق أو الخدمة ولا نتحمل المسؤولية في هذا الجانب، على أن يكون لدى ",
+  "has the right to review this.\n": "الحق في مراجعة ذلك.\n",
+  "is not responsible for any acts, actions, behavior or negligence, or all of the above, on the part of the service providers.\n":
+  "غير مسؤول عن أي أفعال أو تصرفات أو سلوك أو إهمال أو أي من الأمور المذكورة أعلاه من قبل مقدمي الخدمات.\n",
+  "Any complaints about service providers submitted by customers should be submitted to the ":
+  "يجب تقديم أي شكاوى بشأن مقدمي الخدمات من قبل العملاء إلى ",
+  "directly, provided that it does not bear any responsibility in this aspect, and is only a link between the two parties.\n":
+  "مباشرة، مع العلم أنه لا يتحمل أي مسؤولية في هذا الجانب، بل هو مجرد رابط بين الطرفين.\n",
+  "has the right to provide any information to official authorities if requested to do so.\n":
+  "لديه الحق في تقديم أي معلومات إلى الجهات الرسمية إذا طُلب منه ذلك.\n",
+  " application does not take any commission or sum of money from the service requester in any way.\n":
+  "لا يأخذ أي عمولة أو مبلغ مالي من طالب الخدمة بأي شكل من الأشكال.\n",
+  "Fees for obtaining applications are paid by service providers only, through bank transfer only or charging a balance.\n":
+  "يتم دفع رسوم الحصول على التطبيقات من قبل مقدمي الخدمات فقط، من خلال التحويل البنكي فقط أو شحن الرصيد.\n"
 
 }
