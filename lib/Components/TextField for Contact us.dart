@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget customTextField({
+Widget customTextFieldContact({
   required TextEditingController controller,
   required String labelText,
-  Icon? prefixIcon,
   required TextInputType keyboardTypee,
-  bool obscureText = false,
   String? errorText,
   Function()? onVisibilityToggle,
 }) {
@@ -14,29 +12,22 @@ Widget customTextField({
     children: [
       TextFormField(
         controller: controller,
-        obscureText: obscureText,
         keyboardType: keyboardTypee,
         decoration: InputDecoration(
           labelText: labelText,
-          labelStyle: GoogleFonts.inter(
+          labelStyle: GoogleFonts.castoro(
             fontSize: 18,
             fontWeight: FontWeight.w400,
             color: Colors.black.withOpacity(0.31),
           ),
-          prefixIcon: prefixIcon,
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+          enabledBorder:  OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xE0E8E6E6), width: 1),
+            borderRadius: BorderRadius.circular(10), // Increased rounded corners
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xE0E8E6E6), width: 1),
+            borderRadius: BorderRadius.circular(10), // Increased rounded corners
           ),
-          suffixIcon: onVisibilityToggle != null
-              ? IconButton(
-                  icon: Icon(
-                      obscureText ? Icons.visibility : Icons.visibility_off),
-                  onPressed: onVisibilityToggle,
-                )
-              : null,
         ),
       ),
       if (errorText != null)

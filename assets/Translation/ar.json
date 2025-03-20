@@ -184,6 +184,35 @@
   " application does not take any commission or sum of money from the service requester in any way.\n":
   "لا يأخذ أي عمولة أو مبلغ مالي من طالب الخدمة بأي شكل من الأشكال.\n",
   "Fees for obtaining applications are paid by service providers only, through bank transfer only or charging a balance.\n":
-  "يتم دفع رسوم الحصول على التطبيقات من قبل مقدمي الخدمات فقط، من خلال التحويل البنكي فقط أو شحن الرصيد.\n"
-
+  "يتم دفع رسوم الحصول على التطبيقات من قبل مقدمي الخدمات فقط، من خلال التحويل البنكي فقط أو شحن الرصيد.\n",
+  "Terms and Conditions": "الشروط والأحكام",
+  "1. Acceptance of Terms\n": "١. قبول الشروط\n",
+  "By downloading, accessing, or using SERVIX, you agree to abide by these Terms and Conditions. If you do not agree, please do not use our services.\n": "من خلال تنزيل أو الوصول إلى أو استخدام تطبيق SERVIX، فإنك توافق على الالتزام بهذه الشروط والأحكام. إذا كنت لا توافق، يُرجى عدم استخدام خدماتنا.\n",
+  "2. Services Provided\n": "٢. الخدمات المقدمة\n",
+  "SERVIX offers [Home, Care, Woman, Man, Devices, and Delivery Services]. We connect users with verified service providers to ensure quality and reliability.\n": "يقدم تطبيق SERVIX خدمات [المنزل، الرعاية، المرأة، الرجل، الأجهزة، والتوصيل]. نحن نربط المستخدمين بمقدمي خدمات موثوقين لضمان الجودة والموثوقية.\n",
+  "3. User Accounts\n": "٣. حسابات المستخدمين\n",
+  "You must create an account to use our services.\n": "يجب عليك إنشاء حساب لاستخدام خدماتنا.\n",
+  "You are responsible for maintaining the confidentiality of your login details.\n": "أنت مسؤول عن الحفاظ على سرية بيانات تسجيل الدخول الخاصة بك.\n",
+  "Any misuse or unauthorized access to your account should be reported immediately.\n": "يجب الإبلاغ عن أي إساءة استخدام أو وصول غير مصرح به إلى حسابك فورًا.\n",
+  "4. User Responsibilities\n": "٤. مسؤوليات المستخدم\n",
+  "By using our services, you agree:\n": "باستخدام خدماتنا، فإنك توافق على:\n",
+  "✔️ To provide accurate information during registration and booking.\n": "✔️ تقديم معلومات دقيقة أثناء التسجيل والحجز.\n",
+  "✔️ Not to misuse or disrupt our platform.\n": "✔️ عدم إساءة استخدام منصتنا أو تعطيلها.\n",
+  "✔️ To respect our service providers and comply with local laws.\n": "✔️ احترام مقدمي الخدمات لدينا والامتثال للقوانين المحلية.\n",
+  "5. Service Provider Responsibilities\n": "٥. مسؤوليات مقدمي الخدمات\n",
+  "Service providers must meet the quality standards set by SERVIX. Providers must ensure timely and professional service delivery.\n": "يجب على مقدمي الخدمات تلبية معايير الجودة التي تحددها SERVIX. يجب أن يضمنوا تقديم الخدمات في الوقت المناسب وبشكل احترافي.\n",
+  "6. Liability Disclaimer\n": "٦. إخلاء المسؤولية\n",
+  "SERVIX acts as a platform connecting users with service providers. We are not responsible for any disputes, damages, or issues arising from service execution. We do not guarantee uninterrupted access to our services due to unforeseen circumstances.": "تعمل SERVIX كمنصة تربط المستخدمين بمقدمي الخدمات. نحن لسنا مسؤولين عن أي نزاعات أو أضرار أو مشكلات تنشأ عن تنفيذ الخدمة. لا نضمن الوصول المستمر إلى خدماتنا بسبب ظروف غير متوقعة.",
+  "We are dedicated to providing ": "نحن ملتزمون بتقديم ",
+  "[ Home, Care, Woman ,Man ,Devices and Delivery Services ] ": "[ خدمات المنزل، الرعاية، المرأة، الرجل، الأجهزة والتوصيل ]",
+  "with convenience and reliability.\nOur goal is to connect users with trusted service providers to ensure a seamless experience\n\n": "بسهولة وموثوقية.\nهدفنا هو ربط المستخدمين بمقدمي خدمات موثوقين لضمان تجربة سلسة\n\n",
+  "Why Choose Us?\n": "لماذا تختارنا؟\n",
+  "✔️ Reliable Services – Verified professionals you can trust. \n ✔️ Easy Booking – Quick and hassle-free scheduling.\n ✔️ Secure Payments – Safe and transparent transactions.\n ✔️ 24/7 Support – We’re here whenever you need help.\n\n\n": "✔️ خدمات موثوقة – محترفون معتمدون يمكنك الوثوق بهم. \n ✔️ حجز سهل – جدولة سريعة وخالية من المتاعب.\n ✔️ مدفوعات آمنة – معاملات آمنة وشفافة.\n ✔️ دعم 24/7 – نحن هنا متى احتجت إلى المساعدة.\n\n\n",
+  "Thank you for choosing ": "شكرًا لاختيارك ",
+  "[SERVIX]! 🚀": "[SERVIX]! 🚀",
+  "About Us": "من نحن",
+  "Contact Us": "للتواصل معنا",
+  "User Name": "اسم المستخدم",
+  "Write your Message here": "اكتب رسالتك هنا",
+  "Send": "إرسال"
 }

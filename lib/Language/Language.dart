@@ -40,10 +40,11 @@ class Language extends StatelessWidget {
                   text: "العربية",
                   onPressed: () {
                     context.setLocale(const Locale('ar'));
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const MemberShip()),
+                        (route) => false,
                     );
                   },
                 ),

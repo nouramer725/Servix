@@ -22,7 +22,7 @@ class LocationRequestScreenTech extends StatelessWidget {
             child: Column(
               children: [
                 Image.asset(
-                  "assets/images/location/img.png",
+                  "assets/images/location/phone.png",
                   width: 391,
                   height: 346,
                 ),

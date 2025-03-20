@@ -69,6 +69,7 @@ dependencies:
   confetti: ^0.8.0
   mailer: ^6.4.1
   fluttertoast: ^8.2.12
+  url_launcher: ^6.3.1
 
 
 
