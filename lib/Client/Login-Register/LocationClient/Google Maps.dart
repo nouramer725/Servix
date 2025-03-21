@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -85,7 +86,9 @@ class _GoogleMapScreenClientState extends State<GoogleMapScreenClient> {
           }
 
           _searchController.text = "$_streetName, $_areaName";
-          print("Street Name: $_streetName");
+          if (kDebugMode) {
+            print("Street Name: $_streetName");
+          }
           print("Area Name: $_areaName");
         });
       } else {

@@ -32,8 +32,6 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
       TextEditingController();
   final TextEditingController _PhoneNumberController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
-  final TextEditingController _mainServiceController = TextEditingController();
-  final TextEditingController _subServiceController = TextEditingController();
 
   // Sample data for main services and corresponding sub services
   late final List<String> mainServices;
