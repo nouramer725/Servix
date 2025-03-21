@@ -1,3 +1,3 @@
 // button send in contact us screen
 // sidebar
-// ( profile , password , about us (container) , language , theme,delete account)
+// ( profile , password , about us (container) , language
