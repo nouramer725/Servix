@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:servix/Technician/Home/Home%20Layout.dart';
 import 'package:servix/Technician/Login-Register/SignUP/Sign_Up_Tech.dart';
 import '../../../../Components/Buttons.dart';
 import '../../../../Components/TextFormField_SignIn.dart';
@@ -103,7 +104,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text(
                           "BUT WITH DIFFERENT EMAIL ADDRESS ".tr(),
                           style: const TextStyle(
@@ -134,7 +135,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
           }
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => HomeTechnician()),
+            MaterialPageRoute(builder: (context) => const HomeTechnicianLayout()),
           );
         }
       } on FirebaseAuthException catch(e) {

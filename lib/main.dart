@@ -9,12 +9,12 @@ import 'package:servix/Client/Home.dart';
 import 'package:servix/Client/Login-Register/Sign%20UP/Sign_Up_Client.dart';
 import 'package:servix/Language/Language.dart';
 import 'package:servix/On-Boarding/On_Boarding_Screen.dart';
+import 'package:servix/Technician/Home/Home%20Layout.dart';
 import 'package:servix/Technician/Login-Register/Sign%20In%20Technician/Sign_In_Tech.dart';
 import 'package:servix/Technician/Login-Register/SignUP/Sign_Up_Tech.dart';
 import 'package:servix/Technician/Login-Register/Waiting%20Screen/Waiting_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Client/Login-Register/Sign In/Sign_In_Client.dart';
-import 'Technician/Home/HomeTechnician.dart';
 import 'constents/constent.dart';
 import 'firebase_options.dart';
 
@@ -53,17 +53,18 @@ class MyApp extends StatelessWidget {
             supportedLocales: context.supportedLocales,
             locale: context.locale,
             routes: {
-              "/": (context) => CheckUserState(),
-              "/onboarding": (context) => OnboardingScreen(),
-              "/signinChoice": (context) => Language(), // Choose Client or Tech
+              "/": (context) => const CheckUserState(),
+              "/onboarding": (context) => const OnboardingScreen(),
+              "/signinChoice": (context) => const Language(), // Choose Client or Tech
               "/signinClient": (context) => SignInClient(),
               "/signinTech": (context) => SignInTechnician(),
               "/signupClient": (context) => SignUpClient(),
               "/signupTech": (context) => SignUpTechnician(),
               "/clientHome": (context) => Home(),
-              "/techHome": (context) => HomeTechnician(),
+              "/techHome": (context) => const HomeTechnicianLayout(),
               "/waiting": (context) => WaitingScreen()
-            }));
+            }
+            ));
   }
 }
 

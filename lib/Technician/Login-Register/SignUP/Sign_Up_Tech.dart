@@ -262,7 +262,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error saving data: ${e.toString()}".tr())),
+          SnackBar(content: Text("$e".tr())),
         );
       } finally {
         setState(() {

@@ -5,7 +5,7 @@ import 'package:mailer/smtp_server.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:servix/Technician/Home/HomeTechnician.dart';
+import 'package:servix/AI/Welcome%20AI.dart';
 import '../../../constents/constent.dart';
 
 class WaitingScreen extends StatefulWidget {
@@ -42,7 +42,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
             Future.microtask(() {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => HomeTechnician()),
+                MaterialPageRoute(builder: (context) => WelcomeAi()),
                 (route) => false,
               );
             });
