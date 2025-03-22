@@ -5,11 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:servix/Components/Buttons.dart';
 import 'package:servix/constents/constent.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Components/TextField for Contact us.dart';
 import '../Components/phone for contact us.dart';
+import '../Theme/Theme_Provider.dart';
 
 class Contactus extends StatefulWidget {
   const Contactus({super.key});
@@ -37,19 +39,19 @@ class _ContactusState extends State<Contactus> {
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           "Contact Us".tr(),
           style: GoogleFonts.cantataOne(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Colors.black),
         ),
       ),
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: SingleChildScrollView(
@@ -62,75 +64,82 @@ class _ContactusState extends State<Contactus> {
                 height: 196,
               ),
               const SizedBox(height: 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          spreadRadius: 0.5,
-                          blurRadius: 5,
-                          offset: const Offset(3, 3),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            "assets/images/social_media/whatsapp.png",
-                            width: 50,
-                            height: 50,
-                          ),
-                          Text(
-                            "+20 01121420810",
-                            style: GoogleFonts.inter(
-                                fontSize: 14, color: Colors.grey),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 150,
+                      decoration: BoxDecoration(
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.grey.shade700
+                            : Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 0.5,
+                            blurRadius: 5,
+                            offset: const Offset(3, 3),
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          spreadRadius: 0.5,
-                          blurRadius: 5,
-                          offset: const Offset(3, 3),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              "assets/images/social_media/whatsapp.png",
+                              width: 50,
+                              height: 50,
+                            ),
+                            Text(
+                              "+20 01121420810",
+                              style: GoogleFonts.inter(
+                                  fontSize: 14, color: Colors.grey),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            "assets/images/social_media/phone.png",
-                            width: 27,
-                            height: 50,
-                          ),
-                          Text(
-                            "03 4204514",
-                            style: GoogleFonts.inter(
-                                fontSize: 14, color: ApplicationColor),
+                    const SizedBox(width: 15),
+                    Container(
+                      width: 150,
+                      decoration: BoxDecoration(
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.grey.shade400
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 0.5,
+                            blurRadius: 5,
+                            offset: const Offset(3, 3),
                           ),
                         ],
                       ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              "assets/images/social_media/phone.png",
+                              width: 27,
+                              height: 50,
+                            ),
+                            Text(
+                              "03 4204514",
+                              style: GoogleFonts.inter(
+                                  fontSize: 14, color: ApplicationColor),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               SizedBox(
                 height: 25,
@@ -138,11 +147,20 @@ class _ContactusState extends State<Contactus> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildSocialIcon("assets/images/social_media/face.jpg",
+                  _buildSocialIcon(
+                      "assets/images/social_media/face-removebg-preview.png",
                       "https://firebase.flutter.dev/docs/auth/social/"),
-                  _buildSocialIcon("assets/images/social_media/instagram.png",
-                      "https://firebase.flutter.dev/docs/auth/social/"),
-                  _buildSocialIcon("assets/images/social_media/twitter.jpg",
+                  GestureDetector(
+                    onTap: () => _launchURL(
+                        "https://firebase.flutter.dev/docs/auth/social/"),
+                    child: Image.asset(
+                      "assets/images/social_media/instagramm.png",
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+                  _buildSocialIcon(
+                      "assets/images/social_media/twitter-removebg-preview.png",
                       "https://firebase.flutter.dev/docs/auth/social/"),
                   _buildSocialIcon("assets/images/social_media/tiktok.png",
                       "https://firebase.flutter.dev/docs/auth/social/"),
@@ -153,7 +171,9 @@ class _ContactusState extends State<Contactus> {
               ),
               Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Color(0xFF333739)
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
@@ -173,14 +193,17 @@ class _ContactusState extends State<Contactus> {
                           errorText: _userNameError,
                           keyboardTypee: TextInputType.name,
                           labelText: "User Name".tr(),
+                          themeProvider: themeProvider,
                         ),
                         countryCodePhoneFieldContactUs(
                           controller: _PhoneController,
                           errorText: _phoneError,
+                          themeProvider: themeProvider,
                         ),
                         _buildTextField("Write your Message here".tr(),
                             controller: _messageController,
                             errorText: _messageError,
+                            themeProvider: themeProvider,
                             maxLines: 5),
                       ],
                     ),
@@ -228,7 +251,10 @@ class _ContactusState extends State<Contactus> {
 
                     User? user = FirebaseAuth.instance.currentUser;
                     String userId = user!.uid;
-                    await FirebaseFirestore.instance.collection("ContactUs").doc(userId).set({
+                    await FirebaseFirestore.instance
+                        .collection("ContactUs")
+                        .doc(userId)
+                        .set({
                       "userName": _UserNameController.text,
                       "phone": _PhoneController.text,
                       "message": _messageController.text,
@@ -266,6 +292,7 @@ class _ContactusState extends State<Contactus> {
     int maxLines = 10,
     required TextEditingController controller,
     String? errorText, // Add error text parameter
+    required ThemeProvider themeProvider,
   }) {
     return TextField(
       maxLines: maxLines,
@@ -276,7 +303,9 @@ class _ContactusState extends State<Contactus> {
         hintStyle:
             GoogleFonts.castoro(color: Colors.grey.shade400, fontSize: 18),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: themeProvider.themeMode == ThemeMode.dark
+            ? Color(0xFF333739)
+            : Colors.white,
         errorText: errorText, // Display error text if not null
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Color(0xE0E8E6E6), width: 1),

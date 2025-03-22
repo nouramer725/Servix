@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:servix/Theme/Theme_Provider.dart';
 
 Widget customTextFieldContact({
   required TextEditingController controller,
   required String labelText,
   required TextInputType keyboardTypee,
   String? errorText,
-  Function()? onVisibilityToggle,
+  Function()? onVisibilityToggle, required ThemeProvider themeProvider,
 }) {
   return Column(
     children: [
@@ -18,7 +19,7 @@ Widget customTextFieldContact({
           labelStyle: GoogleFonts.castoro(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Colors.black.withOpacity(0.31),
+            color: Colors.grey.shade400,
           ),
           enabledBorder:  OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xE0E8E6E6), width: 1),

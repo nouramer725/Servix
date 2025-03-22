@@ -1,2 +1,2 @@
-// sidebar ( profile , password , language)
+// sidebar ( profile , password )
 // google not valid in home (client and technician)

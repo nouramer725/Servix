@@ -3,21 +3,29 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:servix/Member/MemberShip.dart';
 import 'package:servix/Settings/About%20US.dart';
 import 'package:servix/Settings/Contact%20Us.dart';
 import 'package:servix/Settings/Password.dart';
 import 'package:servix/Settings/Privacy%20Policy.dart';
 import 'package:servix/Settings/Terms%20&%20Conditions.dart';
-import 'package:servix/Technician/Home/HomeTechnician.dart';
 import 'package:servix/Technician/Profile/Profile.dart';
 import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../Language/Local_Provider.dart';
 import '../../On-Boarding/On_Boarding_Screen.dart';
+import '../../Theme/Theme_Provider.dart';
+import 'FirstScreenOfBottomnavbar.dart';
+import 'FourthScreenOfBottomnavbar.dart';
+import 'SecondScreenOfBottomnavbar.dart';
+import 'ThirdScreenOfBottomnavbar.dart';
 
 class HomeTechnicianLayout extends StatefulWidget {
   const HomeTechnicianLayout({super.key});
+
+
   @override
   State<HomeTechnicianLayout> createState() => _HomeTechnicianLayoutState();
 }
@@ -40,10 +48,10 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
   bool isDarkMode = false; // Default mode
 
   final List<Widget> pages = [
-    HomeTechnician(),
-    const TermsAndConditions(),
-    const Contactus(),
-    const AboutUs(),
+    const HomeTechFirstScreen(),
+    const NotificationSystem(),
+    const Orders(),
+    const Ai(),
   ];
   int selectedIndex = 0;
 
@@ -63,9 +71,10 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final localeProvider = Provider.of<LocaleProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         leading: Builder(
           builder: (context) => IconButton(
             icon: Icon(Icons.density_small_sharp, color: ApplicationColor),
@@ -76,7 +85,9 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
         ),
       ),
       drawer: Drawer(
-        backgroundColor: Colors.white,
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -118,7 +129,11 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 5,
                     style: GoogleFonts.castoro(
-                        fontSize: 22, fontWeight: FontWeight.w500),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black),
                   ),
                   const Divider(
                     indent: 20,
@@ -128,14 +143,14 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Profile(),
+                          builder: (context) => const Profile(),
                         ));
                   }),
                   _buildMenuItem(Icons.info_outline, "About Us", onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AboutUs(),
+                          builder: (context) => const AboutUs(),
                         ));
                   }),
                   _buildMenuItem(Icons.article_outlined, "Terms & Conditions",
@@ -143,7 +158,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TermsAndConditions(),
+                          builder: (context) => const TermsAndConditions(),
                         ));
                   }),
                   _buildMenuItem(Icons.privacy_tip_outlined, "Privacy Policy",
@@ -151,20 +166,19 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PrivacyPolicy(),
+                          builder: (context) => const PrivacyPolicy(),
                         ));
                   }),
                   _buildMenuItem(Icons.lock_outline, "Password", onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Password(),
+                          builder: (context) => const Password(),
                         ));
                   }),
                   // **Language Dropdown**
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       children: [
                         Icon(Icons.language, color: ApplicationColor),
@@ -172,33 +186,51 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                         Text(
                           "Language",
                           style: GoogleFonts.castoro(
-                              fontSize: 20, fontWeight: FontWeight.w500),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
                         const Spacer(),
-                        DropdownButton<String>(
-                          value: "English",
-                          onChanged: (String? newValue) {},
-                          items: <String>["English", "Arabic", "French"]
-                              .map<DropdownMenuItem<String>>(
-                                (String value) => DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                ),
-                              )
-                              .toList(),
+                        DropdownButton<Locale>(
+                          value: localeProvider.locale, // Get the current locale
+                          onChanged: (Locale? locale) async {
+                            if (locale != null) {
+                              await _saveLocale(locale); // Save the selected locale in preferences
+                              context.setLocale(locale); // Update the app's locale
+                              localeProvider.setLocale(locale); // Update LocaleProvider
+                            }
+                          },
+                          dropdownColor: themeProvider.themeMode == ThemeMode.dark
+                              ? const Color(0xFF333739)
+                              : Colors.white,
+                          style: GoogleFonts.castoro(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                          items: const [
+                            DropdownMenuItem(value: Locale('en'), child: Text('English')),
+                            DropdownMenuItem(value: Locale('ar'), child: Text('العربية')),
+                          ],
                         ),
                       ],
                     ),
                   ),
                   _buildMenuItem(Icons.share, "Share App", onTap: () {
-                    String quoteText = "💡Join the Servix community! Get expert help for any service you need—quick, easy, and hassle-free. Download now!";
+                    String quoteText =
+                        "💡Join the Servix community! Get expert help for any service you need—quick, easy, and hassle-free. Download now!";
                     Share.share(quoteText);
                   }),
                   _buildMenuItem(Icons.phone_outlined, "Contact Us", onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Contactus(),
+                          builder: (context) => const Contactus(),
                         ));
                   }),
                   Padding(
@@ -211,16 +243,19 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                         Text(
                           "Dark Theme",
                           style: GoogleFonts.castoro(
-                              fontSize: 20, fontWeight: FontWeight.w500),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black),
                         ),
                         const Spacer(),
                         Switch(
                           activeTrackColor: ApplicationColor,
-                          value: isDarkMode,
-                          onChanged: (bool value) {
-                            setState(() {
-                              isDarkMode = value;
-                            });
+                          value: themeProvider.themeMode == ThemeMode.dark,
+                          onChanged: (value) {
+                            themeProvider.setThemeMode(
+                                value ? ThemeMode.dark : ThemeMode.light);
                           },
                         ),
                       ],
@@ -231,33 +266,31 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MemberShip(),
+                        builder: (context) => const MemberShip(),
                       ),
                       (route) => false,
                     );
                   }),
                   _buildMenuItem(Icons.delete, "Delete Account", onTap: () {
                     showDialog(
-                        barrierDismissible: false,
+                      barrierDismissible: false,
                       context: context,
                       builder: (context) => AlertDialog(
-                        backgroundColor: Colors.white,
                         title: Row(
                           children: [
                             Icon(Icons.delete_outlined,
-                                size: 25,
-                                color: ApplicationColor),
-                            SizedBox(width: 8),
+                                size: 25, color: ApplicationColor),
+                            const SizedBox(width: 8),
                             Text("Delete Account",
                                 style: GoogleFonts.charisSil(
                                     color: ApplicationColor3,
-                                fontWeight: FontWeight.bold)),
+                                    fontWeight: FontWeight.bold)),
                           ],
                         ),
                         content: Text(
                             "Are you sure you want to delete your account?",
-                            style:
-                                GoogleFonts.charisSil(color: ApplicationColor3, fontSize: 18)),
+                            style: GoogleFonts.charisSil(
+                                color: ApplicationColor3, fontSize: 18)),
                         actions: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -267,17 +300,27 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                                 child: Text("Cancel",
                                     style: GoogleFonts.castoro(
                                         fontSize: 20,
-                                        color: ApplicationColor3, fontWeight: FontWeight.bold)),
+                                        color: ApplicationColor3,
+                                        fontWeight: FontWeight.bold)),
                               ),
-                              SizedBox(width: 8),
+                              const SizedBox(width: 8),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pop(context);
-                                  deleteAccount(context);
+                                  _deleteAccount(context);
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const OnboardingScreen(),
+                                    ),
+                                    (route) => false,
+                                  );
                                 },
-                                child: Text("Delete", style: GoogleFonts.castoro(
-                                    fontSize: 20,
-                                    color: ApplicationColor, fontWeight: FontWeight.bold)),
+                                child: Text("Delete",
+                                    style: GoogleFonts.castoro(
+                                        fontSize: 20,
+                                        color: ApplicationColor,
+                                        fontWeight: FontWeight.bold)),
                               ),
                             ],
                           ),
@@ -312,12 +355,12 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
           BottomNavigationBarItem(
             backgroundColor: Colors.grey,
             icon: Icon(
-              Icons.home_outlined,
+              Icons.home_filled,
               color: ApplicationColor3,
             ),
             label: "Home",
             activeIcon: Icon(
-              Icons.home,
+              Icons.home_filled,
               color: ApplicationColor,
             ),
           ),
@@ -333,12 +376,12 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
               )),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.description_outlined,
+                Icons.receipt_long_outlined,
                 color: ApplicationColor3,
               ),
               label: "Orders",
               activeIcon: Icon(
-                Icons.description,
+                Icons.receipt_long,
                 color: ApplicationColor,
               )),
           BottomNavigationBarItem(
@@ -357,83 +400,75 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
   }
 
   Widget _buildMenuItem(IconData icon, String title, {VoidCallback? onTap}) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return ListTile(
       leading: Icon(icon, color: ApplicationColor),
       title: Text(
         title,
-        style: GoogleFonts.castoro(fontSize: 20, fontWeight: FontWeight.w500),
+        style: GoogleFonts.castoro(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black),
         maxLines: 5,
         overflow: TextOverflow.ellipsis,
       ),
       onTap: onTap ?? () {},
     );
   }
-  void deleteAccount(BuildContext context) async {
-    try {
-      // Get current user
-      User? user = FirebaseAuth.instance.currentUser;
-      String? userId = user?.uid;
 
-      if (userId != null && user != null) {
-        FirebaseFirestore firestore = FirebaseFirestore.instance;
-        DocumentReference userDoc = firestore.collection('user-files').doc(userId);
+  void _deleteAccount(BuildContext context) async {
+    User? user = FirebaseAuth.instance.currentUser;
 
-        // Reauthenticate the user before deleting their account
-        AuthCredential credential = EmailAuthProvider.credential(
-          email: user.email!,
-          password: "USER_PASSWORD", // You must get the user’s password (use a dialog)
-        );
+    if (user != null) {
+      String userId = user.uid;
 
-        await user.reauthenticateWithCredential(credential);
-
-        // Delete 'uploads' subcollection
-        QuerySnapshot uploadsSnapshot = await userDoc.collection('uploads').get();
-        for (var doc in uploadsSnapshot.docs) {
-          await doc.reference.delete();
-        }
-
-        // Delete 'locationDetails' subcollection
-        QuerySnapshot locationSnapshot = await userDoc.collection('locationDetails').get();
-        for (var doc in locationSnapshot.docs) {
-          await doc.reference.delete();
-        }
-
-        // Delete user document from 'user-files'
-        await userDoc.delete().catchError((error) {
-          print("Error deleting user from 'user-files': $error");
-        });
-
-        // Delete user document from 'technician'
-        await firestore.collection('technician').doc(userId).delete().catchError((error) {
-          print("Error deleting user from 'technician': $error");
-        });
-
-        // Delete the user from Firebase Authentication
-        await user.delete();
-
-        // Sign out the user
-        await FirebaseAuth.instance.signOut();
-
-        // Navigate to the login or onboarding screen
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => OnboardingScreen(),
-          ),
-              (route) => false,
-        );
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Account deleted successfully")),
-        );
+      // Delete user data from Firestore
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      DocumentReference userDoc =
+          firestore.collection('user-files').doc(userId);
+      QuerySnapshot uploadsSnapshot = await userDoc.collection('uploads').get();
+      for (var doc in uploadsSnapshot.docs) {
+        await doc.reference.delete();
       }
-    } catch (e) {
-      print("Error deleting account: $e");
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to delete account. Please try again.")),
-      );
+      // Delete 'locationDetails' subcollection
+      QuerySnapshot locationSnapshot =
+          await userDoc.collection('locationDetails').get();
+      for (var doc in locationSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      // Delete user document from 'user-files'
+      await userDoc.delete().catchError((error) {
+        print("Error deleting user from 'user-files': $error");
+      });
+
+      // Delete user document from 'technician'
+      await firestore
+          .collection('technician')
+          .doc(userId)
+          .delete()
+          .catchError((error) {
+        print("Error deleting user from 'technician': $error");
+      });
+
+      await firestore
+          .collection('ContactUs')
+          .doc(userId)
+          .delete()
+          .catchError((error) {
+        print("Error deleting user from 'ContactUs': $error");
+      });
+
+      // Delete authentication
+      await user.delete();
     }
+  }
+  Future<void> _saveLocale(Locale locale) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('locale', locale.languageCode);
   }
 
 }

@@ -17,6 +17,7 @@ import 'package:servix/Technician/Login-Register/Sign%20In%20Technician/Sign_In_
 import 'package:servix/Technician/Login-Register/SignUP/Sign_Up_Tech.dart';
 import 'package:servix/Technician/Login-Register/Waiting%20Screen/Waiting_Screen.dart';
 import 'Client/Login-Register/Sign In/Sign_In_Client.dart';
+import 'Language/Local_Provider.dart';
 import 'Theme/Theme_Provider.dart';
 import 'constents/constent.dart';
 import 'firebase_options.dart';
@@ -35,6 +36,7 @@ void main() async {
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => ThemeProvider()),
+          ChangeNotifierProvider(create: (_) => LocaleProvider()), // Add this
         ],
         child: const MyApp(),
       ),

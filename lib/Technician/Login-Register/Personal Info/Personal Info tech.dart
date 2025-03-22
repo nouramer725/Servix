@@ -233,7 +233,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
           child: Column(
             children: [
               buildFilePicker(
-                  "Personal Image *",
+                  "Personal Image *".tr(),
                   personalFile,
                   (file) => setState(() => personalFile = file),
                   personalFileError),
