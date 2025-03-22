@@ -5,6 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
+import 'package:servix/Theme/themes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:servix/Client/Home.dart';
 import 'package:servix/Client/Login-Register/Sign%20UP/Sign_Up_Client.dart';
 import 'package:servix/Language/Language.dart';
@@ -13,8 +16,8 @@ import 'package:servix/Technician/Home/Home%20Layout.dart';
 import 'package:servix/Technician/Login-Register/Sign%20In%20Technician/Sign_In_Tech.dart';
 import 'package:servix/Technician/Login-Register/SignUP/Sign_Up_Tech.dart';
 import 'package:servix/Technician/Login-Register/Waiting%20Screen/Waiting_Screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'Client/Login-Register/Sign In/Sign_In_Client.dart';
+import 'Theme/Theme_Provider.dart';
 import 'constents/constent.dart';
 import 'firebase_options.dart';
 
@@ -29,7 +32,12 @@ void main() async {
       supportedLocales: const [Locale('en'), Locale('ar')],
       path: 'assets/Translation', // translation files path
       fallbackLocale: const Locale('en'),
-      child: const MyApp(),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ],
+        child: const MyApp(),
+      ),
     ),
   );
 }
@@ -39,32 +47,37 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: Brightness.dark,
-        ),
-        child: MaterialApp(
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: const SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.dark,
+          ),
+          child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              useMaterial3: true,
-            ),
+            theme: lighttheme,
+            darkTheme: darktheme,
+            themeMode: themeProvider.themeMode,
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
             routes: {
               "/": (context) => const CheckUserState(),
               "/onboarding": (context) => const OnboardingScreen(),
-              "/signinChoice": (context) => const Language(), // Choose Client or Tech
+              "/signinChoice": (context) => const Language(),
               "/signinClient": (context) => SignInClient(),
               "/signinTech": (context) => SignInTechnician(),
               "/signupClient": (context) => SignUpClient(),
               "/signupTech": (context) => SignUpTechnician(),
               "/clientHome": (context) => Home(),
               "/techHome": (context) => const HomeTechnicianLayout(),
-              "/waiting": (context) => WaitingScreen()
-            }
-            ));
+              "/waiting": (context) => WaitingScreen(),
+            },
+          ),
+        );
+      },
+    );
   }
 }
 
