@@ -175,7 +175,7 @@ class _ContactusState extends State<Contactus> {
                     "https://firebase.flutter.dev/docs/auth/social/",
                     [
                       Color(0xFF000000), // Black
-                      Color(0xFF434343), // Dark Gray
+                      Color(0xFF000000), // Black
                     ],
                   ),
                   const SizedBox(width: 10),
