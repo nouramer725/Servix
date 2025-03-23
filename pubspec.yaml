@@ -73,6 +73,7 @@ dependencies:
   flutter_bloc: ^9.1.0
   share_plus: ^10.1.4
   hexcolor: ^3.0.1
+  font_awesome_flutter: ^10.8.0
 
 
 

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Components/Buttons.dart';
@@ -89,13 +90,13 @@ class _ContactusState extends State<Contactus> {
                         padding: const EdgeInsets.all(12.0),
                         child: Column(
                           children: [
-                            Image.asset(
-                              "assets/images/social_media/whatsapp.png",
-                              width: 50,
-                              height: 50,
+                            FaIcon(FontAwesomeIcons.whatsapp,
+                              color: Color(0xFF25d366),
+                              size: 30,
                             ),
+                            const SizedBox(height: 10),
                             Text(
-                              "+20 01121420810",
+                              "01121420810",
                               style: GoogleFonts.inter(
                                   fontSize: 14, color: Colors.grey),
                             ),
@@ -124,11 +125,11 @@ class _ContactusState extends State<Contactus> {
                         padding: const EdgeInsets.all(12.0),
                         child: Column(
                           children: [
-                            Image.asset(
-                              "assets/images/social_media/phone.png",
-                              width: 27,
-                              height: 50,
+                            Icon(Icons.phone,
+                                color: ApplicationColor,
+                              size: 30,
                             ),
+                            const SizedBox(height: 10),
                             Text(
                               "03 4204514",
                               style: GoogleFonts.inter(
@@ -148,27 +149,47 @@ class _ContactusState extends State<Contactus> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildSocialIcon(
-                      "assets/images/social_media/face-removebg-preview.png",
-                      "https://firebase.flutter.dev/docs/auth/social/"),
-                  GestureDetector(
-                    onTap: () => _launchURL(
-                        "https://firebase.flutter.dev/docs/auth/social/"),
-                    child: Image.asset(
-                      "assets/images/social_media/instagramm.png",
-                      width: 40,
-                      height: 40,
-                    ),
+                    FontAwesomeIcons.facebookF,
+                    "https://firebase.flutter.dev/docs/auth/social/",
+                    [
+                      Color(0xFF1877F2), // Facebook Blue
+                      Color(0xFF0A66C2), // Slightly darker Blue
+                    ],
                   ),
+                  const SizedBox(width: 10),
                   _buildSocialIcon(
-                      "assets/images/social_media/twitter-removebg-preview.png",
-                      "https://firebase.flutter.dev/docs/auth/social/"),
-                  _buildSocialIcon("assets/images/social_media/tiktok.png",
-                      "https://firebase.flutter.dev/docs/auth/social/"),
+                    FontAwesomeIcons.instagram,
+                    "https://firebase.flutter.dev/docs/auth/social/",
+                    [
+                      Color(0xFFFEDA75), // Yellow
+                      Color(0xFFFA7E1E), // Orange
+                      Color(0xFFD62976), // Pink
+                      Color(0xFF962FBF), // Purple
+                      Color(0xFF4F5BD5), // Blue
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+
+                  _buildSocialIcon(
+                    FontAwesomeIcons.xTwitter,
+                    "https://firebase.flutter.dev/docs/auth/social/",
+                    [
+                      Color(0xFF000000), // Black
+                      Color(0xFF434343), // Dark Gray
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  _buildSocialIcon(
+                    FontAwesomeIcons.tiktok,
+                    "https://firebase.flutter.dev/docs/auth/social/",
+                    [
+                      Color(0xFF000000), // Black
+                      Color(0xFF000000), // Black
+                    ],
+                  ),
                 ],
               ),
-              SizedBox(
-                height: 25,
-              ),
+              SizedBox(height: 25,),
               Container(
                   decoration: BoxDecoration(
                     color: themeProvider.themeMode == ThemeMode.dark
@@ -276,13 +297,23 @@ class _ContactusState extends State<Contactus> {
     );
   }
 
-  Widget _buildSocialIcon(String assetPath, String url) {
+  Widget _buildSocialIcon(IconData icon, String url, List<Color> gradientColors) {
     return GestureDetector(
       onTap: () => _launchURL(url),
-      child: Image.asset(
-        assetPath,
-        width: 50,
-        height: 50,
+      child: ShaderMask(
+        shaderCallback: (Rect bounds) {
+          return LinearGradient(
+            colors: gradientColors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ).createShader(bounds);
+        },
+        blendMode: BlendMode.srcIn, // Ensures the gradient applies correctly
+        child: FaIcon(
+          icon,
+          size: 40,
+          color: Colors.white, // Keep white so ShaderMask applies the gradient
+        ),
       ),
     );
   }
