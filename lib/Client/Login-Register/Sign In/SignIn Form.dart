@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:servix/Client/Home/HomeLayoutClient.dart';
 import 'package:servix/Client/Login-Register/Sign%20UP/Sign_Up_Client.dart';
 import '../../../Components/AuthService_Google.dart';
 import '../../../Components/Buttons.dart';
@@ -12,7 +13,7 @@ import '../../../Components/ShowResetPasswordDiaglog.dart';
 import '../../../Components/SocialMediaLoginButton.dart';
 import '../../../Components/TextFormField_SignIn.dart';
 import '../../../constents/constent.dart';
-import '../../Home.dart';
+import '../../Home/Home.dart';
 
 class SignInForm extends StatefulWidget {
   @override
@@ -78,14 +79,14 @@ class _SignInFormState extends State<SignInForm> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => Home(),
+                builder: (context) => const HomeClientLayout(),
               ),
             );
           } else {
             if (user.emailVerified) {
               // User is a Client → Allow access to ClientHome
               Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => Home()));
+                  context, MaterialPageRoute(builder: (context) => const HomeClientLayout()));
             } else {
               showDialog(
                   context: context,
@@ -265,7 +266,7 @@ class _SignInFormState extends State<SignInForm> {
                         if (mounted) {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => Home()),
+                            MaterialPageRoute(builder: (context) => const HomeClientLayout()),
                           );
                         }
                       } else {

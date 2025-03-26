@@ -8,7 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Theme/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:servix/Client/Home.dart';
+import 'package:servix/Client/Home/Home.dart';
 import 'package:servix/Client/Login-Register/Sign%20UP/Sign_Up_Client.dart';
 import 'package:servix/Language/Language.dart';
 import 'package:servix/On-Boarding/On_Boarding_Screen.dart';
@@ -16,6 +16,7 @@ import 'package:servix/Technician/Home/Home%20Layout.dart';
 import 'package:servix/Technician/Login-Register/Sign%20In%20Technician/Sign_In_Tech.dart';
 import 'package:servix/Technician/Login-Register/SignUP/Sign_Up_Tech.dart';
 import 'package:servix/Technician/Login-Register/Waiting%20Screen/Waiting_Screen.dart';
+import 'Client/Home/HomeLayoutClient.dart';
 import 'Client/Login-Register/Sign In/Sign_In_Client.dart';
 import 'Language/Local_Provider.dart';
 import 'Theme/Theme_Provider.dart';
@@ -72,7 +73,7 @@ class MyApp extends StatelessWidget {
               "/signinTech": (context) => SignInTechnician(),
               "/signupClient": (context) => SignUpClient(),
               "/signupTech": (context) => SignUpTechnician(),
-              "/clientHome": (context) => Home(),
+              "/clientHome": (context) => const HomeClientLayout(),
               "/techHome": (context) => const HomeTechnicianLayout(),
               "/waiting": (context) => WaitingScreen(),
             },

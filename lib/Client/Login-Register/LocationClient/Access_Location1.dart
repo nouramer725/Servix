@@ -22,7 +22,7 @@ class LocationRequestScreenClient extends StatelessWidget {
             child: Column(
               children: [
                 Image.asset(
-                  "assets/images/location/img.png",
+                  "assets/images/location/location.png",
                   width: 391,
                   height: 346,
                 ),

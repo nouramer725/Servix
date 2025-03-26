@@ -12,7 +12,6 @@ import '../../../Components/AuthService_Google.dart';
 import '../../../Components/Remember me checkbox.dart';
 import '../../../Components/ShowResetPasswordDiaglog.dart';
 import '../../../Components/SocialMediaLoginButton.dart';
-import '../../Home/HomeTechnician.dart';
 import '../../../constents/constent.dart';
 
 class SignInFormTech extends StatefulWidget {
@@ -261,7 +260,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomeTechnician()),
+                                builder: (context) => const HomeTechnicianLayout()),
                           );
                         }
                       } else {

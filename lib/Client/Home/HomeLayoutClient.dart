@@ -4,13 +4,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Client/Home/List%20Of%20Pages_Clients/Ai1.dart';
+import 'package:servix/Client/Home/List%20Of%20Pages_Clients/home1.dart';
+import 'package:servix/Client/Home/List%20Of%20Pages_Clients/notification1.dart';
+import 'package:servix/Client/Home/List%20Of%20Pages_Clients/orders1.dart';
 import 'package:servix/Member/MemberShip.dart';
 import 'package:servix/Settings/About%20US.dart';
 import 'package:servix/Settings/Contact%20Us.dart';
 import 'package:servix/Settings/Password.dart';
 import 'package:servix/Settings/Privacy%20Policy.dart';
 import 'package:servix/Settings/Terms%20&%20Conditions.dart';
-import 'package:servix/Technician/Home/FirstScreenOfBottomnavbar.dart';
 import 'package:servix/Technician/Profile/Profile.dart';
 import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
@@ -18,25 +21,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Language/Local_Provider.dart';
 import '../../On-Boarding/On_Boarding_Screen.dart';
 import '../../Theme/Theme_Provider.dart';
-import 'FourthScreenOfBottomnavbar.dart';
-import 'SecondScreenOfBottomnavbar.dart';
-import 'ThirdScreenOfBottomnavbar.dart';
 
-class HomeTechnicianLayout extends StatefulWidget {
-  const HomeTechnicianLayout({super.key});
+class HomeClientLayout extends StatefulWidget {
+  const HomeClientLayout({super.key});
 
   @override
-  State<HomeTechnicianLayout> createState() => _HomeTechnicianLayoutState();
+  State<HomeClientLayout> createState() => _HomeClientLayoutState();
 }
 
-class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
+class _HomeClientLayoutState extends State<HomeClientLayout> {
   Map<String, dynamic>? userData;
 
   Future<Map<String, dynamic>?> getUserData() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('technician')
+          .collection('users')
           .doc(user.uid)
           .get();
       return userDoc.data() as Map<String, dynamic>?;
@@ -47,10 +47,10 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
   bool isDarkMode = false; // Default mode
 
   final List<Widget> pages = [
-    const HomeTechFirstScreen(),
-    const NotificationSystem(),
-    const Orders(),
-    const Ai(),
+    const HomeClientFirstScreen(),
+    const NotificationClient(),
+    const OrdersClient(),
+    const AiClient(),
   ];
   int selectedIndex = 0;
 
@@ -81,6 +81,22 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
               Scaffold.of(context).openDrawer(); // Opens the sidebar
             },
           ),
+        ),
+        title: Text(
+          userData != null
+              ? "WelcomeUser ".tr(namedArgs: {
+                  "first_name": userData!['first_name'],
+                  "last_name": userData!['last_name']
+                })
+              : "Welcome".tr(),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 5,
+          style: GoogleFonts.castoro(
+              fontSize: 22,
+              fontWeight: FontWeight.w500,
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Colors.black),
         ),
       ),
       drawer: Drawer(
@@ -117,14 +133,18 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                       return const CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 40,
-                        child: Icon(Icons.person, size: 100),
+                        child: Icon(
+                          Icons.person,
+                          size: 70,
+                          color: Colors.grey,
+                        ),
                       );
                     },
                   ),
                   const SizedBox(height: 10),
                   Text(
                     userData != null
-                        ? " ${userData!['first_name']} ${userData!['last_name']}"
+                        ? "   ${userData!['first_name']} ${userData!['last_name']}"
                         : "Welcome".tr(),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 5,
@@ -139,21 +159,24 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     indent: 20,
                     endIndent: 20,
                   ),
-                  _buildMenuItem(Icons.person_outline, "Profile".tr(), onTap: () {
+                  _buildMenuItem(Icons.person_outline, "Profile".tr(),
+                      onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const Profile(),
                         ));
                   }),
-                  _buildMenuItem(Icons.info_outline, "About Us".tr(), onTap: () {
+                  _buildMenuItem(Icons.info_outline, "About Us".tr(),
+                      onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const AboutUs(),
                         ));
                   }),
-                  _buildMenuItem(Icons.article_outlined, "Terms & Conditions".tr(),
+                  _buildMenuItem(
+                      Icons.article_outlined, "Terms & Conditions".tr(),
                       onTap: () {
                     Navigator.push(
                         context,
@@ -161,7 +184,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                           builder: (context) => const TermsAndConditions(),
                         ));
                   }),
-                  _buildMenuItem(Icons.privacy_tip_outlined, "Privacy Policy".tr(),
+                  _buildMenuItem(
+                      Icons.privacy_tip_outlined, "Privacy Policy".tr(),
                       onTap: () {
                     Navigator.push(
                         context,
@@ -169,7 +193,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                           builder: (context) => const PrivacyPolicy(),
                         ));
                   }),
-                  _buildMenuItem(Icons.lock_outline, "Password".tr(), onTap: () {
+                  _buildMenuItem(Icons.lock_outline, "Password".tr(),
+                      onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -234,7 +259,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                         "💡Join the Servix community! Get expert help for any service you need—quick, easy, and hassle-free. Download now!";
                     Share.share(quoteText);
                   }),
-                  _buildMenuItem(Icons.phone_outlined, "Contact Us".tr(), onTap: () {
+                  _buildMenuItem(Icons.phone_outlined, "Contact Us".tr(),
+                      onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -279,7 +305,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                       (route) => false,
                     );
                   }),
-                  _buildMenuItem(Icons.delete, "Delete Account".tr(), onTap: () {
+                  _buildMenuItem(Icons.delete, "Delete Account".tr(),
+                      onTap: () {
                     showDialog(
                       barrierDismissible: false,
                       context: context,
@@ -296,7 +323,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                           ],
                         ),
                         content: Text(
-                            "Are you sure you want to delete your account?".tr(),
+                            "Are you sure you want to delete your account?"
+                                .tr(),
                             style: GoogleFonts.charisSil(
                                 color: ApplicationColor3, fontSize: 18)),
                         actions: [
@@ -445,7 +473,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
 
       // Delete user document from 'technician'
       await firestore
-          .collection('technician')
+          .collection('users')
           .doc(userId)
           .delete()
           .catchError((error) {

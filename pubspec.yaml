@@ -74,6 +74,7 @@ dependencies:
   share_plus: ^10.1.4
   hexcolor: ^3.0.1
   font_awesome_flutter: ^10.8.0
+  rive: ^0.13.20
 
 
 
@@ -133,6 +134,8 @@ flutter:
     - assets/images/woman/
     - assets/images/social_media/
     - assets/Application/SplashServix.mp4
+    - assets/Application/
+    - assets/NavigationBar/
     - assets/Translation/ar.json
     - assets/Translation/en.json
     - .env

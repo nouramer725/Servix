@@ -10,7 +10,8 @@ import '../../../Components/Gender Dropdown.dart';
 import '../../../Components/SocialMediaLoginButton.dart';
 import '../../../Components/TextFormFiels_SignUp.dart';
 import '../../../constents/constent.dart';
-import '../../Home.dart';
+import '../../Home/Home.dart';
+import '../../Home/HomeLayoutClient.dart';
 import '../LocationClient/Access_Location1.dart';
 import '../Sign In/Sign_In_Client.dart';
 
@@ -370,7 +371,7 @@ class _SignUpClientState extends State<SignUpClient> {
                                       Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => Home()),
+                                            builder: (context) => const HomeClientLayout()),
                                       );
                                     }
                                   } else {
