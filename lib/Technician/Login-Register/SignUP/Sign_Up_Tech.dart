@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:servix/Technician/Home/Home%20Layout.dart';
 import 'package:servix/Technician/Login-Register/Personal%20Info/Personal%20Info%20tech.dart';
 import 'package:servix/Technician/Login-Register/Sign%20In%20Technician/Sign_In_Tech.dart';
 import '../../../Components/AuthService_Google.dart';
@@ -11,7 +10,6 @@ import '../../../Components/Buttons.dart';
 import '../../../Components/Country Code and Phone Number.dart';
 import '../../../Components/Gender Dropdown.dart';
 import '../../../Components/List of Service.dart';
-import '../../../Components/SocialMediaLoginButton.dart';
 import '../../../Components/TextFormFiels_SignUp.dart';
 import '../../../Components/Date of birth.dart';
 import '../../../Components/Services.dart';
@@ -433,38 +431,6 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                             )
                           ],
                         ),
-                        const SizedBox(height: 20),
-                        // Social Media Buttons
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(width: 20),
-                            SocialMediaLoginButton(
-                              imagePath:
-                                  'assets/images/social_media/google.png',
-                              onTap: () async {
-                                try {
-                                  User? user =
-                                      await _authService.signInWithGoogle();
-                                  if (user != null) {
-                                    if (mounted) {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const HomeTechnicianLayout()),
-                                      );
-                                    }
-                                  } else {
-                                    print("User sign-in failed".tr());
-                                  }
-                                } catch (e) {
-                                  print("Error signing in: $e");
-                                }
-                              },
-                            ),
-                          ],
-                        )
                       ],
                     ),
                   ),

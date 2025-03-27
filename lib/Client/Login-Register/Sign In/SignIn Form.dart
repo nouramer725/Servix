@@ -10,10 +10,8 @@ import '../../../Components/AuthService_Google.dart';
 import '../../../Components/Buttons.dart';
 import '../../../Components/Remember me checkbox.dart';
 import '../../../Components/ShowResetPasswordDiaglog.dart';
-import '../../../Components/SocialMediaLoginButton.dart';
 import '../../../Components/TextFormField_SignIn.dart';
 import '../../../constents/constent.dart';
-import '../../Home/Home.dart';
 
 class SignInForm extends StatefulWidget {
   @override
@@ -221,7 +219,7 @@ class _SignInFormState extends State<SignInForm> {
               value: _rememberMe,
               onChanged: (value) => setState(() => _rememberMe = value!),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 20),
             GradientButton(
                 onPressed: _isLoading ? null : _validateAndSubmit,
                 text: "Sign In".tr()),
@@ -251,15 +249,27 @@ class _SignInFormState extends State<SignInForm> {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             // Social Media Buttons
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(width: 20),
-                SocialMediaLoginButton(
-                  imagePath: 'assets/images/social_media/google.png',
-                  onTap: () async {
+                Row(
+                  children: [
+                    const Expanded(child: Divider(color: Color(0xFFD6D6D6))),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        "or signin by".tr(),
+                        style: GoogleFonts.inter(color: const Color(0xFF898989), fontSize: 12),
+                      ),
+                    ),
+                    const Expanded(child: Divider(color: Color(0xFFD6D6D6))),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async{
                     try {
                       User? user = await _authService.signInWithGoogle();
                       if (user != null) {
@@ -276,9 +286,33 @@ class _SignInFormState extends State<SignInForm> {
                       print("Error signing in: $e");
                     }
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    padding: const EdgeInsets.all(17),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: const BorderSide(color: Color(0xFFAEAEAE)),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/social_media/google.png',
+                        height: 28,
+                        width: 29,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        "Sign in with Google".tr(),
+                        style: GoogleFonts.inter(fontSize: 16, color: const Color(0xFF828282)),
+                      ),
+                    ],
+                  ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

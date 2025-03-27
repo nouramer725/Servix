@@ -23,7 +23,6 @@ class SignInTechnician extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 50),
             SignInFormTech(),
           ],
         ),

@@ -228,6 +228,8 @@
   "Notifications": "الإشعارات",
   "Orders": "الطلبات",
   "Ai Chat": "الدردشة الذكية",
+  "Sign in with Google": "تسجيل الدخول عبر جوجل",
+  "or signin by": "او تسجيل دخول بواسطة ",
   "Join the Servix community! Get expert help for any service you need—quick, easy, and hassle-free. Download now!": "💡انضم إلى مجتمع Servix! احصل على مساعدة الخبراء لأي خدمة تحتاجها—بسهولة وسرعة وبدون متاعب. حمل التطبيق الآن!",
   "WelcomeUser ": "مرحبا {first_name} {last_name}"
 }

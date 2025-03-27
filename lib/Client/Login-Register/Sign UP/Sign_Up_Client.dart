@@ -7,11 +7,8 @@ import '../../../Components/AuthService_Google.dart';
 import '../../../Components/Buttons.dart';
 import '../../../Components/Country Code and Phone Number.dart';
 import '../../../Components/Gender Dropdown.dart';
-import '../../../Components/SocialMediaLoginButton.dart';
 import '../../../Components/TextFormFiels_SignUp.dart';
 import '../../../constents/constent.dart';
-import '../../Home/Home.dart';
-import '../../Home/HomeLayoutClient.dart';
 import '../LocationClient/Access_Location1.dart';
 import '../Sign In/Sign_In_Client.dart';
 
@@ -355,35 +352,6 @@ class _SignUpClientState extends State<SignUpClient> {
                           ],
                         ),
                         const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(width: 20),
-                            SocialMediaLoginButton(
-                              imagePath:
-                              'assets/images/social_media/google.png',
-                              onTap: () async {
-                                try {
-                                  User? user =
-                                  await _authService.signInWithGoogle();
-                                  if (user != null) {
-                                    if (mounted) {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => const HomeClientLayout()),
-                                      );
-                                    }
-                                  } else {
-                                    print("User sign-in failed".tr());
-                                  }
-                                } catch (e) {
-                                  print("Error signing in: $e");
-                                }
-                              },
-                            ),
-                          ],
-                        )
                       ],
                     ),
                   ),
