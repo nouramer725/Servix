@@ -117,7 +117,11 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                       return const CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 40,
-                        child: Icon(Icons.person, size: 100),
+                        child: Icon(
+                          Icons.person,
+                          size: 70,
+                          color: Colors.grey,
+                        ),
                       );
                     },
                   ),
@@ -139,21 +143,24 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     indent: 20,
                     endIndent: 20,
                   ),
-                  _buildMenuItem(Icons.person_outline, "Profile".tr(), onTap: () {
+                  _buildMenuItem(Icons.person_outline, "Profile".tr(),
+                      onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const Profile(),
                         ));
                   }),
-                  _buildMenuItem(Icons.info_outline, "About Us".tr(), onTap: () {
+                  _buildMenuItem(Icons.info_outline, "About Us".tr(),
+                      onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const AboutUs(),
                         ));
                   }),
-                  _buildMenuItem(Icons.article_outlined, "Terms & Conditions".tr(),
+                  _buildMenuItem(
+                      Icons.article_outlined, "Terms & Conditions".tr(),
                       onTap: () {
                     Navigator.push(
                         context,
@@ -161,7 +168,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                           builder: (context) => const TermsAndConditions(),
                         ));
                   }),
-                  _buildMenuItem(Icons.privacy_tip_outlined, "Privacy Policy".tr(),
+                  _buildMenuItem(
+                      Icons.privacy_tip_outlined, "Privacy Policy".tr(),
                       onTap: () {
                     Navigator.push(
                         context,
@@ -169,7 +177,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                           builder: (context) => const PrivacyPolicy(),
                         ));
                   }),
-                  _buildMenuItem(Icons.lock_outline, "Password".tr(), onTap: () {
+                  _buildMenuItem(Icons.lock_outline, "Password".tr(),
+                      onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -234,7 +243,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                         "💡Join the Servix community! Get expert help for any service you need—quick, easy, and hassle-free. Download now!";
                     Share.share(quoteText);
                   }),
-                  _buildMenuItem(Icons.phone_outlined, "Contact Us".tr(), onTap: () {
+                  _buildMenuItem(Icons.phone_outlined, "Contact Us".tr(),
+                      onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -279,7 +289,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                       (route) => false,
                     );
                   }),
-                  _buildMenuItem(Icons.delete, "Delete Account".tr(), onTap: () {
+                  _buildMenuItem(Icons.delete, "Delete Account".tr(),
+                      onTap: () {
                     showDialog(
                       barrierDismissible: false,
                       context: context,
@@ -296,7 +307,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                           ],
                         ),
                         content: Text(
-                            "Are you sure you want to delete your account?".tr(),
+                            "Are you sure you want to delete your account?"
+                                .tr(),
                             style: GoogleFonts.charisSil(
                                 color: ApplicationColor3, fontSize: 18)),
                         actions: [

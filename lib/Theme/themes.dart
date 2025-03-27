@@ -6,10 +6,6 @@ ThemeData darktheme= ThemeData(
   scaffoldBackgroundColor: Color(0xFF333739),
   appBarTheme: AppBarTheme(
     titleSpacing: 20.0,
-    systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor:Color(0xFF333739),
-      statusBarIconBrightness: Brightness.light,
-    ),
     backgroundColor: Color(0xFF333739),
     elevation: 0.0,
     titleTextStyle: TextStyle(
@@ -39,10 +35,6 @@ ThemeData lighttheme= ThemeData(
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: AppBarTheme(
     titleSpacing: 25.0,
-    systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor:Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-    ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,

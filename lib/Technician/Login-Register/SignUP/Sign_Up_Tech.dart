@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Technician/Login-Register/Personal%20Info/Personal%20Info%20tech.dart';
 import 'package:servix/Technician/Login-Register/Sign%20In%20Technician/Sign_In_Tech.dart';
-import '../../../Components/AuthService_Google.dart';
 import '../../../Components/Buttons.dart';
 import '../../../Components/Country Code and Phone Number.dart';
 import '../../../Components/Gender Dropdown.dart';
@@ -36,7 +35,6 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
 
   String? selectedMainService;
   String? selectedSubService;
-  final AuthService _authService = AuthService();
   String? gender;
   String? role = "Technician"; // Default role is 'Client'
 

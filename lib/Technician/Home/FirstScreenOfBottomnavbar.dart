@@ -48,9 +48,6 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      backgroundColor: themeProvider.themeMode == ThemeMode.dark
-          ? Color(0xFF333739)
-          : Colors.white,
       body: Center(
         child: Column(
           children: [

@@ -8,11 +8,7 @@ class Ai extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      backgroundColor: themeProvider.themeMode == ThemeMode.dark
-          ? Color(0xFF333739)
-          : Colors.white,
       body: Center(
         child: Text("Ai"),
       ),

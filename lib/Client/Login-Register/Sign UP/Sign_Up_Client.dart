@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../../../Components/AuthService_Google.dart';
 import '../../../Components/Buttons.dart';
 import '../../../Components/Country Code and Phone Number.dart';
 import '../../../Components/Gender Dropdown.dart';
@@ -25,8 +24,6 @@ class _SignUpClientState extends State<SignUpClient> {
   final TextEditingController _ConfirmpasswordController =
   TextEditingController();
   final TextEditingController _PhoneNumberController = TextEditingController();
-
-  final AuthService _authService = AuthService();
 
   String? gender;
   String? role = "Client"; // Default role is 'Client'
