@@ -8,6 +8,7 @@ import 'package:servix/Client/Home/List%20Of%20Pages_Clients/Ai1.dart';
 import 'package:servix/Client/Home/List%20Of%20Pages_Clients/HomeClientFirstScreen.dart';
 import 'package:servix/Client/Home/List%20Of%20Pages_Clients/notification1.dart';
 import 'package:servix/Client/Home/List%20Of%20Pages_Clients/orders1.dart';
+import 'package:servix/Client/Profile/Profile.dart';
 import 'package:servix/Member/MemberShip.dart';
 import 'package:servix/Settings/About%20US.dart';
 import 'package:servix/Settings/Contact%20Us.dart';
@@ -164,7 +165,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Profile(),
+                          builder: (context) => const ProfileClient(),
                         ));
                   }),
                   _buildMenuItem(Icons.info_outline, "About Us".tr(),

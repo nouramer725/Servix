@@ -74,6 +74,7 @@ dependencies:
   share_plus: ^10.1.4
   hexcolor: ^3.0.1
   font_awesome_flutter: ^10.8.0
+  flutter_rating_bar: ^4.0.1
 
 
 

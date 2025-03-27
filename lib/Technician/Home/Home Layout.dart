@@ -97,33 +97,42 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                   const SizedBox(
                     height: 50,
                   ),
-                  StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection("user-files")
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection("uploads")
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                        String personalFileUrl =
-                            snapshot.data!.docs.first['personalFileUrl'];
-                        return CircleAvatar(
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProfileTechnician(),
+                          )
+                      );},
+                    child: StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection("user-files")
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .collection("uploads")
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                          String personalFileUrl =
+                              snapshot.data!.docs.first['personalFileUrl'];
+                          return CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 40, // ✅ Adjust size
+                            backgroundImage: NetworkImage(
+                                personalFileUrl), // ✅ Fetch from Firestore
+                          );
+                        }
+                        return const CircleAvatar(
                           backgroundColor: Colors.white,
-                          radius: 40, // ✅ Adjust size
-                          backgroundImage: NetworkImage(
-                              personalFileUrl), // ✅ Fetch from Firestore
+                          radius: 40,
+                          child: Icon(
+                            Icons.person,
+                            size: 70,
+                            color: Colors.grey,
+                          ),
                         );
-                      }
-                      return const CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 40,
-                        child: Icon(
-                          Icons.person,
-                          size: 70,
-                          color: Colors.grey,
-                        ),
-                      );
-                    },
+                      },
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -148,7 +157,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Profile(),
+                          builder: (context) => const ProfileTechnician(),
                         ));
                   }),
                   _buildMenuItem(Icons.info_outline, "About Us".tr(),
