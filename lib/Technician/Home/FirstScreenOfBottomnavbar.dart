@@ -48,164 +48,164 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ProfileTechnician()));
-              },
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("user-files")
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .collection("uploads")
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                    String personalFileUrl =
-                        snapshot.data!.docs.first['personalFileUrl'];
-                    return CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 70, // ✅ Adjust size
-                      backgroundImage: NetworkImage(
-                          personalFileUrl), // ✅ Fetch from Firestore
-                    );
-                  }
-                  return const CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 70,
-                    child: Icon(Icons.person, size: 100),
-                  );
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Center(
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfileTechnician()));
                 },
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("user-files")
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .collection("uploads")
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                      String personalFileUrl =
+                          snapshot.data!.docs.first['personalFileUrl'];
+                      return CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 70, // ✅ Adjust size
+                        backgroundImage: NetworkImage(
+                            personalFileUrl), // ✅ Fetch from Firestore
+                      );
+                    }
+                    return const CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 70,
+                      child: Icon(Icons.person, size: 100),
+                    );
+                  },
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              userData != null
-                  ? " ${userData!['first_name']} ${userData!['last_name']}"
-                  : "Welcome".tr(),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 5,
-              style: GoogleFonts.castoro(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white
-                      : Colors.black),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
+              const SizedBox(height: 10),
+              Text(
+                userData != null
+                    ? " ${userData!['first_name']} ${userData!['last_name']}"
+                    : "Welcome".tr(),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 5,
+                style: GoogleFonts.castoro(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 150,
+                      decoration: BoxDecoration(
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.grey.shade700
+                            : Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 0.5,
+                            blurRadius: 5,
+                            offset: const Offset(3, 3),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              "0",
+                              style: GoogleFonts.castoro(
+                                  fontSize: 40, color: const Color(0xFF9A9A9A)),
+                            ),
+                            const SizedBox(height: 10),
+                            Text("Total Jobs",
+                                style: GoogleFonts.castoro(
+                                    fontSize: 16, color: const Color(0xFF9A9A9A))),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    Container(
+                      width: 150,
+                      decoration: BoxDecoration(
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.grey.shade700
+                            : Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 0.5,
+                            blurRadius: 5,
+                            offset: const Offset(3, 3),
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              "3.2",
+                              style: GoogleFonts.castoro(
+                                  fontSize: 40, color: const Color(0xFF9A9A9A)),
+                            ),
+                            const SizedBox(height: 10),
+                            Text("Review",
+                                style: GoogleFonts.castoro(
+                                    fontSize: 16, color: const Color(0xFF9A9A9A))),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 40),
+              Divider(
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white.withOpacity(0.5)
+                    : const Color(0xFFD0D0D0),
+                indent: 40,
+                endIndent: 40,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                      color: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.grey.shade700
-                          : Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          spreadRadius: 0.5,
-                          blurRadius: 5,
-                          offset: const Offset(3, 3),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "0",
-                            style: GoogleFonts.castoro(
-                                fontSize: 40, color: Color(0xFF9A9A9A)),
-                          ),
-                          const SizedBox(height: 10),
-                          Text("Total Jobs",
-                              style: GoogleFonts.castoro(
-                                  fontSize: 16, color: Color(0xFF9A9A9A))),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                      color: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.grey.shade700
-                          : Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          spreadRadius: 0.5,
-                          blurRadius: 5,
-                          offset: const Offset(3, 3),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "3.2",
-                            style: GoogleFonts.castoro(
-                                fontSize: 40, color: Color(0xFF9A9A9A)),
-                          ),
-                          const SizedBox(height: 10),
-                          Text("Review",
-                              style: GoogleFonts.castoro(
-                                  fontSize: 16, color: Color(0xFF9A9A9A))),
-                        ],
-                      ),
-                    ),
-                  ),
+                  Text(
+                    "Pending Orders",
+                    style: GoogleFonts.castoro(
+                        fontSize: 22,
+                        decoration: TextDecoration.underline,
+                        decorationColor: const Color(0xFF9A9A9A),
+                        fontWeight: FontWeight.w500,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : const Color(0xFF7B7B7B)),
+                  )
                 ],
-              ),
-            ),
-            const SizedBox(height: 40),
-            Divider(
-              color: themeProvider.themeMode == ThemeMode.dark
-                  ? Colors.white.withOpacity(0.5)
-                  : Color(0xFFD0D0D0),
-              indent: 40,
-              endIndent: 40,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Pending Orders",
-                  style: GoogleFonts.castoro(
-                      fontSize: 22,
-                      decoration: TextDecoration.underline,
-                      decorationColor: Color(0xFF9A9A9A),
-                      fontWeight: FontWeight.w500,
-                      color: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.white
-                          : Color(0xFF7B7B7B)),
-                )
-              ],
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
