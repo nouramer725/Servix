@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:servix/Client/Service/Care/Care.dart';
 import 'package:servix/Client/Service/Delivery/Delivery.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../Theme/Theme_Provider.dart';
 import '../../Service/Devices/Devices.dart';
 import '../../Service/Home_Service/Home-Service.dart';
 import '../../Service/Man/Man.dart';
@@ -60,11 +62,12 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Search',
-          style: GoogleFonts.castoro(fontSize: 25),
+          style: GoogleFonts.castoro(fontSize: 25, fontWeight: FontWeight.bold, color: themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black),
         ),
       ),
       body: Padding(
@@ -164,6 +167,9 @@ class _SearchScreenState extends State<SearchScreen> {
               style: GoogleFonts.cantataOne(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black,
               ),
             ),
             const SizedBox(
@@ -229,6 +235,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 style: GoogleFonts.cantataOne(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
               const SizedBox(height: 10),
@@ -237,11 +246,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   itemCount: recentSearches.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      leading: const Icon(Icons.history),
+                      leading:  Icon(Icons.history,color: themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black),
                       title: Text(recentSearches[index],
-                          style: GoogleFonts.castoro(fontSize: 20)),
+                          style: GoogleFonts.castoro(fontSize: 20, color: themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black)),
                       trailing: IconButton(
-                        icon: const Icon(Icons.close),
+                        icon: Icon(Icons.close, color:themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black ),
                         onPressed: () => removeSearch(recentSearches[index]),
                       ),
                       onTap: () {
@@ -261,6 +270,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget serviceItem(String imagePath, String title, BuildContext context,
       Widget destination) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -280,7 +290,7 @@ class _SearchScreenState extends State<SearchScreen> {
             width: 70,
             child: Text(
               title,
-              style: GoogleFonts.castoro(fontSize: 14),
+              style: GoogleFonts.castoro(fontSize: 14,color: themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
