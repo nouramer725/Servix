@@ -40,7 +40,7 @@ class DeliveryServices extends StatelessWidget {
           mainAxisSpacing: 10,
           children: [
             ServiceCard(
-              serviceName: 'School delivert',
+              serviceName: 'School delivery',
               imagePath: 'assets/images/delivery/school.jpg',
             ),
             ServiceCard(

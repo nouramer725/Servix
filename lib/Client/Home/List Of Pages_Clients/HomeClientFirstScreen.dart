@@ -1,5 +1,5 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Client/Service/Care/Care.dart';
 import 'package:servix/Client/Service/Devices/Devices.dart';
 import 'package:servix/Client/Service/Private_Teaching/Private-Teaching.dart';
@@ -9,6 +9,7 @@ import '../../Service/Home_Service/Home-Service.dart';
 import '../../Service/Man/Man.dart';
 import '../HomeComponents/Model/Category.dart';
 import '../HomeComponents/category_item.dart';
+import 'Search Screen.dart';
 
 class HomeClientFirstScreen extends StatefulWidget {
   const HomeClientFirstScreen({super.key});
@@ -18,6 +19,7 @@ class HomeClientFirstScreen extends StatefulWidget {
 }
 
 class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
+  final TextEditingController searchController = TextEditingController();
   final List<Category> categories = const [
     Category(
       categoryname: 'Home \nService',
@@ -64,12 +66,49 @@ class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: ListView(
-      padding: EdgeInsets.only(top: 10, bottom: 20),
+      padding: const EdgeInsets.only(top: 10, bottom: 20),
       scrollDirection: Axis.vertical,
       children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SearchScreen()),
+              );
+            },
+            child: AbsorbPointer(
+              child: TextField(
+                controller: searchController,
+                textInputAction: TextInputAction.search,
+                decoration: InputDecoration(
+                  hintText: "Search for services",
+                  hintStyle: GoogleFonts.castoro(fontSize: 20, color: const Color(0xFFA9A9A9)),
+                  suffixIcon: const Icon(Icons.search, color: Color(0xFFE0DFDF)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  filled: true,
+                  fillColor: Colors.transparent,
+                ),
+              ),
+            ),
+          ),
+        ),
         CategoryItem(
             category: categories[0],
             index: 0,
