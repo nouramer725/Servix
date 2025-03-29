@@ -29,7 +29,7 @@ class _WelcomeAiState extends State<WelcomeAi> {
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: false,
       body: Padding(
-        padding: const EdgeInsets.all(25.0),
+        padding: const EdgeInsets.all(20.0),
         child: Center(
           child: SingleChildScrollView(
             child: Column(

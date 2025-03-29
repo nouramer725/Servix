@@ -32,7 +32,7 @@ class HomeService extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(25.0),
+        padding: const EdgeInsets.all(20.0),
         child: GridView.count(
           crossAxisCount: 2,
           crossAxisSpacing: 10,

@@ -245,7 +245,7 @@ class _SignUpClientState extends State<SignUpClient> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(25.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
                         customTextField(

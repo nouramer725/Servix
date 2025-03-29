@@ -22,7 +22,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
-  bool _rememberMe = false;
+  // bool _rememberMe = false;
   bool _isLoading = false;
   String? emailError;
   String? passwordError;
@@ -167,7 +167,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(25.0),
+      padding: const EdgeInsets.all(20.0),
       child: Form(
         key: _formKey,
         child: Column(
@@ -207,10 +207,10 @@ class _SignInFormTechState extends State<SignInFormTech> {
                 ),
               ),
             ),
-            RememberMeCheckbox(
-              value: _rememberMe,
-              onChanged: (value) => setState(() => _rememberMe = value!),
-            ),
+            // RememberMeCheckbox(
+            //   value: _rememberMe,
+            //   onChanged: (value) => setState(() => _rememberMe = value!),
+            // ),
             const SizedBox(height: 20),
             GradientButton(
               onPressed: _isLoading ? null : _validateAndSubmit,

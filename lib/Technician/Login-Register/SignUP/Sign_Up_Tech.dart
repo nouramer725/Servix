@@ -292,7 +292,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                   ),
                   // Form Fields
                   Padding(
-                    padding: const EdgeInsets.all(25.0),
+                    padding: const EdgeInsets.all(20.0),
                     child: Column(
                       children: [
                         // First Name

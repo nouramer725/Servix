@@ -91,7 +91,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             stops: const [0.09, 0.45, 1.0],
           ),
         ),
-        padding: const EdgeInsets.all(25.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
             Expanded(

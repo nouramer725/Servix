@@ -120,7 +120,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
             String status = userData['status'] ?? 'pending';
 
             return Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(20.0),
               child: Center(
                 child: Stack(
                   clipBehavior: Clip.none,

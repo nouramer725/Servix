@@ -8,7 +8,6 @@ import 'package:servix/Client/Home/HomeLayoutClient.dart';
 import 'package:servix/Client/Login-Register/Sign%20UP/Sign_Up_Client.dart';
 import '../../../Components/AuthService_Google.dart';
 import '../../../Components/Buttons.dart';
-import '../../../Components/Remember me checkbox.dart';
 import '../../../Components/ShowResetPasswordDiaglog.dart';
 import '../../../Components/TextFormField_SignIn.dart';
 import '../../../constents/constent.dart';
@@ -23,7 +22,7 @@ class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   bool _obscureText = true;
-  bool _rememberMe = false;
+  // bool _rememberMe = false;
   String? _emailError;
   String? _passwordError;
 
@@ -172,7 +171,7 @@ class _SignInFormState extends State<SignInForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(25.0),
+      padding: const EdgeInsets.all(20.0),
       child: Form(
         key: _formKey,
         child: Column(
@@ -215,10 +214,10 @@ class _SignInFormState extends State<SignInForm> {
                 ),
               ),
             ),
-            RememberMeCheckbox(
-              value: _rememberMe,
-              onChanged: (value) => setState(() => _rememberMe = value!),
-            ),
+            // RememberMeCheckbox(
+            //   value: _rememberMe,
+            //   onChanged: (value) => setState(() => _rememberMe = value!),
+            // ),
             const SizedBox(height: 20),
             GradientButton(
                 onPressed: _isLoading ? null : _validateAndSubmit,

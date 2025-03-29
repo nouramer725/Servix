@@ -49,7 +49,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(25.0),
+        padding: const EdgeInsets.all(20.0),
         child: Center(
           child: Column(
             children: [
