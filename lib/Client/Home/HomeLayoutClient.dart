@@ -15,7 +15,6 @@ import 'package:servix/Settings/Contact%20Us.dart';
 import 'package:servix/Settings/Password.dart';
 import 'package:servix/Settings/Privacy%20Policy.dart';
 import 'package:servix/Settings/Terms%20&%20Conditions.dart';
-import 'package:servix/Technician/Profile/Profile.dart';
 import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -77,7 +76,10 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
       appBar: AppBar(
         leading: Builder(
           builder: (context) => IconButton(
-            icon: Icon(Icons.density_small_sharp, color: ApplicationColor),
+            icon: Icon(Icons.menu,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : ApplicationColor),
             onPressed: () {
               Scaffold.of(context).openDrawer(); // Opens the sidebar
             },
@@ -87,13 +89,12 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
           userData != null
               ? "WelcomeUser ".tr(namedArgs: {
                   "first_name": userData!['first_name'],
-                  "last_name": userData!['last_name']
                 })
               : "Welcome".tr(),
           overflow: TextOverflow.ellipsis,
           maxLines: 5,
           style: GoogleFonts.castoro(
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: FontWeight.w500,
               color: themeProvider.themeMode == ThemeMode.dark
                   ? Colors.white
@@ -208,12 +209,15 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       children: [
-                        Icon(Icons.language, color: ApplicationColor),
+                        Icon(Icons.language,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : ApplicationColor),
                         const SizedBox(width: 16),
                         Text(
                           "Language".tr(),
                           style: GoogleFonts.castoro(
-                            fontSize: 20,
+                            fontSize: 17,
                             fontWeight: FontWeight.w500,
                             color: themeProvider.themeMode == ThemeMode.dark
                                 ? Colors.white
@@ -239,7 +243,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                                   ? const Color(0xFF333739)
                                   : Colors.white,
                           style: GoogleFonts.castoro(
-                            fontSize: 20,
+                            fontSize: 17,
                             fontWeight: FontWeight.w500,
                             color: themeProvider.themeMode == ThemeMode.dark
                                 ? Colors.white
@@ -273,12 +277,15 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       children: [
-                        Icon(Icons.dark_mode, color: ApplicationColor),
+                        Icon(Icons.dark_mode,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : ApplicationColor),
                         const SizedBox(width: 16),
                         Text(
                           "Dark Theme".tr(),
                           style: GoogleFonts.castoro(
-                              fontSize: 20,
+                              fontSize: 17,
                               fontWeight: FontWeight.w500,
                               color: themeProvider.themeMode == ThemeMode.dark
                                   ? Colors.white
@@ -374,7 +381,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
       body: pages[selectedIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.transparent, // Keep it transparent or set a color
+          color: Colors.transparent,
         ),
         child: BottomNavigationBar(
           backgroundColor: Colors.transparent,
@@ -390,18 +397,25 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
           },
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined, color: ApplicationColor3),
+              icon: Icon(Icons.home_outlined,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
               label: "Home".tr(),
               activeIcon: Icon(Icons.home, color: ApplicationColor),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications_none_outlined,
-                  color: ApplicationColor3),
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
               label: "Notifications".tr(),
               activeIcon: Icon(Icons.notifications, color: ApplicationColor),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.receipt_long_outlined, color: ApplicationColor3),
+              icon: Icon(Icons.receipt_long_outlined, color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white60
+                  : ApplicationColor3),
               label: "Orders".tr(),
               activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
             ),
@@ -409,7 +423,9 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
               icon: SizedBox(
                 height: 25, // Set a fixed height for both icons
                 child: Image.asset(
-                  'assets/NavigationBar/robot.png',
+                  themeProvider.themeMode == ThemeMode.dark
+                      ? 'assets/NavigationBar/robot.png'
+                      : 'assets/NavigationBar/robotblack.png',
                 ),
               ),
               label: "Ai Chat".tr(),
@@ -429,11 +445,14 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
   Widget _buildMenuItem(IconData icon, String title, {VoidCallback? onTap}) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return ListTile(
-      leading: Icon(icon, color: ApplicationColor),
+      leading: Icon(icon,
+          color: themeProvider.themeMode == ThemeMode.dark
+              ? Colors.white
+              : ApplicationColor),
       title: Text(
         title,
         style: GoogleFonts.castoro(
-            fontSize: 20,
+            fontSize: 17,
             fontWeight: FontWeight.w500,
             color: themeProvider.themeMode == ThemeMode.dark
                 ? Colors.white

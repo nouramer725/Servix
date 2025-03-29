@@ -76,7 +76,10 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
       appBar: AppBar(
         leading: Builder(
           builder: (context) => IconButton(
-            icon: Icon(Icons.density_small_sharp, color: ApplicationColor),
+            icon: Icon(Icons.menu,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : ApplicationColor),
             onPressed: () {
               Scaffold.of(context).openDrawer(); // Opens the sidebar
             },
@@ -103,8 +106,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => const ProfileTechnician(),
-                          )
-                      );},
+                          ));
+                    },
                     child: StreamBuilder(
                       stream: FirebaseFirestore.instance
                           .collection("user-files")
@@ -112,7 +115,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                           .collection("uploads")
                           .snapshots(),
                       builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                        if (snapshot.hasData &&
+                            snapshot.data!.docs.isNotEmpty) {
                           String personalFileUrl =
                               snapshot.data!.docs.first['personalFileUrl'];
                           return CircleAvatar(
@@ -200,12 +204,15 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       children: [
-                        Icon(Icons.language, color: ApplicationColor),
+                        Icon(Icons.language,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : ApplicationColor),
                         const SizedBox(width: 16),
                         Text(
                           "Language".tr(),
                           style: GoogleFonts.castoro(
-                            fontSize: 20,
+                            fontSize: 17,
                             fontWeight: FontWeight.w500,
                             color: themeProvider.themeMode == ThemeMode.dark
                                 ? Colors.white
@@ -231,7 +238,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                                   ? const Color(0xFF333739)
                                   : Colors.white,
                           style: GoogleFonts.castoro(
-                            fontSize: 20,
+                            fontSize: 17,
                             fontWeight: FontWeight.w500,
                             color: themeProvider.themeMode == ThemeMode.dark
                                 ? Colors.white
@@ -265,12 +272,15 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       children: [
-                        Icon(Icons.dark_mode, color: ApplicationColor),
+                        Icon(Icons.dark_mode,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : ApplicationColor),
                         const SizedBox(width: 16),
                         Text(
                           "Dark Theme".tr(),
                           style: GoogleFonts.castoro(
-                              fontSize: 20,
+                              fontSize: 17,
                               fontWeight: FontWeight.w500,
                               color: themeProvider.themeMode == ThemeMode.dark
                                   ? Colors.white
@@ -366,7 +376,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
       body: pages[selectedIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.transparent, // Keep it transparent or set a color
+          color: Colors.transparent,
         ),
         child: BottomNavigationBar(
           backgroundColor: Colors.transparent,
@@ -382,18 +392,26 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
           },
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined, color: ApplicationColor3),
+              icon: Icon(Icons.home_outlined,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
               label: "Home".tr(),
               activeIcon: Icon(Icons.home, color: ApplicationColor),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications_none_outlined,
-                  color: ApplicationColor3),
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
               label: "Notifications".tr(),
               activeIcon: Icon(Icons.notifications, color: ApplicationColor),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.receipt_long_outlined, color: ApplicationColor3),
+              icon: Icon(Icons.receipt_long_outlined,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
               label: "Orders".tr(),
               activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
             ),
@@ -401,7 +419,9 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
               icon: SizedBox(
                 height: 25, // Set a fixed height for both icons
                 child: Image.asset(
-                  'assets/NavigationBar/robot.png',
+                  themeProvider.themeMode == ThemeMode.dark
+                      ? 'assets/NavigationBar/robot.png'
+                      : 'assets/NavigationBar/robotblack.png',
                 ),
               ),
               label: "Ai Chat".tr(),
@@ -421,11 +441,14 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
   Widget _buildMenuItem(IconData icon, String title, {VoidCallback? onTap}) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return ListTile(
-      leading: Icon(icon, color: ApplicationColor),
+      leading: Icon(icon,
+          color: themeProvider.themeMode == ThemeMode.dark
+              ? Colors.white
+              : ApplicationColor),
       title: Text(
         title,
         style: GoogleFonts.castoro(
-            fontSize: 20,
+            fontSize: 17,
             fontWeight: FontWeight.w500,
             color: themeProvider.themeMode == ThemeMode.dark
                 ? Colors.white

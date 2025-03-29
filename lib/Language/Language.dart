@@ -28,12 +28,13 @@ class Language extends StatelessWidget {
                 const SizedBox(height: 100),
                 Text(
                   "اختر اللغة",
-                  style: GoogleFonts.castoro(fontSize: 30),
+                  style: GoogleFonts.castoro(fontSize: 28),
                 ),
                 const SizedBox(height: 15),
                 Text(
                   "Choose The Language",
-                  style: GoogleFonts.castoro(fontSize: 30),
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.castoro(fontSize: 28),
                 ),
                 const SizedBox(height: 60),
                 WhiteButton(

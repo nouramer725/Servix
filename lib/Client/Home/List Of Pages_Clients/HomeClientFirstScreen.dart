@@ -27,7 +27,7 @@ class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
     ),
     Category(
       categoryname: 'Private \nTeaching',
-      image: 'assets/images/home/private_teaching2.png',
+      image: 'assets/images/home/private_teaching3.png',
       color: Color(0xFFB93434),
       height: 160,
     ),
@@ -82,7 +82,7 @@ class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
           index: 1,
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => PrivateTeaching()));
+                  MaterialPageRoute(builder: (context) => Privateteachingservice()));
             }
         ),
         CategoryItem(
@@ -90,7 +90,7 @@ class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
           index: 2,
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Care()));
+                  MaterialPageRoute(builder: (context) => Careservice()));
             }
         ),
         CategoryItem(
@@ -98,7 +98,7 @@ class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
           index: 3,
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Man()));
+                  MaterialPageRoute(builder: (context) => Manservice()));
             }
         ),
         CategoryItem(
@@ -106,7 +106,7 @@ class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
           index: 4,
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Woman()));
+                  MaterialPageRoute(builder: (context) => Womenservice()));
             }
         ),
         CategoryItem(
@@ -114,7 +114,7 @@ class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
           index: 5,
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Devices()));
+                  MaterialPageRoute(builder: (context) => DevicesMaintenaceService()));
             }
         ),
         CategoryItem(
@@ -122,7 +122,7 @@ class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
           index: 6,
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Delivery()));
+                  MaterialPageRoute(builder: (context) => DeliveryServices()));
             }
         ),
       ],

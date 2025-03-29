@@ -67,10 +67,9 @@ class CategoryItem extends StatelessWidget {
           maxLines: 5,
           overflow: TextOverflow.ellipsis,
           category.categoryname,
-          style: TextStyle(
-            fontFamily: GoogleFonts.castoro().fontFamily,
+          style:  GoogleFonts.castoro(
             color: Colors.white,
-            fontSize: 35,
+            fontSize: 28,
           ),
         ),
       ),

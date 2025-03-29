@@ -33,7 +33,7 @@ class MemberShip extends StatelessWidget {
                 Text(
                   tr("Select MemberShip"),
                   style: GoogleFonts.castoro(
-                    fontSize: 30,
+                    fontSize: 28,
                   ),
                 ),
                 const SizedBox(
