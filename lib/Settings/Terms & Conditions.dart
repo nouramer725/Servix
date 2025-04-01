@@ -14,6 +14,9 @@ class TermsAndConditions extends StatelessWidget {
     var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         title: Text(
           "Terms and Conditions".tr(),
           style: GoogleFonts.cantataOne(

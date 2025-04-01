@@ -14,6 +14,9 @@ class PrivacyPolicy extends StatelessWidget {
     var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         title: Text(
           "Privacy Policy".tr(),
           style: GoogleFonts.cantataOne(

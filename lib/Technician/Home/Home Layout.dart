@@ -74,6 +74,9 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
     final localeProvider = Provider.of<LocaleProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         leading: Builder(
           builder: (context) => IconButton(
             icon: Icon(Icons.menu,

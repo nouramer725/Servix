@@ -580,6 +580,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
     var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         title: Text(
           "Edit Profile",
           style: GoogleFonts.castoro(

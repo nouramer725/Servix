@@ -43,6 +43,9 @@ class _ContactusState extends State<Contactus> {
     var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         title: Text(
           "Contact Us".tr(),
           style: GoogleFonts.cantataOne(

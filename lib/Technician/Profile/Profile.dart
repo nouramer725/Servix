@@ -117,7 +117,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: themeProvider.themeMode == ThemeMode.dark
-              ? Colors.black
+              ? const Color(0xFF333739)
               : Colors.white,
           title: Text(
             "Profile",
