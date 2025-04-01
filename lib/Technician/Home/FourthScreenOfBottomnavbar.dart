@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../Theme/Theme_Provider.dart';
 
 class Ai extends StatelessWidget {
   const Ai({super.key});

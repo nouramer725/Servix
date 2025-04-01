@@ -75,8 +75,8 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   flutter_rating_bar: ^4.0.1
 
-
-
+  firebase_messaging: ^15.2.5
+  flutter_local_notifications: ^18.0.1
 
 
 

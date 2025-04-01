@@ -9,7 +9,6 @@ import 'package:servix/Technician/Login-Register/SignUP/Sign_Up_Tech.dart';
 import '../../../../Components/Buttons.dart';
 import '../../../../Components/TextFormField_SignIn.dart';
 import '../../../Components/AuthService_Google.dart';
-import '../../../Components/Remember me checkbox.dart';
 import '../../../Components/ShowResetPasswordDiaglog.dart';
 import '../../../constents/constent.dart';
 

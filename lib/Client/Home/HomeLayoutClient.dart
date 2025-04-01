@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Client/Home/List%20Of%20Pages_Clients/Ai1.dart';
 import 'package:servix/Client/Home/List%20Of%20Pages_Clients/HomeClientFirstScreen.dart';
-import 'package:servix/Client/Home/List%20Of%20Pages_Clients/notification1.dart';
 import 'package:servix/Client/Home/List%20Of%20Pages_Clients/orders1.dart';
 import 'package:servix/Client/Profile/Profile.dart';
 import 'package:servix/Member/MemberShip.dart';
@@ -21,6 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Language/Local_Provider.dart';
 import '../../On-Boarding/On_Boarding_Screen.dart';
 import '../../Theme/Theme_Provider.dart';
+import '../Notification/notifaction really.dart';
 
 class HomeClientLayout extends StatefulWidget {
   const HomeClientLayout({super.key});
@@ -48,7 +48,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
 
   final List<Widget> pages = [
     const HomeClientFirstScreen(),
-    const NotificationClient(),
+    const NotificationScreenReal(),
     const OrdersClient(),
     const AiClient(),
   ];
@@ -74,6 +74,9 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
     final localeProvider = Provider.of<LocaleProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         leading: Builder(
           builder: (context) => IconButton(
             icon: Icon(Icons.menu,
@@ -379,65 +382,61 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
         ),
       ),
       body: pages[selectedIndex],
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: selectedIndex,
-          onTap: (index) {
-            setState(() {
-              selectedIndex = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined,
-                  color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white60
-                      : ApplicationColor3),
-              label: "Home".tr(),
-              activeIcon: Icon(Icons.home, color: ApplicationColor),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_none_outlined,
-                  color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white60
-                      : ApplicationColor3),
-              label: "Notifications".tr(),
-              activeIcon: Icon(Icons.notifications, color: ApplicationColor),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.receipt_long_outlined, color: themeProvider.themeMode == ThemeMode.dark
-                  ? Colors.white60
-                  : ApplicationColor3),
-              label: "Orders".tr(),
-              activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
-            ),
-            BottomNavigationBarItem(
-              icon: SizedBox(
-                height: 25, // Set a fixed height for both icons
-                child: Image.asset(
-                  themeProvider.themeMode == ThemeMode.dark
-                      ? 'assets/NavigationBar/robot.png'
-                      : 'assets/NavigationBar/robotblack.png',
-                ),
-              ),
-              label: "Ai Chat".tr(),
-              activeIcon: SizedBox(
-                height: 25, // Ensures alignment
-                child: Image.asset(
-                  'assets/NavigationBar/robotcolor.png',
-                ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: selectedIndex,
+        onTap: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white60
+                    : ApplicationColor3),
+            label: "Home".tr(),
+            activeIcon: Icon(Icons.home, color: ApplicationColor),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications_none_outlined,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white60
+                    : ApplicationColor3),
+            label: "Notifications".tr(),
+            activeIcon: Icon(Icons.notifications, color: ApplicationColor),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt_long_outlined,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white60
+                    : ApplicationColor3),
+            label: "Orders".tr(),
+            activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
+          ),
+          BottomNavigationBarItem(
+            icon: SizedBox(
+              height: 25, // Set a fixed height for both icons
+              child: Image.asset(
+                themeProvider.themeMode == ThemeMode.dark
+                    ? 'assets/NavigationBar/robot.png'
+                    : 'assets/NavigationBar/robotblack.png',
               ),
             ),
-          ],
-        ),
+            label: "Ai Chat".tr(),
+            activeIcon: SizedBox(
+              height: 25, // Ensures alignment
+              child: Image.asset(
+                'assets/NavigationBar/robotcolor.png',
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
