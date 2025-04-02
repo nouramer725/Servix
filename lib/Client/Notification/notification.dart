@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class NotificationScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'No Notification Yet',
+                  'No Notification Yet'.tr(),
                   style: GoogleFonts.castoro(
                     fontSize: 35,
                     fontWeight: FontWeight.w900,
@@ -36,7 +37,7 @@ class NotificationScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Your notification will appear here once if you have received them.',
+                  'Your notification will appear here once if you have received them.'.tr(),
                   style: GoogleFonts.castoro(
                     fontSize: 18,
                     fontWeight: FontWeight.w400,

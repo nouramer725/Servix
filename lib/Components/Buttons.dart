@@ -64,7 +64,7 @@ class GradientButton extends StatelessWidget {
               child: Text(
                 text,
                 style: GoogleFonts.charisSil(
-                  fontSize: 30,
+                  fontSize: 27,
                   color: Colors.white,
                 ),
                 maxLines: 3,

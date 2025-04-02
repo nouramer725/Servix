@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -112,7 +113,7 @@ class NotificationItem extends StatelessWidget {
                               color:
                                   isDarkMode ? Colors.red : ApplicationColor),
                           const SizedBox(width: 8),
-                          Text("Delete",
+                          Text("Delete".tr(),
                               style: GoogleFonts.castoro(
                                   fontWeight: FontWeight.bold,
                                   color: isDarkMode
@@ -150,7 +151,7 @@ class NotificationItem extends StatelessWidget {
                 ? const Color(0xFF333739)
                 : Colors.white,
             title: Text(
-              "Delete Notification",
+              "Delete Notification".tr(),
               style: GoogleFonts.castoro(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
@@ -159,7 +160,7 @@ class NotificationItem extends StatelessWidget {
                       : Colors.black),
             ),
             content: Text(
-              "Are you sure you want to delete this notification?",
+              "Are you sure you want to delete this notification?".tr(),
               style: GoogleFonts.castoro(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,

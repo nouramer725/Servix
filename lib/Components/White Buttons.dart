@@ -44,7 +44,7 @@ class WhiteButton extends StatelessWidget {
         child: Text(
           text.tr(),
           style: GoogleFonts.charisSil(
-            fontSize: 30,
+            fontSize: 27,
             color: Colors.black,
           ),
           maxLines: 3,
