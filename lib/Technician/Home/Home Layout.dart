@@ -198,7 +198,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Password(),
+                          builder: (context) => ChangePasswordScreen(),
                         ));
                   }),
                   // **Language Dropdown**

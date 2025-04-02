@@ -17,7 +17,6 @@ import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AI/Intro.dart';
-import '../../AI/chat.dart';
 import '../../Language/Local_Provider.dart';
 import '../../On-Boarding/On_Boarding_Screen.dart';
 import '../../Theme/Theme_Provider.dart';
@@ -204,7 +203,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Password(),
+                          builder: (context) => ChangePasswordScreen(),
                         ));
                   }),
                   // **Language Dropdown**

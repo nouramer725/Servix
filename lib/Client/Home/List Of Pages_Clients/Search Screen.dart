@@ -79,6 +79,9 @@ class _SearchScreenState extends State<SearchScreen> {
             TextField(
               controller: searchController,
               textInputAction: TextInputAction.search,
+              style: TextStyle(
+                color: themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black , // Automatically changes based on theme
+              ),
               onChanged: searchService,
               onSubmitted: (value) {
                 if (value.isNotEmpty) saveSearch(value);
@@ -129,7 +132,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 backgroundImage: AssetImage(service.image),
                                 radius: 30,
                               ),
-                              title: Text(service.title),
+                              title: Text(service.title, style: GoogleFonts.castoro(fontSize: 20, color: themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black)),
                             ),
 
                           // Show subservices that match the query
@@ -141,21 +144,23 @@ class _SearchScreenState extends State<SearchScreen> {
                                 radius: 25,
                               ),
                               title: Text(subService.title),
-                              subtitle: Text("(${service.title})"), // Show parent service name
+                              subtitle: Text("(${service.title})", style: GoogleFonts.castoro(fontSize: 14, color: themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black)), // Show parent service name
                             )),
                         ],
                       );
                     },
                   )
                       : Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "No results found",
-                          style: GoogleFonts.castoro(fontSize: 18),
-                        ),
-                      ],
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "No results found",
+                            style: GoogleFonts.castoro(fontSize: 18, color: themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

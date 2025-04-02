@@ -45,18 +45,18 @@ class IntroScreen extends StatelessWidget {
                     color: Colors.grey,
                     fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 60),
-              GradientButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ChatScreen()));
-                },
-                text: "Start a Conversation".tr(), // Fun button text
-              ),
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(20),
+        child: GradientButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const ChatScreen()));
+          },
+          text: "Start a Conversation".tr(), // Fun button text
         ),
       ),
     );

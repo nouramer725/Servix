@@ -42,265 +42,267 @@ class _ContactusState extends State<Contactus> {
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: themeProvider.themeMode == ThemeMode.dark
-            ? const Color(0xFF333739)
-            : Colors.white,
-        title: Text(
-          "Contact Us".tr(),
-          style: GoogleFonts.cantataOne(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: themeProvider.themeMode == ThemeMode.dark
-                  ? Colors.white
-                  : Colors.black),
+        appBar: AppBar(
+          backgroundColor: themeProvider.themeMode == ThemeMode.dark
+              ? const Color(0xFF333739)
+              : Colors.white,
+          title: Text(
+            "Contact Us".tr(),
+            style: GoogleFonts.cantataOne(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black),
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/images/lang-member/langmem.png",
-                width: 191,
-                height: 196,
-              ),
-              const SizedBox(height: 5),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  "assets/images/lang-member/langmem.png",
+                  width: 191,
+                  height: 196,
+                ),
+                const SizedBox(height: 5),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 150,
+                        decoration: BoxDecoration(
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.grey.shade700
+                              : Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              spreadRadius: 0.5,
+                              blurRadius: 5,
+                              offset: const Offset(3, 3),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            children: [
+                              FaIcon(
+                                FontAwesomeIcons.whatsapp,
+                                color: Color(0xFF25d366),
+                                size: 30,
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                "01121420810",
+                                style: GoogleFonts.inter(
+                                    fontSize: 14, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      Container(
+                        width: 150,
+                        decoration: BoxDecoration(
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.grey.shade400
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              spreadRadius: 0.5,
+                              blurRadius: 5,
+                              offset: const Offset(3, 3),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.phone,
+                                color: ApplicationColor,
+                                size: 30,
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                "03 4204514",
+                                style: GoogleFonts.inter(
+                                    fontSize: 14, color: ApplicationColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 150,
-                      decoration: BoxDecoration(
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.grey.shade700
-                            : Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            spreadRadius: 0.5,
-                            blurRadius: 5,
-                            offset: const Offset(3, 3),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          children: [
-                            FaIcon(FontAwesomeIcons.whatsapp,
-                              color: Color(0xFF25d366),
-                              size: 30,
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              "01121420810",
-                              style: GoogleFonts.inter(
-                                  fontSize: 14, color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                      ),
+                    _buildSocialIcon(
+                      FontAwesomeIcons.facebookF,
+                      "https://firebase.flutter.dev/docs/auth/social/",
+                      [
+                        Color(0xFF1877F2), // Facebook Blue
+                        Color(0xFF0A66C2), // Slightly darker Blue
+                      ],
                     ),
-                    const SizedBox(width: 15),
-                    Container(
-                      width: 150,
-                      decoration: BoxDecoration(
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.grey.shade400
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            spreadRadius: 0.5,
-                            blurRadius: 5,
-                            offset: const Offset(3, 3),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          children: [
-                            Icon(Icons.phone,
-                                color: ApplicationColor,
-                              size: 30,
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              "03 4204514",
-                              style: GoogleFonts.inter(
-                                  fontSize: 14, color: ApplicationColor),
-                            ),
-                          ],
-                        ),
-                      ),
+                    const SizedBox(width: 10),
+                    _buildSocialIcon(
+                      FontAwesomeIcons.instagram,
+                      "https://firebase.flutter.dev/docs/auth/social/",
+                      [
+                        Color(0xFFFEDA75), // Yellow
+                        Color(0xFFFA7E1E), // Orange
+                        Color(0xFFD62976), // Pink
+                        Color(0xFF962FBF), // Purple
+                        Color(0xFF4F5BD5), // Blue
+                      ],
+                    ),
+                    const SizedBox(width: 10),
+                    _buildSocialIcon(
+                      FontAwesomeIcons.xTwitter,
+                      "https://firebase.flutter.dev/docs/auth/social/",
+                      [
+                        Color(0xFF000000), // Black
+                        Color(0xFF000000), // Black
+                      ],
+                    ),
+                    const SizedBox(width: 10),
+                    _buildSocialIcon(
+                      FontAwesomeIcons.tiktok,
+                      "https://firebase.flutter.dev/docs/auth/social/",
+                      [
+                        Color(0xFF000000), // Black
+                        Color(0xFF000000), // Black
+                      ],
                     ),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildSocialIcon(
-                    FontAwesomeIcons.facebookF,
-                    "https://firebase.flutter.dev/docs/auth/social/",
-                    [
-                      Color(0xFF1877F2), // Facebook Blue
-                      Color(0xFF0A66C2), // Slightly darker Blue
-                    ],
-                  ),
-                  const SizedBox(width: 10),
-                  _buildSocialIcon(
-                    FontAwesomeIcons.instagram,
-                    "https://firebase.flutter.dev/docs/auth/social/",
-                    [
-                      Color(0xFFFEDA75), // Yellow
-                      Color(0xFFFA7E1E), // Orange
-                      Color(0xFFD62976), // Pink
-                      Color(0xFF962FBF), // Purple
-                      Color(0xFF4F5BD5), // Blue
-                    ],
-                  ),
-                  const SizedBox(width: 10),
-
-                  _buildSocialIcon(
-                    FontAwesomeIcons.xTwitter,
-                    "https://firebase.flutter.dev/docs/auth/social/",
-                    [
-                      Color(0xFF000000), // Black
-                      Color(0xFF000000), // Black
-                    ],
-                  ),
-                  const SizedBox(width: 10),
-                  _buildSocialIcon(
-                    FontAwesomeIcons.tiktok,
-                    "https://firebase.flutter.dev/docs/auth/social/",
-                    [
-                      Color(0xFF000000), // Black
-                      Color(0xFF000000), // Black
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 25,),
-              Container(
-                  decoration: BoxDecoration(
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Color(0xFF333739)
-                        : Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        spreadRadius: 0.5,
-                        blurRadius: 5,
-                        offset: const Offset(3, 3),
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      children: [
-                        customTextFieldContact(
-                          controller: _UserNameController,
-                          errorText: _userNameError,
-                          keyboardTypee: TextInputType.name,
-                          labelText: "User Name".tr(),
-                          themeProvider: themeProvider,
+                SizedBox(
+                  height: 25,
+                ),
+                Container(
+                    decoration: BoxDecoration(
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Color(0xFF333739)
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          spreadRadius: 0.5,
+                          blurRadius: 5,
+                          offset: const Offset(3, 3),
                         ),
-                        countryCodePhoneFieldContactUs(
-                          controller: _PhoneController,
-                          errorText: _phoneError,
-                          themeProvider: themeProvider,
-                        ),
-                        _buildTextField("Write your Message here".tr(),
-                            controller: _messageController,
-                            errorText: _messageError,
-                            themeProvider: themeProvider,
-                            maxLines: 5),
                       ],
                     ),
-                  )),
-              SizedBox(
-                height: 25,
-              ),
-              GradientButton(
-                onPressed: () async {
-                  setState(() {
-                    _messageError = _messageController.text.isEmpty
-                        ? "Message is required"
-                        : null;
-                    _userNameError = _UserNameController.text.isEmpty
-                        ? "User Name is required"
-                        : null;
-                    _phoneError = _PhoneController.text.isEmpty
-                        ? "Phone number is required"
-                        : null;
-                  });
-
-                  String userName = _UserNameController.text.trim();
-                  String phone = _PhoneController.text.trim();
-                  String message = _messageController.text
-                      .trim(); // Add a controller for message
-
-                  if (userName.isEmpty || phone.isEmpty || message.isEmpty) {
-                    Fluttertoast.showToast(
-                      msg: "All fields are required".tr(),
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.SNACKBAR,
-                      backgroundColor: ApplicationColorWithOpacity,
-                      textColor: Colors.white,
-                      fontSize: 15.0,
-                    );
-                  } else {
-                    Fluttertoast.showToast(
-                      msg: "Message sent successfully!".tr(),
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.SNACKBAR,
-                      backgroundColor: Colors.green,
-                      textColor: Colors.white,
-                      fontSize: 15.0,
-                    );
-
-                    User? user = FirebaseAuth.instance.currentUser;
-                    String userId = user!.uid;
-                    await FirebaseFirestore.instance
-                        .collection("ContactUs")
-                        .doc(userId)
-                        .set({
-                      "userName": _UserNameController.text,
-                      "phone": _PhoneController.text,
-                      "message": _messageController.text,
-                      "timestamp": FieldValue.serverTimestamp(),
-                    });
-
-                    // Clear fields after submission
-                    _UserNameController.clear();
-                    _PhoneController.clear();
-                    _messageController.clear();
-                  }
-                },
-                text: "Send".tr(),
-              )
-            ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        children: [
+                          customTextFieldContact(
+                            controller: _UserNameController,
+                            errorText: _userNameError,
+                            keyboardTypee: TextInputType.name,
+                            labelText: "User Name".tr(),
+                            themeProvider: themeProvider,
+                          ),
+                          countryCodePhoneFieldContactUs(
+                            controller: _PhoneController,
+                            errorText: _phoneError,
+                            themeProvider: themeProvider,
+                          ),
+                          _buildTextField("Write your Message here".tr(),
+                              controller: _messageController,
+                              errorText: _messageError,
+                              themeProvider: themeProvider,
+                              maxLines: 5),
+                        ],
+                      ),
+                    )),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+        bottomNavigationBar: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: GradientButton(
+              onPressed: () async {
+                setState(() {
+                  _messageError = _messageController.text.isEmpty
+                      ? "Message is required"
+                      : null;
+                  _userNameError = _UserNameController.text.isEmpty
+                      ? "User Name is required"
+                      : null;
+                  _phoneError = _PhoneController.text.isEmpty
+                      ? "Phone number is required"
+                      : null;
+                });
+
+                String userName = _UserNameController.text.trim();
+                String phone = _PhoneController.text.trim();
+                String message = _messageController.text
+                    .trim(); // Add a controller for message
+
+                if (userName.isEmpty || phone.isEmpty || message.isEmpty) {
+                  Fluttertoast.showToast(
+                    msg: "All fields are required".tr(),
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.SNACKBAR,
+                    backgroundColor: ApplicationColorWithOpacity,
+                    textColor: Colors.white,
+                    fontSize: 15.0,
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                    msg: "Message sent successfully!".tr(),
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.SNACKBAR,
+                    backgroundColor: Colors.green,
+                    textColor: Colors.white,
+                    fontSize: 15.0,
+                  );
+
+                  User? user = FirebaseAuth.instance.currentUser;
+                  String userId = user!.uid;
+                  await FirebaseFirestore.instance
+                      .collection("ContactUs")
+                      .doc(userId)
+                      .set({
+                    "userName": _UserNameController.text,
+                    "phone": _PhoneController.text,
+                    "message": _messageController.text,
+                    "timestamp": FieldValue.serverTimestamp(),
+                  });
+
+                  // Clear fields after submission
+                  _UserNameController.clear();
+                  _PhoneController.clear();
+                  _messageController.clear();
+                }
+              },
+              text: "Send".tr(),
+            )));
   }
 
-  Widget _buildSocialIcon(IconData icon, String url, List<Color> gradientColors) {
+  Widget _buildSocialIcon(
+      IconData icon, String url, List<Color> gradientColors) {
     return GestureDetector(
       onTap: () => _launchURL(url),
       child: ShaderMask(

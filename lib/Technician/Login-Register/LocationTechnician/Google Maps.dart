@@ -10,16 +10,16 @@ import 'Google maps Components/Map Widget.dart';
 import 'Google maps Components/Search Bar.dart';
 import 'Save_Address.dart';
 
-class GoogleMapScreenTech  extends StatefulWidget {
+class GoogleMapScreenTech extends StatefulWidget {
   final String phoneNumber;
 
-  const GoogleMapScreenTech ({super.key, required this.phoneNumber}); // Add this
+  const GoogleMapScreenTech({super.key, required this.phoneNumber}); // Add this
 
   @override
   _GoogleMapScreenTechState createState() => _GoogleMapScreenTechState();
 }
 
-class _GoogleMapScreenTechState extends State<GoogleMapScreenTech > {
+class _GoogleMapScreenTechState extends State<GoogleMapScreenTech> {
   final TextEditingController _searchController = TextEditingController();
   late MapController _mapController;
   LatLng _currentLocation =
@@ -99,58 +99,53 @@ class _GoogleMapScreenTechState extends State<GoogleMapScreenTech > {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Map Widget
-          MapWidget(
-            mapController: _mapController,
-            currentLocation: _currentLocation,
-            onMapTap: _updateLocation,
-          ),
-
-          // Search Bar
-          SearchBarLocation(
-            searchController: _searchController,
-            onLocationSelected: (location) {
-              if (location != null) {
-                LatLng newLocation = LatLng(
-                  double.parse(location['latitude']),
-                  double.parse(location['longitude']),
-                );
-                _updateLocation(newLocation);
-              }
-            },
-          ),
-
-          // Current Location Button
-          CurrentLocationButton(onLocationUpdated: _updateLocation),
-
-          // Save Address Button
-          Positioned(
-            bottom: 30,
-            left: 20,
-            right: 20,
-            child: GradientButton(
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SaveAddressScreenTech (
-                            areaName: _areaName,
-                            streetName: _streetName,
-                            latitude: _currentLocation.latitude,
-                            longitude: _currentLocation.longitude,
-                            phoneNumber:
-                                widget.phoneNumber, // Pass the phone number
-                          )),
-                  (route) => false,
-                );
-              },
-              text: "Enter Completed Address".tr(),
+        body: Stack(
+          children: [
+            // Map Widget
+            MapWidget(
+              mapController: _mapController,
+              currentLocation: _currentLocation,
+              onMapTap: _updateLocation,
             ),
+
+            // Search Bar
+            SearchBarLocation(
+              searchController: _searchController,
+              onLocationSelected: (location) {
+                if (location != null) {
+                  LatLng newLocation = LatLng(
+                    double.parse(location['latitude']),
+                    double.parse(location['longitude']),
+                  );
+                  _updateLocation(newLocation);
+                }
+              },
+            ),
+
+            // Current Location Button
+            CurrentLocationButton(onLocationUpdated: _updateLocation),
+          ],
+        ),
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.all(20),
+          child: GradientButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SaveAddressScreenTech(
+                          areaName: _areaName,
+                          streetName: _streetName,
+                          latitude: _currentLocation.latitude,
+                          longitude: _currentLocation.longitude,
+                          phoneNumber:
+                              widget.phoneNumber, // Pass the phone number
+                        )),
+                (route) => false,
+              );
+            },
+            text: "Enter Completed Address".tr(),
           ),
-        ],
-      ),
-    );
+        ));
   }
 }
