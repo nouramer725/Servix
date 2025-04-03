@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +15,14 @@ class NotificationScreenReal extends StatefulWidget {
 
 class _NotificationScreenRealState extends State<NotificationScreenReal> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
-  List<Map<String, dynamic>> notifications = [];  // Store document ID
+  List<Map<String, String>> notifications = [];
 
   @override
   void initState() {
     super.initState();
-    _loadNotificationsFromFirestore();  // Directly load notifications from Firestore
+    _loadNotificationsFromFirestore(); // Directly load notifications from Firestore
     _setupNotifications();
   }
 
@@ -36,9 +35,9 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
     }
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     final InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
+        InitializationSettings(android: initializationSettingsAndroid);
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
@@ -47,14 +46,15 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
         String formattedDate = DateFormat('dd MMM yyyy').format(DateTime.now());
         String formattedTime = DateFormat('hh:mm a').format(DateTime.now());
         String messagePreview = _getMessagePreview(message.notification!.body);
+        print("Received notification: ${message.notification!.body}");
 
         setState(() {
           notifications.insert(0, {
-            "id": '',  // Placeholder for Firestore ID (can be updated after saving)
             "title": message.notification!.title ?? "New Notification",
             "preview": messagePreview,
             "date": formattedDate,
             "time": formattedTime,
+            "id": "", // Placeholder ID, will be updated after saving to Firestore
           });
         });
 
@@ -64,6 +64,7 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
           "preview": messagePreview,
           "date": formattedDate,
           "time": formattedTime,
+          "id": "", // Placeholder ID, will be updated after saving to Firestore
         });
 
         _showLocalNotification(
@@ -76,7 +77,7 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
 
   void _showLocalNotification(String title, String body) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       'channel_id',
       'General Notifications',
       importance: Importance.max,
@@ -85,10 +86,13 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
     );
 
     const NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
+        NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.show(
-      0, title, body, platformChannelSpecifics,
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
     );
   }
 
@@ -96,72 +100,81 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
     if (message == null || message.isEmpty) {
       return "No message body";
     }
-    return message.split(' ').take(5).join(' ') + "...";
+    return message.split(' ').take(20).join(' ') ;
   }
 
-  Future<void> _saveNotificationToFirestore(Map<String, String> notificationData) async {
+  Future<void> _saveNotificationToFirestore(
+      Map<String, String> notificationData) async {
+    notificationData['id'] =
+        FirebaseFirestore.instance.collection('notifications').doc().id;
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    // Add notification to Firestore and get document ID
-    var docRef = await firestore.collection('notifications').add(notificationData);
-    // Update the notification map with the document ID
-    setState(() {
-      notifications[0]["id"] = docRef.id;  // Set the Firestore document ID for the new notification
-    });
+    await firestore.collection('notifications').add(notificationData);
   }
 
   Future<void> _loadNotificationsFromFirestore() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    QuerySnapshot querySnapshot = await firestore.collection('notifications')
+    QuerySnapshot querySnapshot = await firestore
+        .collection('notifications')
         .orderBy('date', descending: true)
         .get();
 
     setState(() {
       notifications = querySnapshot.docs.map((doc) {
         return {
-          "id": doc.id,  // Store the Firestore document ID
           "title": doc["title"] as String,
           "preview": doc["preview"] as String,
           "date": doc["date"] as String,
           "time": doc["time"] as String,
+          "id": doc.id, // Store the document ID for deletion
         };
       }).toList();
     });
   }
 
   void _deleteNotification(int index) async {
-    String notificationId = notifications[index]["id"];  // Get the Firestore document ID
+    try {
+      // Get the notification ID from the list before removing it
+      String notificationId = notifications[index]["id"]!;
 
-    // Remove the notification locally
-    setState(() {
-      notifications.removeAt(index);
-    });
+      // Delete notification from Firestore
+      await FirebaseFirestore.instance
+          .collection('notifications')
+          .doc(notificationId)
+          .delete();
+      print("Notification with ID $notificationId deleted from Firestore");
 
-    // Delete the notification from Firestore
-    await FirebaseFirestore.instance.collection('notifications')
-        .doc(notificationId)  // Reference the notification document by its ID
-        .delete();
+      // Remove from the local list
+      setState(() {
+        notifications.removeAt(index);
+      });
+
+      print("Notification removed from the UI");
+    } catch (error) {
+      print("Error deleting notification: $error");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: notifications.isEmpty
-          ? const NotificationScreen()  // Handle empty notification list UI
+          ? const NotificationScreen() // Handle empty notification list UI
           : ListView.builder(
-        padding: const EdgeInsets.all(20),
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          return NotificationItem(
-            title: notifications[index]["title"]!,
-            preview: notifications[index]["preview"]!,
-            time: notifications[index]["time"]!,
-            profileImageUrl: "assets/images/lang-member/langmem.png",
-            onDelete: () {
-              _deleteNotification(index);  // Delete notification from within the item
-            },
-          );
-        },
-      ),
+              padding: const EdgeInsets.all(20),
+              itemCount: notifications.length,
+              itemBuilder: (context, index) {
+                return NotificationItem(
+                  title: notifications[index]["title"]!,
+                  preview: notifications[index]["preview"]!,
+                  time: notifications[index]["time"]!,
+                  profileImageUrl: "assets/images/lang-member/langmem.png",
+                  onDelete: () {
+                    _deleteNotification(
+                        index); // Delete notification from within the item
+                  },
+                );
+              },
+            ),
     );
   }
 }
