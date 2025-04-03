@@ -54,7 +54,8 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
             "preview": messagePreview,
             "date": formattedDate,
             "time": formattedTime,
-            "id": "", // Placeholder ID, will be updated after saving to Firestore
+            "id":
+                "", // Placeholder ID, will be updated after saving to Firestore
           });
         });
 
@@ -100,7 +101,7 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
     if (message == null || message.isEmpty) {
       return "No message body";
     }
-    return message.split(' ').take(20).join(' ') ;
+    return message.split(' ').take(20).join(' ');
   }
 
   Future<void> _saveNotificationToFirestore(
