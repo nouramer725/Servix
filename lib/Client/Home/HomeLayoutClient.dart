@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Client/AIClient/Intro.dart';
 import 'package:servix/Client/Home/List%20Of%20Pages_Clients/HomeClientFirstScreen.dart';
 import 'package:servix/Client/Home/List%20Of%20Pages_Clients/orders1.dart';
 import 'package:servix/Client/Profile/Profile.dart';
@@ -16,7 +17,6 @@ import 'package:servix/Settings/Terms%20&%20Conditions.dart';
 import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../AI/Intro.dart';
 import '../../Language/Local_Provider.dart';
 import '../../On-Boarding/On_Boarding_Screen.dart';
 import '../../Theme/Theme_Provider.dart';
@@ -50,7 +50,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
     const HomeClientFirstScreen(),
     const NotificationScreenReal(),
     const OrdersClient(),
-    const IntroScreen(),
+    const IntroScreenClient(),
   ];
   int selectedIndex = 0;
 

@@ -4,12 +4,12 @@ import 'package:lottie/lottie.dart';
 import 'package:servix/Technician/Home/Home%20Layout.dart';
 import 'package:servix/constents/constent.dart';
 
-class WelcomeAi extends StatefulWidget {
+class WelcomeAiTech extends StatefulWidget {
   @override
-  _WelcomeAiState createState() => _WelcomeAiState();
+  _WelcomeAiTechState createState() => _WelcomeAiTechState();
 }
 
-class _WelcomeAiState extends State<WelcomeAi> {
+class _WelcomeAiTechState extends State<WelcomeAiTech> {
   @override
   void initState() {
     super.initState();

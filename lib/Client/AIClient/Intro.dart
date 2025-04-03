@@ -4,11 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Components/Buttons.dart';
-import '../Theme/Theme_Provider.dart';
+import '../../Theme/Theme_Provider.dart';
 import 'chat.dart';
 
-class IntroScreen extends StatelessWidget {
-  const IntroScreen({super.key});
+class IntroScreenClient extends StatelessWidget {
+  const IntroScreenClient({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class IntroScreen extends StatelessWidget {
         child: GradientButton(
           onPressed: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const ChatScreen()));
+                MaterialPageRoute(builder: (context) => const ChatScreenClient()));
           },
           text: "Start a Conversation".tr(), // Fun button text
         ),

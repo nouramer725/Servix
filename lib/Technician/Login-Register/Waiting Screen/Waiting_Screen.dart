@@ -5,7 +5,7 @@ import 'package:mailer/smtp_server.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:servix/AI/Welcome%20AI.dart';
+import 'package:servix/Technician/AITechnician/Welcome%20AI.dart';
 import '../../../constents/constent.dart';
 
 class WaitingScreen extends StatefulWidget {
@@ -42,7 +42,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
             Future.microtask(() {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => WelcomeAi()),
+                MaterialPageRoute(builder: (context) => WelcomeAiTech()),
                 (route) => false,
               );
             });
@@ -188,7 +188,8 @@ class _WaitingScreenState extends State<WaitingScreen> {
                               // ✅ Status Message
                               if (status == "approved") ...[
                                 Text(
-                                  "🎉 Congratulations! You’re officially approved! 🚀 Enjoy full access to our platform and start your journey today!".tr(),
+                                  "🎉 Congratulations! You’re officially approved! 🚀 Enjoy full access to our platform and start your journey today!"
+                                      .tr(),
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.cantataOne(
                                     color: Colors.green,
@@ -198,7 +199,8 @@ class _WaitingScreenState extends State<WaitingScreen> {
                                 ),
                               ] else if (status == "rejected") ...[
                                 Text(
-                                  "❌ Unfortunately, your application was not approved. If you believe this is a mistake, please contact support for further assistance.".tr(),
+                                  "❌ Unfortunately, your application was not approved. If you believe this is a mistake, please contact support for further assistance."
+                                      .tr(),
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.cantataOne(
                                     color: Colors.red,
@@ -208,7 +210,8 @@ class _WaitingScreenState extends State<WaitingScreen> {
                                 ),
                               ] else ...[
                                 Text(
-                                  "Thank you for registering as a technician. Your application is currently under review by our administration team. You will receive a notification once your account has been approved.".tr(),
+                                  "Thank you for registering as a technician. Your application is currently under review by our administration team. You will receive a notification once your account has been approved."
+                                      .tr(),
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.cantataOne(
                                     color: Colors.white,

@@ -4,22 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:servix/constents/constent.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../Theme/Theme_Provider.dart';
-import 'SERVICE.dart';
+import '../../AI/SERVICE.dart';
+import '../../Theme/Theme_Provider.dart';
+import '../../constents/constent.dart';
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+class ChatScreenTechnician extends StatefulWidget {
+  const ChatScreenTechnician({super.key});
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<ChatScreenTechnician> createState() => _ChatScreenTechnicianState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
-  ChatUser? _user;
+class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
+  ChatUser? _technician;
   final ChatUser _bot = ChatUser(id: '2', firstName: 'Gemini');
   final GeminiService _geminiService = GeminiService();
   List<ChatMessage> messages = [];
@@ -30,29 +30,27 @@ class _ChatScreenState extends State<ChatScreen> {
     _initializeChat();
   }
 
-  // Initialize chat by loading user data first
   Future<void> _initializeChat() async {
-    await _loadUserData();
-    if (_user != null) {
+    await _loadTechnicianData();
+    if (_technician != null) {
       await _loadChatHistory();
     }
   }
 
-  // Fetch user data from Firebase
-  Future<void> _loadUserData() async {
+  Future<void> _loadTechnicianData() async {
     User? firebaseUser = FirebaseAuth.instance.currentUser;
     if (firebaseUser != null) {
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
+          .collection('technician') // Fetch from "technicians" collection
           .doc(firebaseUser.uid)
           .get();
 
       if (userDoc.exists) {
         var userData = userDoc.data() as Map<String, dynamic>;
         setState(() {
-          _user = ChatUser(
+          _technician = ChatUser(
             id: firebaseUser.uid,
-            firstName: userData['first_name'] ?? 'User',
+            firstName: userData['first_name'] ?? 'Technician',
           );
         });
       }
@@ -68,20 +66,20 @@ class _ChatScreenState extends State<ChatScreen> {
       'createdAt': msg.createdAt.toIso8601String(),
     }))
         .toList();
-    await prefs.setStringList('chat_history', chatData);
+    await prefs.setStringList('chat_history_technician', chatData);
   }
 
   Future<void> _loadChatHistory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? chatData = prefs.getStringList('chat_history');
+    List<String>? chatData = prefs.getStringList('chat_history_technician');
 
-    if (chatData != null && _user != null) {
+    if (chatData != null && _technician != null) {
       setState(() {
         messages = chatData.map((data) {
           Map<String, dynamic> json = jsonDecode(data);
           return ChatMessage(
             text: json['text'],
-            user: json['userId'] == _user!.id ? _user! : _bot,
+            user: json['userId'] == _technician!.id ? _technician! : _bot,
             createdAt: DateTime.parse(json['createdAt']),
           );
         }).toList();
@@ -93,7 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       messages.insert(0, message);
     });
-    _saveChatHistory(); // Save after user message
+    _saveChatHistory();
 
     String aiResponse = await _geminiService.sendMessage(message.text);
 
@@ -106,14 +104,14 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       messages.insert(0, botMessage);
     });
-    _saveChatHistory(); // Save after AI response
+    _saveChatHistory();
   }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
-    if (_user == null) {
+    if (_technician == null) {
       return Scaffold(
         body: Center(
           child: CircularProgressIndicator(
@@ -129,7 +127,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ? const Color(0xFF333739)
             : Colors.white,
         title: Text(
-          "AI Chat".tr(),
+          "Ai Chat".tr(),
           style: GoogleFonts.castoro(
             fontWeight: FontWeight.w500,
             color: themeProvider.themeMode == ThemeMode.dark
@@ -174,7 +172,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       ),
       body: DashChat(
-        currentUser: _user!,
+        currentUser: _technician!,
         onSend: onSend,
         messages: messages,
         inputOptions: InputOptions(

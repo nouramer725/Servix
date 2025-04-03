@@ -10,6 +10,7 @@ import 'package:servix/Settings/Contact%20Us.dart';
 import 'package:servix/Settings/Password.dart';
 import 'package:servix/Settings/Privacy%20Policy.dart';
 import 'package:servix/Settings/Terms%20&%20Conditions.dart';
+import 'package:servix/Technician/AITechnician/Intro.dart';
 import 'package:servix/Technician/Home/FirstScreenOfBottomnavbar.dart';
 import 'package:servix/Technician/Profile/Profile.dart';
 import 'package:servix/constents/constent.dart';
@@ -50,7 +51,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
     const HomeTechFirstScreen(),
     const NotificationSystem(),
     const Orders(),
-    const Ai(),
+    const IntroScreenTech(),
   ];
   int selectedIndex = 0;
 
