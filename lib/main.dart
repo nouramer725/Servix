@@ -27,9 +27,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseMessaging.instance
-      .subscribeToTopic("sssss"); // Subscribe to topic
+      .subscribeToTopic("servix"); // Subscribe to topic
   final fcmToken = await FirebaseMessaging.instance.getToken();
   print("FCM Token: $fcmToken"); // Print FCM token
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
   await dotenv.load(fileName: ".env");
   await EasyLocalization.ensureInitialized();
 

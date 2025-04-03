@@ -3,9 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../Theme/Theme_Provider.dart';
 import 'Notification Item.dart';
 import 'notification.dart';
 
@@ -44,7 +43,7 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       if (message.notification != null) {
         String formattedDate = DateFormat('dd MMM yyyy').format(DateTime.now());
         String formattedTime = DateFormat('hh:mm a').format(DateTime.now());
@@ -59,7 +58,14 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
           });
         });
 
-        _saveNotifications();
+        // Save notification to Firestore for syncing across all devices
+        await _saveNotificationToFirestore({
+          "title": message.notification!.title ?? "New Notification",
+          "preview": messagePreview,
+          "date": formattedDate,
+          "time": formattedTime,
+        });
+
         _showLocalNotification(
           message.notification!.title ?? "New Notification",
           message.notification!.body ?? "Tap to open",
@@ -82,7 +88,8 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
     NotificationDetails(android: androidPlatformChannelSpecifics);
 
     await flutterLocalNotificationsPlugin.show(
-        0, title, body, platformChannelSpecifics);
+      0, title, body, platformChannelSpecifics,
+    );
   }
 
   String _getMessagePreview(String? message) {
@@ -106,6 +113,30 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
             .map((item) => Map<String, String>.from(item)));
       });
     }
+
+    // Load notifications from Firestore as well
+    await _loadNotificationsFromFirestore();
+  }
+
+  Future<void> _saveNotificationToFirestore(Map<String, String> notificationData) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    await firestore.collection('notifications').add(notificationData);
+  }
+
+  Future<void> _loadNotificationsFromFirestore() async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    QuerySnapshot querySnapshot = await firestore.collection('notifications').get();
+
+    setState(() {
+      notifications = querySnapshot.docs.map((doc) {
+        return {
+          "title": doc["title"] as String, // Ensure it's a string
+          "preview": doc["preview"] as String, // Ensure it's a string
+          "date": doc["date"] as String, // Ensure it's a string
+          "time": doc["time"] as String, // Ensure it's a string
+        };
+      }).toList();
+    });
   }
 
   void _deleteNotification(int index) {
@@ -117,7 +148,6 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: notifications.isEmpty
           ? const NotificationScreen()
@@ -131,8 +161,7 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
             time: notifications[index]["time"]!,
             profileImageUrl: "assets/images/lang-member/langmem.png",
             onDelete: () {
-              _deleteNotification(
-                  index); // Delete notification from within the item
+              _deleteNotification(index); // Delete notification from within the item
             },
           );
         },

@@ -28,6 +28,7 @@ class NotificationItem extends StatelessWidget {
 
     return Column(
       children: [
+        const SizedBox(height: 12),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -71,8 +72,6 @@ class NotificationItem extends StatelessWidget {
                       fontSize: 16,
                       color: isDarkMode ? Colors.grey.shade400 : Colors.black54,
                     ),
-                    maxLines: 10,
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -127,10 +126,8 @@ class NotificationItem extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(width: 12),
           ],
         ),
-        const SizedBox(height: 12),
         const Divider(
           color: Color(0xFFD9D9D9),
           thickness: 1,
