@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'Notification Item.dart';
 import 'notification.dart';
 
@@ -19,12 +18,12 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
 
-  List<Map<String, String>> notifications = [];
+  List<Map<String, dynamic>> notifications = [];  // Store document ID
 
   @override
   void initState() {
     super.initState();
-    _loadNotifications();
+    _loadNotificationsFromFirestore();  // Directly load notifications from Firestore
     _setupNotifications();
   }
 
@@ -51,6 +50,7 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
 
         setState(() {
           notifications.insert(0, {
+            "id": '',  // Placeholder for Firestore ID (can be updated after saving)
             "title": message.notification!.title ?? "New Notification",
             "preview": messagePreview,
             "date": formattedDate,
@@ -99,58 +99,54 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
     return message.split(' ').take(5).join(' ') + "...";
   }
 
-  void _saveNotifications() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('notifications', jsonEncode(notifications));
-  }
-
-  void _loadNotifications() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? storedData = prefs.getString('notifications');
-    if (storedData != null) {
-      setState(() {
-        notifications = List<Map<String, String>>.from(jsonDecode(storedData)
-            .map((item) => Map<String, String>.from(item)));
-      });
-    }
-
-    // Load notifications from Firestore as well
-    await _loadNotificationsFromFirestore();
-  }
-
   Future<void> _saveNotificationToFirestore(Map<String, String> notificationData) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    await firestore.collection('notifications').add(notificationData);
+    // Add notification to Firestore and get document ID
+    var docRef = await firestore.collection('notifications').add(notificationData);
+    // Update the notification map with the document ID
+    setState(() {
+      notifications[0]["id"] = docRef.id;  // Set the Firestore document ID for the new notification
+    });
   }
 
   Future<void> _loadNotificationsFromFirestore() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    QuerySnapshot querySnapshot = await firestore.collection('notifications').get();
+    QuerySnapshot querySnapshot = await firestore.collection('notifications')
+        .orderBy('date', descending: true)
+        .get();
 
     setState(() {
       notifications = querySnapshot.docs.map((doc) {
         return {
-          "title": doc["title"] as String, // Ensure it's a string
-          "preview": doc["preview"] as String, // Ensure it's a string
-          "date": doc["date"] as String, // Ensure it's a string
-          "time": doc["time"] as String, // Ensure it's a string
+          "id": doc.id,  // Store the Firestore document ID
+          "title": doc["title"] as String,
+          "preview": doc["preview"] as String,
+          "date": doc["date"] as String,
+          "time": doc["time"] as String,
         };
       }).toList();
     });
   }
 
-  void _deleteNotification(int index) {
+  void _deleteNotification(int index) async {
+    String notificationId = notifications[index]["id"];  // Get the Firestore document ID
+
+    // Remove the notification locally
     setState(() {
       notifications.removeAt(index);
     });
-    _saveNotifications();
+
+    // Delete the notification from Firestore
+    await FirebaseFirestore.instance.collection('notifications')
+        .doc(notificationId)  // Reference the notification document by its ID
+        .delete();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: notifications.isEmpty
-          ? const NotificationScreen()
+          ? const NotificationScreen()  // Handle empty notification list UI
           : ListView.builder(
         padding: const EdgeInsets.all(20),
         itemCount: notifications.length,
@@ -161,7 +157,7 @@ class _NotificationScreenRealState extends State<NotificationScreenReal> {
             time: notifications[index]["time"]!,
             profileImageUrl: "assets/images/lang-member/langmem.png",
             onDelete: () {
-              _deleteNotification(index); // Delete notification from within the item
+              _deleteNotification(index);  // Delete notification from within the item
             },
           );
         },
