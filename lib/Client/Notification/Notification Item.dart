@@ -168,7 +168,7 @@ class NotificationItem extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false), // Cancel
-                child: Text("Cancel",
+                child: Text("Cancel".tr(),
                     style: GoogleFonts.castoro(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -179,7 +179,7 @@ class NotificationItem extends StatelessWidget {
               TextButton(
                 onPressed: () =>
                     Navigator.of(context).pop(true), // Confirm Delete
-                child: Text("Delete",
+                child: Text("Delete".tr(),
                     style: GoogleFonts.castoro(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
