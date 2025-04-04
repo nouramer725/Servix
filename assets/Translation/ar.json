@@ -240,5 +240,9 @@
   "No Notification Yet": "لا توجد إشعارات بعد",
   "Your notification will appear here once if you have received them.": "ستظهر إشعاراتك هنا عندما تتلقاها.",
   "Delete Notification": "حذف الإشعار",
-  "Are you sure you want to delete this notification?": "هل أنت متأكد أنك تريد حذف هذا الإشعار؟"
+  "Are you sure you want to delete this notification?": "هل أنت متأكد أنك تريد حذف هذا الإشعار؟",
+  "User Data does not exist.": "لا يوجد مستخدم بهذه المعلومات",
+  "This account is for only technician": "هذا الحساب يستخدم فقط من قبل الفني وليس للعميل",
+  "OK": "حسنا",
+  "Switch to Client": "الانتقال كا عميل"
 }

@@ -20,13 +20,14 @@ class LocationRequestScreenClient extends StatelessWidget {
         child: Center(
           child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
                   "assets/images/location/location.png",
                   width: 391,
                   height: 346,
                 ),
-                SizedBox(height: 100),
+                SizedBox(height: 40),
                 Text(
                   "By allowing access , you consent to share your personal info with Google maps as stated in the"
                       .tr(),
@@ -54,26 +55,26 @@ class LocationRequestScreenClient extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                GradientButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GoogleMapScreenClient(
+                          phoneNumber: phoneNumber,
+                        ),
+                      ),
+                          (route) => false, // Removes all previous routes
+                    );
+                  },
+                  text: "Allow Access".tr(),
+                ),
               ],
             ),
           ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(20),
-        child: GradientButton(
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => GoogleMapScreenClient(
-                  phoneNumber: phoneNumber,
-                ),
-              ),
-              (route) => false, // Removes all previous routes
-            );
-          },
-          text: "Allow Access".tr(),
         ),
       ),
     );

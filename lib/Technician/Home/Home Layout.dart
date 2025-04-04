@@ -160,6 +160,10 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     indent: 20,
                     endIndent: 20,
                   ),
+                  _buildMenuItem(Icons.swap_horiz, "Switch to Client".tr(),
+                      onTap: () {
+                        switchToClient(context);
+                      }),
                   _buildMenuItem(Icons.person_outline, "Profile".tr(),
                       onTap: () {
                     Navigator.push(
@@ -517,4 +521,62 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('locale', locale.languageCode);
   }
+
+  Future<void> switchToClient(BuildContext context) async {
+    User? firebaseUser = FirebaseAuth.instance.currentUser;
+
+    if (firebaseUser != null) {
+      // Get a reference to the 'technician' document for the current user
+      DocumentReference technicianRef = FirebaseFirestore.instance
+          .collection('technician')
+          .doc(firebaseUser.uid);
+
+      try {
+        // Fetch the technician data
+        DocumentSnapshot technicianSnapshot = await technicianRef.get();
+
+        if (technicianSnapshot.exists) {
+          // Retrieve the technician data
+          var technicianData = technicianSnapshot.data() as Map<String, dynamic>;
+
+          String firstName = technicianData['first_name'] ?? 'Updated Name';
+          String lastName = technicianData['last_name'] ?? 'Updated Last Name';
+          String email = technicianData['email'] ?? 'Updated Email';
+          String phone = technicianData['phone'] ?? 'Updated Phone Number';
+          String gender = technicianData['gender'] ?? 'Updated Gender';
+
+          // Create a new document in the 'users' collection with the role 'Client'
+          await FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid).set({
+            'first_name': firstName,
+            'last_name': lastName,
+            'email': email,
+            'phone': phone,
+            'gender': gender,
+            'role': 'Client', // Switch role to 'Client'
+          });
+
+          // Now update the 'role' in the technician document
+          await technicianRef.update({
+            'role': 'Client', // Assuming there's a 'role' field in the 'technician' document
+          }).then((_) async {
+            // Optionally, update the Firebase Auth user's email, display name, etc.
+            await firebaseUser.updateDisplayName('$firstName $lastName');
+            await firebaseUser.updateEmail(email);
+
+            // After the role switch, navigate to the client home screen
+            Navigator.pushNamedAndRemoveUntil(
+                context, "/clientHome", (route) => false);
+          }).catchError((error) {
+            print("Failed to update technician role: $error");
+          });
+
+        } else {
+          print("Technician document not found.");
+        }
+      } catch (e) {
+        print("Failed to update role: $e");
+      }
+    }
+  }
+
 }

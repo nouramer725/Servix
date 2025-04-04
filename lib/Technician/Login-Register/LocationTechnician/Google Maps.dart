@@ -99,35 +99,35 @@ class _GoogleMapScreenTechState extends State<GoogleMapScreenTech> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-          children: [
-            // Map Widget
-            MapWidget(
-              mapController: _mapController,
-              currentLocation: _currentLocation,
-              onMapTap: _updateLocation,
-            ),
-
-            // Search Bar
-            SearchBarLocation(
-              searchController: _searchController,
-              onLocationSelected: (location) {
-                if (location != null) {
-                  LatLng newLocation = LatLng(
-                    double.parse(location['latitude']),
-                    double.parse(location['longitude']),
-                  );
-                  _updateLocation(newLocation);
-                }
-              },
-            ),
-
-            // Current Location Button
-            CurrentLocationButton(onLocationUpdated: _updateLocation),
-          ],
+      body: Stack(children: [
+        // Map Widget
+        MapWidget(
+          mapController: _mapController,
+          currentLocation: _currentLocation,
+          onMapTap: _updateLocation,
         ),
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.all(20),
+
+        // Search Bar
+        SearchBarLocation(
+          searchController: _searchController,
+          onLocationSelected: (location) {
+            if (location != null) {
+              LatLng newLocation = LatLng(
+                double.parse(location['latitude']),
+                double.parse(location['longitude']),
+              );
+              _updateLocation(newLocation);
+            }
+          },
+        ),
+
+        // Current Location Button
+        CurrentLocationButton(onLocationUpdated: _updateLocation),
+        // Save Address Button
+        Positioned(
+          bottom: 20,
+          left: 20,
+          right: 20,
           child: GradientButton(
             onPressed: () {
               Navigator.pushAndRemoveUntil(
@@ -146,6 +146,8 @@ class _GoogleMapScreenTechState extends State<GoogleMapScreenTech> {
             },
             text: "Enter Completed Address".tr(),
           ),
-        ));
+        )
+      ]),
+    );
   }
 }

@@ -137,33 +137,50 @@ class _CheckUserStateState extends State<CheckUserState> {
       final data = technicianDoc.data() as Map<String, dynamic>?;
 
       String status = data?['status'] ?? 'pending';
+      String role = data?['role'] ?? 'Technician'; // Check the role field
 
-      if (status == "approved") {
-        // ✅ Always navigate to HomeTechnician if approved
+      // Check based on the role in the technician collection
+      if (role == 'Client') {
+        // If the role is "Client", navigate to the client home screen
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/clientHome", (route) => false);
+      } else if (status == "approved") {
+        // If technician is approved, navigate to tech home screen
         Navigator.pushNamedAndRemoveUntil(
             context, "/techHome", (route) => false);
       } else {
-        // ❌ Stay on WaitingScreen if rejected or pending
+        // If rejected or pending, navigate to waiting screen
         Navigator.pushNamedAndRemoveUntil(
             context, "/waiting", (route) => false);
       }
       return;
     }
 
-    // If not a technician, check if user exists in "users" collection
+    // If not found in "technician" collection, check if user exists in "users" collection
     DocumentSnapshot userDoc = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .get();
 
     if (userDoc.exists) {
-      // If user exists in "users" collection, go to Home screen
-      Navigator.pushNamedAndRemoveUntil(
-          context, "/clientHome", (route) => false);
+      final data = userDoc.data() as Map<String, dynamic>?;
+
+      String role = data?['role'] ?? 'Client'; // Check the role field
+
+      // Check based on the role in the users collection
+      if (role == 'Client') {
+        // If the role is "Client", go to client home screen
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/clientHome", (route) => false);
+      } else {
+        // If the user has a different role (e.g., Technician), handle as needed
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/techHome", (route) => false);
+      }
       return;
     }
 
-    // If user is not found in either collection, log them out & send to sign-in choice
+    // If user is not found in either collection, log them out and send to sign-in choice
     await FirebaseAuth.instance.signOut();
     Navigator.pushNamedAndRemoveUntil(
         context, "/signinChoice", (route) => false);

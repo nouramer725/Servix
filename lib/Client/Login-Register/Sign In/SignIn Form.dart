@@ -70,8 +70,12 @@ class _SignInFormState extends State<SignInForm> {
               .collection('technician')
               .doc(user.uid)
               .get();
+          DocumentSnapshot userDoc = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .get();
 
-          if (technicianDoc.exists) {
+          if (technicianDoc.exists&& userDoc.exists) {
             // User is a Technician → Allow access to both ClientHome & TechnicianHome
             Navigator.pushReplacement(
               context,
@@ -80,11 +84,7 @@ class _SignInFormState extends State<SignInForm> {
               ),
             );
           } else {
-            if (user.emailVerified) {
-              // User is a Client → Allow access to ClientHome
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => const HomeClientLayout()));
-            } else {
+            if(!userDoc.exists){
               showDialog(
                   context: context,
                   barrierDismissible: true,
@@ -109,7 +109,7 @@ class _SignInFormState extends State<SignInForm> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              "Email not verified. Please verify your account via the email sent to you."
+                              "This account is for only technician".tr()
                                   .tr(),
                               style: const TextStyle(
                                 color: Colors.white,
@@ -138,6 +138,66 @@ class _SignInFormState extends State<SignInForm> {
                       ),
                     );
                   });
+            } else{
+              if (user.emailVerified) {
+                // User is a Client → Allow access to ClientHome
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => const HomeClientLayout()));
+              } else {
+                showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color:  ApplicationColor, // Red background
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 40,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                "Email not verified. Please verify your account via the email sent to you."
+                                    .tr(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text(
+                                  "OK".tr(),
+                                  style: const TextStyle(
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+              }
             }
           }
         }

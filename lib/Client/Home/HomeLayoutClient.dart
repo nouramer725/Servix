@@ -31,17 +31,40 @@ class HomeClientLayout extends StatefulWidget {
 
 class _HomeClientLayoutState extends State<HomeClientLayout> {
   Map<String, dynamic>? userData;
+  bool isTechnician = false; // Default to client
+  bool isClient = false; // Track if the user is in the users collection
 
-  Future<Map<String, dynamic>?> getUserData() async {
+  Future<void> getUserData() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
+      // First, check if user exists in the technicians collection
+      DocumentSnapshot technicianDoc = await FirebaseFirestore.instance
+          .collection('technician')
           .doc(user.uid)
           .get();
-      return userDoc.data() as Map<String, dynamic>?;
+
+      if (technicianDoc.exists) {
+        setState(() {
+          isTechnician = true; // Mark user as technician
+          userData = technicianDoc.data() as Map<String, dynamic>?;
+          isClient = false; // Not a client
+        });
+      } else {
+        // If not found in technicians, check users collection
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+
+        if (userDoc.exists) {
+          setState(() {
+            isTechnician = false; // Mark user as client
+            isClient = true; // Mark user as existing in users collection
+            userData = userDoc.data() as Map<String, dynamic>?;
+          });
+        }
+      }
     }
-    return null;
   }
 
   bool isDarkMode = false; // Default mode
@@ -57,15 +80,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
   @override
   void initState() {
     super.initState();
-    _loadUserData();
-  }
-
-  void _loadUserData() async {
-    var data = await getUserData();
-    if (!mounted) return;
-    setState(() {
-      userData = data;
-    });
+    getUserData();
   }
 
   @override
@@ -118,34 +133,35 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                   const SizedBox(
                     height: 50,
                   ),
-                  StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection("user-files")
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection("uploads")
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                        String personalFileUrl =
-                            snapshot.data!.docs.first['personalFileUrl'];
-                        return CircleAvatar(
+                    StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection("user-files")
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .collection("uploads")
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData && snapshot.data!.docs
+                            .isNotEmpty) {
+                          String personalFileUrl =
+                          snapshot.data!.docs.first['personalFileUrl'];
+                          return CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 40, // ✅ Adjust size
+                            backgroundImage: NetworkImage(
+                                personalFileUrl), // ✅ Fetch from Firestore
+                          );
+                        }
+                        return const CircleAvatar(
                           backgroundColor: Colors.white,
-                          radius: 40, // ✅ Adjust size
-                          backgroundImage: NetworkImage(
-                              personalFileUrl), // ✅ Fetch from Firestore
+                          radius: 40,
+                          child: Icon(
+                            Icons.person,
+                            size: 70,
+                            color: Colors.grey,
+                          ),
                         );
-                      }
-                      return const CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 40,
-                        child: Icon(
-                          Icons.person,
-                          size: 70,
-                          color: Colors.grey,
-                        ),
-                      );
-                    },
-                  ),
+                      },
+                    ),
                   const SizedBox(height: 10),
                   Text(
                     userData != null
