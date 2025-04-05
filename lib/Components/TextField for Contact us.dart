@@ -14,6 +14,11 @@ Widget customTextFieldContact({
       TextFormField(
         controller: controller,
         keyboardType: keyboardTypee,
+        style: GoogleFonts.castoro(
+          color: themeProvider.themeMode == ThemeMode.dark
+              ? Colors.white
+              : Colors.black,
+        ),
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: GoogleFonts.castoro(

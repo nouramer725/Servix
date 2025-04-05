@@ -133,35 +133,34 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                   const SizedBox(
                     height: 50,
                   ),
-                    StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection("user-files")
-                          .doc(FirebaseAuth.instance.currentUser!.uid)
-                          .collection("uploads")
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data!.docs
-                            .isNotEmpty) {
-                          String personalFileUrl =
-                          snapshot.data!.docs.first['personalFileUrl'];
-                          return CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 40, // ✅ Adjust size
-                            backgroundImage: NetworkImage(
-                                personalFileUrl), // ✅ Fetch from Firestore
-                          );
-                        }
-                        return const CircleAvatar(
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection("user-files")
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .collection("uploads")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                        String personalFileUrl =
+                            snapshot.data!.docs.first['personalFileUrl'];
+                        return CircleAvatar(
                           backgroundColor: Colors.white,
-                          radius: 40,
-                          child: Icon(
-                            Icons.person,
-                            size: 70,
-                            color: Colors.grey,
-                          ),
+                          radius: 40, // ✅ Adjust size
+                          backgroundImage: NetworkImage(
+                              personalFileUrl), // ✅ Fetch from Firestore
                         );
-                      },
-                    ),
+                      }
+                      return const CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 40,
+                        child: Icon(
+                          Icons.person,
+                          size: 70,
+                          color: Colors.grey,
+                        ),
+                      );
+                    },
+                  ),
                   const SizedBox(height: 10),
                   Text(
                     userData != null
@@ -323,13 +322,81 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                     ),
                   ),
                   _buildMenuItem(Icons.logout, "Logout".tr(), onTap: () async {
-                    await FirebaseAuth.instance.signOut();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MemberShip(),
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) => Dialog(
+                        backgroundColor:
+                            themeProvider.themeMode == ThemeMode.dark
+                                ? const Color(0xFF333739)
+                                : Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(1)), // Rounded corners
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
+                          child: Column(
+                            mainAxisSize:
+                                MainAxisSize.min, // Adjusts to content size
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  "Log out of your account?",
+                                  style: GoogleFonts.castoro(
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 20),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text(
+                                      "CANCEL",
+                                      style: GoogleFonts.castoro(
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await FirebaseAuth.instance.signOut();
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const MemberShip()),
+                                        (route) => false,
+                                      );
+                                    },
+                                    child: Text(
+                                      "LOG OUT",
+                                      style: GoogleFonts.castoro(
+                                        fontSize: 16,
+                                        color: Colors
+                                            .redAccent, // Red logout button
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      (route) => false,
                     );
                   }),
                   _buildMenuItem(Icons.delete, "Delete Account".tr(),
@@ -338,22 +405,35 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                       barrierDismissible: false,
                       context: context,
                       builder: (context) => AlertDialog(
+                        backgroundColor:
+                            themeProvider.themeMode == ThemeMode.dark
+                                ? const Color(0xFF333739)
+                                : Colors.white,
                         title: Row(
                           children: [
-                            Icon(Icons.delete_outlined,
-                                size: 25, color: ApplicationColor),
+                            Icon(Icons.delete,
+                                size: 25,
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : ApplicationColor),
                             const SizedBox(width: 8),
                             Text("Delete Account".tr(),
-                                style: GoogleFonts.charisSil(
-                                    color: ApplicationColor3,
+                                style: GoogleFonts.castoro(
+                                    color: themeProvider.themeMode ==
+                                            ThemeMode.dark
+                                        ? Colors.white
+                                        : Colors.black,
                                     fontWeight: FontWeight.bold)),
                           ],
                         ),
                         content: Text(
                             "Are you sure you want to delete your account?"
                                 .tr(),
-                            style: GoogleFonts.charisSil(
-                                color: ApplicationColor3, fontSize: 18)),
+                            style: GoogleFonts.castoro(
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontSize: 18)),
                         actions: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -363,7 +443,10 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                                 child: Text("Cancel".tr(),
                                     style: GoogleFonts.castoro(
                                         fontSize: 20,
-                                        color: ApplicationColor3,
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.white
+                                            : Colors.black,
                                         fontWeight: FontWeight.bold)),
                               ),
                               const SizedBox(width: 8),
@@ -382,7 +465,10 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                                 child: Text("Delete".tr(),
                                     style: GoogleFonts.castoro(
                                         fontSize: 20,
-                                        color: ApplicationColor,
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.redAccent
+                                            : ApplicationColor,
                                         fontWeight: FontWeight.bold)),
                               ),
                             ],

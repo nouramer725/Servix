@@ -141,7 +141,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
     } else if (!RegExp("^(?=.*[@#%^&+=])").hasMatch(password)) {
       setState(() {
         _passwordError =
-            "Password must contain at least one special character".tr();
+            "Password must include at least one special character (e.g. ! @ # \$ % ^ & *).".tr();
       });
       isValid = false;
     }

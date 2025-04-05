@@ -97,24 +97,24 @@ class _SignInFormTechState extends State<SignInFormTech> {
             DocumentReference userRef =
                 FirebaseFirestore.instance.collection('users').doc(user.uid);
             await userRef.delete();
-          } else if (userDoc.exists == false && techDoc.exists) {
-            String roleTech = techDoc['role'] ?? '';
-            if (roleTech == 'Technician') {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const HomeTechnicianLayout()),
-              );
-            }
-          } else if (userDoc.exists && techDoc.exists == false) {
-            String role = userDoc['role'] ?? '';
-            if (role == 'Technician') {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const HomeTechnicianLayout()),
-              );
-            }
+          }
+        } else if (userDoc.exists == false && techDoc.exists) {
+          String roleTech = techDoc['role'] ?? '';
+          if (roleTech == 'Technician') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const HomeTechnicianLayout()),
+            );
+          }
+        } else if (userDoc.exists && techDoc.exists == false) {
+          String role = userDoc['role'] ?? '';
+          if (role == 'Technician') {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const HomeTechnicianLayout()),
+            );
           }
         } else {
           // If user is a client, sign them out and show an alert

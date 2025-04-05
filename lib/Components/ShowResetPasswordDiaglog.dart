@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
+import '../Theme/Theme_Provider.dart';
 import '../constents/constent.dart';
 
 class ResetPasswordDialog extends StatefulWidget {
@@ -16,8 +19,12 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
 
   void _resetPassword(String email) async {
     if (email.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please enter your email".tr())),
+      Fluttertoast.showToast(
+        msg: "Please enter your email".tr(),
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
       );
       return;
     }
@@ -28,19 +35,21 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
 
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Password reset link sent! Check your email.".tr()),
-          backgroundColor: Colors.green,
-        ),
+      Fluttertoast.showToast(
+        msg: "Password reset link sent! Check your email.".tr(),
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
       );
       Navigator.pop(context);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Error: ${e.toString()}".tr()),
-          backgroundColor: Colors.red,
-        ),
+      Fluttertoast.showToast(
+        msg: "Error: ${e.toString()}".tr(),
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
       );
     }
 
@@ -51,13 +60,19 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return AlertDialog(
+      backgroundColor: themeProvider.themeMode == ThemeMode.dark
+          ? const Color(0xFF333739)
+          : Colors.white,
       title: Text(
         "Reset Password".tr(),
         style: GoogleFonts.charisSil(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: ApplicationColor,
+          color: themeProvider.themeMode == ThemeMode.dark
+              ? Colors.white
+              : ApplicationColor,
         ),
       ),
       content: TextField(
@@ -65,7 +80,21 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
         decoration: InputDecoration(
           labelText: "Enter your email".tr(),
           focusColor: ApplicationColor,
-          border: const OutlineInputBorder(),
+          labelStyle: GoogleFonts.charisSil(
+              color: Color(0xffAEAEAE)
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Color(0xffAEAEAE)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Color(0xffAEAEAE)),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Color(0xffAEAEAE)),
+          ),
         ),
         keyboardType: TextInputType.emailAddress,
       ),
@@ -88,9 +117,11 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
               : Text(
             "Send Reset Email".tr(),
             style: GoogleFonts.charisSil(
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : ApplicationColor,
               fontSize: 17,
               fontWeight: FontWeight.bold,
-              color: ApplicationColor,
             ),
           ),
         ),
