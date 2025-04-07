@@ -21,6 +21,7 @@ import '../../Language/Local_Provider.dart';
 import '../../On-Boarding/On_Boarding_Screen.dart';
 import '../../Theme/Theme_Provider.dart';
 import '../Notification/notifaction really.dart';
+import '../community forum/community_feed_screen.dart';
 
 class HomeClientLayout extends StatefulWidget {
   const HomeClientLayout({super.key});
@@ -73,6 +74,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
     const HomeClientFirstScreen(),
     const NotificationScreenReal(),
     const OrdersClient(),
+    CommunityFeedScreen(),
     const IntroScreenClient(),
   ];
   int selectedIndex = 0;
@@ -332,7 +334,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                                 : Colors.white,
                         shape: RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.circular(1)), // Rounded corners
+                                BorderRadius.circular(10)), // Rounded corners
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 10),
@@ -386,8 +388,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                                       "LOG OUT",
                                       style: GoogleFonts.castoro(
                                         fontSize: 16,
-                                        color: Colors
-                                            .redAccent, // Red logout button
+                                        color: ApplicationColor,
                                       ),
                                     ),
                                   ),
@@ -520,6 +521,14 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                     : ApplicationColor3),
             label: "Orders".tr(),
             activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.forum_outlined,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white60
+                    : ApplicationColor3),
+            label: "Community Forum".tr(),
+            activeIcon: Icon(Icons.forum, color: ApplicationColor),
           ),
           BottomNavigationBarItem(
             icon: SizedBox(
