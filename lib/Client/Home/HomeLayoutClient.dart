@@ -123,7 +123,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
         actions: [
           IconButton(
             icon: Icon(themeProvider.themeMode == ThemeMode.light
-                ? Icons.nightlight_round_sharp
+                ? Icons.dark_mode
                 : Icons.sunny),
             onPressed: () {
               final newTheme = themeProvider.themeMode == ThemeMode.light
