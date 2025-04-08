@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,11 +12,9 @@ class Privateteachingservice extends StatelessWidget {
         preferredSize: const Size.fromHeight(100.0), // Increased AppBar height
         child: AppBar(
           backgroundColor: const Color(0xffB93434),
-          iconTheme: IconThemeData(
-            color: Colors.white
-          ),
+          iconTheme: IconThemeData(color: Colors.white),
           title: Text(
-            'Private Teaching',
+            'Private Teaching'.tr(),
             style: GoogleFonts.castoro(
               fontSize: 19,
               fontWeight: FontWeight.bold,
@@ -40,29 +39,53 @@ class Privateteachingservice extends StatelessWidget {
           mainAxisSpacing: 10,
           children: [
             ServiceCard(
-              serviceName: 'Primary',
+              serviceName: 'Primary'.tr(),
               imagePath: 'assets/images/private-teaching/primary.jpg',
             ),
             ServiceCard(
-              serviceName: 'Preparatory',
+              serviceName: 'Preparatory'.tr(),
               imagePath: 'assets/images/private-teaching/Preparatory.jpg',
             ),
             ServiceCard(
-              serviceName: 'Secondary',
+              serviceName: 'Secondary'.tr(),
               imagePath: 'assets/images/private-teaching/secondary.jpg',
             ),
             ServiceCard(
-              serviceName: 'Musical Instruments',
+              serviceName: 'Musical Instrument '.tr(),
               imagePath:
-              'assets/images/private-teaching/musical-instruments.jpg',
+                  'assets/images/private-teaching/musical-instruments.jpg',
             ),
             ServiceCard(
-              serviceName: 'Religion',
+              serviceName: 'Religion'.tr(),
               imagePath: 'assets/images/private-teaching/Religion.jpg',
             ),
             ServiceCard(
-              serviceName: 'Languages',
+              serviceName: 'Languages'.tr(),
               imagePath: 'assets/images/private-teaching/Languages.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Math'.tr(),
+              imagePath: 'assets/images/private-teaching/math.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Science'.tr(),
+              imagePath: 'assets/images/private-teaching/science.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'History'.tr(),
+              imagePath: 'assets/images/private-teaching/history.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Geography'.tr(),
+              imagePath: 'assets/images/private-teaching/geography.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Art'.tr(),
+              imagePath: 'assets/images/private-teaching/art.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Physical Education'.tr(),
+              imagePath: 'assets/images/private-teaching/pe.jpg',
             ),
           ],
         ),

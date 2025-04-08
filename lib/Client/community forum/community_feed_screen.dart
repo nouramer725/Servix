@@ -3,14 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
+import '../../Theme/Theme_Provider.dart';
 
 class CommunityFeedScreen extends StatelessWidget {
   final TextEditingController _commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Padding(
@@ -45,7 +48,9 @@ class CommunityFeedScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  color: Colors.white,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.grey[500]
+                      : Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -164,10 +169,14 @@ class CommunityFeedScreen extends StatelessWidget {
                                 onTap: () {
                                   _showCommentsBottomSheet(context, postId);
                                 },
-                                child: const Row(
+                                child: Row(
                                   children: [
                                     Icon(Icons.mode_comment_outlined,
-                                        color: Colors.grey, size: 20),
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.black54
+                                            : Colors.grey,
+                                        size: 20),
                                     SizedBox(width: 4),
                                     Text("Comment"),
                                   ],
@@ -179,12 +188,16 @@ class CommunityFeedScreen extends StatelessWidget {
                                   _shareQuote(
                                       data['content'], data['username']);
                                 },
-                                child: const Row(
+                                child: Row(
                                   children: [
                                     Icon(Icons.reply,
-                                        color: Colors.grey, size: 20),
-                                    SizedBox(width: 4),
-                                    Text("Share"),
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.black54
+                                            : Colors.grey,
+                                        size: 20),
+                                    const SizedBox(width: 4),
+                                    const Text("Share"),
                                   ],
                                 ),
                               ),
@@ -216,25 +229,42 @@ class CommunityFeedScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Create a Post'),
+          title: Text('Create a Post',
+              style: GoogleFonts.castoro(
+                fontSize: 30,
+              )),
           content: TextField(
             controller: _contentController,
             decoration: const InputDecoration(hintText: "What's on your mind?"),
+            style: GoogleFonts.castoro(
+              fontSize: 20,
+            ),
             maxLines: 4,
           ),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close dialog without posting
+                Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: Text(
+                'Cancel',
+                style: GoogleFonts.castoro(
+                  color: Colors.black,
+                  fontSize: 23,
+                ),
+              ),
             ),
             TextButton(
               onPressed: () {
-                _uploadPost(
-                    context, _contentController); // Call upload post function
+                _uploadPost(context, _contentController);
               },
-              child: const Text('Post'),
+              child: Text(
+                'Post',
+                style: GoogleFonts.castoro(
+                  fontSize: 23,
+                  color: ApplicationColor,
+                ),
+              ),
             ),
           ],
         );

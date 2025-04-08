@@ -89,6 +89,19 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
             },
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(themeProvider.themeMode == ThemeMode.light
+                ? Icons.dark_mode
+                : Icons.light_mode),
+            onPressed: () {
+              final newTheme = themeProvider.themeMode == ThemeMode.light
+                  ? ThemeMode.dark
+                  : ThemeMode.light;
+              themeProvider.setThemeMode(newTheme);
+            },
+          )
+        ],
       ),
       drawer: Drawer(
         backgroundColor: themeProvider.themeMode == ThemeMode.dark

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../Components/service_card.dart';
@@ -14,7 +15,7 @@ class DeliveryServices extends StatelessWidget {
               color: Colors.white
           ),
           title: Text(
-            'Delivery \nServices',
+            'Delivery Services'.tr(),
             style: GoogleFonts.castoro(
               fontSize: 19,
               fontWeight: FontWeight.bold,
@@ -40,32 +41,68 @@ class DeliveryServices extends StatelessWidget {
           mainAxisSpacing: 10,
           children: [
             ServiceCard(
-              serviceName: 'School delivery',
+              serviceName: 'School delivery'.tr(),
               imagePath: 'assets/images/delivery/school.jpg',
             ),
             ServiceCard(
-              serviceName: 'Spend',
+              serviceName: 'Spend'.tr(),
               imagePath: 'assets/images/delivery/spend.jpg',
             ),
             ServiceCard(
-              serviceName: 'Taxi',
+              serviceName: 'Taxi'.tr(),
               imagePath: 'assets/images/delivery/Taxi.jpg',
             ),
             ServiceCard(
-              serviceName: 'Bus',
+              serviceName: 'Bus'.tr(),
               imagePath: 'assets/images/delivery/bus.jpg',
             ),
             ServiceCard(
-              serviceName: 'Truck',
+              serviceName: 'Truck'.tr(),
               imagePath: 'assets/images/delivery/truck.jpg',
             ),
             ServiceCard(
-              serviceName: 'Scooter',
+              serviceName: 'Scooter'.tr(),
               imagePath: 'assets/images/delivery/scooter.jpg',
             ),
             ServiceCard(
-              serviceName: 'Loader Truck',
+              serviceName: 'Loader Truck'.tr(),
               imagePath: 'assets/images/delivery/loader.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Motorcycle'.tr(),
+              imagePath: 'assets/images/delivery/motorcycle.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Food Delivery'.tr(),
+              imagePath: 'assets/images/delivery/food_delivery.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Courier'.tr(),
+              imagePath: 'assets/images/delivery/courier.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Furniture Delivery'.tr(),
+              imagePath: 'assets/images/delivery/furniture_delivery.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Grocery Delivery'.tr(),
+              imagePath: 'assets/images/delivery/grocery_delivery.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Parcel Delivery'.tr(),
+              imagePath: 'assets/images/delivery/parcel_delivery.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Mail Delivery'.tr(),
+              imagePath: 'assets/images/delivery/mail_delivery.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Moving Services'.tr(),
+              imagePath: 'assets/images/delivery/moving_services.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Flower Delivery'.tr(),
+              imagePath: 'assets/images/delivery/flower_delivery.jpg',
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +67,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Search',
+          'Search'.tr(),
           style: GoogleFonts.castoro(fontSize: 25, fontWeight: FontWeight.bold, color: themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black),
         ),
       ),
@@ -87,7 +88,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 if (value.isNotEmpty) saveSearch(value);
               },
               decoration: InputDecoration(
-                hintText: "Search for services",
+                hintText: 'Search for services'.tr(),
                 hintStyle: GoogleFonts.castoro(
                     fontSize: 20, color: const Color(0xFFA9A9A9)),
                 suffixIcon: const Icon(Icons.search, color: Color(0xFFE0DFDF)),
@@ -156,7 +157,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "No results found",
+                            "No results found".tr(),
                             style: GoogleFonts.castoro(fontSize: 18, color: themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black),
                           ),
                         ],
@@ -168,7 +169,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             const SizedBox(height: 20),
             Text(
-              "Which service do you need today?",
+              "Which service do you need today?".tr(),
               style: GoogleFonts.cantataOne(
                 fontSize: 20,
                 fontWeight: FontWeight.w400,
@@ -184,48 +185,40 @@ class _SearchScreenState extends State<SearchScreen> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  serviceItem("assets/images/care/Elder.jpg", "Elder",
+                  serviceItem("assets/images/care/Elder.jpg", "Elder".tr(),
                       context, Careservice()),
                   const SizedBox(
                     width: 5,
                   ),
                   serviceItem("assets/images/delivery/school.jpg",
-                      "School Delivery", context, DeliveryServices()),
+                      "School Delivery".tr(), context, DeliveryServices()),
                   const SizedBox(
                     width: 5,
                   ),
                   serviceItem("assets/images/devices/Washing.jpg",
-                      "Washing Machine", context, DevicesMaintenaceService()),
+                      "Washing Machine".tr(), context, DevicesMaintenaceService()),
                   const SizedBox(
                     width: 5,
                   ),
                   serviceItem("assets/images/home-service/Carpentry.jpg",
-                      "Carpentry", context, HomeService()),
+                      "Carpentry".tr(), context, HomeService()),
                   const SizedBox(
                     width: 5,
                   ),
-                  serviceItem("assets/images/men/massage-man.jpg", "Massage",
+                  serviceItem("assets/images/men/massage-man.jpg", "Massage".tr(),
                       context, Manservice()),
                   const SizedBox(
                     width: 5,
                   ),
                   serviceItem(
-                      "assets/images/private-teaching/musical-instruments.jpg",
-                      "Musical instruments",
-                      context,
-                      Privateteachingservice()),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  serviceItem(
                       "assets/images/home-service/Kitchentechnician.jpg",
-                      "Kitchen Technician",
+                      "Kitchen Technician".tr(),
                       context,
                       HomeService()),
                   const SizedBox(
                     width: 5,
                   ),
-                  serviceItem("assets/images/woman/nails.jpg", "Nails",
+                  serviceItem("assets/images/woman/nails.jpg", "Nails".tr(),
                       context, Womenservice()),
                 ],
               ),
@@ -236,7 +229,7 @@ class _SearchScreenState extends State<SearchScreen> {
             // Recent Searches Section
             if (recentSearches.isNotEmpty) ...[
               Text(
-                "Recent Searches:",
+                "Recent Searches:".tr(),
                 style: GoogleFonts.cantataOne(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

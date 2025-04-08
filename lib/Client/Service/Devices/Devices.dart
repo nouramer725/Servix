@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Components/service_card.dart';
@@ -10,19 +11,12 @@ class DevicesMaintenaceService extends StatelessWidget {
         preferredSize: const Size.fromHeight(100.0), // Increased AppBar height
         child: AppBar(
           backgroundColor: const Color(0xff69B5BB),
-          // leading: IconButton(
-          //   icon: Icon(Icons.arrow_back, color: Colors.white),
-          //   onPressed: () {},
-          // ),
-          title: const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Devices \nMaintenace',
-              style: TextStyle(
-                fontSize: 19,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+          title: Text(
+            'Devices Maintenance'.tr(),
+            style: TextStyle(
+              fontSize: 19,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
           flexibleSpace: Container(
@@ -44,44 +38,80 @@ class DevicesMaintenaceService extends StatelessWidget {
           mainAxisSpacing: 10,
           children: [
             ServiceCard(
-              serviceName: 'Mobile',
+              serviceName: 'Mobile'.tr(),
               imagePath: 'assets/images/devices/mobile.jpg',
             ),
             ServiceCard(
-              serviceName: 'Air Conditioning',
+              serviceName: 'Air Conditioning'.tr(),
               imagePath: 'assets/images/devices/air.jpg',
             ),
             ServiceCard(
-              serviceName: 'Computer',
+              serviceName: 'Computer'.tr(),
               imagePath: 'assets/images/devices/computer.jpg',
             ),
             ServiceCard(
-              serviceName: 'Fridge',
+              serviceName: 'Fridge'.tr(),
               imagePath: 'assets/images/devices/fridge.jpg',
             ),
             ServiceCard(
-              serviceName: 'Washing Machine',
+              serviceName: 'Washing Machine'.tr(),
               imagePath: 'assets/images/devices/Washing.jpg',
             ),
             ServiceCard(
-              serviceName: 'Stove',
+              serviceName: 'Stove'.tr(),
               imagePath: 'assets/images/devices/stove.jpg',
             ),
             ServiceCard(
-              serviceName: 'Screen',
+              serviceName: 'Screen'.tr(),
               imagePath: 'assets/images/devices/screen.jpg',
             ),
             ServiceCard(
-              serviceName: 'Microwave',
+              serviceName: 'Microwave'.tr(),
               imagePath: 'assets/images/devices/microwave.jpg',
             ),
             ServiceCard(
-              serviceName: 'Water Heating',
+              serviceName: 'Water Heating'.tr(),
               imagePath: 'assets/images/devices/water-heating.jpg',
             ),
             ServiceCard(
-              serviceName: 'Fan',
+              serviceName: 'Fan'.tr(),
               imagePath: 'assets/images/devices/fan.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Refrigerator'.tr(),
+              imagePath: 'assets/images/devices/refrigerator.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Coffee Machine'.tr(),
+              imagePath: 'assets/images/devices/coffee_machine.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Toaster'.tr(),
+              imagePath: 'assets/images/devices/toaster.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Iron'.tr(),
+              imagePath: 'assets/images/devices/iron.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Vacuum Cleaner'.tr(),
+              imagePath: 'assets/images/devices/vacuum_cleaner.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Air Fryer'.tr(),
+              imagePath: 'assets/images/devices/air_fryer.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Electric Kettle'.tr(),
+              imagePath: 'assets/images/devices/electric_kettle.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Sewing Machine'.tr(),
+              imagePath: 'assets/images/devices/sewing_machine.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Blender'.tr(),
+              imagePath: 'assets/images/devices/blender.jpg',
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../Components/service_card.dart';
@@ -11,10 +12,10 @@ class HomeService extends StatelessWidget {
         child: AppBar(
           backgroundColor: const Color(0xffE57D38),
           iconTheme: IconThemeData(
-            color: Colors.white, // Change the color of the back button
+            color: Colors.white,
           ),
           title: Text(
-            'Home Service',
+            'Home Service'.tr(),
             style: GoogleFonts.castoro(
               fontSize: 19,
               fontWeight: FontWeight.bold,
@@ -39,36 +40,72 @@ class HomeService extends StatelessWidget {
           mainAxisSpacing: 10,
           children: [
             ServiceCard(
-              serviceName: 'Cleaning',
+              serviceName: 'Cleaning'.tr(),
               imagePath: 'assets/images/home-service/cleaning.jpg',
             ),
             ServiceCard(
-              serviceName: 'Carpentry',
+              serviceName: 'Carpentry'.tr(),
               imagePath: 'assets/images/home-service/Carpentry.jpg',
             ),
             ServiceCard(
-              serviceName: 'Electricity',
+              serviceName: 'Electricity'.tr(),
               imagePath: 'assets/images/home-service/Electricity.jpg',
             ),
             ServiceCard(
-              serviceName: 'Plumbing',
+              serviceName: 'Plumbing'.tr(),
               imagePath: 'assets/images/home-service/Plumbing.jpg',
             ),
             ServiceCard(
-              serviceName: 'Kitchen Technician',
+              serviceName: 'Kitchen Technician'.tr(),
               imagePath: 'assets/images/home-service/Kitchentechnician.jpg',
             ),
             ServiceCard(
-              serviceName: 'Painting',
+              serviceName: 'Painting'.tr(),
               imagePath: 'assets/images/home-service/painting.jpg',
             ),
             ServiceCard(
-              serviceName: 'Camera Technician',
+              serviceName: 'Camera Technician'.tr(),
               imagePath: 'assets/images/home-service/camera.jpg',
             ),
             ServiceCard(
-              serviceName: 'Landscaper',
+              serviceName: 'Gardener'.tr(),
               imagePath: 'assets/images/home-service/LandScaper.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Tiling'.tr(),
+              imagePath: 'assets/images/home-service/tiling.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Pest Control'.tr(),
+              imagePath: 'assets/images/home-service/pest_control.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Masonry'.tr(),
+              imagePath: 'assets/images/home-service/masonry.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Roofing'.tr(),
+              imagePath: 'assets/images/home-service/roofing.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Furniture Assembly'.tr(),
+              imagePath: 'assets/images/home-service/furniture_assembly.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Window Cleaning'.tr(),
+              imagePath: 'assets/images/home-service/window_cleaning.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Car Detailing'.tr(),
+              imagePath: 'assets/images/home-service/car_detailing.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Laundry Service'.tr(),
+              imagePath: 'assets/images/home-service/laundry.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Handyman'.tr(),
+              imagePath: 'assets/images/home-service/handyman.jpg',
             ),
           ],
         ),

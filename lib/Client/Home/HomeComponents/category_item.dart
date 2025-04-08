@@ -2,23 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'Model/Category.dart';
 
-
 class CategoryItem extends StatelessWidget {
-  const CategoryItem({super.key, required this.category, required this.index,required this.onTap});
+  const CategoryItem(
+      {super.key,
+      required this.category,
+      required this.index,
+      required this.onTap});
 
   final Category category;
-  final int index;// Determines layout
+  final int index; // Determines layout
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    bool isImageOnRight = index.isEven; // Even index → Image on right, Text on left
+    bool isImageOnRight =
+        index.isEven; // Even index → Image on right, Text on left
 
     return Padding(
-      padding: const EdgeInsets.only(left: 25, right: 25, top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
       child: GestureDetector(
         onTap: onTap,
-
         child: Container(
           width: double.infinity,
           height: 160,
@@ -35,6 +38,7 @@ class CategoryItem extends StatelessWidget {
       ),
     );
   }
+
   // Image on the right
   List<Widget> _buildRowWithImageOnRight() {
     return [
@@ -47,6 +51,7 @@ class CategoryItem extends StatelessWidget {
       ),
     ];
   }
+
   // Image on the left
   List<Widget> _buildRowWithImageOnLeft() {
     return [
@@ -59,6 +64,7 @@ class CategoryItem extends StatelessWidget {
       _buildTextContainer(),
     ];
   }
+
   Widget _buildTextContainer() {
     return Expanded(
       child: FittedBox(
@@ -67,7 +73,7 @@ class CategoryItem extends StatelessWidget {
           maxLines: 5,
           overflow: TextOverflow.ellipsis,
           category.categoryname,
-          style:  GoogleFonts.castoro(
+          style: GoogleFonts.castoro(
             color: Colors.white,
             fontSize: 28,
           ),

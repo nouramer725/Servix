@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../Components/service_card.dart';
@@ -10,11 +11,9 @@ class Careservice extends StatelessWidget {
         preferredSize: const Size.fromHeight(100.0), // Increased AppBar height
         child: AppBar(
           backgroundColor: const Color(0xffF7C86E),
-          iconTheme: IconThemeData(
-              color: Colors.white
-          ),
+          iconTheme: IconThemeData(color: Colors.white),
           title: Text(
-            'Care Service',
+            'Care Service'.tr(),
             style: GoogleFonts.castoro(
               fontSize: 19,
               fontWeight: FontWeight.bold,
@@ -40,24 +39,68 @@ class Careservice extends StatelessWidget {
           mainAxisSpacing: 10,
           children: [
             ServiceCard(
-              serviceName: 'Elder',
+              serviceName: 'Elder'.tr(),
               imagePath: 'assets/images/care/Elder.jpg',
             ),
             ServiceCard(
-              serviceName: 'Children',
+              serviceName: 'Children'.tr(),
               imagePath: 'assets/images/care/children.jpg',
             ),
             ServiceCard(
-              serviceName: 'Nursing',
+              serviceName: 'Nursing'.tr(),
               imagePath: 'assets/images/care/nursing.jpg',
             ),
             ServiceCard(
-              serviceName: 'Pet',
+              serviceName: 'Pet'.tr(),
               imagePath: 'assets/images/care/pet.jpg',
             ),
             ServiceCard(
-              serviceName: 'Disability',
+              serviceName: 'Disability'.tr(),
               imagePath: 'assets/images/care/disability.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Mental Health'.tr(),
+              imagePath: 'assets/images/care/mental_health.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Hospice'.tr(),
+              imagePath: 'assets/images/care/hospice.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Physiotherapy'.tr(),
+              imagePath: 'assets/images/care/physiotherapy.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Speech Therapy'.tr(),
+              imagePath: 'assets/images/care/speech_therapy.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Home Health Care'.tr(),
+              imagePath: 'assets/images/care/home_health.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Pregnancy Care'.tr(),
+              imagePath: 'assets/images/care/pregnancy_care.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Post Surgery Care'.tr(),
+              imagePath: 'assets/images/care/post_surgery.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Infant Care'.tr(),
+              imagePath: 'assets/images/care/infant_care.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Disabled Children'.tr(),
+              imagePath: 'assets/images/care/disabled_children.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Rehabilitation Care'.tr(),
+              imagePath: 'assets/images/care/rehabilitation.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Personal Care'.tr(),
+              imagePath: 'assets/images/care/personal_care.jpg',
             ),
           ],
         ),

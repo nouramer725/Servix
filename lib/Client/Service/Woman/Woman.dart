@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../Components/service_card.dart';
@@ -14,7 +15,7 @@ class Womenservice extends StatelessWidget {
               color: Colors.white
           ),
           title: Text(
-            'For Women',
+            'For Women'.tr(),
             style: GoogleFonts.castoro(
               fontSize: 19,
               fontWeight: FontWeight.bold,
@@ -40,36 +41,68 @@ class Womenservice extends StatelessWidget {
           mainAxisSpacing: 10,
           children: [
             ServiceCard(
-              serviceName: 'Hair Styling',
+              serviceName: 'Hair Styling'.tr(),
               imagePath: 'assets/images/woman/hair-styling.jpg',
             ),
             ServiceCard(
-              serviceName: 'henna',
+              serviceName: 'Henna'.tr(),
               imagePath: 'assets/images/woman/henna.jpg',
             ),
             ServiceCard(
-              serviceName: 'Tailoring',
+              serviceName: 'Tailoring'.tr(),
               imagePath: 'assets/images/woman/tailoring-woman.jpg',
             ),
             ServiceCard(
-              serviceName: 'Massage',
+              serviceName: 'Massage'.tr(),
               imagePath: 'assets/images/woman/massage-woman.jpg',
             ),
             ServiceCard(
-              serviceName: 'Private Coach',
+              serviceName: 'Private Coach'.tr(),
               imagePath: 'assets/images/woman/Privatecoach-woman.jpg',
             ),
             ServiceCard(
-              serviceName: 'Makeup Artist',
+              serviceName: 'Makeup Artist'.tr(),
               imagePath: 'assets/images/woman/Makeup.jpg',
             ),
             ServiceCard(
-              serviceName: 'Nails',
+              serviceName: 'Nails'.tr(),
               imagePath: 'assets/images/woman/nails.jpg',
             ),
             ServiceCard(
-              serviceName: 'Padicure',
+              serviceName: 'Pedicure'.tr(),
               imagePath: 'assets/images/woman/padicure.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Facial'.tr(),
+              imagePath: 'assets/images/woman/facial.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Spa'.tr(),
+              imagePath: 'assets/images/woman/spa.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Waxing'.tr(),
+              imagePath: 'assets/images/woman/waxing.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Eyebrow Threading'.tr(),
+              imagePath: 'assets/images/woman/eyebrow-threading.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Bridal Makeup'.tr(),
+              imagePath: 'assets/images/woman/bridal-makeup.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Skincare'.tr(),
+              imagePath: 'assets/images/woman/skincare.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Body Massage'.tr(),
+              imagePath: 'assets/images/woman/body-massage.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Hair Treatment'.tr(),
+              imagePath: 'assets/images/woman/hair-treatment.jpg',
             ),
           ],
         ),

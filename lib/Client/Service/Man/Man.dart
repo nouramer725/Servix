@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../Components/service_card.dart';
@@ -10,11 +11,9 @@ class Manservice extends StatelessWidget {
         preferredSize: const Size.fromHeight(100.0), // Increased AppBar height
         child: AppBar(
           backgroundColor: const Color(0xff305D67),
-          iconTheme: IconThemeData(
-              color: Colors.white
-          ),
+          iconTheme: IconThemeData(color: Colors.white),
           title: Text(
-            'For Men',
+            'For Men'.tr(),
             style: GoogleFonts.castoro(
               fontSize: 19,
               fontWeight: FontWeight.bold,
@@ -40,20 +39,64 @@ class Manservice extends StatelessWidget {
           mainAxisSpacing: 10,
           children: [
             ServiceCard(
-              serviceName: 'Shaving',
+              serviceName: 'Shaving'.tr(),
               imagePath: 'assets/images/men/Shaving.jpg',
             ),
             ServiceCard(
-              serviceName: 'Tailoring',
+              serviceName: 'Tailoring'.tr(),
               imagePath: 'assets/images/men/Tailoring-man.jpg',
             ),
             ServiceCard(
-              serviceName: 'Massage',
+              serviceName: 'Massage'.tr(),
               imagePath: 'assets/images/men/massage-man.jpg',
             ),
             ServiceCard(
-              serviceName: 'Private Coach',
+              serviceName: 'Private Coach'.tr(),
               imagePath: 'assets/images/men/Privatecoach-man.jpeg',
+            ),
+            ServiceCard(
+              serviceName: 'Haircut'.tr(),
+              imagePath: 'assets/images/men/haircut.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Grooming'.tr(),
+              imagePath: 'assets/images/men/grooming.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Shower'.tr(),
+              imagePath: 'assets/images/men/shower.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Personal Shopper'.tr(),
+              imagePath: 'assets/images/men/personal-shopper.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Yoga Instructor'.tr(),
+              imagePath: 'assets/images/men/yoga.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Personal Chef'.tr(),
+              imagePath: 'assets/images/men/personal-chef.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Fitness Trainer'.tr(),
+              imagePath: 'assets/images/men/fitness-trainer.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Boxing Coach'.tr(),
+              imagePath: 'assets/images/men/boxing-coach.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Nutritionist'.tr(),
+              imagePath: 'assets/images/men/nutritionist.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Shoe Cleaning'.tr(),
+              imagePath: 'assets/images/men/shoe-cleaning.jpg',
+            ),
+            ServiceCard(
+              serviceName: 'Fashion Consultant'.tr(),
+              imagePath: 'assets/images/men/fashion-consultant.jpg',
             ),
           ],
         ),
