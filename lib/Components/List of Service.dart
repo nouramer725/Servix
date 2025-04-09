@@ -9,7 +9,7 @@ final Map<String, List<String>> subServicesMap = {
     "Kitchen Technician".tr(),
     "Painting".tr(),
     "Camera Technician".tr(),
-    "LandScaper".tr()
+    "Gardener".tr()
   ],
   "Private Teaching".tr(): [
     "Primary".tr(),
