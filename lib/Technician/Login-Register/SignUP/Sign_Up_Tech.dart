@@ -66,9 +66,9 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
     DateTime now = DateTime.now();
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime(now.year - 18), // default to 18 years old
-      firstDate: DateTime(1900),
-      lastDate: now,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(

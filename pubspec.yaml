@@ -73,6 +73,7 @@ dependencies:
   hexcolor: ^3.0.1
   font_awesome_flutter: ^10.8.0
   flutter_rating_bar: ^4.0.1
+  mime: ^2.0.0
 
   firebase_messaging: ^15.2.5
   flutter_local_notifications: ^18.0.1
