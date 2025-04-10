@@ -343,7 +343,12 @@
   "Please select a date.": "Please select a date.",
   "Please select a time.": "Please select a time.",
   "Please upload at least one photo or video.": "Please upload at least one photo or video.",
-  "Select your Location": "Select your Location"
+  "Select your Location": "Select your Location",
+  "Offers": "Offers",
+  "No Offers Yet": "No Offers Yet",
+  "Your Offers will appear here once if you’ve received them.": "Your Offers will appear here once if you’ve received them."
+
+
 
 
 }
