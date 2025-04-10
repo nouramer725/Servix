@@ -344,7 +344,19 @@
   "No results found": "لم يتم العثور على نتائج",
   "Which service do you need today?": "ما هي الخدمة التي تحتاجها اليوم؟",
   "Recent Searches:": "البحث الأخير:",
-  "Community Forum": "منتدى المجتمع"
+  "Community Forum": "منتدى المجتمع",
+  "The Description": "الوصف",
+  "Please write your service description here": "يرجى كتابة وصف الخدمة هنا",
+  "Choose Your Preferred Date": "اختر التاريخ المفضل لديك",
+  "Choose Your Preferred Time": "اختر الوقت المفضل لديك",
+  "Upload Photo or Video": "تحميل صورة أو فيديو",
+  "         -> Maximum 10 files": "-> الحد الأقصى 10 ملفات",
+  "         -> Long Tap on the uploaded file to preview": "-> اضغط مطولاً على الملف المحمّل للمعاينة",
+  "Description is required.": "الوصف مطلوب.",
+  "Please select a date.": "يرجى اختيار التاريخ.",
+  "Please select a time.": "يرجى اختيار الوقت.",
+  "Please upload at least one photo or video.": "يرجى تحميل صورة أو فيديو واحد على الأقل.",
+  "Select your Location": "اختر موقعك"
 
 
 }

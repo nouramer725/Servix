@@ -331,6 +331,19 @@
   "No results found": "No results found",
   "Which service do you need today?": "Which service do you need today?",
   "Recent Searches:": "Recent Searches:",
-  "Community Forum": "Community Forum"
+  "Community Forum": "Community Forum",
+  "The Description": "The Description",
+  "Please write your service description here": "Please write your service description here",
+  "Choose Your Preferred Date": "Choose Your Preferred Date",
+  "Choose Your Preferred Time": "Choose Your Preferred Time",
+  "Upload Photo or Video": "Upload Photo or Video",
+  "         -> Maximum 10 files": "         -> Maximum 10 files",
+  "         -> Long Tap on the uploaded file to preview": "         -> Long Tap on the uploaded file to preview",
+  "Description is required.": "Description is required.",
+  "Please select a date.": "Please select a date.",
+  "Please select a time.": "Please select a time.",
+  "Please upload at least one photo or video.": "Please upload at least one photo or video.",
+  "Select your Location": "Select your Location"
+
 
 }
