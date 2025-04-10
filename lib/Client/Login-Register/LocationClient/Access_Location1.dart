@@ -6,9 +6,7 @@ import '../../../Components/Buttons.dart';
 import 'Google Maps.dart';
 
 class LocationRequestScreenClient extends StatelessWidget {
-  final String phoneNumber;
-
-  const LocationRequestScreenClient({super.key, required this.phoneNumber});
+  const LocationRequestScreenClient({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +25,13 @@ class LocationRequestScreenClient extends StatelessWidget {
                   width: 391,
                   height: 346,
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 Text(
                   "By allowing access , you consent to share your personal info with Google maps as stated in the"
                       .tr(),
                   style: GoogleFonts.charisSil(
                     fontSize: 16,
-                    color: Color(0xFF7D7C7C),
+                    color: const Color(0xFF7D7C7C),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -42,7 +40,7 @@ class LocationRequestScreenClient extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PrivacyPolicy(),
+                          builder: (context) => const PrivacyPolicy(),
                         ));
                   },
                   child: Text(
@@ -50,12 +48,12 @@ class LocationRequestScreenClient extends StatelessWidget {
                     style: GoogleFonts.charisSil(
                       decoration: TextDecoration.underline,
                       fontSize: 16,
-                      color: Color(0xFF6D6C6C),
+                      color: const Color(0xFF6D6C6C),
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 GradientButton(
@@ -63,11 +61,9 @@ class LocationRequestScreenClient extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => GoogleMapScreenClient(
-                          phoneNumber: phoneNumber,
-                        ),
+                        builder: (context) => const GoogleMapScreenClient(),
                       ),
-                          (route) => false, // Removes all previous routes
+                      (route) => false, // Removes all previous routes
                     );
                   },
                   text: "Allow Access".tr(),

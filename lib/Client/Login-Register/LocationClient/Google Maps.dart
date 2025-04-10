@@ -12,9 +12,7 @@ import 'Google maps Components/Search Bar.dart';
 import 'Save_Address.dart';
 
 class GoogleMapScreenClient extends StatefulWidget {
-  final String phoneNumber;
-
-  const GoogleMapScreenClient({super.key, required this.phoneNumber});
+  const GoogleMapScreenClient({super.key});
 
   @override
   _GoogleMapScreenClientState createState() => _GoogleMapScreenClientState();
@@ -142,7 +140,6 @@ class _GoogleMapScreenClientState extends State<GoogleMapScreenClient> {
                             streetName: _streetName,
                             latitude: _currentLocation.latitude,
                             longitude: _currentLocation.longitude,
-                            phoneNumber: widget.phoneNumber,
                           )),
                   (route) => false,
                 );
