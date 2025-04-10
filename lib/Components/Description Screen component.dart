@@ -310,6 +310,7 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
     if (user == null) return;
 
     String userId = user.uid;
+    String orderId = FirebaseFirestore.instance.collection('Orders').doc().id;
     List<String> fileUrls = [];
 
     for (var filePath in filepath) {
@@ -320,35 +321,41 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
       }
     }
 
-    // Point to the subcollection 'orders' under the user's document
     CollectionReference userOrders = FirebaseFirestore.instance
         .collection('Services made by user')
         .doc(userId)
         .collection('Services Request');
 
     try {
-      await userOrders.add({
+      await userOrders.doc(orderId).set({
+        'orderId': orderId,
         'userId': userId,
         'description': description,
         'createdAt': FieldValue.serverTimestamp(),
         'serviceTitle': serviceTitle,
         'imagePath': imagePath,
         'fileUrls': fileUrls,
+        'selectedDate': selectedDate!.toIso8601String(),
+        'selectedTime': selectedTime!.format(context),
       });
 
       Fluttertoast.showToast(
         msg: "Service details saved successfully!".tr(),
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
-        textColor: Colors.white,
+        textColor:Colors.white,
         fontSize: 16.0,
       );
+      //required accept
+
+      // Navigate to Location screen with orderId
       Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LocationPosting(),
-          ));
+        context,
+        MaterialPageRoute(
+          builder: (context) => LocationPosting(orderId: orderId),
+        ),
+      );
     } catch (e) {
       Fluttertoast.showToast(
         msg: "Error saving data".tr(),

@@ -13,10 +13,12 @@ import '../Google maps Components/Search Bar.dart';
 import '../Save_Address.dart';
 
 class GoogleMapNewScreenClient extends StatefulWidget {
-  const GoogleMapNewScreenClient({super.key});
+  final String orderId;
+  const GoogleMapNewScreenClient({super.key, required this.orderId});
 
   @override
-  _GoogleMapNewScreenClientState createState() => _GoogleMapNewScreenClientState();
+  _GoogleMapNewScreenClientState createState() =>
+      _GoogleMapNewScreenClientState();
 }
 
 class _GoogleMapNewScreenClientState extends State<GoogleMapNewScreenClient> {
@@ -138,6 +140,7 @@ class _GoogleMapNewScreenClientState extends State<GoogleMapNewScreenClient> {
                   MaterialPageRoute(
                       builder: (context) => SaveNewAddressScreenClient(
                           areaName: _areaName,
+                          orderId: widget.orderId,
                           streetName: _streetName,
                           latitude: _currentLocation.latitude,
                           longitude: _currentLocation.longitude)),

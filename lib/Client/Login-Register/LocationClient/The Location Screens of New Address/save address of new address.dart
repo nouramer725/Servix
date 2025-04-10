@@ -15,6 +15,7 @@ class SaveNewAddressScreenClient extends StatefulWidget {
   final String streetName;
   final double latitude;
   final double longitude;
+  final String orderId;
 
   const SaveNewAddressScreenClient({
     Key? key,
@@ -22,6 +23,7 @@ class SaveNewAddressScreenClient extends StatefulWidget {
     required this.streetName,
     required this.latitude,
     required this.longitude,
+    required this.orderId,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,8 @@ class SaveNewAddressScreenClient extends StatefulWidget {
       _SaveNewAddressScreenClientState();
 }
 
-class _SaveNewAddressScreenClientState extends State<SaveNewAddressScreenClient> {
+class _SaveNewAddressScreenClientState
+    extends State<SaveNewAddressScreenClient> {
   User? user = FirebaseAuth.instance.currentUser;
 
   final TextEditingController _buildingController = TextEditingController();
@@ -45,7 +48,7 @@ class _SaveNewAddressScreenClientState extends State<SaveNewAddressScreenClient>
   bool _validateFields() {
     setState(() {
       _buildingError =
-      _buildingController.text.isEmpty ? 'Building Name is required' : null;
+          _buildingController.text.isEmpty ? 'Building Name is required' : null;
       _aptError = _aptController.text.isEmpty ? 'Apt. No. is required' : null;
     });
 
@@ -87,7 +90,9 @@ class _SaveNewAddressScreenClientState extends State<SaveNewAddressScreenClient>
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const NewAddress(),
+          builder: (context) => NewAddress(
+            orderId: widget.orderId, // Pass the orderId here
+          ),
         ),
       );
     } catch (e) {
@@ -131,7 +136,7 @@ class _SaveNewAddressScreenClientState extends State<SaveNewAddressScreenClient>
                     children: [
                       TileLayer(
                         urlTemplate:
-                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                         subdomains: ['a', 'b', 'c'],
                       ),
                       MarkerLayer(

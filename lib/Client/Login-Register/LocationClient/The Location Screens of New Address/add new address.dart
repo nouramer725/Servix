@@ -11,7 +11,8 @@ import '../../../Home/HomeLayoutClient.dart';
 import 'google maps new address.dart';
 
 class NewAddress extends StatefulWidget {
-  const NewAddress({super.key});
+  final String orderId; // Add this to the constructor
+  const NewAddress({super.key, required this.orderId});
 
   @override
   State<NewAddress> createState() => _NewAddressState();
@@ -29,7 +30,7 @@ class _NewAddressState extends State<NewAddress> {
   String? newapartment;
   List<Map<String, dynamic>> newLocations = [];
 
-  int? selectedIndex=-1; // Track the selected index
+  int? selectedIndex = -1; // Track the selected index
 
   @override
   void initState() {
@@ -282,7 +283,7 @@ class _NewAddressState extends State<NewAddress> {
                 ),
                 const SizedBox(height: 30),
                 GradientButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Fluttertoast.showToast(
                         msg: "Posting..",
                         backgroundColor: ApplicationColorWithOpacity,
@@ -292,6 +293,8 @@ class _NewAddressState extends State<NewAddress> {
                         gravity: ToastGravity.TOP,
                         timeInSecForIosWeb: 1,
                       );
+                      await saveServiceWithSelectedLocation();
+
                       Future.delayed(const Duration(seconds: 2), () {
                         Fluttertoast.showToast(
                           msg: "Posted",
@@ -316,8 +319,9 @@ class _NewAddressState extends State<NewAddress> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const GoogleMapNewScreenClient(),
+                            builder: (context) => GoogleMapNewScreenClient(
+                              orderId: widget.orderId, // Pass the orderId here
+                            ),
                           ));
                     },
                     text: "Add A New Address"),
@@ -325,5 +329,59 @@ class _NewAddressState extends State<NewAddress> {
             ),
           ),
         ));
+  }
+
+  Future<void> saveServiceWithSelectedLocation() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
+
+      final userId = user.uid;
+
+      // Determine the selected location
+      Map<String, dynamic> selectedLocation;
+
+      if (selectedIndex == -1) {
+        // Use the default address
+        selectedLocation = {
+          'area': area ?? '',
+          'street': street ?? '',
+          'building': building ?? '',
+          'apartment': apartment ?? '',
+          'source': 'default',
+          'timestamp': FieldValue.serverTimestamp(),
+        };
+      } else if (selectedIndex! >= 0 && selectedIndex! < newLocations.length) {
+        // Use one of the new locations
+        selectedLocation = {
+          ...newLocations[selectedIndex!],
+          'source': 'new',
+          'latitude': newLocations[selectedIndex!]['latitude'],
+          'longitude': newLocations[selectedIndex!]['longitude'],
+          'area': newLocations[selectedIndex!]['area'],
+          'street': newLocations[selectedIndex!]['street'],
+          'building': newLocations[selectedIndex!]['building'],
+          'apartment': newLocations[selectedIndex!]['apartment'],
+          'timestamp': FieldValue.serverTimestamp(),
+        };
+      } else {
+        Fluttertoast.showToast(msg: "Please select a valid location.");
+        return;
+      }
+
+      await FirebaseFirestore.instance
+          .collection('Location of Services Requests')
+          .doc(user.uid)
+          .collection('user-services')
+          .doc(widget.orderId)
+          .set(selectedLocation);
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Error saving service: $e",
+        backgroundColor: Colors.redAccent,
+        textColor: Colors.white,
+      );
+      print("Error saving service: $e");
+    }
   }
 }

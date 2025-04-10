@@ -15,7 +15,9 @@ import '../../../../constents/constent.dart';
 import 'add new address.dart';
 
 class LocationPosting extends StatefulWidget {
-  const LocationPosting({super.key});
+  final String orderId; // Add orderId as a parameter
+
+  const LocationPosting({super.key, required this.orderId});
 
   @override
   State<LocationPosting> createState() => _LocationPostingState();
@@ -29,6 +31,8 @@ class _LocationPostingState extends State<LocationPosting> {
   String? apartment;
   bool isLoading = true;
   bool rememberMe = false;
+
+  String get orderId => widget.orderId;
 
   @override
   void initState() {
@@ -190,7 +194,9 @@ class _LocationPostingState extends State<LocationPosting> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  const NewAddress(),
+                                                  NewAddress(
+                                                    orderId: widget.orderId,
+                                                  ),
                                             ));
                                       },
                                       child: Text(
@@ -237,7 +243,7 @@ class _LocationPostingState extends State<LocationPosting> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20.0),
         child: GradientButton(
-            onPressed: () {
+            onPressed: () async {
               Fluttertoast.showToast(
                 msg: "Posting..",
                 backgroundColor: ApplicationColorWithOpacity,
@@ -247,7 +253,38 @@ class _LocationPostingState extends State<LocationPosting> {
                 gravity: ToastGravity.TOP,
                 timeInSecForIosWeb: 1,
               );
-              Future.delayed(const Duration(seconds: 2), () {
+
+              try {
+                final user = FirebaseAuth.instance.currentUser;
+
+                if (user == null) {
+                  Fluttertoast.showToast(
+                    msg: "User not logged in",
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                  );
+                  return;
+                }
+
+                Map<String, dynamic> selectedLocation = {
+                  'latitude': userLocation!.latitude,
+                  'longitude': userLocation!.longitude,
+                  'area': area ?? '',
+                  'street': street ?? '',
+                  'building': building ?? '',
+                  'apartment': apartment ?? '',
+                  'timestamp': FieldValue.serverTimestamp(),
+                };
+
+                await FirebaseFirestore.instance
+                    .collection('Location of Services Requests')
+                    .doc(user.uid)
+                    .collection('user-services')
+                    .doc(widget.orderId)
+                    .set(selectedLocation);
+
+                await Future.delayed(const Duration(seconds: 2));
+
                 Fluttertoast.showToast(
                   msg: "Posted",
                   backgroundColor: ApplicationColorWithOpacity,
@@ -257,12 +294,19 @@ class _LocationPostingState extends State<LocationPosting> {
                   gravity: ToastGravity.TOP,
                   timeInSecForIosWeb: 1,
                 );
-              });
-              Navigator.pushReplacement(
+
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomeClientLayout(),
-                  ));
+                  MaterialPageRoute(builder: (context) => const HomeClientLayout()),
+                );
+              } catch (e) {
+                Fluttertoast.showToast(
+                  msg: "Error posting location: $e",
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                );
+                print("Error saving location: $e");
+              }
             },
             text: "Post"),
       ),
