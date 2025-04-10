@@ -89,7 +89,7 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
                       ),
                       margin: const EdgeInsets.only(right: 8),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: Text('The Description'.tr(),
                           style: GoogleFonts.castoro(
@@ -122,7 +122,7 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
                     dateError!,
                     style: GoogleFonts.castoro(color: Colors.red, fontSize: 12),
                   ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TimePickerField(
                   hintText: "Choose Your Preferred Time".tr(),
                   onTimeSelected: (time) {
@@ -149,7 +149,7 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
                     ),
                     margin: const EdgeInsets.only(right: 8),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: Text('Upload Photo or Video'.tr(),
                         style: GoogleFonts.castoro(
