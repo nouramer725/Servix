@@ -356,7 +356,11 @@
   "Please select a date.": "يرجى اختيار التاريخ.",
   "Please select a time.": "يرجى اختيار الوقت.",
   "Please upload at least one photo or video.": "يرجى تحميل صورة أو فيديو واحد على الأقل.",
-  "Select your Location": "اختر موقعك"
+  "Select your Location": "اختر موقعك",
+  "Offers": "العروض",
+  "No Offers Yet": "لا يوجد عروض حتى الآن",
+  "Your Offers will appear here once\nif you’ve received them.": "ستظهر عروضك هنا مرة واحدة بمجرد استلامها"
+
 
 
 }
