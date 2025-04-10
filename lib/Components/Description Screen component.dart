@@ -89,6 +89,7 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
                       ),
                       margin: const EdgeInsets.only(right: 8),
                     ),
+                    SizedBox(width: 8),
                     Expanded(
                       child: Text('The Description'.tr(),
                           style: GoogleFonts.castoro(
@@ -148,6 +149,7 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
                     ),
                     margin: const EdgeInsets.only(right: 8),
                   ),
+                  SizedBox(width: 8),
                   Expanded(
                     child: Text('Upload Photo or Video'.tr(),
                         style: GoogleFonts.castoro(
@@ -317,11 +319,11 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
   }
 
   Future<void> _saveServiceData(
-      BuildContext context,
-      String description,
-      String serviceTitle,
-      String imagePath,
-      ) async {
+    BuildContext context,
+    String description,
+    String serviceTitle,
+    String imagePath,
+  ) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
@@ -371,7 +373,6 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
       );
     }
   }
-
 
   Future<String?> uploadToCloudinary(File file) async {
     if (!file.existsSync()) {
