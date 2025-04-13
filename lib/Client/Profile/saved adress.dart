@@ -5,34 +5,30 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:servix/Client/Profile/savedaddress.dart';
 import '../../../../Components/Buttons.dart';
 import '../../../../Components/location textfield.dart';
 import '../../../../constents/constent.dart';
-import 'add new address.dart';
 
-class SaveNewAddressScreenClient extends StatefulWidget {
+class SaveNewAddressClient extends StatefulWidget {
   final String areaName;
   final String streetName;
   final double latitude;
   final double longitude;
-  final String orderId;
 
-  const SaveNewAddressScreenClient({
+  const SaveNewAddressClient({
     Key? key,
     required this.areaName,
     required this.streetName,
     required this.latitude,
     required this.longitude,
-    required this.orderId,
   }) : super(key: key);
 
   @override
-  _SaveNewAddressScreenClientState createState() =>
-      _SaveNewAddressScreenClientState();
+  _SaveNewAddressClientState createState() => _SaveNewAddressClientState();
 }
 
-class _SaveNewAddressScreenClientState
-    extends State<SaveNewAddressScreenClient> {
+class _SaveNewAddressClientState extends State<SaveNewAddressClient> {
   User? user = FirebaseAuth.instance.currentUser;
 
   final TextEditingController _buildingController = TextEditingController();
@@ -47,9 +43,11 @@ class _SaveNewAddressScreenClientState
 
   bool _validateFields() {
     setState(() {
-      _buildingError =
-          _buildingController.text.isEmpty ? 'Building Name is required'.tr() : null;
-      _aptError = _aptController.text.isEmpty ? 'Apt. No. is required'.tr() : null;
+      _buildingError = _buildingController.text.isEmpty
+          ? 'Building Name is required'.tr()
+          : null;
+      _aptError =
+          _aptController.text.isEmpty ? 'Apt. No. is required'.tr() : null;
     });
 
     return _buildingError == null && _aptError == null;
@@ -90,9 +88,7 @@ class _SaveNewAddressScreenClientState
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => NewAddress(
-            orderId: widget.orderId, // Pass the orderId here
-          ),
+          builder: (context) => const SavedAddressesprofile(),
         ),
       );
     } catch (e) {
@@ -176,7 +172,7 @@ class _SaveNewAddressScreenClientState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Area".tr().tr(),
+                            "Area".tr(),
                             style: GoogleFonts.charisSil(
                                 fontSize: 20, color: Colors.grey),
                           ),

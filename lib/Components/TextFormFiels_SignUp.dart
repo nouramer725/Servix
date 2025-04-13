@@ -9,6 +9,8 @@ Widget customTextField({
   bool obscureText = false,
   String? errorText,
   Function()? onVisibilityToggle,
+  bool readOnly = false,
+
 }) {
   return Column(
     children: [
@@ -16,6 +18,7 @@ Widget customTextField({
         controller: controller,
         obscureText: obscureText,
         keyboardType: keyboardTypee,
+        readOnly: readOnly,
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: GoogleFonts.inter(

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:file_picker/file_picker.dart'; // Import FilePicker
+import 'package:file_picker/file_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Client/Login-Register/LocationClient/The%20Location%20Screens%20of%20New%20Address/post_Screen%20of%20location.dart';
@@ -40,118 +40,59 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
   String? dateError;
   String? timeError;
   String? fileError;
+  bool isLoading = false;
   final TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: themeProvider.themeMode == ThemeMode.dark
-              ? const Color(0xFF333739)
-              : Colors.white,
-          title: Text(
-            widget.title.tr(),
-            style: GoogleFonts.castoro(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.black),
-          ),
+      appBar: AppBar(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
+        title: Text(
+          widget.title.tr(),
+          style: GoogleFonts.castoro(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Colors.black),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.asset(
-                    widget.imagePath,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: 180,
-                  ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image.asset(
+                  widget.imagePath,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: 180,
                 ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Container(
-                      width: 10,
-                      height: 10,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                      margin: const EdgeInsets.only(right: 8),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text('The Description'.tr(),
-                          style: GoogleFonts.castoro(
-                            fontSize: 25,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black,
-                          )),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                _buildTextField(
-                    "Please write your service description here".tr(),
-                    controller: _descriptionController,
-                    themeProvider: themeProvider,
-                    errorText: descriptionError,
-                    maxLines: 4),
-                const SizedBox(height: 20),
-                DatePickerField(
-                  hintText: "Choose Your Preferred Date".tr(),
-                  onDateSelected: (date) {
-                    setState(() {
-                      selectedDate = date;
-                    });
-                  },
-                ),
-                if (dateError != null)
-                  Text(
-                    dateError!,
-                    style: GoogleFonts.castoro(color: Colors.red, fontSize: 12),
-                  ),
-                const SizedBox(height: 20),
-                TimePickerField(
-                  hintText: "Choose Your Preferred Time".tr(),
-                  onTimeSelected: (time) {
-                    setState(() {
-                      selectedTime = time;
-                    });
-                  },
-                ),
-                if (timeError != null)
-                  Text(
-                    timeError!,
-                    style: GoogleFonts.castoro(color: Colors.red, fontSize: 12),
-                  ),
-                const SizedBox(height: 20),
-                Row(children: [
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
                   Container(
                     width: 10,
                     height: 10,
                     decoration: BoxDecoration(
+                      shape: BoxShape.circle,
                       color: themeProvider.themeMode == ThemeMode.dark
                           ? Colors.white
                           : Colors.black,
-                      shape: BoxShape.circle,
                     ),
                     margin: const EdgeInsets.only(right: 8),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text('Upload Photo or Video'.tr(),
+                    child: Text('The Description'.tr(),
                         style: GoogleFonts.castoro(
                           fontSize: 25,
                           color: themeProvider.themeMode == ThemeMode.dark
@@ -159,109 +100,171 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
                               : Colors.black,
                         )),
                   ),
-                ]),
+                ],
+              ),
+              const SizedBox(height: 20),
+              _buildTextField("Please write your service description here".tr(),
+                  controller: _descriptionController,
+                  themeProvider: themeProvider,
+                  errorText: descriptionError,
+                  maxLines: 4),
+              const SizedBox(height: 20),
+              DatePickerField(
+                hintText: "Choose Your Preferred Date".tr(),
+                onDateSelected: (date) {
+                  setState(() {
+                    selectedDate = date;
+                  });
+                },
+              ),
+              if (dateError != null)
                 Text(
-                  '         -> Maximum 10 files'.tr(),
-                  style: GoogleFonts.castoro(
-                    fontSize: 15,
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white54
-                        : Colors.black54,
-                  ),
+                  dateError!,
+                  style: GoogleFonts.castoro(color: Colors.red, fontSize: 12),
                 ),
+              const SizedBox(height: 20),
+              TimePickerField(
+                hintText: "Choose Your Preferred Time".tr(),
+                onTimeSelected: (time) {
+                  setState(() {
+                    selectedTime = time;
+                  });
+                },
+              ),
+              if (timeError != null)
                 Text(
-                  '         -> Long Tap on the uploaded file to preview'.tr(),
-                  style: GoogleFonts.castoro(
-                    fontSize: 15,
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white54
-                        : Colors.black54,
-                  ),
+                  timeError!,
+                  style: GoogleFonts.castoro(color: Colors.red, fontSize: 12),
                 ),
-                const SizedBox(height: 20),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      for (var i = 0; i < filepath.length && i < 10; i++)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: FilePickerWidget(
-                            filePath: filepath[i],
-                            onFilePicked: (pickedFilePath) {
-                              setState(() {
-                                filepath[i] = pickedFilePath!;
-                              });
-                              print('File picked: $pickedFilePath');
-                            },
-                          ),
+              const SizedBox(height: 20),
+              Row(children: [
+                Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black,
+                    shape: BoxShape.circle,
+                  ),
+                  margin: const EdgeInsets.only(right: 8),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('Upload Photo or Video'.tr(),
+                      style: GoogleFonts.castoro(
+                        fontSize: 25,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                      )),
+                ),
+              ]),
+              Text(
+                '         -> Maximum 10 files'.tr(),
+                style: GoogleFonts.castoro(
+                  fontSize: 15,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white54
+                      : Colors.black54,
+                ),
+              ),
+              Text(
+                '         -> Long Tap on the uploaded file to preview'.tr(),
+                style: GoogleFonts.castoro(
+                  fontSize: 15,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white54
+                      : Colors.black54,
+                ),
+              ),
+              const SizedBox(height: 20),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    for (var i = 0; i < filepath.length && i < 10; i++)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: FilePickerWidget(
+                          filePath: filepath[i],
+                          onFilePicked: (pickedFilePath) {
+                            setState(() {
+                              filepath[i] = pickedFilePath!;
+                            });
+                            print('File picked: $pickedFilePath');
+                          },
                         ),
-                      if (filepath.length < 10)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: GestureDetector(
-                            onTap: () async {
-                              FilePickerResult? result =
-                                  await FilePicker.platform.pickFiles(
-                                type: FileType.custom,
-                                allowedExtensions: [
-                                  'jpg',
-                                  'jpeg',
-                                  'png',
-                                  'mp4',
-                                  'mov',
-                                  'avi'
-                                ],
-                              );
-                              if (result != null) {
-                                setState(() {
-                                  filepath.add(result.files.single.path!);
-                                });
-                              }
-                            },
-                            child: Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 2,
-                                ),
+                      ),
+                    if (filepath.length < 10)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: GestureDetector(
+                          onTap: () async {
+                            FilePickerResult? result =
+                                await FilePicker.platform.pickFiles(
+                              type: FileType.custom,
+                              allowedExtensions: [
+                                'jpg',
+                                'jpeg',
+                                'png',
+                                'mp4',
+                                'mov',
+                                'avi'
+                              ],
+                            );
+                            if (result != null) {
+                              setState(() {
+                                filepath.add(result.files.single.path!);
+                              });
+                            }
+                          },
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 2,
                               ),
-                              child: Icon(
-                                Icons.add,
-                                size: 28,
-                                color: themeProvider.themeMode == ThemeMode.dark
-                                    ? Colors.white54
-                                    : Colors.black54,
-                              ),
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              size: 28,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white54
+                                  : Colors.black54,
                             ),
                           ),
                         ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: GradientButton(
-            onPressed: () {
-              print("Button Pressed");
-              if (_validateForm()) {
-                print("Form is valid");
-                _saveServiceData(context, _descriptionController.text,
-                    widget.title, widget.imagePath);
-              } else {
-                print("Form is invalid");
-              }
-            },
-            text: "Select your Location".tr(),
-          ),
-        ));
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: GradientButton(
+          onPressed: isLoading
+              ? null
+              : () {
+                  print("Button Pressed");
+                  if (_validateForm()) {
+                    print("Form is valid");
+                    _saveServiceData(context, _descriptionController.text,
+                        widget.title, widget.imagePath);
+                  } else {
+                    print("Form is invalid");
+                  }
+                },
+          text: isLoading ? "Saving...".tr() : "Select your Location".tr(),
+        ),
+      ),
+    );
   }
 
   bool _validateForm() {
@@ -306,10 +309,12 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
     String serviceTitle,
     String imagePath,
   ) async {
+    setState(() {
+      isLoading = true;
+    });
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
-    String userId = user.uid;
     String orderId = FirebaseFirestore.instance.collection('Orders').doc().id;
     List<String> fileUrls = [];
 
@@ -321,39 +326,28 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
       }
     }
 
-    CollectionReference userOrders = FirebaseFirestore.instance
-        .collection('Services made by user')
-        .doc(userId)
-        .collection('Services Request');
-
     try {
-      await userOrders.doc(orderId).set({
-        'orderId': orderId,
-        'userId': userId,
-        'description': description,
-        'createdAt': FieldValue.serverTimestamp(),
-        'serviceTitle': serviceTitle,
-        'imagePath': imagePath,
-        'fileUrls': fileUrls,
-        'selectedDate': selectedDate!.toIso8601String(),
-        'selectedTime': selectedTime!.format(context),
-      });
-
       Fluttertoast.showToast(
         msg: "Service details saved successfully!".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
-        textColor:Colors.white,
+        textColor: Colors.white,
         fontSize: 16.0,
       );
-      //required accept
 
-      // Navigate to Location screen with orderId
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => LocationPosting(orderId: orderId),
+          builder: (context) => LocationPosting(
+            orderId: orderId,
+            description: description,
+            imagePath: imagePath,
+            selectedDate: selectedDate,
+            selectedTime: selectedTime,
+            serviceTitle: serviceTitle,
+            fileUrls: fileUrls,
+          ),
         ),
       );
     } catch (e) {
@@ -365,6 +359,10 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 

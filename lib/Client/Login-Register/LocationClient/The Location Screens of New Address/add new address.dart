@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -30,7 +31,7 @@ class _NewAddressState extends State<NewAddress> {
   String? newapartment;
   List<Map<String, dynamic>> newLocations = [];
 
-  int? selectedIndex = -1; // Track the selected index
+  int? selectedIndex = -1;
 
   @override
   void initState() {
@@ -118,7 +119,7 @@ class _NewAddressState extends State<NewAddress> {
               ? const Color(0xFF333739)
               : Colors.white,
           title: Text(
-            'Saved Address',
+            'Saved Address'.tr(),
             style: GoogleFonts.castoro(
                 fontSize: 20,
                 color: themeProvider.themeMode == ThemeMode.dark
@@ -285,7 +286,7 @@ class _NewAddressState extends State<NewAddress> {
                 GradientButton(
                     onPressed: () async {
                       Fluttertoast.showToast(
-                        msg: "Posting..",
+                        msg: "Posting..".tr(),
                         backgroundColor: ApplicationColorWithOpacity,
                         textColor: Colors.white,
                         fontSize: 16.0,
@@ -297,7 +298,7 @@ class _NewAddressState extends State<NewAddress> {
 
                       Future.delayed(const Duration(seconds: 2), () {
                         Fluttertoast.showToast(
-                          msg: "Posted",
+                          msg: "Posted".tr(),
                           backgroundColor: ApplicationColorWithOpacity,
                           textColor: Colors.white,
                           fontSize: 16.0,
@@ -312,7 +313,7 @@ class _NewAddressState extends State<NewAddress> {
                             builder: (context) => const HomeClientLayout(),
                           ));
                     },
-                    text: "Post"),
+                    text: "Post".tr()),
                 const SizedBox(height: 15),
                 GradientButton(
                     onPressed: () {
@@ -324,7 +325,7 @@ class _NewAddressState extends State<NewAddress> {
                             ),
                           ));
                     },
-                    text: "Add A New Address"),
+                    text: "Add A New Address".tr()),
               ],
             ),
           ),
@@ -336,9 +337,6 @@ class _NewAddressState extends State<NewAddress> {
       User? user = FirebaseAuth.instance.currentUser;
       if (user == null) return;
 
-      final userId = user.uid;
-
-      // Determine the selected location
       Map<String, dynamic> selectedLocation;
 
       if (selectedIndex == -1) {
@@ -365,7 +363,7 @@ class _NewAddressState extends State<NewAddress> {
           'timestamp': FieldValue.serverTimestamp(),
         };
       } else {
-        Fluttertoast.showToast(msg: "Please select a valid location.");
+        Fluttertoast.showToast(msg: "Please select a valid location.".tr());
         return;
       }
 

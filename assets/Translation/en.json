@@ -346,8 +346,27 @@
   "Select your Location": "Select your Location",
   "Offers": "Offers",
   "No Offers Yet": "No Offers Yet",
-  "Your Offers will appear here once if you’ve received them.": "Your Offers will appear here once if you’ve received them."
-
+  "Your Offers will appear here once if you’ve received them.": "Your Offers will appear here once if you’ve received them.",
+  "Edit Address": "Edit Address",
+  "Update Address": "Update Address",
+  "Create": "Create",
+  "No address found.": "No address found.",
+  "Profile updated successfully": "Profile updated successfully",
+  "Profile Can not be updated": "Profile Can not be updated",
+  "Update": "Update",
+  "Saved Address": "Saved Address",
+  "Add A New Address": "Add A New Address",
+  "Please select a valid location.": "Please select a valid location.",
+  "Location not available": "Location not available",
+  "Change your Location": "Change your Location",
+  "Accepting all terms and conditions": "Accepting all terms and conditions",
+  "You must accept the terms and conditions.": "You must accept the terms and conditions.",
+  "Posting..": "Posting..",
+  "User not logged in": "User not logged in",
+  "Posted": "Posted",
+  "Error posting location": "Error posting location",
+  "Post": "Post",
+  "Service details saved successfully!": "Service details saved successfully!"
 
 
 

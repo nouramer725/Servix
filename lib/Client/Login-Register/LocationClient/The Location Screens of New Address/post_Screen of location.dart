@@ -15,9 +15,23 @@ import '../../../../constents/constent.dart';
 import 'add new address.dart';
 
 class LocationPosting extends StatefulWidget {
-  final String orderId; // Add orderId as a parameter
+  final String orderId;
+  String? description;
+  String? serviceTitle;
+  String? imagePath;
+  List<String> fileUrls = [];
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
 
-  const LocationPosting({super.key, required this.orderId});
+  LocationPosting(
+      {super.key,
+      required this.orderId,
+      required this.description,
+      required this.serviceTitle,
+      required this.imagePath,
+      required this.fileUrls,
+      required this.selectedTime,
+      required this.selectedDate});
 
   @override
   State<LocationPosting> createState() => _LocationPostingState();
@@ -105,7 +119,7 @@ class _LocationPostingState extends State<LocationPosting> {
               color: ApplicationColor,
             ))
           : userLocation == null
-              ? const Center(child: Text("Location not available"))
+              ? Center(child: Text("Location not available".tr()))
               : Padding(
                   padding: const EdgeInsets.all(20),
                   child: SingleChildScrollView(
@@ -193,10 +207,9 @@ class _LocationPostingState extends State<LocationPosting> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  NewAddress(
-                                                    orderId: widget.orderId,
-                                                  ),
+                                              builder: (context) => NewAddress(
+                                                orderId: widget.orderId,
+                                              ),
                                             ));
                                       },
                                       child: Text(
@@ -244,8 +257,20 @@ class _LocationPostingState extends State<LocationPosting> {
         padding: const EdgeInsets.all(20.0),
         child: GradientButton(
             onPressed: () async {
+              if (!rememberMe) {
+                Fluttertoast.showToast(
+                  msg: "You must accept the terms and conditions.".tr(),
+                  backgroundColor: Colors.redAccent,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.TOP,
+                  timeInSecForIosWeb: 1,
+                );
+                return;
+              }
               Fluttertoast.showToast(
-                msg: "Posting..",
+                msg: "Posting..".tr(),
                 backgroundColor: ApplicationColorWithOpacity,
                 textColor: Colors.white,
                 fontSize: 16.0,
@@ -259,7 +284,7 @@ class _LocationPostingState extends State<LocationPosting> {
 
                 if (user == null) {
                   Fluttertoast.showToast(
-                    msg: "User not logged in",
+                    msg: "User not logged in".tr(),
                     backgroundColor: Colors.red,
                     textColor: Colors.white,
                   );
@@ -273,11 +298,17 @@ class _LocationPostingState extends State<LocationPosting> {
                   'street': street ?? '',
                   'building': building ?? '',
                   'apartment': apartment ?? '',
+                  'description': widget.description,
+                  'serviceTitle': widget.serviceTitle,
+                  'imagePath': widget.imagePath,
+                  'fileUrls': widget.fileUrls,
+                  'selectedDate': widget.selectedDate!.toIso8601String(),
+                  'selectedTime': widget.selectedTime!.format(context),
                   'timestamp': FieldValue.serverTimestamp(),
                 };
 
                 await FirebaseFirestore.instance
-                    .collection('Location of Services Requests')
+                    .collection('Services Requests')
                     .doc(user.uid)
                     .collection('user-services')
                     .doc(widget.orderId)
@@ -286,7 +317,7 @@ class _LocationPostingState extends State<LocationPosting> {
                 await Future.delayed(const Duration(seconds: 2));
 
                 Fluttertoast.showToast(
-                  msg: "Posted",
+                  msg: "Posted".tr(),
                   backgroundColor: ApplicationColorWithOpacity,
                   textColor: Colors.white,
                   fontSize: 16.0,
@@ -297,7 +328,8 @@ class _LocationPostingState extends State<LocationPosting> {
 
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomeClientLayout()),
+                  MaterialPageRoute(
+                      builder: (context) => const HomeClientLayout()),
                 );
               } catch (e) {
                 Fluttertoast.showToast(
@@ -308,7 +340,7 @@ class _LocationPostingState extends State<LocationPosting> {
                 print("Error saving location: $e");
               }
             },
-            text: "Post"),
+            text: "Post".tr()),
       ),
     );
   }

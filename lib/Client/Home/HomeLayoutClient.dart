@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:servix/Client/AIClient/Intro.dart';
 import 'package:servix/Client/Home/List%20Of%20Pages_Clients/HomeClientFirstScreen.dart';
 import 'package:servix/Client/Home/List%20Of%20Pages_Clients/orders1.dart';
-import 'package:servix/Client/Profile/Profile.dart';
+import 'package:servix/Client/Profile/profile.dart';
 import 'package:servix/Member/MemberShip.dart';
 import 'package:servix/Settings/About%20US.dart';
 import 'package:servix/Settings/Contact%20Us.dart';
@@ -71,13 +71,13 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
   bool isDarkMode = false; // Default mode
 
   final List<Widget> pages = [
-    const HomeClientFirstScreen(),
     const NotificationScreenReal(),
     const OrdersClient(),
+    const HomeClientFirstScreen(),
     CommunityFeedScreen(),
     const IntroScreenClient(),
   ];
-  int selectedIndex = 0;
+  int selectedIndex = 2;
 
   @override
   void initState() {
@@ -101,24 +101,64 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                     ? Colors.white
                     : ApplicationColor),
             onPressed: () {
-              Scaffold.of(context).openDrawer(); // Opens the sidebar
+              Scaffold.of(context).openDrawer();
             },
           ),
         ),
-        title: Text(
-          userData != null
-              ? "WelcomeUser ".tr(namedArgs: {
-                  "first_name": userData!['first_name'],
-                })
-              : "Welcome".tr(),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 5,
-          style: GoogleFonts.castoro(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              color: themeProvider.themeMode == ThemeMode.dark
-                  ? Colors.white
-                  : Colors.black),
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("user-files")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .collection("personalInformation")
+                    .doc("profile")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  String? personalImageUrl;
+                  if (snapshot.hasData && snapshot.data?.exists == true) {
+                    personalImageUrl =
+                        snapshot.data?.data()?['personalImageUrl'];
+                  }
+                  return GestureDetector(
+                    child: CircleAvatar(
+                      backgroundColor: Colors.grey[200],
+                      radius: 20,
+                      backgroundImage: personalImageUrl != null
+                          ? NetworkImage(personalImageUrl)
+                          : null,
+                      child: personalImageUrl == null
+                          ? const Icon(Icons.person,
+                              size: 20, color: Colors.grey)
+                          : null,
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  userData != null
+                      ? "WelcomeUser ".tr(namedArgs: {
+                          "first_name": userData!['first_name'],
+                        })
+                      : "Welcome".tr(),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 5,
+                  style: GoogleFonts.castoro(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : Colors.black),
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           IconButton(
@@ -148,33 +188,42 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                   const SizedBox(
                     height: 50,
                   ),
-                  StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection("user-files")
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection("uploads")
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                        String personalFileUrl =
-                            snapshot.data!.docs.first['personalFileUrl'];
-                        return CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 40, // ✅ Adjust size
-                          backgroundImage: NetworkImage(
-                              personalFileUrl), // ✅ Fetch from Firestore
-                        );
-                      }
-                      return const CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 40,
-                        child: Icon(
-                          Icons.person,
-                          size: 70,
-                          color: Colors.grey,
-                        ),
-                      );
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProfileScreen(),
+                          ));
                     },
+                    child: StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection("user-files")
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .collection("personalInformation")
+                          .doc("profile")
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        String? personalImageUrl;
+                        if (snapshot.hasData && snapshot.data?.exists == true) {
+                          personalImageUrl =
+                              snapshot.data?.data()?['personalImageUrl'];
+                        }
+                        return GestureDetector(
+                          child: CircleAvatar(
+                            backgroundColor: Colors.grey[200],
+                            radius: 40,
+                            backgroundImage: personalImageUrl != null
+                                ? NetworkImage(personalImageUrl)
+                                : null,
+                            child: personalImageUrl == null
+                                ? const Icon(Icons.person,
+                                    size: 40, color: Colors.grey)
+                                : null,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -199,7 +248,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ProfileClient(),
+                          builder: (context) => const ProfileScreen(),
                         ));
                   }),
                   _buildMenuItem(Icons.info_outline, "About Us".tr(),
@@ -498,69 +547,72 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
         ),
       ),
       body: pages[selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: selectedIndex,
-        onTap: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white60
-                    : ApplicationColor3),
-            label: "Home".tr(),
-            activeIcon: Icon(Icons.home, color: ApplicationColor),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none_outlined,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white60
-                    : ApplicationColor3),
-            label: "Notifications".tr(),
-            activeIcon: Icon(Icons.notifications, color: ApplicationColor),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_long_outlined,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white60
-                    : ApplicationColor3),
-            label: "Orders".tr(),
-            activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.forum_outlined,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white60
-                    : ApplicationColor3),
-            label: "Community Forum".tr(),
-            activeIcon: Icon(Icons.forum, color: ApplicationColor),
-          ),
-          BottomNavigationBarItem(
-            icon: SizedBox(
-              height: 25, // Set a fixed height for both icons
-              child: Image.asset(
-                themeProvider.themeMode == ThemeMode.dark
-                    ? 'assets/NavigationBar/robot.png'
-                    : 'assets/NavigationBar/robotblack.png',
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 5, right: 5),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: selectedIndex,
+          onTap: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_none_outlined,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
+              label: "Notifications".tr(),
+              activeIcon: Icon(Icons.notifications, color: ApplicationColor),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.receipt_long_outlined,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
+              label: "Orders".tr(),
+              activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
+              label: "Home".tr(),
+              activeIcon: Icon(Icons.home, color: ApplicationColor),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.forum_outlined,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
+              label: "Community Forum".tr(),
+              activeIcon: Icon(Icons.forum, color: ApplicationColor),
+            ),
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 25, // Set a fixed height for both icons
+                child: Image.asset(
+                  themeProvider.themeMode == ThemeMode.dark
+                      ? 'assets/NavigationBar/robot.png'
+                      : 'assets/NavigationBar/robotblack.png',
+                ),
+              ),
+              label: "Ai Chat".tr(),
+              activeIcon: SizedBox(
+                height: 25, // Ensures alignment
+                child: Image.asset(
+                  'assets/NavigationBar/robotcolor.png',
+                ),
               ),
             ),
-            label: "Ai Chat".tr(),
-            activeIcon: SizedBox(
-              height: 25, // Ensures alignment
-              child: Image.asset(
-                'assets/NavigationBar/robotcolor.png',
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

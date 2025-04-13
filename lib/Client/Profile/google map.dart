@@ -4,28 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
-import 'package:easy_localization/easy_localization.dart'; // Import easy_localization
-import 'package:servix/Client/Login-Register/LocationClient/The%20Location%20Screens%20of%20New%20Address/save%20address%20of%20new%20address.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:servix/Client/Profile/saved%20adress.dart';
 import '../../../../Components/Buttons.dart';
-import '../Google maps Components/Current Location Button.dart';
-import '../Google maps Components/Map Widget.dart';
-import '../Google maps Components/Search Bar.dart';
-import '../Save_Address.dart';
+import '../../Technician/Login-Register/LocationTechnician/Google maps Components/Current Location Button.dart';
+import '../../Technician/Login-Register/LocationTechnician/Google maps Components/Map Widget.dart';
+import '../../Technician/Login-Register/LocationTechnician/Google maps Components/Search Bar.dart';
 
-class GoogleMapNewScreenClient extends StatefulWidget {
-  final String orderId;
-  const GoogleMapNewScreenClient({super.key, required this.orderId});
+class GoogleMapClient extends StatefulWidget {
+  const GoogleMapClient({super.key,});
 
   @override
-  _GoogleMapNewScreenClientState createState() =>
-      _GoogleMapNewScreenClientState();
+  _GoogleMapClientState createState() =>
+      _GoogleMapClientState();
 }
 
-class _GoogleMapNewScreenClientState extends State<GoogleMapNewScreenClient> {
+class _GoogleMapClientState extends State<GoogleMapClient> {
   final TextEditingController _searchController = TextEditingController();
   late MapController _mapController;
   LatLng _currentLocation =
-      LatLng(31.2001, 29.9187); // Default to Alexandria, Egypt
+  LatLng(31.2001, 29.9187); // Default to Alexandria, Egypt
   String _streetName = "Unknown Street";
   String _areaName = "Unknown Area";
 
@@ -35,7 +33,6 @@ class _GoogleMapNewScreenClientState extends State<GoogleMapNewScreenClient> {
     _mapController = MapController();
   }
 
-  // Function to update location and fetch address
   void _updateLocation(LatLng newLocation) async {
     setState(() {
       _currentLocation = newLocation;
@@ -45,7 +42,6 @@ class _GoogleMapNewScreenClientState extends State<GoogleMapNewScreenClient> {
     await _fetchAddress(newLocation);
   }
 
-  // Function to fetch address from coordinates using Reverse Geocoding API
   Future<void> _fetchAddress(LatLng location) async {
     final url = Uri.parse("https://nominatim.openstreetmap.org/reverse?"
         "lat=${location.latitude}&lon=${location.longitude}"
@@ -138,9 +134,9 @@ class _GoogleMapNewScreenClientState extends State<GoogleMapNewScreenClient> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SaveNewAddressScreenClient(
+                      builder: (context) => SaveNewAddressClient(
+
                           areaName: _areaName,
-                          orderId: widget.orderId,
                           streetName: _streetName,
                           latitude: _currentLocation.latitude,
                           longitude: _currentLocation.longitude)),

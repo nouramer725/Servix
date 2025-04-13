@@ -359,8 +359,25 @@
   "Select your Location": "اختر موقعك",
   "Offers": "العروض",
   "No Offers Yet": "لا يوجد عروض حتى الآن",
-  "Your Offers will appear here once\nif you’ve received them.": "ستظهر عروضك هنا مرة واحدة بمجرد استلامها"
-
-
-
+  "Your Offers will appear here once\nif you’ve received them.": "ستظهر عروضك هنا مرة واحدة بمجرد استلامها",
+  "Edit Address": "تعديل العنوان",
+  "Update Address": "تحديث العنوان",
+  "Create": "إنشاء",
+  "No address found.": "لم يتم العثور على عنوان.",
+  "Profile updated successfully": "تم تحديث الملف الشخصي بنجاح",
+  "Profile Can not be updated": "لا يمكن تحديث الملف الشخصي",
+  "Update": "تحديث",
+  "Saved Address": "العنوان المحفوظ",
+  "Add A New Address": "إضافة عنوان جديد",
+  "Please select a valid location.": "يرجى تحديد موقع صالح.",
+  "Location not available": "الموقع غير متوفر",
+  "Change your Location": "تغيير الموقع",
+  "Accepting all terms and conditions": "قبول جميع الشروط والأحكام",
+  "You must accept the terms and conditions.": "يجب قبول الشروط والأحكام.",
+  "Posting..": "جارٍ النشر..",
+  "User not logged in": "لم يتم تسجيل الدخول",
+  "Posted": "تم النشر",
+  "Error posting location": "خطأ في نشر الموقع",
+  "Post": "نشر",
+  "Service details saved successfully!": "تم حفظ المعلومات بنجاح"
 }
