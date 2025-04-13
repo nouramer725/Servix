@@ -5,20 +5,23 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
 import 'package:easy_localization/easy_localization.dart'; // Import easy_localization
-import '../../../Components/Buttons.dart';
-import 'Google maps Components/Current Location Button.dart';
-import 'Google maps Components/Map Widget.dart';
-import 'Google maps Components/Search Bar.dart';
-import 'Save_Address.dart';
+import 'package:servix/Client/Login-Register/LocationClient/The%20Location%20Screens%20of%20New%20Address/save%20address%20of%20new%20address.dart';
+import '../../../../Components/Buttons.dart';
+import '../Google maps Components/Current Location Button.dart';
+import '../Google maps Components/Map Widget.dart';
+import '../Google maps Components/Search Bar.dart';
+import '../Save_Address.dart';
 
-class GoogleMapScreenClient extends StatefulWidget {
-  const GoogleMapScreenClient({super.key});
+class GoogleMapNewScreenClient extends StatefulWidget {
+  final String orderId;
+  const GoogleMapNewScreenClient({super.key, required this.orderId});
 
   @override
-  _GoogleMapScreenClientState createState() => _GoogleMapScreenClientState();
+  _GoogleMapNewScreenClientState createState() =>
+      _GoogleMapNewScreenClientState();
 }
 
-class _GoogleMapScreenClientState extends State<GoogleMapScreenClient> {
+class _GoogleMapNewScreenClientState extends State<GoogleMapNewScreenClient> {
   final TextEditingController _searchController = TextEditingController();
   late MapController _mapController;
   LatLng _currentLocation =
@@ -135,12 +138,12 @@ class _GoogleMapScreenClientState extends State<GoogleMapScreenClient> {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SaveAddressScreenClient(
-                            areaName: _areaName,
-                            streetName: _streetName,
-                            latitude: _currentLocation.latitude,
-                            longitude: _currentLocation.longitude,
-                          )),
+                      builder: (context) => SaveNewAddressScreenClient(
+                          areaName: _areaName,
+                          orderId: widget.orderId,
+                          streetName: _streetName,
+                          latitude: _currentLocation.latitude,
+                          longitude: _currentLocation.longitude)),
                   (route) => false,
                 );
               },

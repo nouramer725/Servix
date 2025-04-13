@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart'; // Import FilePicker
 import 'package:mime/mime.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Client/Login-Register/LocationClient/The%20Location%20Screens%20of%20New%20Address/post_Screen%20of%20location.dart';
 import 'package:servix/Components/Buttons.dart';
 import 'package:servix/constents/constent.dart';
 import '../../../Components/datepicker.dart';
@@ -44,7 +45,6 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-
     return Scaffold(
         appBar: AppBar(
           backgroundColor: themeProvider.themeMode == ThemeMode.dark
@@ -178,11 +178,6 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
                         : Colors.black54,
                   ),
                 ),
-                if (fileError != null)
-                  Text(
-                    fileError!,
-                    style: GoogleFonts.castoro(color: Colors.red, fontSize: 12),
-                  ),
                 const SizedBox(height: 20),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -247,11 +242,6 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
                     ],
                   ),
                 ),
-                if (fileError != null)
-                  Text(
-                    fileError!,
-                    style: GoogleFonts.castoro(color: Colors.red, fontSize: 12),
-                  ),
               ],
             ),
           ),
@@ -306,14 +296,6 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
       return false;
     }
 
-    if (filepath.isEmpty) {
-      setState(() {
-        fileError = "Please upload at least one photo or video.".tr();
-      });
-      print("No file uploaded");
-      return false;
-    }
-
     print("Form is valid");
     return true;
   }
@@ -328,6 +310,7 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
     if (user == null) return;
 
     String userId = user.uid;
+    String orderId = FirebaseFirestore.instance.collection('Orders').doc().id;
     List<String> fileUrls = [];
 
     for (var filePath in filepath) {
@@ -338,29 +321,40 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
       }
     }
 
-    // Point to the subcollection 'orders' under the user's document
     CollectionReference userOrders = FirebaseFirestore.instance
         .collection('Services made by user')
         .doc(userId)
         .collection('Services Request');
 
     try {
-      await userOrders.add({
+      await userOrders.doc(orderId).set({
+        'orderId': orderId,
         'userId': userId,
         'description': description,
         'createdAt': FieldValue.serverTimestamp(),
         'serviceTitle': serviceTitle,
         'imagePath': imagePath,
         'fileUrls': fileUrls,
+        'selectedDate': selectedDate!.toIso8601String(),
+        'selectedTime': selectedTime!.format(context),
       });
 
       Fluttertoast.showToast(
         msg: "Service details saved successfully!".tr(),
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
-        textColor: Colors.white,
+        textColor:Colors.white,
         fontSize: 16.0,
+      );
+      //required accept
+
+      // Navigate to Location screen with orderId
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LocationPosting(orderId: orderId),
+        ),
       );
     } catch (e) {
       Fluttertoast.showToast(
@@ -427,7 +421,7 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
     return TextField(
       maxLines: maxLines,
       controller: controller,
-      keyboardType: TextInputType.multiline,
+      keyboardType: TextInputType.text,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: GoogleFonts.castoro(
@@ -436,9 +430,7 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
                 : Colors.black54,
             fontSize: 15),
         filled: true,
-        fillColor: themeProvider.themeMode == ThemeMode.dark
-            ? const Color(0xFF333739)
-            : Colors.white,
+        fillColor: Colors.transparent,
         errorText: errorText,
         errorStyle: GoogleFonts.castoro(color: Colors.red, fontSize: 12),
         enabledBorder: OutlineInputBorder(

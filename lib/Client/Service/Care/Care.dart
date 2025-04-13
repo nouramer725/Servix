@@ -117,22 +117,22 @@ class Careservice extends StatelessWidget {
                 );
               },
             ),
-            ServiceCard(
-              serviceName: 'Mental Health'.tr(),
-              imagePath: 'assets/images/care/mental_health.jpg',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                      title: 'Children Care', // Custom title
-                      imagePath:
-                          'assets/images/care/children.jpg', // Custom image
-                    ),
-                  ),
-                );
-              },
-            ),
+            // ServiceCard(
+            //   serviceName: 'Mental Health'.tr(),
+            //   imagePath: 'assets/images/care/mental_health.jpg',
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => const DescriptionnScreen(
+            //           title: 'Children Care', // Custom title
+            //           imagePath:
+            //               'assets/images/care/children.jpg', // Custom image
+            //         ),
+            //       ),
+            //     );
+            //   },
+            // ),
             // ServiceCard(
             //   serviceName: 'Hospice'.tr(),
             //   imagePath: 'assets/images/care/hospice.jpg',

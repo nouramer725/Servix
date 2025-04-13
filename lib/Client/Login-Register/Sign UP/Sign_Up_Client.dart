@@ -22,7 +22,7 @@ class _SignUpClientState extends State<SignUpClient> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _ConfirmpasswordController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _PhoneNumberController = TextEditingController();
 
   String? gender;
@@ -91,7 +91,8 @@ class _SignUpClientState extends State<SignUpClient> {
     } else if (!RegExp("^(?=.*[@#%^&+=])").hasMatch(password)) {
       setState(() {
         _passwordError =
-            "Password must include at least one special character (e.g. ! @ # \$ % ^ & *).".tr();
+            "Password must include at least one special character (e.g. ! @ # \$ % ^ & *)."
+                .tr();
       });
       isValid = false;
     }
@@ -147,7 +148,7 @@ class _SignUpClientState extends State<SignUpClient> {
       try {
         // Create user with email and password
         UserCredential userCredential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: password,
         );
@@ -185,7 +186,8 @@ class _SignUpClientState extends State<SignUpClient> {
               ),
               content: Container(
                 child: Text(
-                  tr("Sign Up Successful! Please check your email and verify your account.".tr()),
+                  tr("Sign Up Successful! Please check your email and verify your account."
+                      .tr()),
                 ),
               ),
               actions: [
@@ -205,9 +207,7 @@ class _SignUpClientState extends State<SignUpClient> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => LocationRequestScreenClient(
-                phoneNumber: _PhoneNumberController.text.trim(),
-              )),
+              builder: (context) => const LocationRequestScreenClient()),
         );
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -267,7 +267,7 @@ class _SignUpClientState extends State<SignUpClient> {
                           keyboardTypee: TextInputType.emailAddress,
                           labelText: "Email".tr(),
                           prefixIcon:
-                          const Icon(Icons.email, color: Colors.black),
+                              const Icon(Icons.email, color: Colors.black),
                           errorText: _emailError,
                         ),
                         customTextField(
@@ -276,7 +276,7 @@ class _SignUpClientState extends State<SignUpClient> {
                           labelText: "Password".tr(),
                           obscureText: _obscureText,
                           prefixIcon:
-                          const Icon(Icons.lock, color: Colors.black),
+                              const Icon(Icons.lock, color: Colors.black),
                           errorText: _passwordError,
                           onVisibilityToggle: () {
                             setState(() {
@@ -290,7 +290,7 @@ class _SignUpClientState extends State<SignUpClient> {
                           labelText: "Confirm Password".tr(),
                           obscureText: _obscureConfirmText,
                           prefixIcon:
-                          const Icon(Icons.lock, color: Colors.black),
+                              const Icon(Icons.lock, color: Colors.black),
                           errorText: _confirmError,
                           onVisibilityToggle: () {
                             setState(() {
@@ -342,7 +342,7 @@ class _SignUpClientState extends State<SignUpClient> {
                                 style: GoogleFonts.charisSil(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color:  ApplicationColor,
+                                  color: ApplicationColor,
                                 ),
                               ),
                             )

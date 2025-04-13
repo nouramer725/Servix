@@ -5,32 +5,34 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:servix/Client/Login-Register/Sign%20In/Sign_In_Client.dart';
+import '../../../../Components/Buttons.dart';
+import '../../../../Components/location textfield.dart';
+import '../../../../constents/constent.dart';
+import 'add new address.dart';
 
-import '../../../Components/Buttons.dart';
-import '../../../Components/location textfield.dart';
-import '../../../constents/constent.dart';
-
-class SaveAddressScreenClient extends StatefulWidget {
+class SaveNewAddressScreenClient extends StatefulWidget {
   final String areaName;
   final String streetName;
   final double latitude;
   final double longitude;
+  final String orderId;
 
-  const SaveAddressScreenClient({
+  const SaveNewAddressScreenClient({
     Key? key,
     required this.areaName,
     required this.streetName,
     required this.latitude,
     required this.longitude,
+    required this.orderId,
   }) : super(key: key);
 
   @override
-  _SaveAddressScreenClientState createState() =>
-      _SaveAddressScreenClientState();
+  _SaveNewAddressScreenClientState createState() =>
+      _SaveNewAddressScreenClientState();
 }
 
-class _SaveAddressScreenClientState extends State<SaveAddressScreenClient> {
+class _SaveNewAddressScreenClientState
+    extends State<SaveNewAddressScreenClient> {
   User? user = FirebaseAuth.instance.currentUser;
 
   final TextEditingController _buildingController = TextEditingController();
@@ -70,7 +72,7 @@ class _SaveAddressScreenClientState extends State<SaveAddressScreenClient> {
       await FirebaseFirestore.instance
           .collection("user-files")
           .doc(user!.uid)
-          .collection("locationDetails")
+          .collection("NewLocationDetails")
           .add({
         "building": _buildingController.text.trim(),
         "apartment": _aptController.text.trim(),
@@ -85,12 +87,13 @@ class _SaveAddressScreenClientState extends State<SaveAddressScreenClient> {
       });
 
       print("Address saved successfully!");
-      Navigator.pushAndRemoveUntil(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => SignInClient(),
+          builder: (context) => NewAddress(
+            orderId: widget.orderId, // Pass the orderId here
+          ),
         ),
-        (route) => false,
       );
     } catch (e) {
       print("Error saving address: $e");
@@ -248,7 +251,6 @@ class _SaveAddressScreenClientState extends State<SaveAddressScreenClient> {
                   label: "Address Label (optional)".tr()),
               const SizedBox(height: 12),
 
-              // **Save Address Button**
               SizedBox(
                 width: double.infinity,
                 child: GradientButton(

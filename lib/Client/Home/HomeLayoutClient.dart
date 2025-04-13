@@ -199,7 +199,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProfileClient(),
+                          builder: (context) => ProfileClient(),
                         ));
                   }),
                   _buildMenuItem(Icons.info_outline, "About Us".tr(),
