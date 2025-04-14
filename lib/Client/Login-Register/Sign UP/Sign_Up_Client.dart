@@ -310,9 +310,6 @@ class _SignUpClientState extends State<SignUpClient> {
                             });
                           },
                         ),
-                        // const SizedBox(height: 17),
-                        // roleDropdown(selectedValue: "Client"),
-
                         const SizedBox(height: 30),
                         GradientButton(
                           onPressed: _isLoading ? null : _validateAndSubmit,

@@ -11,9 +11,8 @@ import 'Google maps Components/Search Bar.dart';
 import 'Save_Address.dart';
 
 class GoogleMapScreenTech extends StatefulWidget {
-  final String phoneNumber;
 
-  const GoogleMapScreenTech({super.key, required this.phoneNumber}); // Add this
+  const GoogleMapScreenTech({super.key}); // Add this
 
   @override
   _GoogleMapScreenTechState createState() => _GoogleMapScreenTechState();
@@ -138,8 +137,6 @@ class _GoogleMapScreenTechState extends State<GoogleMapScreenTech> {
                           streetName: _streetName,
                           latitude: _currentLocation.latitude,
                           longitude: _currentLocation.longitude,
-                          phoneNumber:
-                              widget.phoneNumber, // Pass the phone number
                         )),
                 (route) => false,
               );

@@ -209,6 +209,13 @@ class _LocationPostingState extends State<LocationPosting> {
                                             MaterialPageRoute(
                                               builder: (context) => NewAddress(
                                                 orderId: widget.orderId,
+                                                description: widget.description,
+                                                serviceTitle:
+                                                    widget.serviceTitle,
+                                                imagePath: widget.imagePath,
+                                                fileUrls: widget.fileUrls,
+                                                selectedDate: widget.selectedDate,
+                                                selectedTime: widget.selectedTime,
                                               ),
                                             ));
                                       },
@@ -302,8 +309,9 @@ class _LocationPostingState extends State<LocationPosting> {
                   'serviceTitle': widget.serviceTitle,
                   'imagePath': widget.imagePath,
                   'fileUrls': widget.fileUrls,
-                  'selectedDate': widget.selectedDate!.toIso8601String(),
+                  'selectedDate': DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
                   'selectedTime': widget.selectedTime!.format(context),
+                  'Status': 'Pending',
                   'timestamp': FieldValue.serverTimestamp(),
                 };
 

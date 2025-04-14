@@ -366,8 +366,8 @@
   "Posted": "Posted",
   "Error posting location": "Error posting location",
   "Post": "Post",
-  "Service details saved successfully!": "Service details saved successfully!"
-
-
-
+  "Service details saved successfully!": "Service details saved successfully!",
+  "LOG OUT": "LOG OUT",
+  "CANCEL": "CANCEL",
+  "Log out of your account?": "Log out of your account?"
 }

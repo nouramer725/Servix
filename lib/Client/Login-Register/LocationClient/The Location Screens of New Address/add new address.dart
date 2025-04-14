@@ -12,8 +12,23 @@ import '../../../Home/HomeLayoutClient.dart';
 import 'google maps new address.dart';
 
 class NewAddress extends StatefulWidget {
-  final String orderId; // Add this to the constructor
-  const NewAddress({super.key, required this.orderId});
+  final String orderId;
+  String? description;
+  String? serviceTitle;
+  String? imagePath;
+  List<String> fileUrls = [];
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
+
+  NewAddress(
+      {super.key,
+      required this.orderId,
+      this.description,
+      this.serviceTitle,
+      this.imagePath,
+      required this.fileUrls,
+      required this.selectedDate,
+      required this.selectedTime});
 
   @override
   State<NewAddress> createState() => _NewAddressState();
@@ -93,7 +108,7 @@ class _NewAddressState extends State<NewAddress> {
           .collection('user-files')
           .doc(userId)
           .collection('NewLocationDetails')
-          .get(); // Removed limit(1)
+          .get();
 
       if (querySnapshot.docs.isNotEmpty) {
         setState(() {
@@ -360,19 +375,26 @@ class _NewAddressState extends State<NewAddress> {
           'street': newLocations[selectedIndex!]['street'],
           'building': newLocations[selectedIndex!]['building'],
           'apartment': newLocations[selectedIndex!]['apartment'],
+          'description': widget.description,
+          'serviceTitle': widget.serviceTitle,
+          'imagePath': widget.imagePath,
+          'fileUrls': widget.fileUrls,
+          'selectedDate': DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
+          'selectedTime': widget.selectedTime!.format(context),
+          'Status': 'Pending',
           'timestamp': FieldValue.serverTimestamp(),
         };
       } else {
         Fluttertoast.showToast(msg: "Please select a valid location.".tr());
         return;
       }
-
       await FirebaseFirestore.instance
-          .collection('Location of Services Requests')
+          .collection('Services Requests')
           .doc(user.uid)
           .collection('user-services')
           .doc(widget.orderId)
           .set(selectedLocation);
+
     } catch (e) {
       Fluttertoast.showToast(
         msg: "Error saving service: $e",

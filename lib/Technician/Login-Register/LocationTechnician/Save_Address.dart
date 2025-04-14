@@ -16,7 +16,6 @@ class SaveAddressScreenTech extends StatefulWidget {
   final String streetName;
   final double latitude;
   final double longitude;
-  final String phoneNumber;
 
   const SaveAddressScreenTech({
     Key? key,
@@ -24,7 +23,6 @@ class SaveAddressScreenTech extends StatefulWidget {
     required this.streetName,
     required this.latitude,
     required this.longitude,
-    required this.phoneNumber,
   }) : super(key: key);
 
   @override
@@ -243,28 +241,6 @@ class _SaveAddressScreenTechState extends State<SaveAddressScreenTech> {
                   controller: _directionsController,
                   label: "Additional directions (optional)".tr()),
               const SizedBox(height: 12),
-
-              // **Phone Number**
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade400),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  children: [
-                    Image.asset("assets/images/location/Egypt.png",
-                        width: 40, height: 40),
-                    const SizedBox(width: 10),
-                    Text("+20 ${widget.phoneNumber}",
-                        style: GoogleFonts.inter(
-                            fontSize: 15, color: const Color(0xFF545353))),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-
               // **Label**
               CustomTextFormFieldLocation(
                   controller: _labelController,

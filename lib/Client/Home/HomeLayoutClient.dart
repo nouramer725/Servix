@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Client/AIClient/Intro.dart';
 import 'package:servix/Client/Home/List%20Of%20Pages_Clients/HomeClientFirstScreen.dart';
-import 'package:servix/Client/Home/List%20Of%20Pages_Clients/orders1.dart';
+import 'package:servix/Client/Orders/OrdersPage.dart';
 import 'package:servix/Client/Profile/profile.dart';
 import 'package:servix/Member/MemberShip.dart';
 import 'package:servix/Settings/About%20US.dart';
@@ -72,7 +72,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
 
   final List<Widget> pages = [
     const NotificationScreenReal(),
-    const OrdersClient(),
+    const OrdersPage(),
     const HomeClientFirstScreen(),
     CommunityFeedScreen(),
     const IntroScreenClient(),
@@ -309,15 +309,15 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                         const Spacer(),
                         DropdownButton<Locale>(
                           value:
-                              localeProvider.locale, // Get the current locale
+                              localeProvider.locale,
                           onChanged: (Locale? locale) async {
                             if (locale != null) {
                               await _saveLocale(
-                                  locale); // Save the selected locale in preferences
+                                  locale);
                               context
-                                  .setLocale(locale); // Update the app's locale
+                                  .setLocale(locale);
                               localeProvider
-                                  .setLocale(locale); // Update LocaleProvider
+                                  .setLocale(locale);
                             }
                           },
                           dropdownColor:
@@ -408,7 +408,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Text(
-                                  "Log out of your account?",
+                                  "Log out of your account?".tr(),
                                   style: GoogleFonts.castoro(
                                       color: themeProvider.themeMode ==
                                               ThemeMode.dark
@@ -424,7 +424,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                                   TextButton(
                                     onPressed: () => Navigator.pop(context),
                                     child: Text(
-                                      "CANCEL",
+                                      "CANCEL".tr(),
                                       style: GoogleFonts.castoro(
                                         color: themeProvider.themeMode ==
                                                 ThemeMode.dark
@@ -447,7 +447,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                                       );
                                     },
                                     child: Text(
-                                      "LOG OUT",
+                                      "LOG OUT".tr(),
                                       style: GoogleFonts.castoro(
                                         fontSize: 16,
                                         color: ApplicationColor,

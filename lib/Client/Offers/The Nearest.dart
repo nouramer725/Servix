@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
 import '../../Components/Buttons.dart';
 import '../../Theme/Theme_Provider.dart';
 import 'Highest Rating.dart';
@@ -74,17 +75,18 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
     });
 
     if (index == 1) {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HighestRatingScreen()),
       );
     } else if (index == 2) {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const LowestPriceScreen()),
       );
     }
   }
+
   void removeOffer(String id) {
     setState(() {
       offers.removeWhere((offer) => offer.id == id);
@@ -93,20 +95,18 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
 
   Widget buildOptionButton(String text, int index) {
     final isSelected = selectedIndex == index;
-    return Expanded(
-      child: SizedBox(
-        height: 65,
-        child: isSelected
-            ? GradientButtonOffer(
-          text: text,
-          font: 14,
-          onPressed: () => onSelect(index),
-        )
-            : WhiteButtonOffer(
-          text: text,
-          font: 14,
-          onPressed: () => onSelect(index),
-        ),
+    return SizedBox(
+      height: 65,
+      child: isSelected
+          ? GradientButtonOffer(
+        text: text,
+        font: 14,
+        onPressed: () => onSelect(index),
+      )
+          : WhiteButtonOffer(
+        text: text,
+        font: 14,
+        onPressed: () => onSelect(index),
       ),
     );
   }
@@ -136,9 +136,11 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
           children: [
             Row(
               children: [
-                buildOptionButton("The Nearest", 0),
-                buildOptionButton("Highest Rating", 1),
-                buildOptionButton("Lowest price", 2),
+                Expanded(child: buildOptionButton("The Nearest".tr(), 0)),
+                const SizedBox(width: 10),
+                Expanded(child: buildOptionButton("Highest Rating".tr(), 1)),
+                const SizedBox(width: 10),
+                Expanded(child: buildOptionButton("Lowest price".tr(), 2)),
               ],
             ),
             const SizedBox(height: 20),
@@ -151,13 +153,14 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
                     offer: offer,
                     onDecline: () => removeOffer(offer.id),
                     onAccept: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OfferDetailsScreen(offer: offer),
-                          ),
-                        );
-                      },
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              OfferDetailsScreen(offer: offer),
+                        ),
+                      );
+                    },
                   );
                 },
               ),

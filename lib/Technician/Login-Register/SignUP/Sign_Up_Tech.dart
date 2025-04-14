@@ -63,12 +63,10 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
 
   // Date Picker logic for Date of Birth
   Future<void> _pickDateOfBirth() async {
-    DateTime now = DateTime.now();
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
+      firstDate: DateTime(1950),
+      lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(

@@ -164,45 +164,34 @@ class WhiteButtonOffer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 5),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Colors.black.withOpacity(0.37),
-          //     spreadRadius: 0,
-          //     blurRadius: 4,
-          //     offset: const Offset(0, 4),
-          //   ),
-          // ],
-          border: Border.all(
-            color:const Color( 0xffAEAEAE),
-            width: 1,
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 5),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color:const Color( 0xffAEAEAE),
+          width: 1,
+        ),
+      ),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+        child: Text(
+          text.tr(),
+          style: GoogleFonts.charisSil(
+            fontSize: font,
+            color:const Color(0xff979292),
           ),
-          child: Text(
-            text.tr(),
-            style: GoogleFonts.charisSil(
-              fontSize: font,
-              color:const Color(0xff979292),
-            ),
-            maxLines: 2,
-            textAlign: TextAlign.center,
-          ),
+          maxLines: 2,
+          textAlign: TextAlign.center,
         ),
       ),
     );

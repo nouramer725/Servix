@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:servix/constents/constent.dart';
 import '../../Components/Buttons.dart';
+import '../../Theme/Theme_Provider.dart';
 import 'Model/Offer.dart';
 
 class OfferCard extends StatelessWidget {
@@ -17,8 +20,11 @@ class OfferCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Card(
-      color: Colors.white,
+      color: themeProvider.themeMode == ThemeMode.dark
+          ? const Color(0xFF333739)
+          : Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: const BorderSide(color: Color(0xff979292)),
@@ -42,6 +48,9 @@ class OfferCard extends StatelessWidget {
                       offer.name,
                       style: GoogleFonts.castoro(
                         fontSize: 20,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -49,7 +58,11 @@ class OfferCard extends StatelessWidget {
                       children: [
                         Text(
                           offer.rating.toString(),
-                          style: GoogleFonts.castoro(fontSize: 12),
+                          style: GoogleFonts.castoro(
+                              fontSize: 12,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black),
                         ),
                         const SizedBox(width: 4),
                         Row(
@@ -59,7 +72,9 @@ class OfferCard extends StatelessWidget {
                                   ? Icons.star_rate_rounded
                                   : Icons.star_outline_rounded,
                               size: 20,
-                              color: Colors.black,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
                             );
                           }),
                         ),
@@ -72,17 +87,25 @@ class OfferCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               "EGP ${offer.price}",
-              style: GoogleFonts.castoro(fontSize: 20),
+              style: GoogleFonts.castoro(
+                  fontSize: 20,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black),
             ),
             Row(
               children: [
-                const Icon(Icons.location_on_sharp,
-                    size: 16, color: Color(0xFF821717)),
+                Icon(Icons.location_on_sharp,
+                    size: 16, color: ApplicationColor),
                 const SizedBox(width: 4),
                 Expanded(
                   child: Text(
                     "${offer.address1} , ${offer.address2}",
-                    style: GoogleFonts.castoro(fontSize: 14),
+                    style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black),
                   ),
                 ),
               ],

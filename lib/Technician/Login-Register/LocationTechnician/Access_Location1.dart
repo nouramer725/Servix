@@ -6,9 +6,7 @@ import '../../../Settings/Privacy Policy.dart';
 import 'Google Maps.dart';
 
 class LocationRequestScreenTech extends StatelessWidget {
-  final String phoneNumber;
-
-  const LocationRequestScreenTech ({super.key, required this.phoneNumber});
+  const LocationRequestScreenTech({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,8 @@ class LocationRequestScreenTech extends StatelessWidget {
                 ),
                 SizedBox(height: 40),
                 Text(
-                  "By allowing access , you consent to share your personal info with Google maps as stated in the".tr(),
+                  "By allowing access , you consent to share your personal info with Google maps as stated in the"
+                      .tr(),
                   style: GoogleFonts.charisSil(
                     fontSize: 16,
                     color: Color(0xFF7D7C7C),
@@ -62,11 +61,9 @@ class LocationRequestScreenTech extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => GoogleMapScreenTech(
-                          phoneNumber: phoneNumber,
-                        ),
+                        builder: (context) => GoogleMapScreenTech(),
                       ),
-                          (route) => false, // Removes all previous routes
+                      (route) => false, // Removes all previous routes
                     );
                   },
                   text: "Allow Access".tr(),

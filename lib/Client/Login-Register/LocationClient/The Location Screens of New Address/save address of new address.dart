@@ -91,7 +91,13 @@ class _SaveNewAddressScreenClientState
         context,
         MaterialPageRoute(
           builder: (context) => NewAddress(
-            orderId: widget.orderId, // Pass the orderId here
+            orderId: widget.orderId,
+            description: '',
+            serviceTitle: '',
+            imagePath: '',
+            fileUrls: [],
+            selectedDate: DateTime.now(),
+            selectedTime: TimeOfDay.now(),
           ),
         ),
       );

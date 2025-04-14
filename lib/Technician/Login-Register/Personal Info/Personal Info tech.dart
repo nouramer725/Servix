@@ -192,10 +192,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
     // Navigate to the next screen
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(
-            builder: (context) => LocationRequestScreenTech(
-                  phoneNumber: widget.phoneNumber,
-                )),
+        MaterialPageRoute(builder: (context) => LocationRequestScreenTech()),
         (route) => false);
   }
 

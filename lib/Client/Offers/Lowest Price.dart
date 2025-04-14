@@ -73,12 +73,12 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
     });
 
     if (index == 1) {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HighestRatingScreen()),
       );
     } else if (index == 2) {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const TheNearestScreen()),
       );

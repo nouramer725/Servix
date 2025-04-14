@@ -9,7 +9,6 @@ import '../../../Theme/Theme_Provider.dart';
 import '../../Service/Devices/Devices.dart';
 import '../../Service/Home_Service/Home-Service.dart';
 import '../../Service/Man/Man.dart';
-import '../../Service/Private_Teaching/Private-Teaching.dart';
 import '../../Service/Woman/Woman.dart';
 import '../HomeComponents/Model/service.dart';
 
