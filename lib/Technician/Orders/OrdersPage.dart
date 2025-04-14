@@ -1,23 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:servix/Client/Orders/Process%20Orders.dart';
-import 'package:servix/constents/constent.dart';
+import 'package:servix/Technician/Orders/OrderCard.dart';
+import 'package:servix/Technician/Orders/PreviousOrderPage.dart';
+import 'package:servix/Technician/Orders/Process%20Orders.dart';
+import 'package:servix/Technician/Orders/model/model.dart';
 import '../../Components/OrderGradientButton.dart';
 import '../../Components/OrderWhiteButton.dart';
-import 'OrderCard.dart';
-import 'OrderCardImg.dart';
-import 'PreviousOrderPage.dart';
-import 'model/model.dart';
+import '../../constents/constent.dart';
 
-class OrdersPage extends StatefulWidget {
-  const OrdersPage({super.key});
+class OrdersPageTech extends StatefulWidget {
+  const OrdersPageTech({super.key});
 
   @override
-  _OrdersPageState createState() => _OrdersPageState();
+  _OrdersPageTechState createState() => _OrdersPageTechState();
 }
 
-class _OrdersPageState extends State<OrdersPage> {
+class _OrdersPageTechState extends State<OrdersPageTech> {
   int _selectedIndex = 0;
 
   @override
@@ -62,17 +61,17 @@ class _OrdersPageState extends State<OrdersPage> {
                 Expanded(
                   child: _selectedIndex == 2
                       ? OrderGradientButton(
-                    onPressed: () {},
-                    text: 'Finished',
-                  )
+                          onPressed: () {},
+                          text: 'Finished',
+                        )
                       : OrderWhiteButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectedIndex = 2;
-                      });
-                    },
-                    text: 'Finished',
-                  ),
+                          onPressed: () {
+                            setState(() {
+                              _selectedIndex = 2;
+                            });
+                          },
+                          text: 'Finished',
+                        ),
                 ),
               ],
             ),
@@ -81,8 +80,8 @@ class _OrdersPageState extends State<OrdersPage> {
               child: _selectedIndex == 0
                   ? _currentOrders()
                   : _selectedIndex == 1
-                      ? const ProcessOrderPage()
-                  : const PreviousOrderPage (),
+                      ? const ProcessOrderTechPage()
+                      : const PreviousOrderTechPage(),
             ),
           ],
         ),
@@ -102,8 +101,7 @@ class _OrdersPageState extends State<OrdersPage> {
           .collection('Services Requests')
           .doc(user.uid)
           .collection('user-services')
-          .where('Status', whereIn: ['Pending'])
-          .get(),
+          .where('Status', whereIn: ['Pending']).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -121,12 +119,14 @@ class _OrdersPageState extends State<OrdersPage> {
         final orders = snapshot.data!.docs.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
 
-          return OrderModel(
+          return OrderModelTech(
             ServiceType: data['serviceTitle'] ?? 'No Service Type',
             Description: data['description'] ?? '',
-            Status: data['Status'] ?? '',
             Date: data['selectedDate'] ?? '',
             Time: data['selectedTime'] ?? '',
+            image: data['personalFileUrl'] ?? data['imagePath'],
+            Name: data['providerName'] ?? 'Unknown',
+            Location: data['location'] ?? 'Unknown',
           );
         }).toList();
 
@@ -134,11 +134,7 @@ class _OrdersPageState extends State<OrdersPage> {
           itemCount: orders.length,
           itemBuilder: (context, index) {
             final order = orders[index];
-            if (order.image != null && order.Name != null) {
-              return OrderCardImg(orders: order);
-            } else {
-              return OrderCard(orders: order);
-            }
+            return OrderCardTech(orders: order);
           },
         );
       },

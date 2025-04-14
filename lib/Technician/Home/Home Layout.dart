@@ -19,9 +19,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Language/Local_Provider.dart';
 import '../../On-Boarding/On_Boarding_Screen.dart';
 import '../../Theme/Theme_Provider.dart';
-import 'FourthScreenOfBottomnavbar.dart';
+import '../Orders/OrdersPage.dart';
 import 'SecondScreenOfBottomnavbar.dart';
-import 'ThirdScreenOfBottomnavbar.dart';
 
 class HomeTechnicianLayout extends StatefulWidget {
   const HomeTechnicianLayout({super.key});
@@ -50,7 +49,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
   final List<Widget> pages = [
     const HomeTechFirstScreen(),
     const NotificationSystem(),
-    const Orders(),
+    const OrdersPageTech(),
     const IntroScreenTech(),
   ];
   int selectedIndex = 0;
@@ -433,7 +432,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                   color: themeProvider.themeMode == ThemeMode.dark
                       ? Colors.white60
                       : ApplicationColor3),
-              label: "Orders".tr(),
+              label: "Services".tr(),
               activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
             ),
             BottomNavigationBarItem(

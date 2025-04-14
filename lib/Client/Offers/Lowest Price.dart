@@ -90,6 +90,7 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
     super.initState();
     offers.sort((a, b) => a.price.compareTo(b.price));
   }
+
   void removeOffer(String id) {
     setState(() {
       offers.removeWhere((offer) => offer.id == id);
@@ -101,21 +102,20 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
     return Expanded(
       child: isSelected
           ? SizedBox(
-        height: 65,
-        child: GradientButtonOffer(
-          text: text,
-          font: 14,
-          onPressed: () => onSelect(index),
-        ),
-      )
+              height: 50,
+              child: GradientButtonOffer(
+                text: text,
+                font: 14,
+                onPressed: () => onSelect(index),
+              ),
+            )
           : SizedBox(
-        height: 65,
-        child: WhiteButtonOffer(
-          text: text,
-          font: 14,
-          onPressed: () => onSelect(index),
-        ),
-      ),
+              child: WhiteButtonOffer(
+                text: text,
+                font: 14,
+                onPressed: () => onSelect(index),
+              ),
+            ),
     );
   }
 
@@ -132,44 +132,46 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
           style: GoogleFonts.cantataOne(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color:themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black
-          ),
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Colors.black),
         ),
       ),
       body: Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: Column(
-    children: [
-    Row(
-    children: [
-    buildOptionButton("The Nearest", 2),
-    buildOptionButton("Highest Rating", 1),
-    buildOptionButton("Lowest price", 0),
-    ],
-    ),
-    const SizedBox(height: 20),
-      Expanded(
-        child: ListView.builder(
-          itemCount: offers.length,
-          itemBuilder: (context, index) {
-            final offer = offers[index];
-            return OfferCard(
-              offer: offer,
-              onDecline: () => removeOffer(offer.id),
-              onAccept: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => OfferDetailsScreen(offer: offer),
-                  ),
-                );
-              },
-            );
-          },
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                buildOptionButton("The Nearest", 2),
+                buildOptionButton("Highest Rating", 1),
+                buildOptionButton("Lowest price", 0),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: offers.length,
+                itemBuilder: (context, index) {
+                  final offer = offers[index];
+                  return OfferCard(
+                    offer: offer,
+                    onDecline: () => removeOffer(offer.id),
+                    onAccept: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              OfferDetailsScreen(offer: offer),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
-      ),
-
-   ], ),
       ),
     );
   }

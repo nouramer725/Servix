@@ -100,7 +100,7 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
     final isSelected = selectedIndex == index;
     return Expanded(
       child: SizedBox(
-        height: 65,
+        height: 50,
         child: isSelected
             ? GradientButtonOffer(
           text: text,

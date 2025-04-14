@@ -96,18 +96,18 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
   Widget buildOptionButton(String text, int index) {
     final isSelected = selectedIndex == index;
     return SizedBox(
-      height: 65,
+      height: 50,
       child: isSelected
           ? GradientButtonOffer(
-        text: text,
-        font: 14,
-        onPressed: () => onSelect(index),
-      )
+              text: text,
+              font: 14,
+              onPressed: () => onSelect(index),
+            )
           : WhiteButtonOffer(
-        text: text,
-        font: 14,
-        onPressed: () => onSelect(index),
-      ),
+              text: text,
+              font: 14,
+              onPressed: () => onSelect(index),
+            ),
     );
   }
 
@@ -137,9 +137,7 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
             Row(
               children: [
                 Expanded(child: buildOptionButton("The Nearest".tr(), 0)),
-                const SizedBox(width: 10),
                 Expanded(child: buildOptionButton("Highest Rating".tr(), 1)),
-                const SizedBox(width: 10),
                 Expanded(child: buildOptionButton("Lowest price".tr(), 2)),
               ],
             ),
