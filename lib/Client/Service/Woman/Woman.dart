@@ -96,14 +96,14 @@ class Womenservice extends StatelessWidget {
               },
             ),
             ServiceCard(
-              serviceName: 'Private Coach'.tr(),
+              serviceName: 'Private Coach Woman'.tr(),
               imagePath: 'assets/images/woman/Privatecoach-woman.jpg',
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const DescriptionnScreen(
-                        title: "Private Coach",
+                        title: "Private Coach Woman",
                         imagePath:
                             "assets/images/woman/Privatecoach-woman.jpg"),
                   ),

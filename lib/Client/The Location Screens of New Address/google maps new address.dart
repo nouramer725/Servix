@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
-import 'package:easy_localization/easy_localization.dart'; // Import easy_localization
-import 'package:servix/Client/Login-Register/LocationClient/The%20Location%20Screens%20of%20New%20Address/save%20address%20of%20new%20address.dart';
-import '../../../../Components/Buttons.dart';
-import '../Google maps Components/Current Location Button.dart';
-import '../Google maps Components/Map Widget.dart';
-import '../Google maps Components/Search Bar.dart';
-import '../Save_Address.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:servix/Client/The%20Location%20Screens%20of%20New%20Address/save%20address%20of%20new%20address.dart';
+
+import '../../Components/Buttons.dart';
+import '../../Technician/Login-Register/LocationTechnician/Google maps Components/Current Location Button.dart';
+import '../../Technician/Login-Register/LocationTechnician/Google maps Components/Map Widget.dart';
+import '../../Technician/Login-Register/LocationTechnician/Google maps Components/Search Bar.dart'; // Import easy_localization
 
 class GoogleMapNewScreenClient extends StatefulWidget {
   final String orderId;

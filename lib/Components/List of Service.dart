@@ -33,7 +33,8 @@ final Map<String, List<String>> subServicesMap = {
     "Massage".tr(),
     "Make Artist".tr(),
     "Massage".tr(),
-    "Nails".tr()
+    "Nails".tr(),
+    "Private Coach Woman".tr()
   ],
   "Care Service".tr(): [
     "Children Care".tr(),

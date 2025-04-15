@@ -6,13 +6,15 @@ class OrderModel {
   final String Time;
   final String? Name;
   final String? image;
+  final String orderId;
 
-  const OrderModel({
-    required this.ServiceType,
-    required this.Description ,
-    required this.Status ,
-    required this.Date,
-    required this.Time,
-    this.Name,
-    this.image});
+  const OrderModel(
+      {required this.ServiceType,
+      required this.Description,
+      required this.Status,
+      required this.Date,
+      required this.Time,
+      this.Name,
+      required this.orderId,
+      this.image});
 }

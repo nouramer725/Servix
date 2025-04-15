@@ -1,19 +1,34 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Offer {
-  final String id;
-  final String name;
-  final double rating;
-  final double price;
-  final String address1;
-  final String address2;
-  final String image;
+  final String technicianId;
+  final String technicianName;
+  final String technicianImage;
+  final String offer;
+  final String street;
+  final String area;
+  final String rating;
 
   Offer({
-    required this.id,
-    required this.name,
+    required this.technicianId,
+    required this.technicianName,
+    required this.technicianImage,
+    required this.offer,
+    required this.street,
+    required this.area,
     required this.rating,
-    required this.price,
-    required this.address1,
-    required this.address2,
-    required this.image,
   });
+
+  factory Offer.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Offer(
+      technicianId: data['technicianId'],
+      technicianName: data['technicianName'],
+      technicianImage: data['technicianImage'] ?? '',
+      offer: data['technicianOffer'],
+      street: data['technicianLocationStreet'] ?? '',
+      area: data['technicianLocationArea'] ?? '',
+      rating: data['technicianRating'] ?? '0.0',
+    );
+  }
 }

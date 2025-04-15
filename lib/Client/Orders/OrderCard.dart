@@ -125,18 +125,20 @@ class OrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-
-              // Button floated to the right
               Positioned(
                 bottom: 15,
                 left: context.locale.languageCode == 'ar' ? 5 : null,
                 right: context.locale.languageCode == 'en' ? 5 : null,
                 child: OfferButtonInOrderCard(
                   onPressed: () {
+                    print('Navigating with orderId: ${orders.orderId}');
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const TheNearestScreen(),
+                          builder: (context) =>
+                              TheNearestScreen(
+                                orderId: orders.orderId,
+                              ),
                         ));
                   },
                 ),

@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../../Components/Buttons.dart';
 import '../../../../Theme/Theme_Provider.dart';
 import '../../../../constents/constent.dart';
-import '../../../Home/HomeLayoutClient.dart';
+import '../Home/HomeLayoutClient.dart';
 import 'google maps new address.dart';
 
 class NewAddress extends StatefulWidget {
@@ -53,6 +53,8 @@ class _NewAddressState extends State<NewAddress> {
     super.initState();
     fetchUserLocation();
     fetchUserNewLocation();
+    getUserNames();
+    fetchProfileImageUrl();
   }
 
   Future<void> fetchUserLocation() async {
@@ -119,6 +121,57 @@ class _NewAddressState extends State<NewAddress> {
       }
     } catch (e) {
       print('Error fetching location: $e');
+    }
+  }
+
+  Future<Map<String, String?>> getUserNames() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) return {'name': null, 'imageUrl': null};
+
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')  // Assuming the collection is named 'users'
+          .doc(user.uid)
+          .get();
+
+      if (userDoc.exists) {
+        final data = userDoc.data()!;
+        return {
+          'first_name': data['first_name'],
+          'last_name': data['last_name'],
+        };
+      } else {
+        return {'first_name': null, 'last_name': null};
+      }
+    } catch (e) {
+      print("Error fetching user details: $e");
+      return {'first_name': null, 'last_name': null};
+    }
+  }
+
+  Future<String?> fetchProfileImageUrl() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) {
+        return null; // Return null if no user is logged in
+      }
+
+      final snapshot = await FirebaseFirestore.instance
+          .collection("user-files")
+          .doc(user.uid)
+          .collection("personalInformation")
+          .doc("profile")
+          .get();
+
+      if (snapshot.exists) {
+        return snapshot.data()?['personalImageUrl'];
+      }
+
+      return null; // Return null if the document doesn't exist
+    } catch (e) {
+      print('Error fetching profile image: $e');
+      return null; // Return null if there's an error
     }
   }
 
@@ -354,6 +407,9 @@ class _NewAddressState extends State<NewAddress> {
 
       Map<String, dynamic> selectedLocation;
 
+      final userNames = await getUserNames();  // Fetch names
+      final profileImageUrl = await fetchProfileImageUrl();  // Fetch profile image URL
+
       if (selectedIndex == -1) {
         // Use the default address
         selectedLocation = {
@@ -377,11 +433,15 @@ class _NewAddressState extends State<NewAddress> {
           'apartment': newLocations[selectedIndex!]['apartment'],
           'description': widget.description,
           'serviceTitle': widget.serviceTitle,
-          'imagePath': widget.imagePath,
           'fileUrls': widget.fileUrls,
           'selectedDate': DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
           'selectedTime': widget.selectedTime!.format(context),
           'Status': 'Pending',
+          'userId': user.uid,
+          'orderId':widget.orderId,
+          'firstName': userNames['first_name'],
+          'lastName': userNames['last_name'],
+          'profileImageUrl': profileImageUrl,
           'timestamp': FieldValue.serverTimestamp(),
         };
       } else {

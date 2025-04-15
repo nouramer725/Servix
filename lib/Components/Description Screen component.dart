@@ -10,13 +10,13 @@ import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:provider/provider.dart';
-import 'package:servix/Client/Login-Register/LocationClient/The%20Location%20Screens%20of%20New%20Address/post_Screen%20of%20location.dart';
 import 'package:servix/Components/Buttons.dart';
 import 'package:servix/constents/constent.dart';
 import '../../../Components/datepicker.dart';
 import '../../../Components/time picker.dart';
 import '../../../Components/upload photo or video in description screens.dart';
 import '../../../Theme/Theme_Provider.dart';
+import '../Client/The Location Screens of New Address/post_Screen of location.dart';
 
 class DescriptionnScreen extends StatefulWidget {
   final String title;

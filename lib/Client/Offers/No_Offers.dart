@@ -11,19 +11,6 @@ class NoOffersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: themeProvider.themeMode == ThemeMode.dark
-            ? const Color(0xFF333739)
-            : Colors.white,
-        title: Text(
-          "Offers".tr(),
-          style: GoogleFonts.cantataOne(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color:themeProvider.themeMode == ThemeMode.dark ? Colors.white : Colors.black
-          ),
-        ),
-      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),

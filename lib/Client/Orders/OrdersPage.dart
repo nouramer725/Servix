@@ -62,17 +62,17 @@ class _OrdersPageState extends State<OrdersPage> {
                 Expanded(
                   child: _selectedIndex == 2
                       ? OrderGradientButton(
-                    onPressed: () {},
-                    text: 'Finished',
-                  )
+                          onPressed: () {},
+                          text: 'Finished',
+                        )
                       : OrderWhiteButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectedIndex = 2;
-                      });
-                    },
-                    text: 'Finished',
-                  ),
+                          onPressed: () {
+                            setState(() {
+                              _selectedIndex = 2;
+                            });
+                          },
+                          text: 'Finished',
+                        ),
                 ),
               ],
             ),
@@ -82,7 +82,7 @@ class _OrdersPageState extends State<OrdersPage> {
                   ? _currentOrders()
                   : _selectedIndex == 1
                       ? const ProcessOrderPage()
-                  : const PreviousOrderPage (),
+                      : const PreviousOrderPage(),
             ),
           ],
         ),
@@ -102,8 +102,7 @@ class _OrdersPageState extends State<OrdersPage> {
           .collection('Services Requests')
           .doc(user.uid)
           .collection('user-services')
-          .where('Status', whereIn: ['Pending'])
-          .get(),
+          .where('Status', whereIn: ['Pending']).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -127,6 +126,7 @@ class _OrdersPageState extends State<OrdersPage> {
             Status: data['Status'] ?? '',
             Date: data['selectedDate'] ?? '',
             Time: data['selectedTime'] ?? '',
+            orderId: doc.id,
           );
         }).toList();
 

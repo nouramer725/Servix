@@ -39,7 +39,7 @@ class OfferCard extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage(offer.image),
+                    backgroundImage: NetworkImage(offer.technicianImage),
                     radius: 25,
                   ),
                   const SizedBox(width: 10),
@@ -47,7 +47,7 @@ class OfferCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        offer.name,
+                        offer.technicianName,
                         style: GoogleFonts.castoro(
                           fontSize: 20,
                           color: themeProvider.themeMode == ThemeMode.dark
@@ -70,7 +70,7 @@ class OfferCard extends StatelessWidget {
                           Row(
                             children: List.generate(5, (index) {
                               return Icon(
-                                index < offer.rating.floor()
+                                index < offer.rating.length
                                     ? Icons.star_rate_rounded
                                     : Icons.star_outline_rounded,
                                 size: 20,
@@ -88,7 +88,7 @@ class OfferCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                "EGP ${offer.price}",
+                "EGP ${offer.offer}",
                 style: GoogleFonts.castoro(
                     fontSize: 20,
                     color: themeProvider.themeMode == ThemeMode.dark
@@ -102,7 +102,7 @@ class OfferCard extends StatelessWidget {
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
-                      "${offer.address1} , ${offer.address2}",
+                      "${offer.area} , ${offer.street}",
                       style: GoogleFonts.castoro(
                           fontSize: 14,
                           color: themeProvider.themeMode == ThemeMode.dark

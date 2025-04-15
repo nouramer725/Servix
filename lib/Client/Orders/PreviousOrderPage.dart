@@ -49,6 +49,7 @@ class PreviousOrderPage extends StatelessWidget {
             Time: data['selectedTime'] ?? '',
             image: data['personalFileUrl'] ?? data['imagePath'],
             Name: data['providerName'] ?? 'Unknown',
+            orderId: doc.id,
           );
         }).toList();
 

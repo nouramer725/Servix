@@ -13,7 +13,8 @@ class OfferDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Offer Details',
-          style: GoogleFonts.cantataOne(fontSize: 20, fontWeight: FontWeight.bold),
+          style:
+              GoogleFonts.cantataOne(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
@@ -21,12 +22,19 @@ class OfferDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(child: CircleAvatar(backgroundImage: AssetImage(offer.image), radius: 50)),
+            Center(
+                child: CircleAvatar(
+                    backgroundImage: NetworkImage(offer.technicianImage),
+                    radius: 50)),
             const SizedBox(height: 20),
-            Text("Name: ${offer.name}", style: GoogleFonts.castoro(fontSize: 18)),
-            Text("Rating: ${offer.rating}", style: GoogleFonts.castoro(fontSize: 18)),
-            Text("Price: ${offer.price} EGP", style: GoogleFonts.castoro(fontSize: 18)),
-            Text("Address: ${offer.address1}, ${offer.address2}", style: GoogleFonts.castoro(fontSize: 18)),
+            Text("Name: ${offer.technicianName}",
+                style: GoogleFonts.castoro(fontSize: 18)),
+            Text("Rating: ${offer.rating}",
+                style: GoogleFonts.castoro(fontSize: 18)),
+            Text("Price: ${offer.offer} EGP",
+                style: GoogleFonts.castoro(fontSize: 18)),
+            Text("Address: ${offer.area}, ${offer.street}",
+                style: GoogleFonts.castoro(fontSize: 18)),
           ],
         ),
       ),

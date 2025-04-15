@@ -19,7 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Language/Local_Provider.dart';
 import '../../On-Boarding/On_Boarding_Screen.dart';
 import '../../Theme/Theme_Provider.dart';
-import '../Orders/OrdersPage.dart';
+import '../Orders/OrdersPageTech.dart';
 import 'SecondScreenOfBottomnavbar.dart';
 
 class HomeTechnicianLayout extends StatefulWidget {
@@ -319,13 +319,80 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     ),
                   ),
                   _buildMenuItem(Icons.logout, "Logout".tr(), onTap: () async {
-                    await FirebaseAuth.instance.signOut();
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MemberShip(),
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (context) => Dialog(
+                        backgroundColor:
+                        themeProvider.themeMode == ThemeMode.dark
+                            ? const Color(0xFF333739)
+                            : Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.circular(10)), // Rounded corners
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
+                          child: Column(
+                            mainAxisSize:
+                            MainAxisSize.min, // Adjusts to content size
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  "Log out of your account?".tr(),
+                                  style: GoogleFonts.castoro(
+                                      color: themeProvider.themeMode ==
+                                          ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 20),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text(
+                                      "CANCEL".tr(),
+                                      style: GoogleFonts.castoro(
+                                        color: themeProvider.themeMode ==
+                                            ThemeMode.dark
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await FirebaseAuth.instance.signOut();
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                            const MemberShip()),
+                                            (route) => false,
+                                      );
+                                    },
+                                    child: Text(
+                                      "LOG OUT".tr(),
+                                      style: GoogleFonts.castoro(
+                                        fontSize: 16,
+                                        color: ApplicationColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      (route) => false,
                     );
                   }),
                   _buildMenuItem(Icons.delete, "Delete Account".tr(),
