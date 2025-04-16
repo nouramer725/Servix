@@ -61,7 +61,7 @@ class Manservice extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                          title: "Tailoring",
+                          title: "Tailoring Man",
                           imagePath: "assets/images/men/Tailoring-man.jpg"),
                     ),
                   );
@@ -74,7 +74,7 @@ class Manservice extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                          title: "Massage",
+                          title: "Massage Man",
                           imagePath: "assets/images/men/massage-man.jpg"),
                     ),
                   );

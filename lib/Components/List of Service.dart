@@ -22,8 +22,8 @@ final Map<String, List<String>> subServicesMap = {
   "For Men".tr(): [
     "Private Coach".tr(),
     "Shaving".tr(),
-    "Massage".tr(),
-    "Tailoring".tr(),
+    "Massage Man".tr(),
+    "Tailoring Man".tr(),
   ],
   "For Women".tr(): [
     "Hair Styling".tr(),

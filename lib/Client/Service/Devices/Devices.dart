@@ -46,7 +46,7 @@ class DevicesMaintenaceService extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                        title: 'Mobile Maintenance', // Custom title
+                        title: 'Mobile', // Custom title
                         imagePath:
                             'assets/images/devices/mobile.jpg', // Custom image
                       ),
@@ -61,7 +61,7 @@ class DevicesMaintenaceService extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                        title: 'Air Conditioning Maintenance', // Custom title
+                        title: 'Air Conditioning', // Custom title
                         imagePath:
                             'assets/images/devices/air.jpg', // Custom image
                       ),
@@ -76,7 +76,7 @@ class DevicesMaintenaceService extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                        title: 'Computer Maintenance', // Custom title
+                        title: 'Computer', // Custom title
                         imagePath:
                             'assets/images/devices/computer.jpg', // Custom image
                       ),
@@ -91,7 +91,7 @@ class DevicesMaintenaceService extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                        title: 'Fridge Maintenance', // Custom title
+                        title: 'Fridge', // Custom title
                         imagePath:
                             'assets/images/devices/fridge.jpg', // Custom image
                       ),
@@ -106,7 +106,7 @@ class DevicesMaintenaceService extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                        title: 'Washing Machine Maintenance', // Custom title
+                        title: 'Washing Machine', // Custom title
                         imagePath:
                             'assets/images/devices/Washing.jpg', // Custom image
                       ),
@@ -121,7 +121,7 @@ class DevicesMaintenaceService extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                        title: 'Stove Maintenance', // Custom title
+                        title: 'Stove', // Custom title
                         imagePath:
                             'assets/images/devices/stove.jpg', // Custom image
                       ),
@@ -136,7 +136,7 @@ class DevicesMaintenaceService extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                        title: 'Screen Maintenance', // Custom title
+                        title: 'Screen', // Custom title
                         imagePath:
                             'assets/images/devices/screen.jpg', // Custom image
                       ),
@@ -151,7 +151,7 @@ class DevicesMaintenaceService extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                        title: 'Microwave Maintenance', // Custom title
+                        title: 'Microwave', // Custom title
                         imagePath:
                             'assets/images/devices/microwave.jpg', // Custom image
                       ),
@@ -166,7 +166,7 @@ class DevicesMaintenaceService extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                        title: 'Water Heating Maintenance', // Custom title
+                        title: 'Water Heating', // Custom title
                         imagePath:
                             'assets/images/devices/water-heating.jpg', // Custom image
                       ),
@@ -181,7 +181,7 @@ class DevicesMaintenaceService extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                        title: 'Fan Maintenance', // Custom title
+                        title: 'Fan', // Custom title
                         imagePath:
                             'assets/images/devices/fan.jpg', // Custom image
                       ),
