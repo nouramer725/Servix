@@ -99,62 +99,88 @@ class OrderCardTech extends StatelessWidget {
                           },
                         ),
                         TextButton(
-                            child: Text(
-                              'Offer',
-                              style: GoogleFonts.judson(
-                                  fontSize: 25, color: ApplicationColor),
-                            ),
-                            onPressed: () async {
-                              String offerPrice = priceController.text;
+                          child: Text(
+                            'Offer',
+                            style: GoogleFonts.judson(
+                                fontSize: 25, color: ApplicationColor),
+                          ),
+                          onPressed: () async {
+                            String offerPrice = priceController.text;
 
-                              try {
-                                final currentUser =
-                                    FirebaseAuth.instance.currentUser!;
-                                final uid = currentUser.uid;
+                            try {
+                              final currentUser =
+                                  FirebaseAuth.instance.currentUser!;
+                              final uid = currentUser.uid;
 
-                                // Fetch technician basic info
-                                final technicianDoc = await FirebaseFirestore
-                                    .instance
-                                    .collection('technician')
-                                    .doc(uid)
-                                    .get();
-                                final techData = technicianDoc.data()!;
-                                final fullName =
-                                    "${techData['first_name']} ${techData['last_name']}";
+                              // Fetch technician basic info
+                              final technicianDoc = await FirebaseFirestore
+                                  .instance
+                                  .collection('technician')
+                                  .doc(uid)
+                                  .get();
+                              final techData = technicianDoc.data()!;
+                              final fullName =
+                                  "${techData['first_name']} ${techData['last_name']}";
 
-                                // Fetch profile image from uploads
-                                final uploadsSnapshot = await FirebaseFirestore
-                                    .instance
-                                    .collection("user-files")
-                                    .doc(uid)
-                                    .collection("uploads")
-                                    .limit(1)
-                                    .get();
-                                String? profileImageUrl;
-                                if (uploadsSnapshot.docs.isNotEmpty) {
-                                  profileImageUrl = uploadsSnapshot
-                                      .docs.first['personalFileUrl'];
-                                }
+                              // Fetch profile image from uploads
+                              final uploadsSnapshot = await FirebaseFirestore
+                                  .instance
+                                  .collection("user-files")
+                                  .doc(uid)
+                                  .collection("uploads")
+                                  .limit(1)
+                                  .get();
+                              String? profileImageUrl;
+                              if (uploadsSnapshot.docs.isNotEmpty) {
+                                profileImageUrl = uploadsSnapshot
+                                    .docs.first['personalFileUrl'];
+                              }
 
-                                // Fetch latest location
-                                final locationSnapshot = await FirebaseFirestore
-                                    .instance
-                                    .collection("user-files")
-                                    .doc(uid)
-                                    .collection("locationDetails")
-                                    .orderBy("timestamp", descending: true)
-                                    .limit(1)
-                                    .get();
-                                String street = "Street not available";
-                                String area = "Area not available";
-                                if (locationSnapshot.docs.isNotEmpty) {
-                                  final locData =
-                                      locationSnapshot.docs.first.data();
-                                  street = locData['street'] ?? street;
-                                  area = locData['area'] ?? area;
-                                }
+                              // Fetch latest location
+                              final locationSnapshot = await FirebaseFirestore
+                                  .instance
+                                  .collection("user-files")
+                                  .doc(uid)
+                                  .collection("locationDetails")
+                                  .orderBy("timestamp", descending: true)
+                                  .limit(1)
+                                  .get();
+                              String street = "Street not available";
+                              String area = "Area not available";
+                              if (locationSnapshot.docs.isNotEmpty) {
+                                final locData =
+                                    locationSnapshot.docs.first.data();
+                                street = locData['street'] ?? street;
+                                area = locData['area'] ?? area;
+                              }
 
-                                // Add new offer to the order's subcollection "offers"
+                              // Check if an offer already exists for this technician
+                              final existingOfferQuery = await FirebaseFirestore
+                                  .instance
+                                  .doc(orders.docPath!)
+                                  .collection("offers")
+                                  .where('technicianId', isEqualTo: uid)
+                                  .limit(1)
+                                  .get();
+
+                              if (existingOfferQuery.docs.isNotEmpty) {
+                                final existingOfferDoc =
+                                    existingOfferQuery.docs.first;
+                                await existingOfferDoc.reference.update({
+                                  'technicianOffer': offerPrice,
+                                  'timestamp': FieldValue.serverTimestamp(),
+                                });
+
+                                Fluttertoast.showToast(
+                                    msg: "Offer Updated Successfully",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.TOP,
+                                    backgroundColor:
+                                        ApplicationColorWithOpacity,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              } else {
+                                // If no offer exists, create a new one
                                 await FirebaseFirestore.instance
                                     .doc(orders.docPath!)
                                     .collection("offers")
@@ -162,15 +188,18 @@ class OrderCardTech extends StatelessWidget {
                                   'technicianId': uid,
                                   'technicianFirstName': techData['first_name'],
                                   'technicianLastName': techData['last_name'],
+                                  'technicianPhone': techData['phone'],
+                                  'technicianSubService': techData['sub_service'],
+                                  'technicianMainService': techData['main_service'],
                                   'technicianName': fullName,
                                   'technicianImage': profileImageUrl,
                                   'technicianLocationStreet': street,
                                   'technicianLocationArea': area,
                                   'technicianOffer': offerPrice,
+                                  'status': 'offer-made', // ✅ Add this line
                                   'timestamp': FieldValue.serverTimestamp(),
                                 });
 
-                                Navigator.of(context).pop();
                                 Fluttertoast.showToast(
                                     msg: "Offer Submitted Successfully",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -179,18 +208,21 @@ class OrderCardTech extends StatelessWidget {
                                         ApplicationColorWithOpacity,
                                     textColor: Colors.white,
                                     fontSize: 16.0);
-                              } catch (e) {
-                                print('Error submitting offer: $e');
-                                Fluttertoast.showToast(
-                                    msg: "Failed to submit offer",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.TOP,
-                                    backgroundColor:
-                                        ApplicationColorWithOpacity,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
                               }
-                            }),
+
+                              Navigator.of(context).pop();
+                            } catch (e) {
+                              print('Error submitting offer: $e');
+                              Fluttertoast.showToast(
+                                  msg: "Failed to submit offer",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.TOP,
+                                  backgroundColor: ApplicationColorWithOpacity,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+                          },
+                        )
                       ],
                     ),
                   ],

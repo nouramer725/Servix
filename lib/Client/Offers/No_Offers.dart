@@ -11,6 +11,14 @@ class NoOffersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Offers'.tr(),
+          style: GoogleFonts.castoro(
+            fontSize: 25,
+          )
+        )
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),

@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:servix/Client/Offers/No_Offers.dart';
 import '../../Components/Buttons.dart';
 import '../../Theme/Theme_Provider.dart';
 import '../../constents/constent.dart';
@@ -66,8 +65,7 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
             .collection('Services Requests')
             .doc(userUid)
             .collection('user-services')
-            .doc(
-                serviceId) // Make sure to fetch offers for this specific service
+            .doc(serviceId)
             .collection('offers')
             .get();
 

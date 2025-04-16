@@ -6,6 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Technician/Profile/Profile.dart';
 import '../../../../Theme/Theme_Provider.dart';
+import '../../constents/constent.dart';
+import '../Orders/model/modelTech.dart';
+import '../Orders/Pending card tech.dart';
 
 class HomeTechFirstScreen extends StatefulWidget {
   const HomeTechFirstScreen({super.key});
@@ -134,7 +137,8 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                             const SizedBox(height: 10),
                             Text("Total Jobs",
                                 style: GoogleFonts.castoro(
-                                    fontSize: 16, color: const Color(0xFF9A9A9A))),
+                                    fontSize: 16,
+                                    color: const Color(0xFF9A9A9A))),
                           ],
                         ),
                       ),
@@ -168,7 +172,8 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                             const SizedBox(height: 10),
                             Text("Review",
                                 style: GoogleFonts.castoro(
-                                    fontSize: 16, color: const Color(0xFF9A9A9A))),
+                                    fontSize: 16,
+                                    color: const Color(0xFF9A9A9A))),
                           ],
                         ),
                       ),
@@ -187,21 +192,100 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
               const SizedBox(
                 height: 10,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Pending Orders",
-                    style: GoogleFonts.castoro(
-                        fontSize: 22,
-                        decoration: TextDecoration.underline,
-                        decorationColor: const Color(0xFF9A9A9A),
-                        fontWeight: FontWeight.w500,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : const Color(0xFF7B7B7B)),
-                  )
-                ],
+              Text(
+                "Pending Orders",
+                style: GoogleFonts.castoro(
+                    fontSize: 22,
+                    decoration: TextDecoration.underline,
+                    decorationColor: const Color(0xFF9A9A9A),
+                    fontWeight: FontWeight.w500,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : const Color(0xFF7B7B7B)),
+              ),
+              FutureBuilder<String>(
+                future: getTechnicianSubservice(),
+                builder: (context, subserviceSnapshot) {
+                  if (subserviceSnapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(color: ApplicationColor),
+                    );
+                  }
+
+                  if (subserviceSnapshot.hasError ||
+                      !subserviceSnapshot.hasData) {
+                    return Center(child: Text('Error fetching subservice'));
+                  }
+
+                  final technicianSubservice = subserviceSnapshot.data!;
+                  final uid = FirebaseAuth.instance.currentUser!.uid;
+
+                  return FutureBuilder<QuerySnapshot>(
+                    future: FirebaseFirestore.instance
+                        .collectionGroup('user-services')
+                        .where('Status', isEqualTo: 'Pending')
+                        .where('serviceTitle', isEqualTo: technicianSubservice)
+                        .get(),
+
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                              color: ApplicationColor),
+                        );
+                      }
+
+                      if (snapshot.hasError || !snapshot.hasData) {
+                        print('Error fetching orders: ${snapshot.error}');
+                        return const Center(
+                            child: Text('Error loading orders'));
+                      }
+
+                      final docs = snapshot.data!.docs;
+                      print('Fetched orders count: ${docs.length}');
+
+                      if (docs.isEmpty) {
+                        return const Center(child: Text('No orders available'));
+                      }
+
+                      return FutureBuilder<List<OrderModelTech>>(
+                        future: _filterOrdersWithOffers(docs, uid),
+                        builder: (context, filteredSnapshot) {
+                          if (filteredSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                  color: ApplicationColor),
+                            );
+                          }
+
+                          if (filteredSnapshot.hasError ||
+                              !filteredSnapshot.hasData) {
+                            return const Center(
+                                child: Text('Error loading filtered orders'));
+                          }
+
+                          final orders = filteredSnapshot.data!;
+
+                          if (orders.isEmpty) {
+                            return const Center(child: Text('No Offers Made'));
+                          }
+
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: orders.length,
+                              itemBuilder: (context, index) {
+                                final order = orders[index];
+                                return PreviousOrderCard(orders: order);
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
               )
             ],
           ),
@@ -209,4 +293,61 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
       ),
     );
   }
+
+  Future<String> getTechnicianSubservice() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final doc = await FirebaseFirestore.instance
+        .collection('technician')
+        .doc(uid)
+        .get();
+    return doc['sub_service'];
+  }
+
+  Future<List<OrderModelTech>> _filterOrdersWithOffers(
+      List<QueryDocumentSnapshot> docs, String uid) async {
+    List<OrderModelTech> orders = [];
+
+    for (var doc in docs) {
+      final data = doc.data() as Map<String, dynamic>;
+
+      // Log data to check if it contains offers
+      print("Processing Order: ${data['serviceTitle']}");
+
+      final offersSnapshot = await doc.reference
+          .collection('offers')
+          .where('technicianId', isEqualTo: uid)
+          .limit(1)
+          .get();
+
+      // Log offers snapshot data
+      if (offersSnapshot.docs.isEmpty) {
+        print("No offers for this order.");
+      } else {
+        print("Found offers for this order.");
+      }
+
+      if (offersSnapshot.docs.isNotEmpty) {
+        final offerData = offersSnapshot.docs.first.data();
+        final offerValue =
+            offerData['technicianOffer']?.toString() ?? 'Not Available';
+
+        orders.add(OrderModelTech(
+          ServiceType: data['serviceTitle'] ?? '',
+          Description: data['description'] ?? '',
+          Date: data['selectedDate'] ?? '',
+          Time: data['selectedTime'] ?? '',
+          Location: data['area'] ?? 'No Location',
+          image: data['profileImageUrl'] ??
+              "assets/images/lang-member/langmem.png",
+          FName: data['firstName'] ?? 'Unknown',
+          LName: data['lastName'] ?? 'Unknown',
+          docPath: doc.reference.path,
+          previousOffer: offerValue, // assign offer value here
+        ));
+      }
+    }
+
+    return orders;
+  }
+
 }

@@ -94,7 +94,10 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
       future: getTechnicianSubservice(),
       builder: (context, subserviceSnapshot) {
         if (subserviceSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+              child: CircularProgressIndicator(
+            color: ApplicationColor,
+          ));
         }
 
         if (subserviceSnapshot.hasError || !subserviceSnapshot.hasData) {

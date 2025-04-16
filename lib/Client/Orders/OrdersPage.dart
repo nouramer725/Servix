@@ -126,6 +126,13 @@ class _OrdersPageState extends State<OrdersPage> {
             Status: data['Status'] ?? '',
             Date: data['selectedDate'] ?? '',
             Time: data['selectedTime'] ?? '',
+            technicianName: data['technicianName'] ?? '',
+            technicianImage: data['technicianImage'] ?? '',
+            technicianLocationArea: data['technicianLocationArea'] ?? '',
+            technicianLocationStreet: data['technicianLocationStreet'] ?? '',
+            technicianPhone: data['technicianPhone'] ?? '',
+            technicianSub: data['technicianSub'] ?? '',
+            technicianMain: data['technicianMain'] ?? '',
             orderId: doc.id,
           );
         }).toList();
@@ -134,7 +141,7 @@ class _OrdersPageState extends State<OrdersPage> {
           itemCount: orders.length,
           itemBuilder: (context, index) {
             final order = orders[index];
-            if (order.image != null && order.Name != null) {
+            if (order.technicianImage != null && order.technicianName != null) {
               return OrderCardImg(orders: order);
             } else {
               return OrderCard(orders: order);

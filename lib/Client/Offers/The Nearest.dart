@@ -10,7 +10,6 @@ import '../../constents/constent.dart';
 import 'Highest Rating.dart';
 import 'Lowest Price.dart';
 import 'Model/Offer.dart';
-import 'OfferDetailsScreen.dart';
 import 'offer_card.dart';
 
 class TheNearestScreen extends StatefulWidget {
@@ -67,8 +66,7 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
             .collection('Services Requests')
             .doc(userUid)
             .collection('user-services')
-            .doc(
-                serviceId) // Make sure to fetch offers for this specific service
+            .doc(serviceId)
             .collection('offers')
             .get();
 
@@ -83,8 +81,15 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
       }
 
       if (allOffers.isNotEmpty) {
+        allOffers.sort((a, b) {
+          int areaComparison = a.area.compareTo(b.area);
+          if (areaComparison != 0) return areaComparison;
+          return a.street
+              .compareTo(b.street); // Sorting by street if area is the same
+        });
+
         setState(() {
-          offers = allOffers; // Update the offers list
+          offers = allOffers;
         });
       } else {
         print("📭 No offers found for orderId: $orderId");
@@ -163,14 +168,6 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
     }
   }
 
-  // Method to remove an offer from the list
-  void removeOffer(String id) {
-    setState(() {
-      offers.removeWhere((offer) => offer.technicianId == id);
-    });
-  }
-
-  // Method to build buttons
   Widget buildOptionButton(String text, int index) {
     final isSelected = selectedIndex == index;
     return SizedBox(
@@ -234,17 +231,9 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
                               final offer = offers[index];
                               return OfferCard(
                                 offer: offer,
-                                onDecline: () =>
-                                    removeOffer(offer.technicianId),
-                                onAccept: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          OfferDetailsScreen(offer: offer),
-                                    ),
-                                  );
-                                },
+                                onDecline: () => onDecline(offer.technicianId),
+                                onAccept: () =>
+                                    onAccept(offer), // Accept the offer
                               );
                             },
                           ),
@@ -253,5 +242,109 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
         ),
       ),
     );
+  }
+
+  void onAccept(Offer offer) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        throw Exception("No user logged in");
+      }
+
+      final userUid = user.uid;
+      final orderId = widget.orderId;
+
+      // Step 1: Update the order status to "In Progress"
+      final snapshot = await FirebaseFirestore.instance
+          .collection('Services Requests')
+          .doc(userUid)
+          .collection('user-services')
+          .where('orderId', isEqualTo: orderId)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        final serviceId = snapshot.docs.first.id;
+
+        // Update the status of the order to "In Progress"
+        await FirebaseFirestore.instance
+            .collection('Services Requests')
+            .doc(userUid)
+            .collection('user-services')
+            .doc(serviceId)
+            .update({'Status': 'In Progress'});
+
+        // Step 2: Remove all offers related to the order except the accepted one
+        final offerSnapshot = await FirebaseFirestore.instance
+            .collection('Services Requests')
+            .doc(userUid)
+            .collection('user-services')
+            .doc(serviceId)
+            .collection('offers')
+            .get();
+
+        // Remove all offers except the accepted one
+        for (var offerDoc in offerSnapshot.docs) {
+          if (offerDoc.id != offer.id) {
+            await offerDoc.reference.delete();
+          }
+        }
+
+        setState(() {
+          offers.removeWhere((item) => item.id != offer.id);
+        });
+
+        print(
+            "✅ All offers removed for orderId: $orderId, except the accepted one.");
+      }
+    } catch (e) {
+      print('🚨 Error accepting offer and removing offers: $e');
+    }
+  }
+
+  void onDecline(String technicianId) async {
+    try {
+      // 1. Get the current logged-in user
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        throw Exception("No user logged in");
+      }
+
+      final userUid = user.uid;
+
+      // 2. Get the orderId from the widget (the current order's ID)
+      final orderId = widget.orderId;
+
+      // 3. Fetch the service ID by querying the 'user-services' collection based on the orderId
+      final snapshot = await FirebaseFirestore.instance
+          .collection('Services Requests')
+          .doc(userUid)
+          .collection('user-services')
+          .where('orderId', isEqualTo: orderId)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        final serviceId =
+            snapshot.docs.first.id; // Get the serviceId from the document
+
+        // 4. Delete the offer for the technician with the given technicianId
+        print(
+            "🗑️ Deleting offer for technicianId: $technicianId in serviceId: $serviceId");
+
+        await FirebaseFirestore.instance
+            .collection('Services Requests')
+            .doc(userUid)
+            .collection('user-services')
+            .doc(serviceId)
+            .collection('offers')
+            .doc(technicianId)
+            .delete();
+
+        print("✅ Offer deleted for technicianId: $technicianId");
+      } else {
+        print('🚨 No service found for the given orderId');
+      }
+    } catch (e) {
+      print('🚨 Error declining offer: $e');
+    }
   }
 }

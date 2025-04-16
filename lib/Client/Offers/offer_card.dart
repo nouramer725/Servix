@@ -125,7 +125,7 @@ class OfferCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: WhiteButtonOffer(
-                      text: "Decline",
+                      text: "Reject",
                       font: 18,
                       onPressed: onDecline,
                     ),

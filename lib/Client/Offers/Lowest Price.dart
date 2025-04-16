@@ -27,7 +27,6 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
   List<Offer> offers = [];
   bool isLoading = true;
 
-  // Fetch offers based on the lowest price
   Future<void> fetchOffers() async {
     setState(() {
       isLoading = true;

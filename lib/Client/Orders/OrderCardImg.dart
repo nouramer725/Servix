@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../Theme/Theme_Provider.dart';
+import '../technician View/Profile tech.dart';
 import 'model/model.dart';
 
 class OrderCardImg extends StatelessWidget {
@@ -111,8 +112,6 @@ class OrderCardImg extends StatelessWidget {
                   const SizedBox(height: 20), // spacing for bottom image
                 ],
               ),
-
-              // Positioned image + name at bottom right
               Positioned(
                 bottom: 0,
                 left: context.locale.languageCode == 'ar' ? 5 : null,
@@ -120,18 +119,36 @@ class OrderCardImg extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClipOval(
-                      child: Image.asset(
-                        orders.image!,
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TechnicianProfileScreen(
+                              technicianName: orders.technicianName,
+                              technicianImage: orders.technicianImage,
+                              technicianLocationArea: orders.technicianLocationArea,
+                              technicianLocationStreet: orders.technicianLocationStreet,
+                              technicianPhone: orders.technicianPhone,
+                              technicianSub: orders.technicianSub,
+                              technicianMain: orders.technicianMain,
+                            ),
+                          ),
+                        );
+                      },
+                      child: ClipOval(
+                        child: Image.network(
+                          orders.technicianImage,
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     SizedBox(
                       width: 80,
                       child: Text(
-                        orders.Name!,
+                        orders.technicianName,
                         style: GoogleFonts.castoro(
                             color: themeProvider.themeMode == ThemeMode.dark
                                 ? Colors.white

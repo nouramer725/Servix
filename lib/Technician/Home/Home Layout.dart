@@ -174,8 +174,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                   ),
                   _buildMenuItem(Icons.swap_horiz, "Switch to Client".tr(),
                       onTap: () {
-                        switchToClient(context);
-                      }),
+                    switchToClient(context);
+                  }),
                   _buildMenuItem(Icons.person_outline, "Profile".tr(),
                       onTap: () {
                     Navigator.push(
@@ -324,18 +324,18 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                       context: context,
                       builder: (context) => Dialog(
                         backgroundColor:
-                        themeProvider.themeMode == ThemeMode.dark
-                            ? const Color(0xFF333739)
-                            : Colors.white,
+                            themeProvider.themeMode == ThemeMode.dark
+                                ? const Color(0xFF333739)
+                                : Colors.white,
                         shape: RoundedRectangleBorder(
                             borderRadius:
-                            BorderRadius.circular(10)), // Rounded corners
+                                BorderRadius.circular(10)), // Rounded corners
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 10),
                           child: Column(
                             mainAxisSize:
-                            MainAxisSize.min, // Adjusts to content size
+                                MainAxisSize.min, // Adjusts to content size
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
@@ -344,7 +344,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                                   "Log out of your account?".tr(),
                                   style: GoogleFonts.castoro(
                                       color: themeProvider.themeMode ==
-                                          ThemeMode.dark
+                                              ThemeMode.dark
                                           ? Colors.white
                                           : Colors.black,
                                       fontSize: 20),
@@ -360,7 +360,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                                       "CANCEL".tr(),
                                       style: GoogleFonts.castoro(
                                         color: themeProvider.themeMode ==
-                                            ThemeMode.dark
+                                                ThemeMode.dark
                                             ? Colors.white
                                             : Colors.black,
                                         fontSize: 16,
@@ -375,8 +375,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                            const MemberShip()),
-                                            (route) => false,
+                                                const MemberShip()),
+                                        (route) => false,
                                       );
                                     },
                                     child: Text(
@@ -616,7 +616,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
 
         if (technicianSnapshot.exists) {
           // Retrieve the technician data
-          var technicianData = technicianSnapshot.data() as Map<String, dynamic>;
+          var technicianData =
+              technicianSnapshot.data() as Map<String, dynamic>;
 
           String firstName = technicianData['first_name'] ?? 'Updated Name';
           String lastName = technicianData['last_name'] ?? 'Updated Last Name';
@@ -625,7 +626,10 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
           String gender = technicianData['gender'] ?? 'Updated Gender';
 
           // Create a new document in the 'users' collection with the role 'Client'
-          await FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid).set({
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(firebaseUser.uid)
+              .set({
             'first_name': firstName,
             'last_name': lastName,
             'email': email,
@@ -636,7 +640,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
 
           // Now update the 'role' in the technician document
           await technicianRef.update({
-            'role': 'Client', // Assuming there's a 'role' field in the 'technician' document
+            'role':
+                'Client', // Assuming there's a 'role' field in the 'technician' document
           }).then((_) async {
             // Optionally, update the Firebase Auth user's email, display name, etc.
             await firebaseUser.updateDisplayName('$firstName $lastName');
@@ -648,7 +653,6 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
           }).catchError((error) {
             print("Failed to update technician role: $error");
           });
-
         } else {
           print("Technician document not found.");
         }
@@ -657,5 +661,4 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
       }
     }
   }
-
 }

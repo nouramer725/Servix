@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../constents/constent.dart';
-import 'OrderCard.dart';
 import 'OrderCardImg.dart';
 import 'model/model.dart';
 
@@ -41,27 +40,70 @@ class PreviousOrderPage extends StatelessWidget {
         final orders = snapshot.data!.docs.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
 
-          return OrderModel(
-            ServiceType: data['serviceTitle'] ?? 'No Service Type',
-            Description: data['description'] ?? '',
-            Status: data['Status'] ?? '',
-            Date: data['selectedDate'] ?? '',
-            Time: data['selectedTime'] ?? '',
-            image: data['personalFileUrl'] ?? data['imagePath'],
-            Name: data['providerName'] ?? 'Unknown',
-            orderId: doc.id,
-          );
+          final userUid = user.uid;
+          final serviceId = doc.id;
+
+          // Fetch the technician's offer details
+          final offerFuture = FirebaseFirestore.instance
+              .collection('Services Requests')
+              .doc(userUid)
+              .collection('user-services')
+              .doc(serviceId)
+              .collection('offers')
+              .get()
+              .then((offerSnapshot) {
+            if (offerSnapshot.docs.isNotEmpty) {
+              final offerData = offerSnapshot.docs.first.data();
+              data['technicianImage'] = offerData['technicianImage'];
+              data['technicianName'] = offerData['technicianName'];
+              data['technicianLocationArea'] = offerData['technicianLocationArea'];
+              data['technicianLocationStreet'] = offerData['technicianLocationStreet'];
+              data['technicianPhone'] = offerData['technicianPhone'];
+              data['technicianSub'] = offerData['technicianSub'];
+              data['technicianMain'] = offerData['technicianMain'];
+            }
+            return data;
+          });
+
+          return offerFuture.then((updatedData) {
+            return OrderModel(
+              ServiceType: updatedData['serviceTitle'] ?? 'No Service Type',
+              Description: updatedData['description'] ?? '',
+              Status: updatedData['Status'] ?? '',
+              Date: updatedData['selectedDate'] ?? '',
+              Time: updatedData['selectedTime'] ?? '',
+              orderId: doc.id,
+              technicianImage: updatedData['technicianImage'],
+              technicianName: updatedData['technicianName'],
+              technicianLocationArea: updatedData['technicianLocationArea'] ?? '',
+              technicianLocationStreet: updatedData['technicianLocationStreet'] ?? '',
+              technicianPhone: updatedData['technicianPhone'] ?? '',
+              technicianSub: updatedData['technicianSub'] ?? '',
+              technicianMain: updatedData['technicianMain'] ?? '',
+            );
+          });
         }).toList();
 
-        return ListView.builder(
-          itemCount: orders.length,
-          itemBuilder: (context, index) {
-            final order = orders[index];
-            if (order.image != null && order.Name != null) {
-              return OrderCardImg(orders: order);
-            } else {
-              return OrderCard(orders: order);
+        return FutureBuilder(
+          future: Future.wait(orders),
+          builder: (context, orderSnapshot) {
+            if (orderSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                  child: CircularProgressIndicator(color: ApplicationColor));
             }
+
+            if (orderSnapshot.hasError) {
+              return Center(child: Text('Error: ${orderSnapshot.error}'));
+            }
+
+            final orders = orderSnapshot.data ?? [];
+
+            return ListView.builder(
+                itemCount: orders.length,
+                itemBuilder: (context, index) {
+                  final order = orders[index];
+                  return OrderCardImg(orders: order);
+                });
           },
         );
       },

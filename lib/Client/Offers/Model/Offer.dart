@@ -8,6 +8,7 @@ class Offer {
   final String street;
   final String area;
   final String rating;
+  final String id;
 
   Offer({
     required this.technicianId,
@@ -17,11 +18,13 @@ class Offer {
     required this.street,
     required this.area,
     required this.rating,
+    required this.id,
   });
 
   factory Offer.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return Offer(
+      id: doc.id,
       technicianId: data['technicianId'],
       technicianName: data['technicianName'],
       technicianImage: data['technicianImage'] ?? '',
