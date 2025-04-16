@@ -192,16 +192,18 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                "Pending Orders",
-                style: GoogleFonts.castoro(
-                    fontSize: 22,
-                    decoration: TextDecoration.underline,
-                    decorationColor: const Color(0xFF9A9A9A),
-                    fontWeight: FontWeight.w500,
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : const Color(0xFF7B7B7B)),
+              Expanded(
+                child: Text(
+                  "Pending Orders",
+                  style: GoogleFonts.castoro(
+                      fontSize: 22,
+                      decoration: TextDecoration.underline,
+                      decorationColor: const Color(0xFF9A9A9A),
+                      fontWeight: FontWeight.w500,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : const Color(0xFF7B7B7B)),
+                ),
               ),
               FutureBuilder<String>(
                 future: getTechnicianSubservice(),
@@ -227,7 +229,6 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                         .where('Status', isEqualTo: 'Pending')
                         .where('serviceTitle', isEqualTo: technicianSubservice)
                         .get(),
-
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
@@ -349,5 +350,4 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
 
     return orders;
   }
-
 }

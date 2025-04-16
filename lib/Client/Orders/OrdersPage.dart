@@ -141,11 +141,7 @@ class _OrdersPageState extends State<OrdersPage> {
           itemCount: orders.length,
           itemBuilder: (context, index) {
             final order = orders[index];
-            if (order.technicianImage != null && order.technicianName != null) {
-              return OrderCardImg(orders: order);
-            } else {
               return OrderCard(orders: order);
-            }
           },
         );
       },
