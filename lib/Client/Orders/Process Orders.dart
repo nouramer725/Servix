@@ -60,8 +60,14 @@ class ProcessOrderPage extends StatelessWidget {
               data['technicianLocationArea'] = offerData['technicianLocationArea'];
               data['technicianLocationStreet'] = offerData['technicianLocationStreet'];
               data['technicianPhone'] = offerData['technicianPhone'];
-              data['technicianSub'] = offerData['technicianSub'];
-              data['technicianMain'] = offerData['technicianMain'];
+              data['technicianSubService'] = offerData['technicianSubService'];
+              data['technicianMainService'] = offerData['technicianMainService'];
+              data['technicianDescription'] = offerData['technicianDescription'];
+              // data['technicianRating'] = offerData['technicianRating'];
+              data['technicianProducts'] = offerData['technicianProducts'];
+              data['technicianLinkSocialMedia'] = offerData['technicianLinkSocialMedia'];
+              data['technicianId'] = offerData['technicianId'];
+
             }
             return data;
           });
@@ -79,8 +85,13 @@ class ProcessOrderPage extends StatelessWidget {
               technicianLocationArea: updatedData['technicianLocationArea'] ?? '',
               technicianLocationStreet: updatedData['technicianLocationStreet'] ?? '',
               technicianPhone: updatedData['technicianPhone'] ?? '',
-              technicianSub: updatedData['technicianSub'] ?? '',
-              technicianMain: updatedData['technicianMain'] ?? '',
+              technicianSub: updatedData['technicianSubService'] ?? '',
+              technicianMain: updatedData['technicianMainService'] ?? '',
+              technicianDescription: updatedData['technicianDescription'] ?? '',
+              // technicianRating: updatedData['technicianRating'] ??  0.0,
+              technicianProducts: updatedData['technicianProducts'] ?? [],
+              technicianLinkSocialMedia: updatedData['technicianLinkSocialMedia'] ?? '',
+              technicianId: updatedData['technicianId'] ?? '',
             );
           });
         }).toList();
@@ -94,7 +105,7 @@ class ProcessOrderPage extends StatelessWidget {
             }
 
             if (orderSnapshot.hasError) {
-              return Center(child: Text('Error: ${orderSnapshot.error}'));
+               print('Error: ${orderSnapshot.error}');
             }
 
             final orders = orderSnapshot.data ?? [];

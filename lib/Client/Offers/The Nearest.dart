@@ -26,6 +26,7 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
   List<Offer> offers = [];
   bool isLoading = true;
 
+
   Future<void> fetchOffers() async {
     setState(() {
       isLoading = true;
@@ -288,6 +289,8 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
             await offerDoc.reference.delete();
           }
         }
+
+        Navigator.pop(context);
 
         setState(() {
           offers.removeWhere((item) => item.id != offer.id);

@@ -121,6 +121,15 @@ class OrderCardTech extends StatelessWidget {
                               final techData = technicianDoc.data()!;
                               final fullName =
                                   "${techData['first_name']} ${techData['last_name']}";
+                              final phone = techData['phone'];
+                              final subService = techData['sub_service'];
+                              final mainService = techData['main_service'];
+                              final Description = techData['description'];
+                              final Reviews = techData['review'];
+                              final Products = techData['Products'];
+                              final Rating = techData['Ratings'];
+                              final LinkSocialMedia =
+                                  techData['LinkSocialMedia'];
 
                               // Fetch profile image from uploads
                               final uploadsSnapshot = await FirebaseFirestore
@@ -188,16 +197,19 @@ class OrderCardTech extends StatelessWidget {
                                   'technicianId': uid,
                                   'technicianFirstName': techData['first_name'],
                                   'technicianLastName': techData['last_name'],
-                                  'technicianPhone': techData['phone'],
-                                  'technicianSubService':
-                                      techData['sub_service'],
-                                  'technicianMainService':
-                                      techData['main_service'],
+                                  'technicianPhone': phone,
+                                  'technicianSubService': subService,
+                                  'technicianMainService': mainService,
                                   'technicianName': fullName,
                                   'technicianImage': profileImageUrl,
                                   'technicianLocationStreet': street,
                                   'technicianLocationArea': area,
                                   'technicianOffer': offerPrice,
+                                  'technicianDescription': Description,
+                                  'technicianRating': Rating,
+                                  'technicianReviews': Reviews,
+                                  'technicianProducts': Products,
+                                  'technicianLinkSocialMedia': LinkSocialMedia,
                                   'status': 'offer-made', // ✅ Add this line
                                   'timestamp': FieldValue.serverTimestamp(),
                                 });

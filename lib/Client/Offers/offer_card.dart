@@ -6,7 +6,7 @@ import '../../Components/Buttons.dart';
 import '../../Theme/Theme_Provider.dart';
 import 'Model/Offer.dart';
 
-class OfferCard extends StatelessWidget {
+class OfferCard extends StatefulWidget {
   final Offer offer;
   final VoidCallback onAccept;
   final VoidCallback onDecline;
@@ -18,6 +18,11 @@ class OfferCard extends StatelessWidget {
     required this.onDecline,
   });
 
+  @override
+  State<OfferCard> createState() => _OfferCardState();
+}
+
+class _OfferCardState extends State<OfferCard> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -39,7 +44,7 @@ class OfferCard extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(offer.technicianImage),
+                    backgroundImage: NetworkImage(widget.offer.technicianImage),
                     radius: 25,
                   ),
                   const SizedBox(width: 10),
@@ -47,7 +52,7 @@ class OfferCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        offer.technicianName,
+                        widget.offer.technicianName,
                         style: GoogleFonts.castoro(
                           fontSize: 20,
                           color: themeProvider.themeMode == ThemeMode.dark
@@ -56,39 +61,40 @@ class OfferCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            offer.rating.toString(),
-                            style: GoogleFonts.castoro(
-                                fontSize: 12,
-                                color: themeProvider.themeMode == ThemeMode.dark
-                                    ? Colors.white
-                                    : Colors.black),
-                          ),
-                          const SizedBox(width: 4),
-                          Row(
-                            children: List.generate(5, (index) {
-                              return Icon(
-                                index < offer.rating.length
-                                    ? Icons.star_rate_rounded
-                                    : Icons.star_outline_rounded,
-                                size: 20,
-                                color: themeProvider.themeMode == ThemeMode.dark
-                                    ? Colors.white
-                                    : Colors.black,
-                              );
-                            }),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     Text(
+                      //       widget.offer.averageRating.toStringAsFixed(1), // e.g., "4.2"
+                      //       style: GoogleFonts.castoro(
+                      //         fontSize: 12,
+                      //         color: themeProvider.themeMode == ThemeMode.dark
+                      //             ? Colors.white
+                      //             : Colors.black,
+                      //       ),
+                      //     ),
+                      //     const SizedBox(width: 4),
+                      //     Row(
+                      //       children: List.generate(5, (index) {
+                      //         return Icon(
+                      //           index < widget.offer.averageRating.round()
+                      //               ? Icons.star_rate_rounded
+                      //               : Icons.star_outline_rounded,
+                      //           size: 20,
+                      //           color: themeProvider.themeMode == ThemeMode.dark
+                      //               ? Colors.white
+                      //               : Colors.black,
+                      //         );
+                      //       }),
+                      //     ),
+                      //   ],
+                      // )
                     ],
                   ),
                 ],
               ),
               const SizedBox(height: 8),
               Text(
-                "EGP ${offer.offer}",
+                "EGP ${widget.offer.offer}",
                 style: GoogleFonts.castoro(
                     fontSize: 20,
                     color: themeProvider.themeMode == ThemeMode.dark
@@ -102,7 +108,7 @@ class OfferCard extends StatelessWidget {
                   const SizedBox(width: 4),
                   Expanded(
                     child: Text(
-                      "${offer.area} , ${offer.street}",
+                      "${widget.offer.area} , ${widget.offer.street}",
                       style: GoogleFonts.castoro(
                           fontSize: 14,
                           color: themeProvider.themeMode == ThemeMode.dark
@@ -119,7 +125,7 @@ class OfferCard extends StatelessWidget {
                     child: GradientButtonOffer(
                       text: "Accept",
                       font: 18,
-                      onPressed: onAccept,
+                      onPressed: widget.onAccept,
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -127,7 +133,7 @@ class OfferCard extends StatelessWidget {
                     child: WhiteButtonOffer(
                       text: "Reject",
                       font: 18,
-                      onPressed: onDecline,
+                      onPressed: widget.onDecline,
                     ),
                   ),
                 ],

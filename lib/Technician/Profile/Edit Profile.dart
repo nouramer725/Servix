@@ -5,11 +5,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Technician/Profile/widgets/EditableRow.dart';
+import 'package:servix/Technician/Profile/widgets/ThemedDivider.dart';
+import 'package:servix/Technician/Profile/widgets/images.dart';
 import 'package:servix/constents/constent.dart';
 import '../../Components/List of Service.dart';
 import '../../Theme/Theme_Provider.dart';
@@ -28,15 +31,14 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
   TextEditingController mainServiceController = TextEditingController();
   TextEditingController subServiceController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
+  final TextEditingController _socialMediaController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
-  double? userRating;
-  double averageRating = 0.0;
-  int totalRatings = 0;
-  String description = "Description"; // Default placeholder
-  String phoneNumber = "N/A"; // ✅ Store phone number
+  String description = "Description";
+  String phoneNumber = "N/A";
   String street = "Street not available";
   String area = "Area not available";
+  String linkSocialMedia = "LinkSocialMedia";
 
   Future<String?> uploadToCloudinary(File imageFile) async {
     String cloudinaryUrl =
@@ -95,42 +97,6 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
         });
       }
     }
-  }
-
-  Future<void> _fetchAverageRating() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-
-    QuerySnapshot ratingsSnapshot = await FirebaseFirestore.instance
-        .collection('technician')
-        .doc(user.uid)
-        .collection('ratings')
-        .get();
-
-    if (ratingsSnapshot.docs.isNotEmpty) {
-      double sum = 0;
-      for (var doc in ratingsSnapshot.docs) {
-        sum += (doc.data() as Map<String, dynamic>)['rating'];
-      }
-      setState(() {
-        totalRatings = ratingsSnapshot.docs.length;
-        averageRating = sum / totalRatings;
-      });
-    }
-  }
-
-  Future<void> _submitRating(double rating) async {
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser == null) return;
-
-    await FirebaseFirestore.instance
-        .collection('technician')
-        .doc(currentUser.uid)
-        .collection('ratings')
-        .doc(currentUser.uid)
-        .set({'rating': rating});
-
-    _fetchAverageRating();
   }
 
   Future<Map<String, dynamic>?> getUserData() async {
@@ -503,7 +469,8 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {
-      String latestDocId = querySnapshot.docs.first.id; // Get latest document ID
+      String latestDocId =
+          querySnapshot.docs.first.id; // Get latest document ID
 
       await FirebaseFirestore.instance
           .collection("user-files")
@@ -532,7 +499,11 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Edit Location", style: GoogleFonts.castoro(fontSize: 25, fontWeight: FontWeight.bold, color: ApplicationColor)),
+          title: Text("Edit Location",
+              style: GoogleFonts.castoro(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: ApplicationColor)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -549,7 +520,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text("Cancel", style: GoogleFonts.castoro(fontSize: 20, color: ApplicationColor3)),
+              child: Text("Cancel",
+                  style: GoogleFonts.castoro(
+                      fontSize: 20, color: ApplicationColor3)),
             ),
             TextButton(
               onPressed: () {
@@ -557,7 +530,11 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                     streetController.text, areaController.text);
                 Navigator.pop(context);
               },
-              child: Text("Save", style: GoogleFonts.castoro(fontSize: 20, fontWeight: FontWeight.bold, color: ApplicationColor)),
+              child: Text("Save",
+                  style: GoogleFonts.castoro(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: ApplicationColor)),
             ),
           ],
         );
@@ -565,14 +542,118 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
     );
   }
 
+  void _saveLinkSocialMedia(String newSocial) async {
+    await FirebaseFirestore.instance
+        .collection('technician')
+        .doc(FirebaseAuth.instance.currentUser!.uid) // Use actual UID
+        .set({
+      'LinkSocialMedia': newSocial,
+    }, SetOptions(merge: true)); // Merges without overwriting other fields
+
+    setState(() {
+      linkSocialMedia = newSocial;
+    });
+  }
+
+  void _showEditDialogSocialMedia() {
+    _socialMediaController.text = linkSocialMedia;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Edit SocialMedia Link",
+          style: GoogleFonts.castoro(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: ApplicationColor),
+        ),
+        content: TextField(
+          controller: _socialMediaController,
+          maxLines: 5,
+          decoration:
+              const InputDecoration(hintText: "Enter new SocialMedia Link"),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "Cancel",
+              style:
+                  GoogleFonts.castoro(fontSize: 20, color: ApplicationColor3),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              _saveLinkSocialMedia(_socialMediaController.text);
+              Navigator.pop(context);
+            },
+            child: Text("Save",
+                style: GoogleFonts.castoro(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: ApplicationColor)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _fetchLinkSocialMedia() async {
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('technician')
+        .doc(FirebaseAuth.instance.currentUser!.uid) // Use actual UID
+        .get();
+    if (doc.exists) {
+      setState(() {
+        linkSocialMedia =
+            doc['LinkSocialMedia'] ?? "No SocialMedia Link Available";
+      });
+    }
+  }
+
+  Future<void> _pickAndUploadImages() async {
+    final picker = ImagePicker();
+    final pickedFiles = await picker.pickMultiImage();
+
+    if (pickedFiles.isNotEmpty) {
+      List<String> uploadedUrls = [];
+
+      for (var pickedFile in pickedFiles) {
+        final file = File(pickedFile.path);
+        final url = await uploadToCloudinary(file);
+        if (url != null) {
+          uploadedUrls.add(url);
+        }
+      }
+
+      if (uploadedUrls.isNotEmpty) {
+        await saveImageUrlsToFirestore(uploadedUrls);
+        Fluttertoast.showToast(
+          msg: "Images uploaded successfully!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+        );
+      }
+    }
+  }
+
+  Future<void> saveImageUrlsToFirestore(List<String> imageUrls) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    await FirebaseFirestore.instance.collection('technician').doc(uid).set({
+      'Products': FieldValue.arrayUnion(imageUrls),
+    }, SetOptions(merge: true));
+  }
+
   @override
   void initState() {
     super.initState();
     _loadUserData();
-    _fetchAverageRating();
     _fetchDescription();
     _loadPhoneNumber();
     _fetchLocationDetails();
+    _fetchLinkSocialMedia();
   }
 
   @override
@@ -598,317 +679,51 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(
-                children: [
-                  StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection("user-files")
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection("uploads")
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      String? personalFileUrl;
-                      if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                        personalFileUrl =
-                            snapshot.data!.docs.first['personalFileUrl'];
-                      }
-
-                      return GestureDetector(
-                        onTap: () =>
-                            updateProfileImage(), // Function to update image
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 70,
-                          backgroundImage: personalFileUrl != null
-                              ? NetworkImage(personalFileUrl)
-                              : null,
-                          child: personalFileUrl == null
-                              ? const Icon(Icons.person,
-                                  size: 40, color: Colors.grey)
-                              : null,
-                        ),
-                      );
-                    },
-                  ),
-                  Positioned(
-                    bottom: 5,
-                    right: 5,
-                    child: GestureDetector(
-                      onTap: () =>
-                          updateProfileImage(), // Function to update image
-                      child: CircleAvatar(
-                        radius: 18,
-                        backgroundColor: ApplicationColor,
-                        child: const Icon(Icons.camera_alt_outlined,
-                            size: 20, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
+              ProfileImageWidget(onTap: updateProfileImage),
+              const SizedBox(height: 20),
+              EditableRow(
+                text: userData != null
+                    ? "Name: ${userData!['first_name']} ${userData!['last_name']}"
+                    : "Welcome".tr(),
+                onEdit: _showEditDialog,
               ),
-              SizedBox(
-                height: 10,
+              const ThemedDivider(),
+              EditableRow(
+                text: "Main Service: ${userData?['main_service'] ?? 'N/A'}\n"
+                    "Sub Service: ${userData?['sub_service'] ?? 'N/A'}",
+                onEdit: _showEditDialogService,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment
-                    .spaceBetween, // Ensures spacing between text & icon
-                children: [
-                  Expanded(
-                    child: Text(
-                      userData != null
-                          ? "Name: ${userData!['first_name']} ${userData!['last_name']}"
-                          : "Welcome".tr(),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 5,
-                      style: GoogleFonts.castoro(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: _showEditDialog,
-                    icon: FaIcon(
-                      FontAwesomeIcons.pencil,
-                      color: Colors.black.withOpacity(0.7),
-                      size: 20,
-                    ),
-                  )
-                ],
+              const ThemedDivider(),
+              EditableRow(
+                text: "Description : $description",
+                onEdit: _showEditDialogDiscription,
+                maxLines: 20,
               ),
-              Divider(
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.grey[300],
-                thickness: 1,
-                indent: 20,
-                endIndent: 20,
+              const ThemedDivider(),
+              EditableRow(
+                text: "Phone Number: $phoneNumber",
+                onEdit: _showEditPhoneDialog,
               ),
-              SizedBox(
-                height: 10,
+              const ThemedDivider(),
+              EditableRow(
+                text: "Area: $area \n"
+                    "Street: $street",
+                onEdit: _showEditLocationDialog,
               ),
-              Row(
-                children: [
-                  Text(
-                    "Rating: ${averageRating.toStringAsFixed(1)}",
-                    style: GoogleFonts.castoro(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[600]),
-                  ),
-                  const SizedBox(width: 5),
-                  RatingBar.builder(
-                    initialRating: userRating ?? 0,
-                    minRating: 0,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemSize: 25,
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.amberAccent,
-                    ),
-                    onRatingUpdate: (rating) {
-                      _submitRating(rating);
-                    },
-                  ),
-                ],
+              const ThemedDivider(),
+              EditableRow(
+                text: "Link SocialMedia : $linkSocialMedia",
+                onEdit: _showEditDialogSocialMedia,
+                maxLines: 20,
               ),
-              SizedBox(
-                height: 10,
+              const ThemedDivider(),
+              EditableRow(
+                text: "Upload Work images to PRODUCTS part",
+                onEdit: _pickAndUploadImages,
+                maxLines: 20,
               ),
-              Divider(
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.grey[300],
-                thickness: 1,
-                indent: 20,
-                endIndent: 20,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment
-                    .spaceBetween, // Ensures spacing between text & icon
-                children: [
-                  userData == null
-                      ? CircularProgressIndicator(color: ApplicationColor)
-                      : Column(
-                          children: [
-                            Text(
-                              "Main Service: ${userData!['main_service'] ?? 'N/A'}",
-                              style: GoogleFonts.castoro(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF676767)),
-                            ),
-                            Text(
-                              "Sub Service: ${userData!['sub_service'] ?? 'N/A'}",
-                              style: GoogleFonts.castoro(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF676767)),
-                            ),
-                          ],
-                        ),
-                  IconButton(
-                    icon: FaIcon(
-                      FontAwesomeIcons.pencil,
-                      color: Colors.black.withOpacity(0.7),
-                      size: 20,
-                    ),
-                    onPressed: _showEditDialogService,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Divider(
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.grey[300],
-                thickness: 1,
-                indent: 20,
-                endIndent: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      "Description : $description",
-                      style: GoogleFonts.castoro(
-                          color: Color(0xFF676767), fontSize: 22),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 20,
-                    ),
-                  ),
-                  IconButton(
-                    icon: FaIcon(
-                      FontAwesomeIcons.pencil,
-                      color: Colors.black.withOpacity(0.7),
-                      size: 20,
-                    ),
-                    onPressed: _showEditDialogDiscription,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Divider(
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.grey[300],
-                thickness: 1,
-                indent: 20,
-                endIndent: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment
-                    .spaceBetween, // Ensures spacing between text & icon
-                children: [
-                  Text(
-                    "Phone Number: $phoneNumber",
-                    style: GoogleFonts.castoro(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF676767)),
-                  ),
-                  IconButton(
-                    icon: FaIcon(
-                      FontAwesomeIcons.pencil,
-                      color: Colors.black.withOpacity(0.7),
-                      size: 20,
-                    ),
-                    onPressed: _showEditPhoneDialog,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Divider(
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.grey[300],
-                thickness: 1,
-                indent: 20,
-                endIndent: 20,
-              ),
-              Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween, // Space between text & icon
-                children: [
-                  Expanded(
-                    // To prevent overflow if the text is long
-                    child: Text(
-                      "Street: $street\nArea: $area",
-                      style: GoogleFonts.castoro(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF676767),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: FaIcon(
-                      FontAwesomeIcons.pencil,
-                      color: Colors.black.withOpacity(0.7),
-                      size: 20,
-                    ),
-                    onPressed:
-                        _showEditLocationDialog, // Function to edit location details
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Divider(
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.grey[300],
-                thickness: 1,
-                indent: 20,
-                endIndent: 20,
-              ),
-
-              // Row(
-              //   children: [
-              //     _buildSocialIcon(
-              //       FontAwesomeIcons.facebookF,
-              //       "https://firebase.flutter.dev/docs/auth/social/",
-              //       [
-              //         Color(0xFF1877F2), // Facebook Blue
-              //         Color(0xFF0A66C2), // Slightly darker Blue
-              //       ],
-              //     ),
-              //     const SizedBox(width: 10),
-              //     _buildSocialIcon(
-              //       FontAwesomeIcons.phone,
-              //       "https://firebase.flutter.dev/docs/auth/social/",
-              //       [ApplicationColor, ApplicationColorWithOpacity],
-              //     ),
-              //     const SizedBox(width: 10),
-              //     _buildSocialIcon(
-              //       FontAwesomeIcons.locationDot,
-              //       "https://firebase.flutter.dev/docs/auth/social/",
-              //       [
-              //         Colors.black87,
-              //         Colors.red,
-              //       ],
-              //     ),
-              //     const SizedBox(width: 10),
-              //   ],
-              // ),
             ],
           ),
         ),

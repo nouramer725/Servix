@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/constents/constent.dart';
 import '../../Components/Buttons.dart';
 import '../../Theme/Theme_Provider.dart';
 import 'model/modelTech.dart';
@@ -146,20 +148,26 @@ class ProcessOrderCardTech extends StatelessWidget {
   Future<void> _completeOrder(
       BuildContext context, OrderModelTech order) async {
     try {
-      // Get the document reference for the current order
       final docRef = FirebaseFirestore.instance.doc(order.docPath!);
 
-      // Update the status to "Finished"
       await docRef.update({'Status': 'Finished'});
 
-      // Show a success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Order marked as finished')),
+      Navigator.pop(context);
+
+      Fluttertoast.showToast(
+        msg: 'Order completed successfully!',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
       );
     } catch (e) {
-      // Handle any errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating order: $e')),
+      Fluttertoast.showToast(
+        msg: 'Failed to complete order',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
       );
     }
   }

@@ -289,6 +289,7 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
             await offerDoc.reference.delete();
           }
         }
+        Navigator.pop(context);
 
         setState(() {
           offers.removeWhere((item) => item.id != offer.id);

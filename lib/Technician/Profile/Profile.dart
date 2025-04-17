@@ -2,11 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:servix/Components/Buttons.dart';
 import 'package:servix/Technician/Profile/Edit%20Profile.dart';
 import 'package:servix/constents/constent.dart';
 import '../../Theme/Theme_Provider.dart';
@@ -25,47 +23,10 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
   TextEditingController mainServiceController = TextEditingController();
   TextEditingController subServiceController = TextEditingController();
 
-  double? userRating;
-  double averageRating = 0.0;
-  int totalRatings = 0;
   String description = "Description";
-  bool showReview = false;
-
-  Future<void> _fetchAverageRating() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-
-    QuerySnapshot ratingsSnapshot = await FirebaseFirestore.instance
-        .collection('technician')
-        .doc(user.uid)
-        .collection('ratings')
-        .get();
-
-    if (ratingsSnapshot.docs.isNotEmpty) {
-      double sum = 0;
-      for (var doc in ratingsSnapshot.docs) {
-        sum += (doc.data() as Map<String, dynamic>)['rating'];
-      }
-      setState(() {
-        totalRatings = ratingsSnapshot.docs.length;
-        averageRating = sum / totalRatings;
-      });
-    }
-  }
-
-  Future<void> _submitRating(double rating) async {
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser == null) return;
-
-    await FirebaseFirestore.instance
-        .collection('technician')
-        .doc(currentUser.uid)
-        .collection('ratings')
-        .doc(currentUser.uid)
-        .set({'rating': rating});
-
-    _fetchAverageRating();
-  }
+  int selectedIndex = 0;
+  List<String> products = [];
+  List<Map<String, dynamic>> reviewData = [];
 
   Future<Map<String, dynamic>?> getUserData() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -94,7 +55,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
   void _fetchDescription() async {
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection('technician')
-        .doc(FirebaseAuth.instance.currentUser!.uid) // Use actual UID
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
     if (doc.exists) {
       setState(() {
@@ -103,61 +64,105 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
     }
   }
 
+  void _fetchProducts() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final doc = await FirebaseFirestore.instance
+        .collection('technician')
+        .doc(uid)
+        .get();
+
+    if (doc.exists && doc.data()!.containsKey('Products')) {
+      setState(() {
+        final productList = doc['Products'] as List<dynamic>;
+        products = productList.cast<String>();
+      });
+    }
+  }
+
+  void _fetchRating() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final doc = await FirebaseFirestore.instance
+        .collection('technician')
+        .doc(uid)
+        .get();
+
+    if (doc.exists && doc.data()!.containsKey('Ratings')) {
+      final ratingList = doc['Ratings'] as List<dynamic>;
+      final List<Map<String, dynamic>> ratingsWithClient = [];
+
+      for (var rating in ratingList) {
+        final clientId = rating['clientId'];
+        final clientNamee = rating['clientName'];
+        final clientLastName = rating['clientLastName'];
+        final ratingg = rating['rating'];
+        final clientImage = rating['clientImage'];
+
+        ratingsWithClient.add({
+          'clientId': clientId,
+          'clientName': clientNamee,
+          'clientLastName': clientLastName,
+          'rating': ratingg,
+          'clientImage': clientImage,
+        });
+      }
+
+      setState(() {
+        reviewData = ratingsWithClient;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _loadUserData();
-    _fetchAverageRating();
     _fetchDescription();
+    _fetchProducts();
+    _fetchRating();
   }
 
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: themeProvider.themeMode == ThemeMode.dark
-              ? const Color(0xFF333739)
-              : Colors.white,
-          title: Text(
-            "Profile",
-            style: GoogleFonts.castoro(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: themeProvider.themeMode == ThemeMode.dark
-                  ? Colors.white
-                  : Colors.black,
-            ),
+      appBar: AppBar(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
+        title: Text(
+          "Profile",
+          style: GoogleFonts.castoro(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-            child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                              const ProfileTechnicianEdit(),
-                            ));
-                      },
-                      child: Text(
-                        "Edit Profile",
-                        style: GoogleFonts.castoro(
-                          fontSize: 23,
-                          fontWeight: FontWeight.bold,
-                          color: ApplicationColor,
-                          decoration: TextDecoration.underline,
-                          decorationColor: ApplicationColor,
-                        ),
-                      ))
-                ],
-              ),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProfileTechnicianEdit(),
+                    ));
+              },
+              child: Text(
+                "Edit",
+                style: GoogleFonts.castoro(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: ApplicationColor,
+                ),
+              )),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
               StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("user-files")
@@ -167,7 +172,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                     String personalFileUrl =
-                    snapshot.data!.docs.first['personalFileUrl'];
+                        snapshot.data!.docs.first['personalFileUrl'];
                     return CircleAvatar(
                       backgroundColor: Colors.white,
                       radius: 70,
@@ -181,9 +186,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                   );
                 },
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -203,70 +206,29 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                   ),
                 ],
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "${averageRating.toStringAsFixed(1)}",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[600]),
-                    ),
-                    const SizedBox(width: 5),
-                    RatingBar.builder(
-                      initialRating: userRating ?? 0,
-                      minRating: 0,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      itemSize: 25,
-                      itemBuilder: (context, _) =>
-                      const Icon(
-                        Icons.star,
-                        color: Colors.amberAccent,
-                      ),
-                      onRatingUpdate: (rating) {
-                        _submitRating(rating);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 7,
-              ),
               userData == null
                   ? CircularProgressIndicator(color: ApplicationColor)
                   : Column(
-                children: [
-                  Text(
-                    "Main Service: ${userData!['main_service'] ?? 'N/A'}",
-                    style: GoogleFonts.castoro(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF676767)),
-                  ),
-                  Text(
-                    "Sub Service: ${userData!['sub_service'] ?? 'N/A'}",
-                    style: GoogleFonts.castoro(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF676767)),
-                  ),
-                ],
-              ),
+                      children: [
+                        Text(
+                          "Main Service: ${userData!['main_service'] ?? 'N/A'}",
+                          style: GoogleFonts.castoro(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF676767)),
+                        ),
+                        Text(
+                          "Sub Service: ${userData!['sub_service'] ?? 'N/A'}",
+                          style: GoogleFonts.castoro(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF676767)),
+                        ),
+                      ],
+                    ),
               Container(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.8,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.19,
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: MediaQuery.of(context).size.height * 0.19,
                 margin: const EdgeInsets.all(17),
                 padding: const EdgeInsets.all(17),
                 decoration: BoxDecoration(
@@ -291,17 +253,13 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                     color: Colors.blue[700],
                     size: 30,
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   FaIcon(
                     FontAwesomeIcons.locationDot,
                     color: ApplicationColor,
                     size: 30,
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   const FaIcon(
                     FontAwesomeIcons.phone,
                     color: Colors.green,
@@ -309,123 +267,59 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 10),
               Divider(
                 color: themeProvider.themeMode == ThemeMode.dark
                     ? Colors.white
-                    : Colors.grey[300],
+                    : Colors.grey[500],
                 thickness: 1,
-                indent: 40,
-                endIndent: 40,
+                indent: 10,
+                endIndent: 10,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              const SizedBox(height: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Product Section
-                  Column(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       GestureDetector(
                         onTap: () {
                           setState(() {
-                            showReview = false; // Switch to Product
+                            selectedIndex = 0;
                           });
                         },
                         child: Text(
-                          "Product",
+                          'Products',
                           style: GoogleFonts.castoro(
-                            fontWeight: showReview
-                                ? FontWeight.normal
-                                : FontWeight.bold,
-                            fontSize: 16,
-                            decoration: showReview
-                                ? TextDecoration.none
-                                : TextDecoration.underline,
-                            color: showReview ? Colors.grey : ApplicationColor,
-                            decorationColor:
-                            showReview ? Colors.grey : ApplicationColor,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Image.asset(
-                        "assets/Application/congratulations.png",
-                        width: 120,
-                        height: 90,
-                        fit: BoxFit.cover,
-                      ),
-                      const SizedBox(height: 10),
-                      Image.asset(
-                        "assets/Application/congratulations.png",
-                        width: 120,
-                        height: 90,
-                        fit: BoxFit.cover,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 20), // Spacing
-                  // Review Section (Now Clickable & Styled)
-                  Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            showReview = true; // Switch to Review
-                          });
-                        },
-                        child: Text(
-                          "Review",
-                          style: GoogleFonts.castoro(
-                            fontWeight: showReview
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            fontSize: 16,
-                            decoration: showReview
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: selectedIndex == 0
+                                ? Colors.black
+                                : Colors.grey[600],
+                            decoration: selectedIndex == 0
                                 ? TextDecoration.underline
-                                : TextDecoration.none,
-                            color: showReview ? ApplicationColor : Colors.grey,
-                            decorationColor:
-                            showReview ? ApplicationColor : Colors.grey,
+                                : null,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 5),
-                      Container(
-                        width: 120,
-                        height: 90,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blue, width: 2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.asset(
-                            "assets/Application/Servix.png",
-                            width: 120,
-                            height: 90,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      // Add Button (For adding a review)
                       GestureDetector(
                         onTap: () {
-                          print("Add Review Clicked");
+                          setState(() {
+                            selectedIndex = 1;
+                          });
                         },
-                        child: Container(
-                          width: 120,
-                          height: 90,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child:
-                            Icon(Icons.add, size: 30, color: Colors.black),
+                        child: Text(
+                          'Reviews',
+                          style: GoogleFonts.castoro(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: selectedIndex == 1
+                                ? Colors.black
+                                : Colors.grey[600],
+                            decoration: selectedIndex == 1
+                                ? TextDecoration.underline
+                                : null,
                           ),
                         ),
                       ),
@@ -433,20 +327,103 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              GradientButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ProfileTechnicianEdit(),
-                        ));
+              if (selectedIndex == 0) ...[
+                const SizedBox(height: 10),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics:
+                      const NeverScrollableScrollPhysics(), // Prevent scroll conflict
+                  itemCount: products.length,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 300,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 3 / 2,
+                  ),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        image: DecorationImage(
+                          image: NetworkImage(products[index]),
+                          fit: BoxFit.fill,
+                        ),
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: Colors.grey),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                    );
                   },
-                  text: "Edit Profile")
-            ]),
+                ),
+              ],
+              if (selectedIndex == 1) ...[
+                const SizedBox(height: 10),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: reviewData.length,
+                  itemBuilder: (context, index) {
+                    final review = reviewData[index];
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 15),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundImage:
+                                  NetworkImage(review['clientImage']),
+                            ),
+                            const SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${review['clientName']} ${review['clientLastName']}",
+                                  style: GoogleFonts.castoro(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: List.generate(
+                                    5,
+                                    (index) {
+                                      if (index < review['rating']) {
+                                        return const Icon(Icons.star,
+                                            color: Colors.black, size: 22);
+                                      } else {
+                                        return const Icon(Icons.star_border,
+                                            color: Colors.black, size: 22);
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

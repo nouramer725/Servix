@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,11 @@ import '../../Theme/Theme_Provider.dart';
 import '../../constents/constent.dart';
 
 class ReportScreen extends StatefulWidget {
+  final String technicianId;
+  final String technicianName;
+  const ReportScreen(
+      {super.key, required this.technicianId, required this.technicianName});
+
   @override
   _ReportScreenState createState() => _ReportScreenState();
 }
@@ -30,87 +36,226 @@ class _ReportScreenState extends State<ReportScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      backgroundColor: themeProvider.themeMode == ThemeMode.dark
-          ? Color(0xFF333739)
-          : Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Why are you reporting Nour ?',
-                style: GoogleFonts.castoro(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white
-                      : Colors.black,
-                ),),
-              SizedBox(height: 8),
-              Text(
-                'If someone is in immediate danger, get help before reporting to Facebook. Don’t wait.',
-                style: GoogleFonts.castoro(
-                  fontSize: 15,
-                  color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white
-                      : Colors.black,
-                ),
-              ),
-              SizedBox(height: 8),
-              ...reasons.map((reason) => RadioListTile<String>(
-                activeColor: ApplicationColor,
-                title: Text(reason,
-                  style: GoogleFonts.castoro(
-                    fontSize: 16,
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : Colors.black,
-                  ),
-                ),
-                value: reason,
-                groupValue: selectedReason,
-                onChanged: (value) {
-                  setState(() {
-                    selectedReason = value;
-                  });
-                },
-              )),
-              SizedBox(height: 8),
-              Container(
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xffEEEEEE),
-                ),
-                child: TextField(
-                  controller: _controller,
-                  maxLines: 4,
-                  decoration: const InputDecoration.collapsed(
-                    hintText: 'Any additional information',
-                  ),
-                  style: TextStyle(color: Color(0xffA7A7A7)),
-                ),
-              ),
-              SizedBox(height: 14),
-              GradientButton(
-                text: 'Done',
-                onPressed: () {
-                  Fluttertoast.showToast(
-                    msg: "Your report is done",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.TOP,
-                    backgroundColor: ApplicationColor,
-                    textColor: Colors.white,
-                    fontSize: 16.0,
-                  );
-                },
-              ),
-            ],
+        appBar: AppBar(
+          backgroundColor: themeProvider.themeMode == ThemeMode.dark
+              ? const Color(0xFF333739)
+              : Colors.white,
+          title: Text(
+            'Reporting Technician',
+            style: GoogleFonts.castoro(
+              fontSize: 20,
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Colors.black,
+            ),
           ),
         ),
-      ),
-    );
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Why are you reporting Nour ?',
+                    style: GoogleFonts.charisSil(
+                      fontSize: 24,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'If someone is in immediate danger, get help before reporting to Facebook. Don’t wait.',
+                    style: GoogleFonts.castoro(
+                      fontSize: 15,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white60
+                          : const Color(0XFF9D9D9D),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ...reasons.map((reason) => RadioListTile<String>(
+                        activeColor: ApplicationColor,
+                        contentPadding: EdgeInsets.zero,
+                        visualDensity: VisualDensity.compact,
+                        title: Text(
+                          reason,
+                          style: GoogleFonts.charisSil(
+                            fontSize: 18,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        value: reason,
+                        groupValue: selectedReason,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedReason = value;
+                          });
+                        },
+                      )),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.grey[600]
+                          : Colors.grey[200],
+                    ),
+                    child: TextField(
+                      controller: _controller,
+                      keyboardType: TextInputType.text,
+                      cursorColor: const Color(0xffA7A7A7),
+                      maxLines: 5,
+                      decoration: InputDecoration.collapsed(
+                        hintText: 'Any additional information',
+                        hintStyle: GoogleFonts.cantataOne(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : const Color(0xffA7A7A7)),
+                        border: InputBorder.none,
+                      ),
+                      style: GoogleFonts.cantataOne(
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: GradientButton(
+              text: 'Done',
+              onPressed: () async {
+                if (selectedReason == null) {
+                  Fluttertoast.showToast(
+                    msg: "Please select a reason",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.TOP,
+                    backgroundColor: ApplicationColorWithOpacity,
+                    textColor: Colors.white,
+                  );
+                  return;
+                }
+
+                try {
+                  // Submit report
+                  await FirebaseFirestore.instance.collection('reports').add({
+                    'technicianId': widget.technicianId,
+                    'technicianName': widget.technicianName,
+                    'reason': selectedReason,
+                    'additionalInfo': _controller.text.trim(),
+                    'timestamp': FieldValue.serverTimestamp(),
+                  });
+
+                  // Show dialog to ask if the user also wants to block
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor:
+                            themeProvider.themeMode == ThemeMode.dark
+                                ? const Color(0xFF333739)
+                                : Colors.white,
+                        title: Text(
+                          'Block ${widget.technicianName}',
+                          style: GoogleFonts.castoro(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        content: Text(
+                            '${widget.technicianName} will no longer be able to see your posts or start a conversation with you',
+                            style: GoogleFonts.castoro(
+                              fontSize: 18,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            )),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context); // Close dialog
+                              Fluttertoast.showToast(
+                                msg: "Your report has been submitted.",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                backgroundColor: ApplicationColorWithOpacity,
+                                textColor: Colors.white,
+                              );
+                            },
+                            child: Text("No",
+                                style: GoogleFonts.castoro(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: themeProvider.themeMode ==
+                                            ThemeMode.dark
+                                        ? Colors.white
+                                        : Colors.black)),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              await FirebaseFirestore.instance
+                                  .collection('blocked_technicians')
+                                  .add({
+                                'technicianId': widget.technicianId,
+                                'technicianName': widget.technicianName,
+                                'reason': selectedReason,
+                                'additionalInfo': _controller.text.trim(),
+                                'timestamp': FieldValue.serverTimestamp(),
+                              });
+
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+
+                              Fluttertoast.showToast(
+                                msg:
+                                    "Technician has been reported and blocked.",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                backgroundColor: ApplicationColorWithOpacity,
+                                textColor: Colors.white,
+                              );
+                            },
+                            child: Text("Yes",
+                                style: GoogleFonts.castoro(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: ApplicationColor)),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } catch (e) {
+                  Fluttertoast.showToast(
+                    msg: "Failed to submit report: $e",
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.TOP,
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                  );
+                }
+              }),
+        ));
   }
 }

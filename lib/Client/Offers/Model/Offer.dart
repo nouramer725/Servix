@@ -7,7 +7,7 @@ class Offer {
   final double offer;
   final String street;
   final String area;
-  final String rating;
+  final List<dynamic> rating;
   final String id;
 
   Offer({
@@ -45,7 +45,7 @@ class Offer {
       offer: parsedOffer,
       street: data['technicianLocationStreet'] ?? '',
       area: data['technicianLocationArea'] ?? '',
-      rating: data['technicianRating'] ?? '0.0',
+      rating: data['technicianRating'] ?? [],
     );
   }
 }

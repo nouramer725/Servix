@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../constents/constent.dart';
-import 'OrderCardImg.dart';
+import 'OrderCardImgPrevious.dart';
 import 'model/model.dart';
 
 class PreviousOrderPage extends StatelessWidget {
@@ -61,8 +61,16 @@ class PreviousOrderPage extends StatelessWidget {
               data['technicianLocationStreet'] =
                   offerData['technicianLocationStreet'];
               data['technicianPhone'] = offerData['technicianPhone'];
-              data['technicianSub'] = offerData['technicianSub'];
-              data['technicianMain'] = offerData['technicianMain'];
+              data['technicianSubService'] = offerData['technicianSubService'];
+              data['technicianMainService'] =
+                  offerData['technicianMainService'];
+              data['technicianDescription'] =
+                  offerData['technicianDescription'];
+              // data['technicianRating'] = offerData['technicianRating'];
+              data['technicianProducts'] = offerData['technicianProducts'];
+              data['technicianLinkSocialMedia'] =
+                  offerData['technicianLinkSocialMedia'];
+              data['technicianId'] = offerData['technicianId'];
             }
             return data;
           });
@@ -82,8 +90,14 @@ class PreviousOrderPage extends StatelessWidget {
               technicianLocationStreet:
                   updatedData['technicianLocationStreet'] ?? '',
               technicianPhone: updatedData['technicianPhone'] ?? '',
-              technicianSub: updatedData['technicianSub'] ?? '',
-              technicianMain: updatedData['technicianMain'] ?? '',
+              technicianSub: updatedData['technicianSubService'] ?? '',
+              technicianMain: updatedData['technicianMainService'] ?? '',
+              technicianDescription: updatedData['technicianDescription'] ?? '',
+              // technicianRating: updatedData['technicianRating'] ?? 0.0,
+              technicianProducts: updatedData['technicianProducts'] ?? [],
+              technicianLinkSocialMedia:
+                  updatedData['technicianLinkSocialMedia'] ?? '',
+              technicianId: updatedData['technicianId'] ?? '',
             );
           });
         }).toList();
@@ -105,7 +119,7 @@ class PreviousOrderPage extends StatelessWidget {
                 itemCount: orders.length,
                 itemBuilder: (context, index) {
                   final order = orders[index];
-                  return OrderCardImg(orders: order);
+                  return OrderCardImgPrevious(orders: order);
                 });
           },
         );

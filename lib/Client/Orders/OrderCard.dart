@@ -135,10 +135,9 @@ class OrderCard extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              TheNearestScreen(
-                                orderId: orders.orderId,
-                              ),
+                          builder: (context) => TheNearestScreen(
+                            orderId: orders.orderId,
+                          ),
                         ));
                   },
                 ),

@@ -6,7 +6,6 @@ import 'package:servix/constents/constent.dart';
 import '../../Components/OrderGradientButton.dart';
 import '../../Components/OrderWhiteButton.dart';
 import 'OrderCard.dart';
-import 'OrderCardImg.dart';
 import 'PreviousOrderPage.dart';
 import 'model/model.dart';
 
@@ -131,8 +130,13 @@ class _OrdersPageState extends State<OrdersPage> {
             technicianLocationArea: data['technicianLocationArea'] ?? '',
             technicianLocationStreet: data['technicianLocationStreet'] ?? '',
             technicianPhone: data['technicianPhone'] ?? '',
-            technicianSub: data['technicianSub'] ?? '',
-            technicianMain: data['technicianMain'] ?? '',
+            technicianSub: data['technicianSubService'] ?? '',
+            technicianMain: data['technicianMainService'] ?? '',
+            technicianDescription: data['technicianDescription'] ?? '',
+            // technicianRating: data['technicianRating'] ?? 0.0,
+            technicianProducts: data['technicianProducts'] ?? [],
+            technicianLinkSocialMedia: data['technicianLinkSocialMedia'] ?? '',
+            technicianId: data['technicianId'] ?? '',
             orderId: doc.id,
           );
         }).toList();

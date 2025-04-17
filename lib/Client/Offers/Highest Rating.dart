@@ -289,6 +289,7 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
           }
         }
 
+        Navigator.pop(context);
         setState(() {
           offers.removeWhere((item) => item.id != offer.id);
         });

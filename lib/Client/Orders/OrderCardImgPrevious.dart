@@ -2,12 +2,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Client/technician%20View/rating.dart';
+import 'package:servix/constents/constent.dart';
 import '../../Theme/Theme_Provider.dart';
 import '../technician View/Profile tech.dart';
 import 'model/model.dart';
 
-class OrderCardImg extends StatelessWidget {
-  const OrderCardImg({required this.orders, super.key});
+class OrderCardImgPrevious extends StatelessWidget {
+  const OrderCardImgPrevious({required this.orders, super.key});
   final OrderModel orders;
 
   @override
@@ -108,6 +110,32 @@ class OrderCardImg extends StatelessWidget {
                                 : Colors.black),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RateTechnicianScreen(
+                                technicianId: orders.technicianId),
+                          ));
+                    },
+                    child: Text(
+                      'Rate ${orders.technicianName}',
+                      style: GoogleFonts.castoro(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : ApplicationColor,
+                        decoration: TextDecoration.underline,
+                        decorationColor:
+                            themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : ApplicationColor,
+                      ),
+                    ),
                   ),
                 ],
               ),
