@@ -56,8 +56,10 @@ class PreviousOrderPage extends StatelessWidget {
               final offerData = offerSnapshot.docs.first.data();
               data['technicianImage'] = offerData['technicianImage'];
               data['technicianName'] = offerData['technicianName'];
-              data['technicianLocationArea'] = offerData['technicianLocationArea'];
-              data['technicianLocationStreet'] = offerData['technicianLocationStreet'];
+              data['technicianLocationArea'] =
+                  offerData['technicianLocationArea'];
+              data['technicianLocationStreet'] =
+                  offerData['technicianLocationStreet'];
               data['technicianPhone'] = offerData['technicianPhone'];
               data['technicianSub'] = offerData['technicianSub'];
               data['technicianMain'] = offerData['technicianMain'];
@@ -75,8 +77,10 @@ class PreviousOrderPage extends StatelessWidget {
               orderId: doc.id,
               technicianImage: updatedData['technicianImage'],
               technicianName: updatedData['technicianName'],
-              technicianLocationArea: updatedData['technicianLocationArea'] ?? '',
-              technicianLocationStreet: updatedData['technicianLocationStreet'] ?? '',
+              technicianLocationArea:
+                  updatedData['technicianLocationArea'] ?? '',
+              technicianLocationStreet:
+                  updatedData['technicianLocationStreet'] ?? '',
               technicianPhone: updatedData['technicianPhone'] ?? '',
               technicianSub: updatedData['technicianSub'] ?? '',
               technicianMain: updatedData['technicianMain'] ?? '',
@@ -91,9 +95,8 @@ class PreviousOrderPage extends StatelessWidget {
               return Center(
                   child: CircularProgressIndicator(color: ApplicationColor));
             }
-
             if (orderSnapshot.hasError) {
-              return Center(child: Text('Error: ${orderSnapshot.error}'));
+              print('Error: ${orderSnapshot.error}');
             }
 
             final orders = orderSnapshot.data ?? [];
