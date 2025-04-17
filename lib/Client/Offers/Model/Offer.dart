@@ -4,7 +4,7 @@ class Offer {
   final String technicianId;
   final String technicianName;
   final String technicianImage;
-  final String offer;
+  final double offer;
   final String street;
   final String area;
   final String rating;
@@ -23,12 +23,26 @@ class Offer {
 
   factory Offer.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
+
+    double parsedOffer;
+    final offerRaw = data['technicianOffer'];
+
+    if (offerRaw is String) {
+      parsedOffer = double.tryParse(offerRaw) ?? 0.0;
+    } else if (offerRaw is int) {
+      parsedOffer = offerRaw.toDouble();
+    } else if (offerRaw is double) {
+      parsedOffer = offerRaw;
+    } else {
+      parsedOffer = 0.0;
+    }
+
     return Offer(
       id: doc.id,
-      technicianId: data['technicianId'],
-      technicianName: data['technicianName'],
+      technicianId: data['technicianId'] ?? '',
+      technicianName: data['technicianName'] ?? '',
       technicianImage: data['technicianImage'] ?? '',
-      offer: data['technicianOffer'],
+      offer: parsedOffer,
       street: data['technicianLocationStreet'] ?? '',
       area: data['technicianLocationArea'] ?? '',
       rating: data['technicianRating'] ?? '0.0',

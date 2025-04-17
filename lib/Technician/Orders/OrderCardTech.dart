@@ -56,37 +56,34 @@ class OrderCardTech extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          Text(
-                            'Your Offer Price is:',
-                            style: GoogleFonts.judson(fontSize: 20),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 5),
-                              child: TextField(
-                                controller: priceController,
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.judson(
-                                    fontSize: 19, fontWeight: FontWeight.bold),
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                ),
+                    Row(
+                      children: [
+                        Text(
+                          'Your Offer Price is:',
+                          style: GoogleFonts.judson(fontSize: 20),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 5),
+                            child: TextField(
+                              controller: priceController,
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.judson(
+                                  fontSize: 19, fontWeight: FontWeight.bold),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -192,8 +189,10 @@ class OrderCardTech extends StatelessWidget {
                                   'technicianFirstName': techData['first_name'],
                                   'technicianLastName': techData['last_name'],
                                   'technicianPhone': techData['phone'],
-                                  'technicianSubService': techData['sub_service'],
-                                  'technicianMainService': techData['main_service'],
+                                  'technicianSubService':
+                                      techData['sub_service'],
+                                  'technicianMainService':
+                                      techData['main_service'],
                                   'technicianName': fullName,
                                   'technicianImage': profileImageUrl,
                                   'technicianLocationStreet': street,

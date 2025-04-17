@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../Components/Buttons.dart';
 import '../../Theme/Theme_Provider.dart';
 import '../../constents/constent.dart';
@@ -76,8 +75,6 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
           final fetchedOffers = offerSnapshot.docs.map((offerDoc) {
             return Offer.fromFirestore(offerDoc);
           }).toList();
-
-          // Add offers for this service to the list
           allOffers.addAll(fetchedOffers);
         }
       }
@@ -85,7 +82,7 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
       if (allOffers.isNotEmpty) {
         allOffers.sort((a, b) => a.offer.compareTo(b.offer));
         setState(() {
-          offers = allOffers; // Update the offers list
+          offers = allOffers;
         });
       } else {
         print("📭 No offers found for orderId: $orderId");
