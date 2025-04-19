@@ -33,7 +33,7 @@ class PreviousOrderCardTech extends StatelessWidget {
                         borderRadius: BorderRadius.circular(25),
                         child: Image.network(
                           orders.image ??
-                              'assets/images/lang-member/langmem.png',
+                              'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
                           width: 50,
                           height: 50,
                           fit: BoxFit.cover,

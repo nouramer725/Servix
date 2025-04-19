@@ -219,7 +219,6 @@ class OrderCardTech extends StatelessWidget {
                                   'timestamp': FieldValue.serverTimestamp(),
                                 });
 
-
                                 final NotificationServiceTechniciann =
                                     NotificationServiceTechnician(
                                         flutterLocalNotificationsPlugin);
@@ -232,11 +231,14 @@ class OrderCardTech extends StatelessWidget {
 
                                 // Notify user about the new offers
                                 final NotificationService notificationService =
-                                NotificationService(flutterLocalNotificationsPlugin);
+                                    NotificationService(
+                                        flutterLocalNotificationsPlugin);
 
-                                await notificationService.showAndSaveNotification(
+                                await notificationService
+                                    .showAndSaveNotification(
                                   title: 'New Offer',
-                                  preview: 'You received a new offer, explore it!',
+                                  preview:
+                                      'You received a new offer, explore it!',
                                 );
 
                                 Fluttertoast.showToast(
@@ -275,125 +277,119 @@ class OrderCardTech extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: const Color(0xFFAEAEAE), width: 1.5),
           ),
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(25),
-                          child: Image.network(
-                            orders.image ??
-                                'assets/images/lang-member/langmem.png',
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                          ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(25),
+                      child: Image.network(
+                        orders.image ??
+                            'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        "${orders.FName} ${orders.LName}",
+                        style: GoogleFonts.cantataOne(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: isDark ? Colors.white : Colors.black,
                         ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            "${orders.FName} ${orders.LName}",
-                            style: GoogleFonts.cantataOne(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: isDark ? Colors.white : Colors.black,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Type of service :',
-                      style: GoogleFonts.cantataOne(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        decorationColor: isDark ? Colors.white : Colors.black,
-                        decorationThickness: 2,
-                        color: isDark ? Colors.white : Colors.black,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Service: ${orders.ServiceType}',
-                      style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Description : ${orders.Description}',
-                      style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Location : ${orders.Location}',
-                      style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Type of service :',
+                  style: GoogleFonts.cantataOne(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                    decorationColor: isDark ? Colors.white : Colors.black,
+                    decorationThickness: 2,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Service: ${orders.ServiceType}',
+                  style: GoogleFonts.castoro(
+                    fontSize: 14,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Description : ${orders.Description}',
+                  style: GoogleFonts.castoro(
+                    fontSize: 14,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Location : ${orders.Location}',
+                  style: GoogleFonts.castoro(
+                    fontSize: 14,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        Row(
                           children: [
-                            Row(
-                              children: [
-                                Icon(Icons.calendar_today,
-                                    size: 18,
-                                    color:
-                                        isDark ? Colors.white : Colors.black),
-                                const SizedBox(width: 4),
-                                Text(
-                                  orders.Date,
-                                  style: GoogleFonts.castoro(
-                                    fontSize: 14,
-                                    color: isDark ? Colors.white : Colors.black,
-                                  ),
-                                ),
-                              ],
+                            Icon(Icons.calendar_today,
+                                size: 18,
+                                color: isDark ? Colors.white : Colors.black),
+                            const SizedBox(width: 4),
+                            Text(
+                              orders.Date,
+                              style: GoogleFonts.castoro(
+                                fontSize: 14,
+                                color: isDark ? Colors.white : Colors.black,
+                              ),
                             ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Icon(Icons.access_time,
-                                    size: 18,
-                                    color:
-                                        isDark ? Colors.white : Colors.black),
-                                const SizedBox(width: 4),
-                                Text(
-                                  orders.Time,
-                                  style: GoogleFonts.castoro(
-                                    fontSize: 14,
-                                    color: isDark ? Colors.white : Colors.black,
-                                  ),
-                                ),
-                              ],
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Icon(Icons.access_time,
+                                size: 18,
+                                color: isDark ? Colors.white : Colors.black),
+                            const SizedBox(width: 4),
+                            Text(
+                              orders.Time,
+                              style: GoogleFonts.castoro(
+                                fontSize: 14,
+                                color: isDark ? Colors.white : Colors.black,
+                              ),
                             ),
                           ],
                         ),
                       ],
-                    )
+                    ),
                   ],
-                ),
-              ),
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

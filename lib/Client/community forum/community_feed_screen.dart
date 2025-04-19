@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
@@ -24,11 +29,12 @@ class CommunityFeedScreen extends StatelessWidget {
               .orderBy('timestamp', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
-            if (!snapshot.hasData)
+            if (!snapshot.hasData) {
               return Center(
                   child: CircularProgressIndicator(
                 color: ApplicationColor,
               ));
+            }
 
             final posts = snapshot.data!.docs;
 
@@ -58,34 +64,11 @@ class CommunityFeedScreen extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            StreamBuilder(
-                              stream: FirebaseFirestore.instance
-                                  .collection("user-files")
-                                  .doc(FirebaseAuth.instance.currentUser!.uid)
-                                  .collection("uploads")
-                                  .snapshots(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData &&
-                                    snapshot.data!.docs.isNotEmpty) {
-                                  String personalFileUrl = snapshot
-                                      .data!.docs.first['personalFileUrl'];
-                                  return CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 20, // ✅ Adjust size
-                                    backgroundImage: NetworkImage(
-                                        personalFileUrl), // ✅ Fetch from Firestore
-                                  );
-                                }
-                                return const CircleAvatar(
-                                  backgroundColor: Colors.black26,
-                                  radius: 15,
-                                  child: Icon(
-                                    Icons.person,
-                                    size: 20,
-                                    color: Colors.grey,
-                                  ),
-                                );
-                              },
+                            CircleAvatar(
+                              backgroundColor: Colors.grey[400],
+                              radius: 20,
+                              child: const Icon(Icons.person,
+                                  size: 25, color: Colors.white),
                             ),
                             const SizedBox(width: 10),
                             Text(data['username'] ?? 'Anonymous',
@@ -97,6 +80,27 @@ class CommunityFeedScreen extends StatelessWidget {
                         Text("${data['content'] ?? ''}",
                             style: GoogleFonts.castoro(
                                 fontSize: 18, color: Colors.black54)),
+                        if (data['imageUrls'] != null &&
+                            (data['imageUrls'] as List).isNotEmpty)
+                          SizedBox(
+                              height: 200,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: (data['imageUrls'] as List)
+                                      .length, // Ensure this is a list
+                                  itemBuilder: (context, imgIndex) {
+                                    String imageUrl =
+                                        (data['imageUrls'] as List)[imgIndex];
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.network(imageUrl,
+                                            fit: BoxFit.cover),
+                                      ),
+                                    );
+                                  })),
                         const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -133,8 +137,9 @@ class CommunityFeedScreen extends StatelessWidget {
                                     .collection('comments')
                                     .snapshots(),
                                 builder: (context, commentSnap) {
-                                  if (!commentSnap.hasData)
+                                  if (!commentSnap.hasData) {
                                     return const Text("0 comments");
+                                  }
                                   final commentCount =
                                       commentSnap.data!.docs.length;
                                   return Text('$commentCount comments');
@@ -153,14 +158,14 @@ class CommunityFeedScreen extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Icon(
-                                      Icons.favorite,
+                                      Icons.favorite_border,
                                       size: 20,
-                                      color: userLiked
-                                          ? Colors.grey
-                                          : ApplicationColor,
+                                      color: Colors.grey,
                                     ),
-                                    const SizedBox(width: 4),
-                                    const Text("Love"),
+                                    SizedBox(width: 4),
+                                    Text("Love",
+                                        style:
+                                            GoogleFonts.castoro(fontSize: 16)),
                                   ],
                                 ),
                               ),
@@ -177,8 +182,10 @@ class CommunityFeedScreen extends StatelessWidget {
                                             ? Colors.black54
                                             : Colors.grey,
                                         size: 20),
-                                    SizedBox(width: 4),
-                                    Text("Comment"),
+                                    const SizedBox(width: 4),
+                                    Text("Comment",
+                                        style:
+                                            GoogleFonts.castoro(fontSize: 16)),
                                   ],
                                 ),
                               ),
@@ -197,7 +204,9 @@ class CommunityFeedScreen extends StatelessWidget {
                                             : Colors.grey,
                                         size: 20),
                                     const SizedBox(width: 4),
-                                    const Text("Share"),
+                                    Text("Share",
+                                        style:
+                                            GoogleFonts.castoro(fontSize: 16)),
                                   ],
                                 ),
                               ),
@@ -214,13 +223,14 @@ class CommunityFeedScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: ApplicationColor,
         onPressed: () {
-          _showPostUploadDialog(
-              context); // Call method to show dialog or bottom sheet
+          _showPostUploadDialog(context);
         },
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
+
+  List<File> _selectedImages = [];
 
   void _showPostUploadDialog(BuildContext context) {
     final TextEditingController _contentController = TextEditingController();
@@ -228,89 +238,169 @@ class CommunityFeedScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text('Create a Post',
-              style: GoogleFonts.castoro(
-                fontSize: 30,
-              )),
-          content: TextField(
-            controller: _contentController,
-            decoration: const InputDecoration(hintText: "What's on your mind?"),
-            style: GoogleFonts.castoro(
-              fontSize: 20,
-            ),
-            maxLines: 4,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'Cancel',
-                style: GoogleFonts.castoro(
-                  color: Colors.black,
-                  fontSize: 23,
-                ),
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            title:
+                Text('Create a Post', style: GoogleFonts.castoro(fontSize: 30)),
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: _contentController,
+                    keyboardType: TextInputType.text,
+                    autocorrect: true,
+                    enableSuggestions: true,
+                    textCapitalization: TextCapitalization.sentences,
+                    autofocus: true,
+                    decoration: const InputDecoration(
+                      hintText: "What's on your mind?",
+                    ),
+                    style: GoogleFonts.castoro(fontSize: 20),
+                    maxLines: 2,
+                  ),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: _selectedImages
+                        .map((file) => Image.file(file,
+                            height: 100, width: 100, fit: BoxFit.cover))
+                        .toList(),
+                  ),
+                  TextButton.icon(
+                    style: TextButton.styleFrom(
+                      foregroundColor: ApplicationColor,
+                    ),
+                    onPressed: () async {
+                      final picker = ImagePicker();
+                      final pickedFiles = await picker
+                          .pickMultiImage(); // This allows multi-pick
+                      if (pickedFiles.isNotEmpty) {
+                        setState(() {
+                          _selectedImages = pickedFiles
+                              .map((pickedFile) => File(pickedFile.path))
+                              .toList();
+                        });
+                      }
+                    },
+                    icon: Icon(
+                      Icons.image,
+                      color: ApplicationColor,
+                      size: 20,
+                    ),
+                    label: Text(
+                      "Add Image",
+                      style: GoogleFonts.castoro(
+                        color: ApplicationColor,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            TextButton(
-              onPressed: () {
-                _uploadPost(context, _contentController);
-              },
-              child: Text(
-                'Post',
-                style: GoogleFonts.castoro(
-                  fontSize: 23,
-                  color: ApplicationColor,
-                ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _contentController.clear();
+                  _selectedImages.clear(); // Clear selected images
+                },
+                child: Text('Cancel',
+                    style:
+                        GoogleFonts.castoro(color: Colors.black, fontSize: 23)),
               ),
-            ),
-          ],
-        );
+              TextButton(
+                onPressed: () {
+                  _uploadPost(context, _contentController);
+                },
+                child: Text('Post',
+                    style: GoogleFonts.castoro(
+                        fontSize: 23, color: ApplicationColor)),
+              ),
+            ],
+          );
+        });
       },
     );
   }
 
-  void _uploadPost(
+  Future<String?> uploadToCloudinary(File imageFile) async {
+    String cloudinaryUrl =
+        "https://api.cloudinary.com/v1_1/dstg1nqdx/image/upload";
+    String uploadPreset = "Servix";
+
+    var request = http.MultipartRequest("POST", Uri.parse(cloudinaryUrl));
+    request.fields["upload_preset"] = uploadPreset;
+    request.files
+        .add(await http.MultipartFile.fromPath("file", imageFile.path));
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      var responseData = await response.stream.bytesToString();
+      var jsonResponse = json.decode(responseData);
+      return jsonResponse["secure_url"];
+    } else {
+      print(
+          "Cloudinary upload failed with status code: ${response.statusCode}");
+      return null;
+    }
+  }
+
+  Future<void> _uploadPost(
       BuildContext context, TextEditingController _contentController) async {
     final user = FirebaseAuth.instance.currentUser;
 
     if (_contentController.text.trim().isEmpty || user == null) {
-      return; // Don't upload if content is empty or user is not logged in
+      return;
     }
 
     try {
-      // Fetch user data from the 'users' collection using the user UID
-      final userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid) // Assuming UID is used as the document ID
-          .get();
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      final userId = user.uid;
 
+      // Try to get the document from 'users' collection
+      DocumentSnapshot userDoc =
+          await firestore.collection('users').doc(userId).get();
+
+      String role = 'user';
       if (!userDoc.exists) {
-        throw Exception('User not found');
+        // If not found, try 'technicians' collection
+        userDoc = await firestore.collection('technician').doc(userId).get();
+        if (!userDoc.exists) throw Exception('User or Technician not found');
+        role = 'technician';
       }
 
-      // Fetch the first name or set to 'Anonymous' if not available
-      final firstName = userDoc.data()?['first_name'] ?? 'Anonymous';
-      final lastName = userDoc.data()?['last_name'] ?? '';
-
-      // Combine first name and last name
+      final data = userDoc.data() as Map<String, dynamic>;
+      final firstName = data['first_name'] ?? 'Anonymous';
+      final lastName = data['last_name'] ?? '';
       final username = '$firstName $lastName'.trim();
 
-      // Upload the post with the fetched username
-      await FirebaseFirestore.instance.collection('community_posts').add({
-        'userId': user.uid,
-        'username': username, // Use the fetched username
+      List<String> imageUrls = [];
+      for (var imageFile in _selectedImages) {
+        final url = await uploadToCloudinary(imageFile);
+        if (url != null) {
+          imageUrls.add(url);
+        }
+      }
+
+      await firestore.collection('community_posts').add({
+        'userId': userId,
+        'username': username,
+        'role': role, // optional: for display/filtering later
         'content': _contentController.text.trim(),
         'timestamp': FieldValue.serverTimestamp(),
-        'likes': [], // Empty array for likes initially
+        'imageUrls': imageUrls, // List of URLs
+        'likes': [],
       });
 
-      _contentController.clear(); // Clear the input field
-      Navigator.of(context).pop(); // Close the dialog
+      _contentController.clear();
+      _selectedImages.clear(); // Clear selected images
+      Navigator.of(context).pop();
 
-      // Show success message
       Fluttertoast.showToast(
         msg: 'Post uploaded successfully!',
         toastLength: Toast.LENGTH_SHORT,
@@ -319,9 +409,9 @@ class CommunityFeedScreen extends StatelessWidget {
         textColor: Colors.white,
       );
     } catch (e) {
-      // Handle error (if any)
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error uploading post: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error uploading post: $e')),
+      );
       print('Error uploading post: $e');
     }
   }
@@ -621,7 +711,6 @@ class CommunityFeedScreen extends StatelessWidget {
     final quoteText = """
   🌟 Hey there! Check out this post from $username! 🌟
   📝 "$content"
-  🔥 It's too good to miss! 📲 #Servix #CommunityVibes
   😎 Don't forget to join the conversation and share your thoughts! 💬
   """;
     Share.share(quoteText);

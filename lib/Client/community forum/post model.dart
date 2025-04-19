@@ -7,6 +7,7 @@ class Post {
   final String content;
   final DateTime timestamp;
   final List<String> likes;
+  final String? imageUrl;
 
   Post({
     required this.id,
@@ -15,6 +16,7 @@ class Post {
     required this.content,
     required this.timestamp,
     required this.likes,
+    this.imageUrl,
   });
 
   factory Post.fromMap(String id, Map<String, dynamic> data) {
@@ -23,6 +25,7 @@ class Post {
       userId: data['userId'],
       username: data['username'],
       content: data['content'],
+      imageUrl: data['imageUrl'],
       timestamp: (data['timestamp'] as Timestamp).toDate(),
       likes: List<String>.from(data['likes'] ?? []),
     );
@@ -35,6 +38,7 @@ class Post {
       'content': content,
       'timestamp': timestamp,
       'likes': likes,
+      'imageUrl': imageUrl,
     };
   }
 }

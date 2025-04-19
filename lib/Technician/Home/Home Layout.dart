@@ -502,12 +502,12 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
             activeIcon: Icon(Icons.home, color: ApplicationColor),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.forum_outlined,
+            icon: Icon(Icons.groups,
                 color: themeProvider.themeMode == ThemeMode.dark
                     ? Colors.white60
                     : ApplicationColor3),
             label: "Community Forum".tr(),
-            activeIcon: Icon(Icons.forum, color: ApplicationColor),
+            activeIcon: Icon(Icons.groups, color: ApplicationColor),
           ),
           BottomNavigationBarItem(
             icon: SizedBox(

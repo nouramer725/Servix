@@ -20,7 +20,8 @@ class FinishedOrderTechPage extends StatelessWidget {
         future: getTechnicianSubservice(),
         builder: (context, subserviceSnapshot) {
           if (subserviceSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(
+            return Center(
+                child: CircularProgressIndicator(
               color: ApplicationColor,
             ));
           }
@@ -40,7 +41,8 @@ class FinishedOrderTechPage extends StatelessWidget {
                 .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator(
+                return Center(
+                    child: CircularProgressIndicator(
                   color: ApplicationColor,
                 ));
               }
@@ -62,7 +64,8 @@ class FinishedOrderTechPage extends StatelessWidget {
                 builder: (context, orderSnapshot) {
                   if (orderSnapshot.connectionState ==
                       ConnectionState.waiting) {
-                    return  Center(child: CircularProgressIndicator(
+                    return Center(
+                        child: CircularProgressIndicator(
                       color: ApplicationColor,
                     ));
                   }
@@ -126,7 +129,7 @@ class FinishedOrderTechPage extends StatelessWidget {
           Time: data['selectedTime'] ?? '',
           Location: data['area'] ?? 'No Location',
           image: data['profileImageUrl'] ??
-              "assets/images/lang-member/langmem.png",
+              "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
           FName: data['firstName'] ?? 'Unknown',
           LName: data['lastName'] ?? 'Unknown',
           docPath: doc.reference.path,
