@@ -2,12 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import '../../../../Components/Buttons.dart';
 import '../../../../Components/location textfield.dart';
 import '../../../../constents/constent.dart';
+import '../Notification/notification_service.dart';
 import 'add new address.dart';
 
 class SaveNewAddressScreenClient extends StatefulWidget {
@@ -44,12 +46,16 @@ class _SaveNewAddressScreenClientState
   String? _buildingError;
   String? _aptError;
   bool _isLoading = false;
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   bool _validateFields() {
     setState(() {
-      _buildingError =
-          _buildingController.text.isEmpty ? 'Building Name is required'.tr() : null;
-      _aptError = _aptController.text.isEmpty ? 'Apt. No. is required'.tr() : null;
+      _buildingError = _buildingController.text.isEmpty
+          ? 'Building Name is required'.tr()
+          : null;
+      _aptError =
+          _aptController.text.isEmpty ? 'Apt. No. is required'.tr() : null;
     });
 
     return _buildingError == null && _aptError == null;
@@ -85,6 +91,14 @@ class _SaveNewAddressScreenClientState
         "longitude": widget.longitude,
         "timestamp": FieldValue.serverTimestamp(),
       });
+
+      final NotificationService notificationService =
+          NotificationService(flutterLocalNotificationsPlugin);
+
+      await notificationService.showAndSaveNotification(
+        title: 'New Location',
+        preview: 'Your new location has been added successfully!',
+      );
 
       print("Address saved successfully!");
       Navigator.pushReplacement(

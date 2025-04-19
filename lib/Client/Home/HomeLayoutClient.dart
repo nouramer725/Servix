@@ -32,8 +32,8 @@ class HomeClientLayout extends StatefulWidget {
 
 class _HomeClientLayoutState extends State<HomeClientLayout> {
   Map<String, dynamic>? userData;
-  bool isTechnician = false; // Default to client
-  bool isClient = false; // Track if the user is in the users collection
+  bool isTechnician = false;
+  bool isClient = false;
 
   Future<void> getUserData() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -45,11 +45,13 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
           .get();
 
       if (technicianDoc.exists) {
-        setState(() {
-          isTechnician = true; // Mark user as technician
-          userData = technicianDoc.data() as Map<String, dynamic>?;
-          isClient = false; // Not a client
-        });
+        if (mounted) {
+          setState(() {
+            isTechnician = true; // Mark user as technician
+            userData = technicianDoc.data() as Map<String, dynamic>?;
+            isClient = false; // Not a client
+          });
+        }
       } else {
         // If not found in technicians, check users collection
         DocumentSnapshot userDoc = await FirebaseFirestore.instance
@@ -58,11 +60,13 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
             .get();
 
         if (userDoc.exists) {
-          setState(() {
-            isTechnician = false; // Mark user as client
-            isClient = true; // Mark user as existing in users collection
-            userData = userDoc.data() as Map<String, dynamic>?;
-          });
+          if (mounted) {
+            setState(() {
+              isTechnician = false; // Mark user as client
+              isClient = true; // Mark user as existing in users collection
+              userData = userDoc.data() as Map<String, dynamic>?;
+            });
+          }
         }
       }
     }
@@ -114,16 +118,20 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
               StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("user-files")
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .doc(FirebaseAuth
+                        .instance.currentUser?.uid) // Null safe check here
                     .collection("personalInformation")
                     .doc("profile")
                     .snapshots(),
                 builder: (context, snapshot) {
                   String? personalImageUrl;
+
+                  // Check if snapshot has data and if the document exists
                   if (snapshot.hasData && snapshot.data?.exists == true) {
                     personalImageUrl =
                         snapshot.data?.data()?['personalImageUrl'];
                   }
+
                   return GestureDetector(
                     child: CircleAvatar(
                       backgroundColor: Colors.grey[200],
@@ -199,7 +207,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                     child: StreamBuilder(
                       stream: FirebaseFirestore.instance
                           .collection("user-files")
-                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .doc(FirebaseAuth.instance.currentUser?.uid)
                           .collection("personalInformation")
                           .doc("profile")
                           .snapshots(),
@@ -308,16 +316,12 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                         ),
                         const Spacer(),
                         DropdownButton<Locale>(
-                          value:
-                              localeProvider.locale,
+                          value: localeProvider.locale,
                           onChanged: (Locale? locale) async {
                             if (locale != null) {
-                              await _saveLocale(
-                                  locale);
-                              context
-                                  .setLocale(locale);
-                              localeProvider
-                                  .setLocale(locale);
+                              await _saveLocale(locale);
+                              context.setLocale(locale);
+                              localeProvider.setLocale(locale);
                             }
                           },
                           dropdownColor:

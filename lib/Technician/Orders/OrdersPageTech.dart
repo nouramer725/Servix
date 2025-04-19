@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:servix/Technician/NotificationTech/notification_service_technician.dart';
 import 'package:servix/Technician/Orders/OrderCardTech.dart';
 import 'package:servix/Technician/Orders/PreviousOrderPageTech.dart';
 import 'package:servix/Technician/Orders/model/modelTech.dart';
@@ -18,6 +20,9 @@ class OrdersPageTech extends StatefulWidget {
 
 class _OrdersPageTechState extends State<OrdersPageTech> {
   int _selectedIndex = 0;
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   @override
   Widget build(BuildContext context) {
@@ -89,15 +94,15 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
     );
   }
 
+  final Set<String> _notifiedOrderIds = {};
+
   Widget _currentOrdersTech() {
     return FutureBuilder<String>(
       future: getTechnicianSubservice(),
       builder: (context, subserviceSnapshot) {
         if (subserviceSnapshot.connectionState == ConnectionState.waiting) {
           return Center(
-              child: CircularProgressIndicator(
-            color: ApplicationColor,
-          ));
+              child: CircularProgressIndicator(color: ApplicationColor));
         }
 
         if (subserviceSnapshot.hasError || !subserviceSnapshot.hasData) {
@@ -115,9 +120,7 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                  child: CircularProgressIndicator(
-                color: ApplicationColor,
-              ));
+                  child: CircularProgressIndicator(color: ApplicationColor));
             }
 
             if (snapshot.hasError || !snapshot.hasData) {
@@ -133,6 +136,21 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
 
             final orders = docs.map((doc) {
               final data = doc.data() as Map<String, dynamic>;
+
+              // Send a notification for new matching orders
+              if (!_notifiedOrderIds.contains(doc.id)) {
+                final NotificationServiceTechniciann =
+                    NotificationServiceTechnician(
+                        flutterLocalNotificationsPlugin);
+
+                NotificationServiceTechniciann.showAndSaveNotificationTech(
+                  title: 'New service',
+                  preview:
+                      'A new order is waiting for your service type. Do not miss the chance to take a look!',
+                );
+                _notifiedOrderIds.add(doc.id);
+              }
+
               return OrderModelTech(
                 ServiceType: data['serviceTitle'] ?? '',
                 Description: data['description'] ?? '',

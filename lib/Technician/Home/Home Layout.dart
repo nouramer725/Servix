@@ -16,9 +16,11 @@ import 'package:servix/Technician/Profile/Profile.dart';
 import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../Client/community forum/community_feed_screen.dart';
 import '../../Language/Local_Provider.dart';
 import '../../On-Boarding/On_Boarding_Screen.dart';
 import '../../Theme/Theme_Provider.dart';
+import '../NotificationTech/notifaction really.dart';
 import '../Orders/OrdersPageTech.dart';
 import 'SecondScreenOfBottomnavbar.dart';
 
@@ -47,12 +49,13 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
   bool isDarkMode = false; // Default mode
 
   final List<Widget> pages = [
-    const HomeTechFirstScreen(),
-    const NotificationSystem(),
+    const NotificationScreenRealTech(),
     const OrdersPageTech(),
+    const HomeTechFirstScreen(),
+    CommunityFeedScreen(),
     const IntroScreenTech(),
   ];
-  int selectedIndex = 0;
+  int selectedIndex = 2;
 
   @override
   void initState() {
@@ -475,14 +478,6 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white60
-                    : ApplicationColor3),
-            label: "Home".tr(),
-            activeIcon: Icon(Icons.home, color: ApplicationColor),
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.notifications_none_outlined,
                 color: themeProvider.themeMode == ThemeMode.dark
                     ? Colors.white60
@@ -497,6 +492,22 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     : ApplicationColor3),
             label: "Services".tr(),
             activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white60
+                    : ApplicationColor3),
+            label: "Home".tr(),
+            activeIcon: Icon(Icons.home, color: ApplicationColor),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.forum_outlined,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white60
+                    : ApplicationColor3),
+            label: "Community Forum".tr(),
+            activeIcon: Icon(Icons.forum, color: ApplicationColor),
           ),
           BottomNavigationBarItem(
             icon: SizedBox(

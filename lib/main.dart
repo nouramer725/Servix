@@ -122,6 +122,7 @@ class _CheckUserStateState extends State<CheckUserState> {
 
     await Future.delayed(const Duration(seconds: 2));
 
+    // If onboarding screen is not seen, show onboarding
     if (seenOnboarding == null || !seenOnboarding) {
       prefs.setBool("seenOnboarding", true);
       Navigator.pushNamedAndRemoveUntil(
@@ -129,12 +130,14 @@ class _CheckUserStateState extends State<CheckUserState> {
       return;
     }
 
+    // If user is not logged in, redirect to signin screen
     if (user == null) {
       Navigator.pushNamedAndRemoveUntil(
           context, "/signinChoice", (route) => false);
       return;
     }
 
+    // Check if the user is a technician
     DocumentSnapshot technicianDoc = await FirebaseFirestore.instance
         .collection('technician')
         .doc(user.uid)
@@ -146,6 +149,7 @@ class _CheckUserStateState extends State<CheckUserState> {
       String status = data?['status'] ?? 'pending';
       String role = data?['role'] ?? 'Technician';
 
+      // Check if user has uploads, if not redirect to personal info screen
       QuerySnapshot uploadsSnapshot = await FirebaseFirestore.instance
           .collection("user-files")
           .doc(user.uid)
@@ -160,6 +164,7 @@ class _CheckUserStateState extends State<CheckUserState> {
         return;
       }
 
+      // Check if technician has location details
       QuerySnapshot locationtechSnapshot = await FirebaseFirestore.instance
           .collection("user-files")
           .doc(user.uid)
@@ -173,6 +178,8 @@ class _CheckUserStateState extends State<CheckUserState> {
         Navigator.pushReplacementNamed(context, "/locationRequesttech");
         return;
       }
+
+      // Role-based redirection
       if (role == 'Client') {
         Navigator.pushNamedAndRemoveUntil(
             context, "/clientHome", (route) => false);
@@ -186,6 +193,7 @@ class _CheckUserStateState extends State<CheckUserState> {
       return;
     }
 
+    // If user is a regular client, check user status and location details
     DocumentSnapshot userDoc = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
@@ -196,6 +204,7 @@ class _CheckUserStateState extends State<CheckUserState> {
 
       String role = data?['role'] ?? 'Client';
 
+      // Check if user has location details
       QuerySnapshot locationSnapshot = await FirebaseFirestore.instance
           .collection("user-files")
           .doc(user.uid)
@@ -206,11 +215,12 @@ class _CheckUserStateState extends State<CheckUserState> {
       bool hasLocation = locationSnapshot.docs.isNotEmpty;
 
       if (!hasLocation) {
-        // Navigate to location screen first
+        // If no location details, navigate to location request screen
         Navigator.pushReplacementNamed(context, "/locationRequest");
         return;
       }
 
+      // Role-based redirection
       if (role == 'Client') {
         Navigator.pushNamedAndRemoveUntil(
             context, "/clientHome", (route) => false);
@@ -218,11 +228,15 @@ class _CheckUserStateState extends State<CheckUserState> {
         Navigator.pushNamedAndRemoveUntil(
             context, "/techHome", (route) => false);
       }
-    }
+    } else {
+      // If the user does not exist in the database, sign them out
+      await FirebaseAuth.instance.signOut();
+      prefs.remove("seenOnboarding"); // Clear onboarding state if necessary
 
-    await FirebaseAuth.instance.signOut();
-    Navigator.pushNamedAndRemoveUntil(
-        context, "/signinChoice", (route) => false);
+      // Navigate to signinChoice screen after sign-out
+      Navigator.pushNamedAndRemoveUntil(
+          context, "/signinChoice", (route) => false);
+    }
   }
 
   @override

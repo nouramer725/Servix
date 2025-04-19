@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +13,7 @@ import 'package:servix/Components/Buttons.dart';
 
 import '../../../../Theme/Theme_Provider.dart';
 import '../../../../constents/constent.dart';
+import '../Notification/notification_service.dart';
 import 'add new address.dart';
 
 class LocationPosting extends StatefulWidget {
@@ -47,6 +49,9 @@ class _LocationPostingState extends State<LocationPosting> {
   bool rememberMe = false;
 
   String get orderId => widget.orderId;
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -109,7 +114,7 @@ class _LocationPostingState extends State<LocationPosting> {
       if (user == null) return {'name': null, 'imageUrl': null};
 
       final userDoc = await FirebaseFirestore.instance
-          .collection('users')  // Assuming the collection is named 'users'
+          .collection('users') // Assuming the collection is named 'users'
           .doc(user.uid)
           .get();
 
@@ -153,8 +158,6 @@ class _LocationPostingState extends State<LocationPosting> {
       return null; // Return null if there's an error
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -269,8 +272,10 @@ class _LocationPostingState extends State<LocationPosting> {
                                                     widget.serviceTitle,
                                                 imagePath: widget.imagePath,
                                                 fileUrls: widget.fileUrls,
-                                                selectedDate: widget.selectedDate,
-                                                selectedTime: widget.selectedTime,
+                                                selectedDate:
+                                                    widget.selectedDate,
+                                                selectedTime:
+                                                    widget.selectedTime,
                                               ),
                                             ));
                                       },
@@ -352,8 +357,9 @@ class _LocationPostingState extends State<LocationPosting> {
                   );
                   return;
                 }
-                final userNames = await getUserNames();  // Fetch names
-                final profileImageUrl = await fetchProfileImageUrl();  // Fetch profile image URL
+                final userNames = await getUserNames(); // Fetch names
+                final profileImageUrl =
+                    await fetchProfileImageUrl(); // Fetch profile image URL
 
                 Map<String, dynamic> selectedLocation = {
                   'latitude': userLocation!.latitude,
@@ -365,11 +371,12 @@ class _LocationPostingState extends State<LocationPosting> {
                   'description': widget.description,
                   'serviceTitle': widget.serviceTitle,
                   'fileUrls': widget.fileUrls,
-                  'selectedDate': DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
+                  'selectedDate':
+                      DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
                   'selectedTime': widget.selectedTime!.format(context),
                   'Status': 'Pending',
                   'userId': user.uid,
-                  'orderId':widget.orderId,
+                  'orderId': widget.orderId,
                   'firstName': userNames['first_name'],
                   'lastName': userNames['last_name'],
                   'profileImageUrl': profileImageUrl,
@@ -393,6 +400,14 @@ class _LocationPostingState extends State<LocationPosting> {
                   toastLength: Toast.LENGTH_LONG,
                   gravity: ToastGravity.TOP,
                   timeInSecForIosWeb: 1,
+                );
+
+                final NotificationService notificationService =
+                    NotificationService(flutterLocalNotificationsPlugin);
+
+                await notificationService.showAndSaveNotification(
+                  title: '${widget.serviceTitle} Posted',
+                  preview: 'Wow!! Your Service has been successfully posted!',
                 );
 
                 Navigator.pushReplacement(

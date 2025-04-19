@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ import '../../../../Components/Buttons.dart';
 import '../../../../Theme/Theme_Provider.dart';
 import '../../../../constents/constent.dart';
 import '../Home/HomeLayoutClient.dart';
+import '../Notification/notification_service.dart';
 import 'google maps new address.dart';
 
 class NewAddress extends StatefulWidget {
@@ -47,6 +49,8 @@ class _NewAddressState extends State<NewAddress> {
   List<Map<String, dynamic>> newLocations = [];
 
   int? selectedIndex = -1;
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -130,7 +134,7 @@ class _NewAddressState extends State<NewAddress> {
       if (user == null) return {'name': null, 'imageUrl': null};
 
       final userDoc = await FirebaseFirestore.instance
-          .collection('users')  // Assuming the collection is named 'users'
+          .collection('users') // Assuming the collection is named 'users'
           .doc(user.uid)
           .get();
 
@@ -375,6 +379,16 @@ class _NewAddressState extends State<NewAddress> {
                           timeInSecForIosWeb: 1,
                         );
                       });
+
+                      final NotificationService notificationService =
+                          NotificationService(flutterLocalNotificationsPlugin);
+
+                      await notificationService.showAndSaveNotification(
+                        title: '${widget.serviceTitle} Posted',
+                        preview:
+                            'Wow!! Your Service has been successfully posted!',
+                      );
+
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -407,8 +421,9 @@ class _NewAddressState extends State<NewAddress> {
 
       Map<String, dynamic> selectedLocation;
 
-      final userNames = await getUserNames();  // Fetch names
-      final profileImageUrl = await fetchProfileImageUrl();  // Fetch profile image URL
+      final userNames = await getUserNames(); // Fetch names
+      final profileImageUrl =
+          await fetchProfileImageUrl(); // Fetch profile image URL
 
       if (selectedIndex == -1) {
         // Use the default address
@@ -438,7 +453,7 @@ class _NewAddressState extends State<NewAddress> {
           'selectedTime': widget.selectedTime!.format(context),
           'Status': 'Pending',
           'userId': user.uid,
-          'orderId':widget.orderId,
+          'orderId': widget.orderId,
           'firstName': userNames['first_name'],
           'lastName': userNames['last_name'],
           'profileImageUrl': profileImageUrl,
@@ -454,7 +469,6 @@ class _NewAddressState extends State<NewAddress> {
           .collection('user-services')
           .doc(widget.orderId)
           .set(selectedLocation);
-
     } catch (e) {
       Fluttertoast.showToast(
         msg: "Error saving service: $e",
