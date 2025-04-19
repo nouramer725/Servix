@@ -30,6 +30,7 @@ class CustomTextFormFieldLocation extends StatelessWidget {
         TextFormField(
             keyboardType: keyboardType,
             controller: controller,
+            cursorColor: Colors.grey[100],
             initialValue: controller == null ? initialValue : null, // Ensure one is used
             obscureText: obscureText,
             readOnly: readOnly,

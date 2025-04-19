@@ -30,6 +30,7 @@ Widget countryCodePhoneField({
             child: TextFormField(
               controller: controller,
               keyboardType: TextInputType.phone,
+              cursorColor: Colors.grey[100],
               decoration: InputDecoration(
                 labelText: "Phone Number".tr(),
                 labelStyle: GoogleFonts.inter(

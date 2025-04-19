@@ -54,6 +54,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
       child: AbsorbPointer(
         child: TextFormField(
           controller: _controller,
+          cursorColor: Colors.grey[100],
           decoration: InputDecoration(
             hintText: widget.hintText,
             hintStyle: GoogleFonts.castoro(

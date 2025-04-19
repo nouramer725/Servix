@@ -15,6 +15,7 @@ Widget customTextFieldNational({
     children: [
       TextFormField(
         controller: controller,
+        cursorColor: Colors.grey[100],
         keyboardType: TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly, // Allows only numbers

@@ -369,5 +369,12 @@
   "Service details saved successfully!": "Service details saved successfully!",
   "LOG OUT": "LOG OUT",
   "CANCEL": "CANCEL",
-  "Log out of your account?": "Log out of your account?"
+  "Log out of your account?": "Log out of your account?",
+  "Phone number must be exactly 11 digits": "Phone number must be exactly 11 digits",
+  "Verify Your Email Address": "Verify Your Email Address",
+  "You have entered ${widget.email} as your email address. Please check your inbox for a verification link.": "You have entered {{email}} as your email address. Please check your inbox for a verification link.",
+  "Verification email sent": "Verification email sent",
+  "Email verified successfully": "Email verified successfully",
+  "Resend Verification Email": "Resend Verification Email",
+  "This email address is used before": "This email address is used before"
 }

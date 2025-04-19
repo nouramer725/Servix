@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Client/Home/HomeLayoutClient.dart';
 import 'package:servix/Client/Login-Register/Sign%20UP/Sign_Up_Client.dart';
+import 'package:servix/Client/Login-Register/Sign%20UP/Verification%20Email.dart';
 import '../../../Components/AuthService_Google.dart';
 import '../../../Components/Buttons.dart';
 import '../../../Components/ShowResetPasswordDiaglog.dart';
@@ -22,7 +23,6 @@ class _SignInFormState extends State<SignInForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   bool _obscureText = true;
-  // bool _rememberMe = false;
   String? _emailError;
   String? _passwordError;
 
@@ -144,59 +144,11 @@ class _SignInFormState extends State<SignInForm> {
                 Navigator.pushReplacement(
                     context, MaterialPageRoute(builder: (context) => const HomeClientLayout()));
               } else {
-                showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (context) {
-                      return Dialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color:  ApplicationColor, // Red background
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.close,
-                                color: Colors.white,
-                                size: 40,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                "Email not verified. Please verify your account via the email sent to you."
-                                    .tr(),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 16),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text(
-                                  "OK".tr(),
-                                  style: const TextStyle(
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    });
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => Verification(
+                      email: _emailController.text.trim(),
+                      password: _passwordController.text.trim(),
+                )));
               }
             }
           }
@@ -274,10 +226,6 @@ class _SignInFormState extends State<SignInForm> {
                 ),
               ),
             ),
-            // RememberMeCheckbox(
-            //   value: _rememberMe,
-            //   onChanged: (value) => setState(() => _rememberMe = value!),
-            // ),
             const SizedBox(height: 50),
             GradientButton(
                 onPressed: _isLoading ? null : _validateAndSubmit,

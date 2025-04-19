@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Technician/Login-Register/Personal%20Info/Personal%20Info%20tech.dart';
 import 'package:servix/Technician/Login-Register/Sign%20In%20Technician/Sign_In_Tech.dart';
@@ -139,7 +140,8 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
     } else if (!RegExp("^(?=.*[@#%^&+=])").hasMatch(password)) {
       setState(() {
         _passwordError =
-            "Password must include at least one special character (e.g. ! @ # \$ % ^ & *).".tr();
+            "Password must include at least one special character (e.g. ! @ # \$ % ^ & *)."
+                .tr();
       });
       isValid = false;
     }
@@ -179,13 +181,13 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
         _phoneError = "Please enter your phone number".tr();
       });
       isValid = false;
-    } else if (!RegExp(r'^\+?[0-9]{7,15}$')
-        .hasMatch(_PhoneNumberController.text)) {
+    } else if (!RegExp(r'^\d{11}$').hasMatch(_PhoneNumberController.text)) {
       setState(() {
-        _phoneError = "Enter a valid phone number".tr();
+        _phoneError = "Phone number must be exactly 11 digits".tr();
       });
       isValid = false;
     }
+
     // Date of Birth Validation
     if (_dobController.text.isEmpty) {
       setState(() {
@@ -221,10 +223,6 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
           password: password,
         );
 
-        // Send verification email
-        // await userCredential.user?.sendEmailVerification();
-
-        // Save data to Firestore, including date of birth and services
         await FirebaseFirestore.instance
             .collection('technician')
             .doc(userCredential.user?.uid)
@@ -242,19 +240,21 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
           'created_at': Timestamp.now(),
         });
 
-        // Navigate to the Personal Information page
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => PersonalInformation(
-              phoneNumber: _PhoneNumberController.text.trim(),
-            ),
+            builder: (context) => const PersonalInformation(),
           ),
           (route) => false,
         );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("$e".tr())),
+      } on FirebaseAuthException catch (e) {
+        Fluttertoast.showToast(
+          msg: "This email address is used before".tr(),
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
         );
       } finally {
         setState(() {

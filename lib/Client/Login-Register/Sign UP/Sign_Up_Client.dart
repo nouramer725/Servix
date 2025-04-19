@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:servix/Client/Login-Register/Sign%20UP/Verification%20Email.dart';
 import '../../../Components/Buttons.dart';
 import '../../../Components/Country Code and Phone Number.dart';
 import '../../../Components/Gender Dropdown.dart';
 import '../../../Components/TextFormFiels_SignUp.dart';
 import '../../../constents/constent.dart';
-import '../LocationClient/Access_Location1.dart';
 import '../Sign In/Sign_In_Client.dart';
 
 class SignUpClient extends StatefulWidget {
@@ -132,10 +133,9 @@ class _SignUpClientState extends State<SignUpClient> {
         _phoneError = "Please enter your phone number".tr();
       });
       isValid = false;
-    } else if (!RegExp(r'^\+?[0-9]{7,15}$')
-        .hasMatch(_PhoneNumberController.text)) {
+    } else if (!RegExp(r'^\d{11}$').hasMatch(_PhoneNumberController.text)) {
       setState(() {
-        _phoneError = "Enter a valid phone number".tr();
+        _phoneError = "Phone number must be exactly 11 digits".tr();
       });
       isValid = false;
     }
@@ -169,49 +169,22 @@ class _SignUpClientState extends State<SignUpClient> {
           'created_at': Timestamp.now(),
         });
 
-        // Show popup dialog asking the user to verify their email
-        await showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Row(
-                children: [
-                  Image.asset(
-                    "assets/images/sign/popUpMessage.png",
-                    width: 30,
-                  ),
-                  const SizedBox(width: 10),
-                  Text("Email Verification".tr()),
-                ],
-              ),
-              content: Container(
-                child: Text(
-                  tr("Sign Up Successful! Please check your email and verify your account."
-                      .tr()),
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Ok".tr(),
-                      style: TextStyle(color: ApplicationColor)),
-                ),
-              ],
-            );
-          },
-        );
-
-        // Navigate to the SignIn page
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => const LocationRequestScreenClient()),
+              builder: (context) => Verification(
+                    email: _emailController.text.trim(),
+                    password: password,
+                  )),
         );
       } on FirebaseAuthException catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message ?? "").tr()),
+        Fluttertoast.showToast(
+          msg: "This email address is used before".tr(),
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
         );
       } finally {
         setState(() {

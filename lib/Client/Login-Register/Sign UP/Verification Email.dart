@@ -1,0 +1,124 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:servix/Components/Buttons.dart';
+
+import '../../../constents/constent.dart';
+import '../LocationClient/Access_Location1.dart';
+
+class Verification extends StatefulWidget {
+  final String email;
+  final String password;
+  const Verification({super.key, required this.email, required this.password});
+
+  @override
+  State<Verification> createState() => _VerificationState();
+}
+
+class _VerificationState extends State<Verification> {
+  bool isVerified = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _startVerificationCheck();
+  }
+
+  void _startVerificationCheck() async {
+    while (!isVerified) {
+      await Future.delayed(const Duration(seconds: 2)); // check every 3 seconds
+
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: widget.email,
+        password: widget.password,
+      );
+
+      User? user = userCredential.user;
+      if (user != null) {
+        await user.reload(); // refresh user info
+        if (user.emailVerified) {
+          setState(() {
+            isVerified = true;
+          });
+
+          Fluttertoast.showToast(
+            msg: "Email verified successfully".tr(),
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            backgroundColor: ApplicationColorWithOpacity,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const LocationRequestScreenClient()),
+          );
+        }
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      extendBodyBehindAppBar: false,
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 60),
+              Lottie.asset('assets/Application/email-verification.json',
+                  width: 500),
+              Text(
+                "Verify Your Email Address",
+                style: GoogleFonts.charisSil(
+                  fontSize: 25,
+                  color: ApplicationColor3,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "You have entered {{email}} as your email address. Please check your inbox for a verification link."
+                    .tr(namedArgs: {'email': widget.email}),
+                style: GoogleFonts.charisSil(
+                  fontSize: 18,
+                  color: Colors.black54,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 50),
+              GradientButton(
+                onPressed: () async {
+                  final user = FirebaseAuth.instance.currentUser;
+                  if (user != null && !user.emailVerified) {
+                    await user.sendEmailVerification();
+                    Fluttertoast.showToast(
+                      msg: "Verification email sent".tr(),
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.TOP,
+                      backgroundColor: ApplicationColorWithOpacity,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                    );
+                  }
+                },
+                text: "Resend Verification Email".tr(),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

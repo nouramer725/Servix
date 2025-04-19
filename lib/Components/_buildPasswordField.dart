@@ -31,6 +31,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       obscureText: _isObscured,
       keyboardType: TextInputType.visiblePassword,
       textInputAction: TextInputAction.next,
+      cursorColor: Colors.grey[100],
       style: GoogleFonts.castoro(
         color: Colors.black87,
       ),

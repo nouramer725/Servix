@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Technician/Login-Register/LocationTechnician/Access_Location1.dart';
+import 'package:servix/Technician/Login-Register/Personal%20Info/Personal%20Info%20tech.dart';
 import 'package:servix/Theme/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:servix/Client/Login-Register/Sign%20UP/Sign_Up_Client.dart';
@@ -17,6 +19,7 @@ import 'package:servix/Technician/Login-Register/Sign%20In%20Technician/Sign_In_
 import 'package:servix/Technician/Login-Register/SignUP/Sign_Up_Tech.dart';
 import 'package:servix/Technician/Login-Register/Waiting%20Screen/Waiting_Screen.dart';
 import 'Client/Home/HomeLayoutClient.dart';
+import 'Client/Login-Register/LocationClient/Access_Location1.dart';
 import 'Client/Login-Register/Sign In/Sign_In_Client.dart';
 import 'Language/Local_Provider.dart';
 import 'Theme/Theme_Provider.dart';
@@ -85,6 +88,11 @@ class MyApp extends StatelessWidget {
               "/clientHome": (context) => const HomeClientLayout(),
               "/techHome": (context) => const HomeTechnicianLayout(),
               "/waiting": (context) => WaitingScreen(),
+              "/locationRequest": (context) =>
+                  const LocationRequestScreenClient(),
+              "/locationRequesttech": (context) =>
+                  const LocationRequestScreenTech(),
+              "/personalInfoTech": (context) => const PersonalInformation(),
             },
           ),
         );
@@ -127,7 +135,6 @@ class _CheckUserStateState extends State<CheckUserState> {
       return;
     }
 
-    // Check if user exists in "technician" collection
     DocumentSnapshot technicianDoc = await FirebaseFirestore.instance
         .collection('technician')
         .doc(user.uid)
@@ -137,26 +144,48 @@ class _CheckUserStateState extends State<CheckUserState> {
       final data = technicianDoc.data() as Map<String, dynamic>?;
 
       String status = data?['status'] ?? 'pending';
-      String role = data?['role'] ?? 'Technician'; // Check the role field
+      String role = data?['role'] ?? 'Technician';
 
-      // Check based on the role in the technician collection
+      QuerySnapshot uploadsSnapshot = await FirebaseFirestore.instance
+          .collection("user-files")
+          .doc(user.uid)
+          .collection("uploads")
+          .limit(1)
+          .get();
+
+      bool hasuploads = uploadsSnapshot.docs.isNotEmpty;
+
+      if (!hasuploads) {
+        Navigator.pushReplacementNamed(context, "/personalInfoTech");
+        return;
+      }
+
+      QuerySnapshot locationtechSnapshot = await FirebaseFirestore.instance
+          .collection("user-files")
+          .doc(user.uid)
+          .collection("locationDetails")
+          .limit(1)
+          .get();
+
+      bool hasLocationtech = locationtechSnapshot.docs.isNotEmpty;
+
+      if (!hasLocationtech) {
+        Navigator.pushReplacementNamed(context, "/locationRequesttech");
+        return;
+      }
       if (role == 'Client') {
-        // If the role is "Client", navigate to the client home screen
         Navigator.pushNamedAndRemoveUntil(
             context, "/clientHome", (route) => false);
       } else if (status == "approved") {
-        // If technician is approved, navigate to tech home screen
         Navigator.pushNamedAndRemoveUntil(
             context, "/techHome", (route) => false);
       } else {
-        // If rejected or pending, navigate to waiting screen
         Navigator.pushNamedAndRemoveUntil(
             context, "/waiting", (route) => false);
       }
       return;
     }
 
-    // If not found in "technician" collection, check if user exists in "users" collection
     DocumentSnapshot userDoc = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
@@ -165,22 +194,32 @@ class _CheckUserStateState extends State<CheckUserState> {
     if (userDoc.exists) {
       final data = userDoc.data() as Map<String, dynamic>?;
 
-      String role = data?['role'] ?? 'Client'; // Check the role field
+      String role = data?['role'] ?? 'Client';
 
-      // Check based on the role in the users collection
+      QuerySnapshot locationSnapshot = await FirebaseFirestore.instance
+          .collection("user-files")
+          .doc(user.uid)
+          .collection("locationDetails")
+          .limit(1)
+          .get();
+
+      bool hasLocation = locationSnapshot.docs.isNotEmpty;
+
+      if (!hasLocation) {
+        // Navigate to location screen first
+        Navigator.pushReplacementNamed(context, "/locationRequest");
+        return;
+      }
+
       if (role == 'Client') {
-        // If the role is "Client", go to client home screen
         Navigator.pushNamedAndRemoveUntil(
             context, "/clientHome", (route) => false);
       } else {
-        // If the user has a different role (e.g., Technician), handle as needed
         Navigator.pushNamedAndRemoveUntil(
             context, "/techHome", (route) => false);
       }
-      return;
     }
 
-    // If user is not found in either collection, log them out and send to sign-in choice
     await FirebaseAuth.instance.signOut();
     Navigator.pushNamedAndRemoveUntil(
         context, "/signinChoice", (route) => false);

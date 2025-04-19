@@ -122,110 +122,105 @@ class _WaitingScreenState extends State<WaitingScreen> {
             return Padding(
               padding: const EdgeInsets.all(20.0),
               child: Center(
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Center(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: ApplicationColor,
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade200,
-                              spreadRadius: 10,
-                            )
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 40, horizontal: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // ✅ Profile Image
-                              CircleAvatar(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: ApplicationColor,
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade200,
+                        spreadRadius: 10,
+                      )
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      top: 50,
+                      bottom: 50,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // ✅ Profile Image
+                        CircleAvatar(
+                          radius: 50,
+                          child: StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection("user-files")
+                                .doc(FirebaseAuth.instance.currentUser?.uid)
+                                .collection("uploads")
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData &&
+                                  snapshot.data!.docs.isNotEmpty) {
+                                String personalFileUrl = snapshot
+                                    .data!.docs.first['personalFileUrl'];
+                                return CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage:
+                                      NetworkImage(personalFileUrl),
+                                );
+                              }
+                              return const CircleAvatar(
                                 radius: 50,
-                                child: StreamBuilder(
-                                  stream: FirebaseFirestore.instance
-                                      .collection("user-files")
-                                      .doc(FirebaseAuth
-                                          .instance.currentUser?.uid)
-                                      .collection("uploads")
-                                      .snapshots(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData &&
-                                        snapshot.data!.docs.isNotEmpty) {
-                                      String personalFileUrl = snapshot
-                                          .data!.docs.first['personalFileUrl'];
-                                      return CircleAvatar(
-                                        radius: 50,
-                                        backgroundImage:
-                                            NetworkImage(personalFileUrl),
-                                      );
-                                    }
-                                    return const CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: AssetImage(
-                                          "assets/images/lang-member/langmem.png"),
-                                    );
-                                  },
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              // ✅ User Name
-                              Text(
-                                "${userData['first_name']} ${userData['last_name']}",
-                                style: GoogleFonts.cantataOne(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 40),
-
-                              // ✅ Status Message
-                              if (status == "approved") ...[
-                                Text(
-                                  "🎉 Congratulations! You’re officially approved! 🚀 Enjoy full access to our platform and start your journey today!"
-                                      .tr(),
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.cantataOne(
-                                    color: Colors.green,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ] else if (status == "rejected") ...[
-                                Text(
-                                  "❌ Unfortunately, your application was not approved. If you believe this is a mistake, please contact support for further assistance."
-                                      .tr(),
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.cantataOne(
-                                    color: Colors.red,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ] else ...[
-                                Text(
-                                  "Thank you for registering as a technician. Your application is currently under review by our administration team. You will receive a notification once your account has been approved."
-                                      .tr(),
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.cantataOne(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    letterSpacing: 0.3,
-                                  ),
-                                ),
-                              ],
-                            ],
+                                backgroundImage: AssetImage(
+                                    "assets/images/lang-member/langmem.png"),
+                              );
+                            },
                           ),
                         ),
-                      ),
+                        const SizedBox(height: 10),
+                        // ✅ User Name
+                        Text(
+                          "${userData['first_name']} ${userData['last_name']}",
+                          style: GoogleFonts.cantataOne(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+
+                        // ✅ Status Message
+                        if (status == "approved") ...[
+                          Text(
+                            "🎉 Congratulations! You’re officially approved! 🚀 Enjoy full access to our platform and start your journey today!"
+                                .tr(),
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.cantataOne(
+                              color: Colors.green,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ] else if (status == "rejected") ...[
+                          Text(
+                            "❌ Unfortunately, your application was not approved. If you believe this is a mistake, please contact support for further assistance."
+                                .tr(),
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.cantataOne(
+                              color: Colors.red,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ] else ...[
+                          Text(
+                            "Thank you for registering as a technician. Your application is currently under review by our administration team. You will receive a notification once your account has been approved."
+                                .tr(),
+                            style: GoogleFonts.cantataOne(
+                              color: Colors.white,
+                              fontSize: 17,
+                              letterSpacing: 0.3,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             );

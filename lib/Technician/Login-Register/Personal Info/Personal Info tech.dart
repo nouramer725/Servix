@@ -12,9 +12,8 @@ import '../../../Components/TextField for National ID.dart';
 import '../LocationTechnician/Access_Location1.dart';
 
 class PersonalInformation extends StatefulWidget {
-  final String phoneNumber;
 
-  const PersonalInformation({super.key, required this.phoneNumber});
+  const PersonalInformation({super.key});
   @override
   _PersonalInformationState createState() => _PersonalInformationState();
 }

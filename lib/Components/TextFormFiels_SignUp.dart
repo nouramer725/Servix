@@ -19,15 +19,25 @@ Widget customTextField({
         obscureText: obscureText,
         keyboardType: keyboardTypee,
         readOnly: readOnly,
+        cursorColor: Colors.grey[100],
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w400,
             color: Colors.black.withOpacity(0.31),
+            letterSpacing: 0.2,
           ),
+          filled: false,
+          fillColor: Colors.grey[100],
           prefixIcon: prefixIcon,
           enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+          ),
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+          ),
+          disabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
           ),
           focusedBorder: const OutlineInputBorder(

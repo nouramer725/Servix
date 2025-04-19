@@ -1,8 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:servix/Technician/AITechnician/chat.dart';
 import 'package:servix/Technician/Home/Home%20Layout.dart';
 import 'package:servix/constents/constent.dart';
+
+import '../../Components/Buttons.dart';
 
 class WelcomeAiTech extends StatefulWidget {
   @override
@@ -11,59 +15,72 @@ class WelcomeAiTech extends StatefulWidget {
 
 class _WelcomeAiTechState extends State<WelcomeAiTech> {
   @override
-  void initState() {
-    super.initState();
-    // Navigate to HomeScreen after 3 seconds
-    Future.delayed(const Duration(seconds: 6), () {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeTechnicianLayout()),
-        (route) => false, // Remove all previous routes
-      );
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      extendBodyBehindAppBar: false,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+                icon: Icon(Icons.close, color: ApplicationColor, size: 35),
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HomeTechnicianLayout()),
+                    (route) => false,
+                  );
+                }),
+          )
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  "Knock, knock… Who’s there? 👀",
-                  style: GoogleFonts.charisSil(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: ApplicationColor,
-                  ),
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 5,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                "Knock, knock… Who’s there? 👀",
+                style: GoogleFonts.charisSil(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: ApplicationColor,
                 ),
-                const SizedBox(height: 20),
-                Text(
-                  "It’s me, your AI assistant! Ready to make magic happen? ✨",
-                  style: GoogleFonts.charisSil(
-                    fontSize: 25,
-                    color: ApplicationColor3,
-                  ),
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 5,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 5,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                "It’s me, your AI assistant! Ready to make magic happen? ✨",
+                style: GoogleFonts.charisSil(
+                  fontSize: 25,
+                  color: ApplicationColor3,
                 ),
-                const SizedBox(height: 20),
-                Lottie.asset(
-                  'assets/images/intro/servix.json', // Path to your Lottie file
-                  height: 430,
-                  fit: BoxFit.fill,
-                ),
-              ],
-            ),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 5,
+              ),
+              const SizedBox(height: 20),
+              Lottie.asset(
+                'assets/images/intro/servix.json', // Path to your Lottie file
+                height: 430,
+                fit: BoxFit.fill,
+              ),
+              const SizedBox(height: 40),
+              GradientButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ChatScreenTechnician()));
+                },
+                text: "Start a Conversation".tr(), // Fun button text
+              ),
+            ],
           ),
         ),
       ),

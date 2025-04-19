@@ -13,6 +13,7 @@ Widget customTextFieldContact({
     children: [
       TextFormField(
         controller: controller,
+        cursorColor: Colors.grey[100],
         keyboardType: keyboardTypee,
         style: GoogleFonts.castoro(
           color: themeProvider.themeMode == ThemeMode.dark

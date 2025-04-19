@@ -373,5 +373,12 @@
   "Service details saved successfully!": "تم حفظ المعلومات بنجاح",
   "LOG OUT": "تسجيل الخروج",
   "CANCEL": "الغاء",
-  "Log out of your account?": "تسجيل الخروج من الحساب؟"
+  "Log out of your account?": "تسجيل الخروج من الحساب؟",
+  "Phone number must be exactly 11 digits": "رقم الهاتف يجب ان يكون 11 رقم ",
+  "Verify Your Email Address": "تحقق من عنوان بريدك الإلكتروني",
+  "You have entered ${widget.email} as your email address. Please check your inbox for a verification link.": "لقد أدخلت {{email}} كعنوان بريدك الإلكتروني. يرجى التحقق من صندوق الوارد للحصول على رابط التحقق.",
+  "Verification email sent": "تم إرسال بريد التحقق الإلكتروني",
+  "Email verified successfully": "تم التحقق من البريد الإلكتروني بنجاح",
+  "Resend Verification Email": "إعادة إرسال بريد التحقق",
+  "This email address is used before": "هذا البريد الإلكتروني مستخدم من قبل"
 }

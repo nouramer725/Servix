@@ -16,6 +16,7 @@ Widget customDOBField({
         controller: controller,
         readOnly: true,
         onTap: onTap,
+        cursorColor: Colors.grey[100],
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: GoogleFonts.inter(
