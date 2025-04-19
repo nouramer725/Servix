@@ -133,6 +133,13 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                   }
 
                   return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProfileScreen(),
+                          ));
+                    },
                     child: CircleAvatar(
                       backgroundColor: Colors.grey[200],
                       radius: 20,
@@ -591,12 +598,12 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
               activeIcon: Icon(Icons.home, color: ApplicationColor),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.forum_outlined,
+              icon: Icon(Icons.groups,
                   color: themeProvider.themeMode == ThemeMode.dark
                       ? Colors.white60
                       : ApplicationColor3),
               label: "Community Forum".tr(),
-              activeIcon: Icon(Icons.forum, color: ApplicationColor),
+              activeIcon: Icon(Icons.groups, color: ApplicationColor),
             ),
             BottomNavigationBarItem(
               icon: SizedBox(

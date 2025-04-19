@@ -75,91 +75,98 @@ class _SignInFormState extends State<SignInForm> {
               .doc(user.uid)
               .get();
 
-          if (technicianDoc.exists&& userDoc.exists) {
-            // User is a Technician → Allow access to both ClientHome & TechnicianHome
+          if (technicianDoc.exists && userDoc.exists) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => const HomeClientLayout(),
               ),
             );
-          } else {
-            if(!userDoc.exists){
-              showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  builder: (context) {
-                    return Dialog(
-                      shape: RoundedRectangleBorder(
+          } else if (technicianDoc.exists == false && userDoc.exists) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomeClientLayout(),
+              ),
+            );
+          } else if (technicianDoc.exists && userDoc.exists == false) {
+            showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (context) {
+                  return Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: ApplicationColor, // Red background
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color:  ApplicationColor, // Red background
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              Icons.close,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "This account is for only technician".tr().tr(),
+                            style: const TextStyle(
                               color: Colors.white,
-                              size: 40,
+                              fontSize: 16,
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              "This account is for only technician".tr()
-                                  .tr(),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              "OK".tr(),
                               style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(
-                                "OK".tr(),
-                                style: const TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                color: Colors.black87,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    );
-                  });
-            } else{
-              if (user.emailVerified) {
-                // User is a Client → Allow access to ClientHome
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (context) => const HomeClientLayout()));
-              } else {
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (context) => Verification(
-                      email: _emailController.text.trim(),
-                      password: _passwordController.text.trim(),
-                )));
-              }
+                    ),
+                  );
+                });
+          } else {
+            if (user.emailVerified) {
+              // User is a Client → Allow access to ClientHome
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const HomeClientLayout()));
+            } else {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Verification(
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text.trim(),
+                          )));
             }
           }
         }
-      }  on FirebaseAuthException catch(e) {
+      } on FirebaseAuthException catch (e) {
         print(e);
         String message = '';
         if (e.code == 'invalid-email') {
           message = 'No user found for that email.';
         } else if (e.code == 'invalid-credential') {
-          message = 'Wrong password or email address provided for that user.';
+          message = 'No user found';
         }
         Fluttertoast.showToast(
           msg: message,
@@ -169,8 +176,7 @@ class _SignInFormState extends State<SignInForm> {
           textColor: Colors.white,
           fontSize: 15.0,
         );
-      }
-      catch(e){
+      } catch (e) {
         print(e);
       }
 
@@ -219,7 +225,7 @@ class _SignInFormState extends State<SignInForm> {
                 },
                 child: Text(
                   "Forgot Password?".tr(),
-                  style:  GoogleFonts.cantataOne(
+                  style: GoogleFonts.cantataOne(
                     fontSize: 18,
                     color: ApplicationColor,
                   ),
@@ -268,7 +274,8 @@ class _SignInFormState extends State<SignInForm> {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         "or signin by".tr(),
-                        style: GoogleFonts.inter(color: const Color(0xFF898989), fontSize: 12),
+                        style: GoogleFonts.inter(
+                            color: const Color(0xFF898989), fontSize: 12),
                       ),
                     ),
                     const Expanded(child: Divider(color: Color(0xFFD6D6D6))),
@@ -276,14 +283,15 @@ class _SignInFormState extends State<SignInForm> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () async{
+                  onPressed: () async {
                     try {
                       User? user = await _authService.signInWithGoogle();
                       if (user != null) {
                         if (mounted) {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const HomeClientLayout()),
+                            MaterialPageRoute(
+                                builder: (context) => const HomeClientLayout()),
                           );
                         }
                       } else {
@@ -313,7 +321,8 @@ class _SignInFormState extends State<SignInForm> {
                       const SizedBox(width: 10),
                       Text(
                         "Sign in with Google".tr(),
-                        style: GoogleFonts.inter(fontSize: 16, color: const Color(0xFF828282)),
+                        style: GoogleFonts.inter(
+                            fontSize: 16, color: const Color(0xFF828282)),
                       ),
                     ],
                   ),

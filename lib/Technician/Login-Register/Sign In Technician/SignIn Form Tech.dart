@@ -115,66 +115,14 @@ class _SignInFormTechState extends State<SignInFormTech> {
                   builder: (context) => const HomeTechnicianLayout()),
             );
           }
-        } else {
-          // If user is a client, sign them out and show an alert
-          await FirebaseAuth.instance.signOut();
-          showDialog(
-            context: context,
-            barrierDismissible: true,
-            builder: (context) {
-              return Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: ApplicationColor, // Red background
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(height: 8),
-                      Text(
-                        "This account is for clients only. Please create a technician account."
-                            .tr(),
-                        style: GoogleFonts.castoro(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        "BUT WITH A DIFFERENT EMAIL ADDRESS".tr(),
-                        style: GoogleFonts.castoro(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(
-                          "OK".tr(),
-                          style: GoogleFonts.castoro(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
+        } else if (userDoc.exists == false && techDoc.exists == false) {
+          Fluttertoast.showToast(
+              msg: "User Data does not exist.".tr(),
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: ApplicationColorWithOpacity,
+              textColor: Colors.white,
+              fontSize: 16);
         }
       } else {
         await FirebaseAuth.instance.signOut();
@@ -195,7 +143,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
       } else if (e.code == 'wrong-password') {
         message = 'Wrong password provided.';
       } else {
-        message = 'An error occurred. Please try again.';
+        message = 'This email address does not exist'.tr();
       }
       Fluttertoast.showToast(
         msg: message,

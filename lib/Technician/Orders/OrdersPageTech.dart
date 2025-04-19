@@ -7,6 +7,7 @@ import 'package:servix/Technician/Orders/OrderCardTech.dart';
 import 'package:servix/Technician/Orders/PreviousOrderPageTech.dart';
 import 'package:servix/Technician/Orders/model/modelTech.dart';
 import 'package:servix/constents/constent.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../Components/OrderGradientButton.dart';
 import '../../Components/OrderWhiteButton.dart';
 import 'Process OrdersTech.dart';
@@ -23,6 +24,24 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+
+  Set<String> _notifiedOrderIds = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNotifiedOrderIds();
+  }
+
+  Future<void> _loadNotifiedOrderIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    _notifiedOrderIds = prefs.getStringList('notifiedOrderIds')?.toSet() ?? {};
+  }
+
+  Future<void> _saveNotifiedOrderIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('notifiedOrderIds', _notifiedOrderIds.toList());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +113,6 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
     );
   }
 
-  final Set<String> _notifiedOrderIds = {};
-
   Widget _currentOrdersTech() {
     return FutureBuilder<String>(
       future: getTechnicianSubservice(),
@@ -137,7 +154,6 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
             final orders = docs.map((doc) {
               final data = doc.data() as Map<String, dynamic>;
 
-              // Send a notification for new matching orders
               if (!_notifiedOrderIds.contains(doc.id)) {
                 final NotificationServiceTechniciann =
                     NotificationServiceTechnician(
@@ -148,7 +164,9 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
                   preview:
                       'A new order is waiting for your service type. Do not miss the chance to take a look!',
                 );
+
                 _notifiedOrderIds.add(doc.id);
+                _saveNotifiedOrderIds(); // Save the updated list persistently
               }
 
               return OrderModelTech(

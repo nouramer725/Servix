@@ -229,17 +229,6 @@ class OrderCardTech extends StatelessWidget {
                                       'Your offer has been submitted successfully. Be waiting for acceptance or rejection from the client',
                                 );
 
-                                // Notify user about the new offers
-                                final NotificationService notificationService =
-                                    NotificationService(
-                                        flutterLocalNotificationsPlugin);
-
-                                await notificationService
-                                    .showAndSaveNotification(
-                                  title: 'New Offer',
-                                  preview:
-                                      'You received a new offer, explore it!',
-                                );
 
                                 Fluttertoast.showToast(
                                     msg: "Offer Submitted Successfully",
