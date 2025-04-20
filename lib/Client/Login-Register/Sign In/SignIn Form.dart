@@ -54,120 +54,84 @@ class _SignInFormState extends State<SignInForm> {
       isValid = false;
     }
 
-    if (isValid) {
-      _formKey.currentState!.save();
-      try {
-        UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
+    if (!isValid) return;
 
-        User? user = userCredential.user;
-        if (user != null) {
-          // Check if user is a technician
-          DocumentSnapshot technicianDoc = await FirebaseFirestore.instance
-              .collection('technician')
-              .doc(user.uid)
-              .get();
-          DocumentSnapshot userDoc = await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .get();
+    _formKey.currentState!.save();
 
-          if (technicianDoc.exists && userDoc.exists) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HomeClientLayout(),
-              ),
-            );
-          } else if (technicianDoc.exists == false && userDoc.exists) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HomeClientLayout(),
-              ),
-            );
-          } else if (technicianDoc.exists && userDoc.exists == false) {
-            showDialog(
-                context: context,
-                barrierDismissible: true,
-                builder: (context) {
-                  return Dialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: ApplicationColor, // Red background
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                            size: 40,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            "This account is for only technician".tr().tr(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text(
-                              "OK".tr(),
-                              style: const TextStyle(
-                                color: Colors.black87,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                });
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      User? user = userCredential.user;
+
+      if (user != null) {
+        DocumentSnapshot technicianDoc = await FirebaseFirestore.instance
+            .collection('technician')
+            .doc(user.uid)
+            .get();
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+
+        // Case 1: Both technician and user documents exist
+        if (technicianDoc.exists && userDoc.exists) {
+          _navigateToClientHome();
+        }
+
+        // Case 2: Only user document exists
+        else if (!technicianDoc.exists && userDoc.exists) {
+          if (user.emailVerified) {
+            _navigateToClientHome();
           } else {
-            if (user.emailVerified) {
-              // User is a Client → Allow access to ClientHome
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const HomeClientLayout()));
-            } else {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Verification(
-                            email: _emailController.text.trim(),
-                            password: _passwordController.text.trim(),
-                          )));
-            }
+            _navigateToVerification();
           }
         }
-      } on FirebaseAuthException catch (e) {
-        print(e);
-        String message = '';
-        if (e.code == 'invalid-email') {
-          message = 'No user found for that email.';
-        } else if (e.code == 'invalid-credential') {
-          message = 'No user found';
+
+        if (technicianDoc.exists && !userDoc.exists) {
+          final role = technicianDoc.get('role');
+          if (role == 'Client') {
+            _navigateToClientHome();
+          } else if (role == 'Technician') {
+            // Update the role to 'Client'
+            await technicianDoc.reference.update({'role': 'Client'});
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(user.uid)
+                .set({
+              'first_name': technicianDoc.get('first_name'),
+              'last_name': technicianDoc.get('last_name'),
+              'email': technicianDoc.get('email'),
+              'phone': technicianDoc.get('phone'),
+              'gender': technicianDoc.get('gender'),
+              'role': 'Client', // Switch role to 'Client'
+            });
+            _navigateToClientHome();
+          } else {
+            // _showTechnicianOnlyDialog();
+          }
+        } else {
+          // Fluttertoast.showToast(
+          //   msg: "This User Does not have an account in Servix application",
+          //   toastLength: Toast.LENGTH_LONG,
+          //   gravity: ToastGravity.SNACKBAR,
+          //   backgroundColor: ApplicationColorWithOpacity,
+          //   textColor: Colors.white,
+          //   fontSize: 15.0,
+          // );
         }
+      }
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      String message = '';
+      if (e.code ==
+          'The supplied auth credential is incorrect, malformed or has expired.') {
+        message = 'No user found for that email.';
+      } else if (e.code == 'invalid-credential') {
+        message = 'No user found with this Data.';
         Fluttertoast.showToast(
           msg: message,
           toastLength: Toast.LENGTH_LONG,
@@ -176,15 +140,100 @@ class _SignInFormState extends State<SignInForm> {
           textColor: Colors.white,
           fontSize: 15.0,
         );
-      } catch (e) {
-        print(e);
+      } else {
+        message = e.message ?? 'An error occurred';
+        Fluttertoast.showToast(
+          msg: message,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 15.0,
+        );
       }
-
-      setState(() {
-        _isLoading = false;
-      });
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "No user found for that email.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
+
+  void _navigateToClientHome() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomeClientLayout()),
+    );
+  }
+
+  void _navigateToVerification() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Verification(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        ),
+      ),
+    );
+  }
+
+  // void _showTechnicianOnlyDialog() {
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: true,
+  //     builder: (context) {
+  //       return Dialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(10),
+  //         ),
+  //         child: Container(
+  //           padding: const EdgeInsets.all(16),
+  //           decoration: BoxDecoration(
+  //             color: ApplicationColor,
+  //             borderRadius: BorderRadius.circular(10),
+  //           ),
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               const Icon(Icons.close, color: Colors.white, size: 40),
+  //               const SizedBox(height: 8),
+  //               Text(
+  //                 "This account does not have access to Servix".tr(),
+  //                 style: const TextStyle(color: Colors.white, fontSize: 16),
+  //                 textAlign: TextAlign.center,
+  //               ),
+  //               const SizedBox(height: 16),
+  //               ElevatedButton(
+  //                 style: ElevatedButton.styleFrom(
+  //                   backgroundColor: Colors.white,
+  //                 ),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //                 child: Text(
+  //                   "OK".tr(),
+  //                   style: const TextStyle(
+  //                     color: Colors.black87,
+  //                     fontWeight: FontWeight.bold,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

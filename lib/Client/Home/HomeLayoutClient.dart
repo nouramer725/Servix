@@ -660,6 +660,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       DocumentReference userDoc =
           firestore.collection('user-files').doc(userId);
+
       QuerySnapshot uploadsSnapshot = await userDoc.collection('uploads').get();
       for (var doc in uploadsSnapshot.docs) {
         await doc.reference.delete();
@@ -672,7 +673,19 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
         await doc.reference.delete();
       }
 
-      // Delete user document from 'user-files'
+      QuerySnapshot personalSnapshot =
+          await userDoc.collection('personalInformation').get();
+      for (var doc in personalSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      QuerySnapshot NewLocationSnapshot =
+          await userDoc.collection('NewLocationDetails').get();
+      for (var doc in NewLocationSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      // Delete user document fro?m 'user-files'
       await userDoc.delete().catchError((error) {
         print("Error deleting user from 'user-files': $error");
       });
@@ -683,8 +696,25 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
           .doc(userId)
           .delete()
           .catchError((error) {
+        print("Error deleting user from 'Clients': $error");
+      });
+
+      await firestore
+          .collection('technician')
+          .doc(userId)
+          .delete()
+          .catchError((error) {
         print("Error deleting user from 'technician': $error");
       });
+
+      DocumentReference services =
+          firestore.collection('Services Requests').doc(userId);
+
+      QuerySnapshot servicesSnapshot =
+          await services.collection('user-services').get();
+      for (var doc in servicesSnapshot.docs) {
+        await doc.reference.delete();
+      }
 
       await firestore
           .collection('ContactUs')
@@ -695,7 +725,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
       });
 
       // Delete authentication
-      await user.delete();
+      await FirebaseAuth.instance.currentUser?.delete();
     }
   }
 

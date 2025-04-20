@@ -76,53 +76,44 @@ class _SignInFormTechState extends State<SignInFormTech> {
             .doc(user.uid)
             .get();
 
-        if (userDoc.exists && techDoc.exists) {
-          String role = userDoc['role'] ?? '';
+        if (techDoc.exists) {
           String roleTech = techDoc['role'] ?? '';
 
-          if (role == 'Client' && roleTech == 'Client') {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const HomeTechnicianLayout()),
-            );
-            // If user is a technician, navigate to home layout
-            DocumentReference technicianRef = FirebaseFirestore.instance
-                .collection('technician')
-                .doc(user.uid);
-            await technicianRef.update({
-              'role': 'Technician',
-            });
-            DocumentReference userRef =
-                FirebaseFirestore.instance.collection('users').doc(user.uid);
-            await userRef.delete();
-          }
-        } else if (userDoc.exists == false && techDoc.exists) {
-          String roleTech = techDoc['role'] ?? '';
           if (roleTech == 'Technician') {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (context) => const HomeTechnicianLayout()),
             );
-          }
-        } else if (userDoc.exists && techDoc.exists == false) {
-          String role = userDoc['role'] ?? '';
-          if (role == 'Technician') {
+          } else if (roleTech == 'Client') {
+            // Update role to Technician
+            await techDoc.reference.update({'role': 'Technician'});
+
+            // Navigate to technician home
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (context) => const HomeTechnicianLayout()),
             );
-          }
-        } else if (userDoc.exists == false && techDoc.exists == false) {
-          Fluttertoast.showToast(
-              msg: "User Data does not exist.".tr(),
+          } else {
+            Fluttertoast.showToast(
+              msg: "You do not have Technician role.".tr(),
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.BOTTOM,
               backgroundColor: ApplicationColorWithOpacity,
               textColor: Colors.white,
-              fontSize: 16);
+              fontSize: 16,
+            );
+          }
+        } else {
+          Fluttertoast.showToast(
+            msg: "This account only for clients".tr(),
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: ApplicationColorWithOpacity,
+            textColor: Colors.white,
+            fontSize: 16,
+          );
         }
       } else {
         await FirebaseAuth.instance.signOut();
