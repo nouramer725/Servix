@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -28,8 +28,8 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
   int selectedIndex = 0;
   List<Offer> offers = [];
   bool isLoading = true;
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
 
   Future<void> fetchOffers() async {
     setState(() {
@@ -296,12 +296,12 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
 
         Navigator.pop(context);
 
-        final NotificationServiceTechniciann =
-            NotificationServiceTechnician(flutterLocalNotificationsPlugin);
-        NotificationServiceTechniciann.showAndSaveNotificationTech(
-          title: 'Offer Updates!',
-          preview: 'Client accepted your offer',
-        );
+        // final NotificationServiceTechniciann =
+        //     NotificationServiceTechnician(flutterLocalNotificationsPlugin);
+        // NotificationServiceTechniciann.showAndSaveNotificationTech(
+        //   title: 'Offer Updates!',
+        //   preview: 'Client accepted your offer',
+        // );
 
         setState(() {
           offers.removeWhere((item) => item.id != offer.id);
@@ -355,12 +355,12 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
 
         print("✅ Offer deleted for technicianId: $technicianId");
 
-        final NotificationServiceTechniciann =
-            NotificationServiceTechnician(flutterLocalNotificationsPlugin);
-        NotificationServiceTechniciann.showAndSaveNotificationTech(
-          title: 'Offer Updates!',
-          preview: 'Client Rejected your offer',
-        );
+        // final NotificationServiceTechniciann =
+        //     NotificationServiceTechnician(flutterLocalNotificationsPlugin);
+        // NotificationServiceTechniciann.showAndSaveNotificationTech(
+        //   title: 'Offer Updates!',
+        //   preview: 'Client Rejected your offer',
+        // );
       } else {
         print('🚨 No service found for the given orderId');
       }

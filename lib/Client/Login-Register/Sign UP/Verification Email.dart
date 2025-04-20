@@ -12,6 +12,7 @@ import '../LocationClient/Access_Location1.dart';
 class Verification extends StatefulWidget {
   final String email;
   final String password;
+
   const Verification({super.key, required this.email, required this.password});
 
   @override
@@ -20,27 +21,45 @@ class Verification extends StatefulWidget {
 
 class _VerificationState extends State<Verification> {
   bool isVerified = false;
+  bool isChecking = false;
 
   @override
   void initState() {
     super.initState();
-    _startVerificationCheck();
+    _signInOnceAndStartCheck();
   }
 
-  void _startVerificationCheck() async {
-    while (!isVerified) {
-      await Future.delayed(const Duration(seconds: 2)); // check every 3 seconds
-
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+  void _signInOnceAndStartCheck() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: widget.email,
         password: widget.password,
       );
+      _startVerificationCheck();
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(
+        msg: e.message ?? "Sign in failed",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+  }
 
-      User? user = userCredential.user;
-      if (user != null) {
-        await user.reload(); // refresh user info
-        if (user.emailVerified) {
+  void _startVerificationCheck() async {
+    if (isChecking) return;
+    isChecking = true;
+
+    while (!isVerified) {
+      await Future.delayed(const Duration(seconds: 5));
+
+      try {
+        final user = FirebaseAuth.instance.currentUser;
+        if (user == null) return;
+
+        await user.reload();
+        final refreshedUser = FirebaseAuth.instance.currentUser;
+
+        if (refreshedUser != null && refreshedUser.emailVerified) {
           setState(() {
             isVerified = true;
           });
@@ -57,9 +76,16 @@ class _VerificationState extends State<Verification> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => const LocationRequestScreenClient()),
+              builder: (context) => const LocationRequestScreenClient(),
+            ),
           );
         }
+      } on FirebaseAuthException catch (e) {
+        Fluttertoast.showToast(
+          msg: e.message ?? "Error checking verification".tr(),
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
       }
     }
   }
@@ -77,8 +103,10 @@ class _VerificationState extends State<Verification> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 60),
-              Lottie.asset('assets/Application/email-verification.json',
-                  width: 500),
+              Lottie.asset(
+                'assets/Application/email-verification.json',
+                width: 500,
+              ),
               Text(
                 "Verify Your Email Address",
                 style: GoogleFonts.charisSil(
@@ -102,15 +130,23 @@ class _VerificationState extends State<Verification> {
                 onPressed: () async {
                   final user = FirebaseAuth.instance.currentUser;
                   if (user != null && !user.emailVerified) {
-                    await user.sendEmailVerification();
-                    Fluttertoast.showToast(
-                      msg: "Verification email sent".tr(),
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.TOP,
-                      backgroundColor: ApplicationColorWithOpacity,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    );
+                    try {
+                      await user.sendEmailVerification();
+                      Fluttertoast.showToast(
+                        msg: "Verification email sent".tr(),
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.TOP,
+                        backgroundColor: ApplicationColorWithOpacity,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
+                      );
+                    } on FirebaseAuthException catch (e) {
+                      Fluttertoast.showToast(
+                        msg: e.message ?? "Too many requests. Try later.".tr(),
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                      );
+                    }
                   }
                 },
                 text: "Resend Verification Email".tr(),

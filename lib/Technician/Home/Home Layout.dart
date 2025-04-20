@@ -590,6 +590,15 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
       });
 
       await firestore
+          .collection('users')
+          .doc(userId)
+          .delete()
+          .catchError((error) {
+        print("Error deleting user from 'users': $error");
+      });
+
+
+      await firestore
           .collection('ContactUs')
           .doc(userId)
           .delete()

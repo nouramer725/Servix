@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +23,8 @@ class OrderCardTech extends StatelessWidget {
     final TextEditingController priceController = TextEditingController(
       text: orders.previousOffer ?? "100",
     );
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
+    // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    //     FlutterLocalNotificationsPlugin();
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -219,15 +219,15 @@ class OrderCardTech extends StatelessWidget {
                                   'timestamp': FieldValue.serverTimestamp(),
                                 });
 
-                                final NotificationServiceTechniciann =
-                                    NotificationServiceTechnician(
-                                        flutterLocalNotificationsPlugin);
-                                NotificationServiceTechniciann
-                                    .showAndSaveNotificationTech(
-                                  title: 'Offer Submitted',
-                                  preview:
-                                      'Your offer has been submitted successfully. Be waiting for acceptance or rejection from the client',
-                                );
+                                // final NotificationServiceTechniciann =
+                                //     NotificationServiceTechnician(
+                                //         flutterLocalNotificationsPlugin);
+                                // NotificationServiceTechniciann
+                                //     .showAndSaveNotificationTech(
+                                //   title: 'Offer Submitted',
+                                //   preview:
+                                //       'Your offer has been submitted successfully. Be waiting for acceptance or rejection from the client',
+                                // );
 
 
                                 Fluttertoast.showToast(

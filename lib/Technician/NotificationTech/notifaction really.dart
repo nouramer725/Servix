@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'No_notification.dart';
@@ -17,8 +17,8 @@ class NotificationScreenRealTech extends StatefulWidget {
 
 class _NotificationScreenRealTechState
     extends State<NotificationScreenRealTech> {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
 
   List<Map<String, String>> notifications = [];
 
@@ -37,12 +37,12 @@ class _NotificationScreenRealTechState
       print("User granted notification permission");
     }
 
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    final InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
-
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    // const AndroidInitializationSettings initializationSettingsAndroid =
+    //     AndroidInitializationSettings('@mipmap/ic_launcher');
+    // final InitializationSettings initializationSettings =
+    //     InitializationSettings(android: initializationSettingsAndroid);
+    //
+    // await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       if (message.notification != null) {
@@ -71,34 +71,34 @@ class _NotificationScreenRealTechState
           "id": "", // Placeholder ID, will be updated after saving to Firestore
         });
 
-        _showLocalNotification(
-          message.notification!.title ?? "New Notification",
-          message.notification!.body ?? "Tap to open",
-        );
+        // _showLocalNotification(
+        //   message.notification!.title ?? "New Notification",
+        //   message.notification!.body ?? "Tap to open",
+        // );
       }
     });
   }
 
-  void _showLocalNotification(String title, String body) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'channel_id',
-      'General Notifications',
-      importance: Importance.max,
-      priority: Priority.high,
-      playSound: true,
-    );
-
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      title,
-      body,
-      platformChannelSpecifics,
-    );
-  }
+  // void _showLocalNotification(String title, String body) async {
+  //   const AndroidNotificationDetails androidPlatformChannelSpecifics =
+  //       AndroidNotificationDetails(
+  //     'channel_id',
+  //     'General Notifications',
+  //     importance: Importance.max,
+  //     priority: Priority.high,
+  //     playSound: true,
+  //   );
+  //
+  //   const NotificationDetails platformChannelSpecifics =
+  //       NotificationDetails(android: androidPlatformChannelSpecifics);
+  //
+  //   await flutterLocalNotificationsPlugin.show(
+  //     0,
+  //     title,
+  //     body,
+  //     platformChannelSpecifics,
+  //   );
+  // }
 
   String _getMessagePreview(String? message) {
     if (message == null || message.isEmpty) {
