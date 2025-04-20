@@ -2,14 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:servix/Client/Login-Register/Sign%20UP/Verification%20Email.dart';
 import '../../../Components/Buttons.dart';
 import '../../../Components/Country Code and Phone Number.dart';
 import '../../../Components/Gender Dropdown.dart';
 import '../../../Components/TextFormFiels_SignUp.dart';
 import '../../../constents/constent.dart';
+import '../../Home/HomeLayoutClient.dart';
+import '../LocationClient/Access_Location1.dart';
 import '../Sign In/Sign_In_Client.dart';
 
 class SignUpClient extends StatefulWidget {
@@ -25,6 +29,7 @@ class _SignUpClientState extends State<SignUpClient> {
   final TextEditingController _ConfirmpasswordController =
       TextEditingController();
   final TextEditingController _PhoneNumberController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   String? gender;
   String? role = "Client"; // Default role is 'Client'
@@ -194,6 +199,107 @@ class _SignUpClientState extends State<SignUpClient> {
     }
   }
 
+  Future<User?> signInWithGoogle(BuildContext context) async {
+    try {
+      final googleSignIn = GoogleSignIn();
+      await googleSignIn.signOut(); // Force prompt
+
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) return null;
+
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      User? user = userCredential.user;
+
+      if (user != null) {
+        bool userExists = await _checkIfUserExists(user.uid);
+
+        if (userExists == false) {
+          // First time user
+          await _saveUserToFirestore(user);
+          _navigateToLocationRequestScreen(context);
+        } else {
+          _navigateToHome(context);
+        }
+      }
+      return user;
+    } catch (e) {
+      print("Google sign-in failed: $e");
+      return null;
+    }
+  }
+
+  void _navigateToLocationRequestScreen(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LocationRequestScreenClient(),
+      ),
+    );
+  }
+
+  Future<bool> _checkIfUserExists(String uid) async {
+    final userDoc = await _firestore.collection('users').doc(uid).get();
+
+    final profileDoc = await _firestore
+        .collection("user-files")
+        .doc(uid)
+        .collection("personalInformation")
+        .doc("profile")
+        .get();
+
+    if (userDoc.exists && profileDoc.exists) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<void> _saveUserToFirestore(User? user) async {
+    if (user != null) {
+      final userRef = _firestore.collection('users').doc(user.uid);
+
+      // Save to main 'users' collection
+      await userRef.set({
+        'uid': user.uid,
+        'first_name': user.displayName?.split(' ')[0] ?? '',
+        'last_name': user.displayName?.split(' ')[1] ?? '',
+        'email': user.email ?? 'No Email',
+        'provider': user.providerData.first.providerId,
+        'role': 'Client',
+        'phone': user.phoneNumber ?? '',
+        'createdAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: false));
+
+      await _firestore
+          .collection("user-files")
+          .doc(user.uid)
+          .collection("personalInformation")
+          .doc("profile")
+          .set({
+        "personalImageUrl": user.photoURL ?? '',
+        "updatedAt": FieldValue.serverTimestamp(),
+      }, SetOptions(merge: false));
+    }
+  }
+
+  void _navigateToHome(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HomeClientLayout(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -318,7 +424,93 @@ class _SignUpClientState extends State<SignUpClient> {
                             )
                           ],
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                const Expanded(child: Divider(color: Color(0xFFD6D6D6))),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Text(
+                                    "or signin by".tr(),
+                                    style: GoogleFonts.inter(
+                                        color: const Color(0xFF898989), fontSize: 12),
+                                  ),
+                                ),
+                                const Expanded(child: Divider(color: Color(0xFFD6D6D6))),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      signInWithGoogle(context);
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(14),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(color: const Color(0xFFAEAEAE)),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/social_media/google.png',
+                                            height: 28,
+                                            width: 29,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Text(
+                                            "Google",
+                                            style: GoogleFonts.inter(
+                                                fontSize: 16,
+                                                color: const Color(0xFF828282)),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      // signInWithFacebook(context);
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(14),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(color: const Color(0xFFAEAEAE)),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          const FaIcon(
+                                            FontAwesomeIcons.facebook,
+                                            color: Color(0xFF1877F2),
+                                            size: 28,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Text(
+                                            "Facebook",
+                                            style: GoogleFonts.inter(
+                                                fontSize: 16,
+                                                color: const Color(0xFF828282)),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),

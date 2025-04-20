@@ -370,6 +370,7 @@ class _SignInFormState extends State<SignInForm> {
         key: _formKey,
         child: Column(
           children: [
+            const SizedBox(height: 50),
             CustomTextFormField(
               label: "Email".tr(),
               controller: _emailController,
@@ -409,7 +410,7 @@ class _SignInFormState extends State<SignInForm> {
               ),
             ),
             SizedBox(
-              height: 100,
+              height: 70,
             ),
             GradientButton(
                 onPressed: _isLoading ? null : _validateAndSubmit,

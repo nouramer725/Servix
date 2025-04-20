@@ -26,113 +26,6 @@ class _SignInFormTechState extends State<SignInFormTech> {
   String? emailError;
   String? passwordError;
 
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  // Future<User?> signInWithGoogle(BuildContext context) async {
-  //   try {
-  //     final googleSignIn = GoogleSignIn();
-  //     await googleSignIn.signOut(); // Force prompt
-  //
-  //     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-  //     if (googleUser == null) return null;
-  //
-  //     final GoogleSignInAuthentication googleAuth =
-  //         await googleUser.authentication;
-  //
-  //     final credential = GoogleAuthProvider.credential(
-  //       accessToken: googleAuth.accessToken,
-  //       idToken: googleAuth.idToken,
-  //     );
-  //
-  //     UserCredential userCredential =
-  //         await FirebaseAuth.instance.signInWithCredential(credential);
-  //     User? user = userCredential.user;
-  //
-  //     if (user != null) {
-  //       bool userExists = await _checkIfUserExists(user.uid);
-  //
-  //       if (userExists == false) {
-  //         // First time user
-  //         await _saveUserToFirestore(user);
-  //         _navigateToPersonalRequestScreen(context);
-  //       } else {
-  //         _navigateToHome(context);
-  //       }
-  //     }
-  //     return user;
-  //   } catch (e) {
-  //     print("Google sign-in failed: $e");
-  //     return null;
-  //   }
-  // }
-  //
-  // void _navigateToPersonalRequestScreen(BuildContext context) {
-  //   Navigator.pushReplacement(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => const PersonalInformation(),
-  //     ),
-  //   );
-  // }
-  //
-  // Future<bool> _checkIfUserExists(String uid) async {
-  //   try {
-  //     final technicianDoc = await FirebaseFirestore.instance
-  //         .collection('technician')
-  //         .doc(uid)
-  //         .get();
-  //
-  //     final uploadsSnapshot = await FirebaseFirestore.instance
-  //         .collection("user-files")
-  //         .doc(uid)
-  //         .collection("uploads")
-  //         .limit(1)
-  //         .get();
-  //
-  //     // User is considered existing only if both technician doc and at least one upload exist
-  //     return technicianDoc.exists && uploadsSnapshot.docs.isNotEmpty;
-  //   } catch (e) {
-  //     print("Error checking user existence: $e");
-  //     return false;
-  //   }
-  // }
-  //
-  // Future<void> _saveUserToFirestore(User? user) async {
-  //   if (user != null) {
-  //     final techRef = firestore.collection('technician').doc(user.uid);
-  //
-  //     // Save to main 'users' collection
-  //     await techRef.set({
-  //       'uid': user.uid,
-  //       'first_name': user.displayName?.split(' ')[0] ?? '',
-  //       'last_name': user.displayName?.split(' ')[1] ?? '',
-  //       'email': user.email ?? 'No Email',
-  //       'provider': user.providerData.first.providerId,
-  //       'role': 'Technician',
-  //       'phone': user.phoneNumber ?? '',
-  //       'createdAt': FieldValue.serverTimestamp(),
-  //     }, SetOptions(merge: false));
-  //
-  //     await FirebaseFirestore.instance
-  //         .collection("user-files")
-  //         .doc(user.uid)
-  //         .collection("uploads")
-  //         .add({
-  //       "personalFileUrl": user.photoURL ?? '',
-  //       "updatedAt": FieldValue.serverTimestamp(),
-  //     },);
-  //   }
-  // }
-  //
-  // void _navigateToHome(BuildContext context) {
-  //   Navigator.pushReplacement(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => const HomeTechnicianLayout(),
-  //     ),
-  //   );
-  // }
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -269,6 +162,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
         key: _formKey,
         child: Column(
           children: [
+            const SizedBox(height: 50),
             CustomTextFormField(
               label: "Email".tr(),
               controller: emailController,
@@ -304,7 +198,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
                 ),
               ),
             ),
-            const SizedBox(height: 80),
+            const SizedBox(height: 100),
             GradientButton(
               onPressed: _isLoading ? null : _validateAndSubmit,
               text: "Sign In".tr(),
@@ -337,93 +231,6 @@ class _SignInFormTechState extends State<SignInFormTech> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    const Expanded(child: Divider(color: Color(0xFFD6D6D6))),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        "or signin by".tr(),
-                        style: GoogleFonts.inter(
-                            color: const Color(0xFF898989), fontSize: 12),
-                      ),
-                    ),
-                    const Expanded(child: Divider(color: Color(0xFFD6D6D6))),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          // signInWithGoogle(context);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: const Color(0xFFAEAEAE)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/social_media/google.png',
-                                height: 28,
-                                width: 29,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                "Google",
-                                style: GoogleFonts.inter(
-                                    fontSize: 16,
-                                    color: const Color(0xFF828282)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          // signInWithFacebook(context);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: const Color(0xFFAEAEAE)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const FaIcon(
-                                FontAwesomeIcons.facebook,
-                                color: Color(0xFF1877F2),
-                                size: 28,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                "Facebook",
-                                style: GoogleFonts.inter(
-                                    fontSize: 16,
-                                    color: const Color(0xFF828282)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                )
-              ],
-            )
           ],
         ),
       ),
