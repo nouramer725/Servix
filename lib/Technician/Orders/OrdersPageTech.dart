@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:servix/Technician/NotificationTech/notification_service_technician.dart';
 import 'package:servix/Technician/Orders/OrderCardTech.dart';
 import 'package:servix/Technician/Orders/PreviousOrderPageTech.dart';
@@ -22,8 +22,8 @@ class OrdersPageTech extends StatefulWidget {
 class _OrdersPageTechState extends State<OrdersPageTech> {
   int _selectedIndex = 0;
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
 
   Set<String> _notifiedOrderIds = {};
 
@@ -154,20 +154,20 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
             final orders = docs.map((doc) {
               final data = doc.data() as Map<String, dynamic>;
 
-              if (!_notifiedOrderIds.contains(doc.id)) {
-                final NotificationServiceTechniciann =
-                    NotificationServiceTechnician(
-                        flutterLocalNotificationsPlugin);
-
-                NotificationServiceTechniciann.showAndSaveNotificationTech(
-                  title: 'New service',
-                  preview:
-                      'A new order is waiting for your service type. Do not miss the chance to take a look!',
-                );
-
-                _notifiedOrderIds.add(doc.id);
-                _saveNotifiedOrderIds(); // Save the updated list persistently
-              }
+              // if (!_notifiedOrderIds.contains(doc.id)) {
+              //   final NotificationServiceTechniciann =
+              //       NotificationServiceTechnician(
+              //           flutterLocalNotificationsPlugin);
+              //
+              //   NotificationServiceTechniciann.showAndSaveNotificationTech(
+              //     title: 'New service',
+              //     preview:
+              //         'A new order is waiting for your service type. Do not miss the chance to take a look!',
+              //   );
+              //
+              //   _notifiedOrderIds.add(doc.id);
+              //   _saveNotifiedOrderIds(); // Save the updated list persistently
+              // }
 
               return OrderModelTech(
                 ServiceType: data['serviceTitle'] ?? '',

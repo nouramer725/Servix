@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -46,8 +46,8 @@ class _SaveNewAddressScreenClientState
   String? _buildingError;
   String? _aptError;
   bool _isLoading = false;
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
 
   bool _validateFields() {
     setState(() {
@@ -92,13 +92,13 @@ class _SaveNewAddressScreenClientState
         "timestamp": FieldValue.serverTimestamp(),
       });
 
-      final NotificationService notificationService =
-          NotificationService(flutterLocalNotificationsPlugin);
-
-      await notificationService.showAndSaveNotification(
-        title: 'New Location',
-        preview: 'Your new location has been added successfully!',
-      );
+      // final NotificationService notificationService =
+      //     NotificationService(flutterLocalNotificationsPlugin);
+      //
+      // await notificationService.showAndSaveNotification(
+      //   title: 'New Location',
+      //   preview: 'Your new location has been added successfully!',
+      // );
 
       print("Address saved successfully!");
       Navigator.pushReplacement(
