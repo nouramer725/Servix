@@ -117,14 +117,16 @@ class _CheckUserStateState extends State<CheckUserState> {
 
   void _checkUserStatus() async {
     final prefs = await SharedPreferences.getInstance();
-    bool? seenOnboarding = prefs.getBool("seenOnboarding");
+    bool seenOnboarding = prefs.getBool("seenOnboarding") ?? false;
     User? user = FirebaseAuth.instance.currentUser;
 
     await Future.delayed(const Duration(seconds: 2));
 
-    // If onboarding screen is not seen, show onboarding
-    if (seenOnboarding == null || !seenOnboarding) {
-      prefs.setBool("seenOnboarding", true);
+// ✅ Only redirect to onboarding if it hasn't been seen yet
+    if (!seenOnboarding) {
+      await prefs.setBool("seenOnboarding", true); // mark onboarding as seen
+      if (!mounted)
+        return; // Avoid navigation if the widget is no longer in the widget tree
       Navigator.pushNamedAndRemoveUntil(
           context, "/onboarding", (route) => false);
       return;
