@@ -350,8 +350,7 @@ class CommunityFeedScreen extends StatelessWidget {
     }
   }
 
-  Future<void> _uploadPost(
-      BuildContext context, TextEditingController _contentController) async {
+  Future<void> _uploadPost(BuildContext context, TextEditingController _contentController) async {
     final user = FirebaseAuth.instance.currentUser;
 
     if (_contentController.text.trim().isEmpty || user == null) {
