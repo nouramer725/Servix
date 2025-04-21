@@ -21,7 +21,7 @@ class OrderCardTech extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDark = themeProvider.themeMode == ThemeMode.dark;
     final TextEditingController priceController = TextEditingController(
-      text: orders.previousOffer ?? "100",
+      text: orders.previousOffer,
     );
     // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     //     FlutterLocalNotificationsPlugin();
@@ -111,6 +111,16 @@ class OrderCardTech extends StatelessWidget {
                           ),
                           onPressed: () async {
                             String offerPrice = priceController.text;
+                            if (priceController.text.isEmpty) {
+                              Fluttertoast.showToast(
+                                  msg: "Please enter a price",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.TOP,
+                                  backgroundColor: ApplicationColorWithOpacity,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                              return;
+                            }
 
                             try {
                               final currentUser =
