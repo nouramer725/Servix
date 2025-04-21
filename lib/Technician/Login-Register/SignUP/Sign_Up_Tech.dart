@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:servix/Technician/Login-Register/Personal%20Info/Personal%20Info%20tech.dart';
 import 'package:servix/Technician/Login-Register/Sign%20In%20Technician/Sign_In_Tech.dart';
 import 'package:servix/Technician/Login-Register/SignUP/Verification%20Email%20Technician.dart';
 import '../../../Components/Buttons.dart';
@@ -130,7 +129,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
     } else if (!RegExp(r'^(?=.*[a-z])').hasMatch(password)) {
       setState(() {
         _passwordError =
-            "Password must contain at least_one lowercase letter".tr();
+            "Password must contain at least one lowercase letter".tr();
       });
       isValid = false;
     } else if (!RegExp(r'^(?=.*\d)').hasMatch(password)) {
@@ -141,7 +140,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
     } else if (!RegExp("^(?=.*[@#%^&+=])").hasMatch(password)) {
       setState(() {
         _passwordError =
-            "Password must include at least one special character (e.g. ! @ # \$ % ^ & *)."
+            "Password must include at least one special character (e.g. ! @ # \$ % ^ & *)"
                 .tr();
       });
       isValid = false;
@@ -196,6 +195,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
       });
       isValid = false;
     }
+
     // Main Service Validation
     if (selectedMainService == null) {
       setState(() {
@@ -203,6 +203,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
       });
       isValid = false;
     }
+
     // Gender Validation
     if (gender == null) {
       setState(() {
@@ -227,6 +228,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
         // Send verification email
         await userCredential.user?.sendEmailVerification();
 
+        // Save user data to Firestore
         await FirebaseFirestore.instance
             .collection('technician')
             .doc(userCredential.user?.uid)
@@ -236,7 +238,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
           'email': _emailController.text.trim(),
           'phone': _PhoneNumberController.text.trim(),
           'gender': gender?.trim(),
-          'date_of_birth': _dobController.text.trim(), // Save DOB
+          'date_of_birth': _dobController.text.trim(),
           'main_service': selectedMainService ?? "",
           'sub_service': selectedSubService ?? "",
           'role': role,
@@ -247,14 +249,39 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => VerificationTech(
-                    email: _emailController.text.trim(),
-                    password: password,
-                  )),
+            builder: (context) => VerificationTech(
+              email: _emailController.text.trim(),
+              password: password,
+            ),
+          ),
         );
       } on FirebaseAuthException catch (e) {
+        String errorMsg = '';
+        if (e.code == 'email-already-in-use') {
+          errorMsg = "This email address is already in use".tr();
+        } else {
+          errorMsg = "Error: ${e.message}".tr();
+        }
         Fluttertoast.showToast(
-          msg: "This email address is used before".tr(),
+          msg: errorMsg,
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+        );
+      } on FirebaseException catch (e) {
+        Fluttertoast.showToast(
+          msg: "Network error. Please check your internet connection.".tr(),
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+        );
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: "An unexpected error occurred. Please try again later.".tr(),
           backgroundColor: ApplicationColorWithOpacity,
           textColor: Colors.white,
           fontSize: 16.0,

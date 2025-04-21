@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:servix/Components/Buttons.dart';
@@ -12,7 +13,6 @@ import '../../../Components/TextField for National ID.dart';
 import '../LocationTechnician/Access_Location1.dart';
 
 class PersonalInformation extends StatefulWidget {
-
   const PersonalInformation({super.key});
   @override
   _PersonalInformationState createState() => _PersonalInformationState();
@@ -112,7 +112,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
 
   void onSubmit() async {
     setState(() {
-      _isLoading = true; // Start loading
+      _isLoading = true;
       personalFileError = personalFile == null;
       frontIDError = frontID == null;
       backIDError = backID == null;
@@ -126,19 +126,30 @@ class _PersonalInformationState extends State<PersonalInformation> {
         backIDError ||
         criminalRecordError ||
         nationalIdError) {
-      print("Error: Missing required fields.");
-      setState(() => _isLoading = false); // Stop loading
+      Fluttertoast.showToast(
+        msg: "Please fill all required fields properly.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.redAccent,
+        textColor: Colors.white,
+      );
+      setState(() => _isLoading = false);
       return;
     }
 
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      print("Error: No user logged in.");
-      setState(() => _isLoading = false); // Stop loading
+      Fluttertoast.showToast(
+        msg: "No user is logged in.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.redAccent,
+        textColor: Colors.white,
+      );
+      setState(() => _isLoading = false);
       return;
     }
 
-    // Convert paths to File objects
     List<File> images = [
       File(personalFile!),
       File(frontID!),
@@ -150,49 +161,71 @@ class _PersonalInformationState extends State<PersonalInformation> {
 
     List<String> imageUrls = [];
 
-    for (var image in images) {
-      String? imageUrl = await uploadToCloudinary(image);
-      if (imageUrl != null) {
-        imageUrls.add(imageUrl);
-      } else {
-        print("Error uploading image: ${image.path}");
-        setState(() => _isLoading = false); // Stop loading
-        return;
+    try {
+      for (var image in images) {
+        String? imageUrl = await uploadToCloudinary(image);
+        if (imageUrl != null) {
+          imageUrls.add(imageUrl);
+        } else {
+          throw Exception("Failed to upload ${image.path}");
+        }
       }
-    }
 
-    // Ensure all images uploaded successfully
-    if (personalFile == null ||
-        frontID == null ||
-        backID == null ||
-        criminalRecord == null) {
-      print("Error: Not all required images uploaded successfully.");
-      return;
-    }
+      await FirebaseFirestore.instance
+          .collection("user-files")
+          .doc(user.uid)
+          .collection("uploads")
+          .add({
+        "nationalId": nationalIdController.text.trim(),
+        "personalFileUrl": imageUrls[0],
+        "frontIDUrl": imageUrls[1],
+        "backIDUrl": imageUrls[2],
+        "criminalRecordUrl": imageUrls[3],
+        "armyCertificateUrl": armyCertificate != null ? imageUrls[4] : null,
+        "skillsCertificateUrl": skillsCertificate != null ? imageUrls[5] : null,
+        "timestamp": FieldValue.serverTimestamp(),
+      });
 
-    // Save data to Firestore
-    await FirebaseFirestore.instance
-        .collection("user-files")
-        .doc(user.uid)
-        .collection("uploads")
-        .add({
-      "nationalId": nationalIdController.text.trim(),
-      "personalFileUrl": imageUrls[0],
-      "frontIDUrl": imageUrls[1],
-      "backIDUrl": imageUrls[2],
-      "criminalRecordUrl": imageUrls[3],
-      "armyCertificateUrl": armyCertificate != null ? imageUrls[4] : null,
-      "skillsCertificateUrl": skillsCertificate != null ? imageUrls[5] : null,
-      "timestamp": FieldValue.serverTimestamp(),
-    });
+      Fluttertoast.showToast(
+        msg: "Data uploaded successfully.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
 
-    print("Data successfully uploaded to Firestore!");
-    setState(() => _isLoading = false); // Stop loading
-    // Navigate to the next screen
-    Navigator.pushAndRemoveUntil(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => LocationRequestScreenTech()),
-        (route) => false);
+        (route) => false,
+      );
+    } on SocketException catch (_) {
+      Fluttertoast.showToast(
+        msg: "Network connection issue. Please check your internet.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.orange,
+        textColor: Colors.white,
+      );
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(
+        msg: "Firebase error: ${e.message}",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "An unexpected error occurred: $e",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
   }
 
   Future<String?> uploadToCloudinary(File imageFile) async {

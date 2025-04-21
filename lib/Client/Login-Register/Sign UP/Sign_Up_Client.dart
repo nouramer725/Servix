@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -88,7 +89,7 @@ class _SignUpClientState extends State<SignUpClient> {
     } else if (!RegExp(r'^(?=.*[a-z])').hasMatch(password)) {
       setState(() {
         _passwordError =
-            "Password must contain at least_one lowercase letter".tr();
+            "Password must contain at least one lowercase letter".tr();
       });
       isValid = false;
     } else if (!RegExp(r'^(?=.*\d)').hasMatch(password)) {
@@ -99,7 +100,7 @@ class _SignUpClientState extends State<SignUpClient> {
     } else if (!RegExp("^(?=.*[@#%^&+=])").hasMatch(password)) {
       setState(() {
         _passwordError =
-            "Password must include at least one special character (e.g. ! @ # \$ % ^ & *)."
+            "Password must include at least one special character (e.g. ! @ # \$ % ^ & *)"
                 .tr();
       });
       isValid = false;
@@ -153,6 +154,16 @@ class _SignUpClientState extends State<SignUpClient> {
       });
 
       try {
+        // Check for network connectivity
+        var connectivityResult = await Connectivity().checkConnectivity();
+        if (connectivityResult == ConnectivityResult.none) {
+          throw FirebaseException(
+            plugin: 'firebase_auth',
+            message:
+                'No internet connection. Please check your network settings.',
+          );
+        }
+
         // Create user with email and password
         UserCredential userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -179,14 +190,33 @@ class _SignUpClientState extends State<SignUpClient> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => Verification(
-                    email: _emailController.text.trim(),
-                    password: password,
-                  )),
+            builder: (context) => Verification(
+              email: _emailController.text.trim(),
+              password: password,
+            ),
+          ),
         );
       } on FirebaseAuthException catch (e) {
         Fluttertoast.showToast(
-          msg: "This email address is used before".tr(),
+          msg: "Authentication error: ${e.message}".tr(),
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+        );
+      } on FirebaseException catch (e) {
+        Fluttertoast.showToast(
+          msg: e.message ?? "Network error. Please check your connection.".tr(),
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+        );
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: "An unexpected error occurred. Please try again.".tr(),
           backgroundColor: ApplicationColorWithOpacity,
           textColor: Colors.white,
           fontSize: 16.0,

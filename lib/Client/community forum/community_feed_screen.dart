@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +12,12 @@ import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../Theme/Theme_Provider.dart';
 
-class CommunityFeedScreen extends StatelessWidget {
+class CommunityFeedScreen extends StatefulWidget {
+  @override
+  State<CommunityFeedScreen> createState() => _CommunityFeedScreenState();
+}
+
+class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
   final TextEditingController _commentController = TextEditingController();
 
   @override
@@ -45,8 +49,12 @@ class CommunityFeedScreen extends StatelessWidget {
                 final postId = post.id;
                 final data = post.data() as Map<String, dynamic>;
 
+                final currentUser = FirebaseAuth.instance.currentUser;
                 final likes = (data['likes'] is int) ? data['likes'] : 0;
-                final userLiked = data['user_liked'] ?? false;
+                final usersLiked =
+                    List<Map<String, dynamic>>.from(data['users_liked'] ?? []);
+                final userLiked = usersLiked
+                    .any((likedUser) => likedUser['id'] == currentUser?.uid);
 
                 return Card(
                   margin: const EdgeInsets.all(10),
@@ -115,9 +123,7 @@ class CommunityFeedScreen extends StatelessWidget {
                                     children: [
                                       Icon(
                                         Icons.favorite,
-                                        color: userLiked
-                                            ? Colors.grey
-                                            : ApplicationColor,
+                                        color: ApplicationColor,
                                       ),
                                       const SizedBox(width: 4),
                                       Text('$likes'),
@@ -154,21 +160,30 @@ class CommunityFeedScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               InkWell(
-                                onTap: () => _updateLikes(postId, true),
+                                onTap: () {
+                                  _updateLikes(
+                                      postId, !userLiked); // Toggle like
+                                },
                                 child: Row(
                                   children: [
                                     Icon(
-                                      Icons.favorite_border,
+                                      userLiked
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
                                       size: 20,
-                                      color: Colors.grey,
+                                      color: userLiked
+                                          ? ApplicationColor
+                                          : Colors.grey,
                                     ),
-                                    SizedBox(width: 4),
-                                    Text("Love",
-                                        style:
-                                            GoogleFonts.castoro(fontSize: 16)),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      "Love",
+                                      style: GoogleFonts.castoro(fontSize: 16),
+                                    ),
                                   ],
                                 ),
                               ),
+
                               // Comment Button
                               InkWell(
                                 onTap: () {
@@ -353,9 +368,19 @@ class CommunityFeedScreen extends StatelessWidget {
   Future<void> _uploadPost(BuildContext context, TextEditingController _contentController) async {
     final user = FirebaseAuth.instance.currentUser;
 
-    if (_contentController.text.trim().isEmpty || user == null) {
+    // Check if content is empty
+    if (_contentController.text.trim().isEmpty) {
+      Fluttertoast.showToast(
+        msg: 'Please enter content before posting.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+      );
       return;
     }
+
+    if (user == null) return;
 
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -389,15 +414,15 @@ class CommunityFeedScreen extends StatelessWidget {
       await firestore.collection('community_posts').add({
         'userId': userId,
         'username': username,
-        'role': role, // optional: for display/filtering later
+        'role': role,
         'content': _contentController.text.trim(),
         'timestamp': FieldValue.serverTimestamp(),
-        'imageUrls': imageUrls, // List of URLs
+        'imageUrls': imageUrls,
         'likes': [],
       });
 
       _contentController.clear();
-      _selectedImages.clear(); // Clear selected images
+      _selectedImages.clear();
       Navigator.of(context).pop();
 
       Fluttertoast.showToast(
@@ -456,19 +481,29 @@ class CommunityFeedScreen extends StatelessWidget {
 
   Future<String> _getUserNameFromFirestore(String uid) async {
     try {
-      final userDoc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      // Try fetching from 'users' collection
+      final userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
       if (userDoc.exists) {
         final firstName = userDoc.data()?['first_name'] ?? 'Anonymous';
         final lastName = userDoc.data()?['last_name'] ?? '';
         return '$firstName $lastName'.trim();
       }
+
+      // If not found in 'users', try 'technicians'
+      final techDoc = await FirebaseFirestore.instance.collection('technician').doc(uid).get();
+      if (techDoc.exists) {
+        final firstName = techDoc.data()?['first_name'] ?? 'Anonymous';
+        final lastName = techDoc.data()?['last_name'] ?? '';
+        return '$firstName $lastName'.trim();
+      }
+
       return 'Anonymous';
     } catch (e) {
       print('Error fetching user name: $e');
       return 'Anonymous';
     }
   }
+
 
   Widget _buildCommentsInBottomSheet(String postId) {
     return StreamBuilder<QuerySnapshot>(
@@ -569,44 +604,39 @@ class CommunityFeedScreen extends StatelessWidget {
   }
 
   Widget _buildCommentInput(String postId) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15.0),
-      child: SingleChildScrollView(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: TextFormField(
-                controller: _commentController,
-                keyboardType: TextInputType.multiline,
-                decoration: InputDecoration(
-                  labelText: "Add a comment",
-                  labelStyle: GoogleFonts.inter(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black.withOpacity(0.31),
-                  ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
-                  ),
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
-                  ),
-                ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: TextFormField(
+            controller: _commentController,
+            keyboardType: TextInputType.multiline,
+            decoration: InputDecoration(
+              labelText: "Add a comment",
+              labelStyle: GoogleFonts.inter(
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+                color: Colors.black.withOpacity(0.31),
+              ),
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+              ),
+              border: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
               ),
             ),
-            const SizedBox(width: 10),
-            IconButton(
-              icon: Icon(Icons.send, color: ApplicationColor),
-              onPressed: () => _addComment(postId),
-            ),
-          ],
+          ),
         ),
-      ),
+        const SizedBox(width: 10),
+        IconButton(
+          icon: Icon(Icons.send, color: ApplicationColor),
+          onPressed: () => _addComment(postId),
+        ),
+      ],
     );
   }
 
@@ -691,13 +721,9 @@ class CommunityFeedScreen extends StatelessWidget {
                       decoration: TextDecoration.underline,
                     )),
                 const SizedBox(height: 10),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: _buildCommentsInBottomSheet(postId),
-                  ),
-                ),
-                _buildCommentInput(
-                    postId), // 🔻 This adds the comment input at the bottom
+                _buildCommentInput(postId),
+                const SizedBox(height: 10),
+                _buildCommentsInBottomSheet(postId),
               ],
             ),
           ),

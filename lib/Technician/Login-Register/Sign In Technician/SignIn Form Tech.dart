@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:servix/Technician/Home/Home%20Layout.dart';
-import 'package:servix/Technician/Login-Register/Personal%20Info/Personal%20Info%20tech.dart';
 import 'package:servix/Technician/Login-Register/SignUP/Sign_Up_Tech.dart';
 import '../../../../Components/Buttons.dart';
 import '../../../../Components/TextFormField_SignIn.dart';
@@ -57,6 +55,24 @@ class _SignInFormTechState extends State<SignInFormTech> {
     if (!isValid) return;
 
     _formKey.currentState!.save();
+
+    // Check if the device is connected to the internet
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(
+        msg: "No internet connection. Please try again later.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+      return;
+    }
+
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -122,7 +138,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
           msg: "User Data does not exist.".tr(),
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.SNACKBAR,
-          backgroundColor: Colors.red.withOpacity(0.8),
+          backgroundColor: ApplicationColorWithOpacity,
           textColor: Colors.white,
           fontSize: 15.0,
         );
@@ -141,12 +157,20 @@ class _SignInFormTechState extends State<SignInFormTech> {
         msg: message,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.SNACKBAR,
-        backgroundColor: Colors.red.withOpacity(0.8),
+        backgroundColor: ApplicationColorWithOpacity,
         textColor: Colors.white,
         fontSize: 15.0,
       );
     } catch (e) {
       print(e);
+      Fluttertoast.showToast(
+        msg: "An error occurred. Please try again later.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
     }
 
     setState(() {

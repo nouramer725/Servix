@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -80,13 +82,9 @@ class _SignInFormState extends State<SignInForm> {
             .doc(user.uid)
             .get();
 
-        // Case 1: Both technician and user documents exist
         if (technicianDoc.exists && userDoc.exists) {
           _navigateToClientHome();
-        }
-
-        // Case 2: Only user document exists
-        else if (!technicianDoc.exists && userDoc.exists) {
+        } else if (!technicianDoc.exists && userDoc.exists) {
           if (user.emailVerified) {
             _navigateToClientHome();
           } else {
@@ -99,7 +97,6 @@ class _SignInFormState extends State<SignInForm> {
           if (role == 'Client') {
             _navigateToClientHome();
           } else if (role == 'Technician') {
-            // Update the role to 'Client'
             await technicianDoc.reference.update({'role': 'Client'});
             await FirebaseFirestore.instance
                 .collection('users')
@@ -110,53 +107,58 @@ class _SignInFormState extends State<SignInForm> {
               'email': technicianDoc.get('email'),
               'phone': technicianDoc.get('phone'),
               'gender': technicianDoc.get('gender'),
-              'role': 'Client', // Switch role to 'Client'
+              'role': 'Client',
             });
             _navigateToClientHome();
-          } else {
-            // _showTechnicianOnlyDialog();
           }
         } else {
-          // Fluttertoast.showToast(
-          //   msg: "This User Does not have an account in Servix application",
-          //   toastLength: Toast.LENGTH_LONG,
-          //   gravity: ToastGravity.SNACKBAR,
-          //   backgroundColor: ApplicationColorWithOpacity,
-          //   textColor: Colors.white,
-          //   fontSize: 15.0,
-          // );
+          Fluttertoast.showToast(
+            msg: "This user does not have an account in Servix application",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.SNACKBAR,
+            backgroundColor: ApplicationColorWithOpacity,
+            textColor: Colors.white,
+            fontSize: 15.0,
+          );
         }
       }
     } on FirebaseAuthException catch (e) {
       print(e);
       String message = '';
-      if (e.code ==
-          'The supplied auth credential is incorrect, malformed or has expired.') {
-        message = 'No user found for that email.';
-      } else if (e.code == 'invalid-credential') {
-        message = 'No user found with this Data.';
-        Fluttertoast.showToast(
-          msg: message,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.SNACKBAR,
-          backgroundColor: ApplicationColorWithOpacity,
-          textColor: Colors.white,
-          fontSize: 15.0,
-        );
+      if (e.code == 'invalid-credential') {
+        message = 'Invalid email or password.';
       } else {
         message = e.message ?? 'An error occurred';
-        Fluttertoast.showToast(
-          msg: message,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.SNACKBAR,
-          backgroundColor: ApplicationColorWithOpacity,
-          textColor: Colors.white,
-          fontSize: 15.0,
-        );
       }
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    } on SocketException {
+      Fluttertoast.showToast(
+        msg: "Network error. Please check your internet connection.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    } on TimeoutException {
+      Fluttertoast.showToast(
+        msg: "Request timed out. Please try again later.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
     } catch (e) {
       Fluttertoast.showToast(
-        msg: "No user found for that email.",
+        msg: "An unexpected error occurred: ${e.toString()}",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.SNACKBAR,
         backgroundColor: ApplicationColorWithOpacity,
