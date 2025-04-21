@@ -129,7 +129,7 @@ class _GoogleMapScreenTechState extends State<GoogleMapScreenTech> {
           right: 20,
           child: GradientButton(
             onPressed: () {
-              Navigator.pushAndRemoveUntil(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => SaveAddressScreenTech(
@@ -138,7 +138,6 @@ class _GoogleMapScreenTechState extends State<GoogleMapScreenTech> {
                           latitude: _currentLocation.latitude,
                           longitude: _currentLocation.longitude,
                         )),
-                (route) => false,
               );
             },
             text: "Enter Completed Address".tr(),

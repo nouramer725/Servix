@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,9 +31,10 @@ class _SignUpClientState extends State<SignUpClient> {
       TextEditingController();
   final TextEditingController _PhoneNumberController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String? gender;
-  String? role = "Client"; // Default role is 'Client'
+  String? role = "Client";
   var _obscureText = true;
   var _obscureConfirmText = true;
 
@@ -208,7 +210,7 @@ class _SignUpClientState extends State<SignUpClient> {
       if (googleUser == null) return null;
 
       final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
+          await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -216,7 +218,7 @@ class _SignUpClientState extends State<SignUpClient> {
       );
 
       UserCredential userCredential =
-      await FirebaseAuth.instance.signInWithCredential(credential);
+          await FirebaseAuth.instance.signInWithCredential(credential);
       User? user = userCredential.user;
 
       if (user != null) {
@@ -298,6 +300,73 @@ class _SignUpClientState extends State<SignUpClient> {
         builder: (context) => const HomeClientLayout(),
       ),
     );
+  }
+
+  Future<void> signInWithFacebook(BuildContext context) async {
+    try {
+      final LoginResult result = await FacebookAuth.instance.login(
+        permissions: ['email', 'public_profile'],
+      );
+
+      if (result.status == LoginStatus.success) {
+        final OAuthCredential facebookAuthCredential =
+            FacebookAuthProvider.credential(result.accessToken!.tokenString);
+
+        final UserCredential userCredential =
+            await _auth.signInWithCredential(facebookAuthCredential);
+        User? user = userCredential.user;
+        if (user == null) return;
+
+        // ✅ Get the Facebook profile data, including picture
+        final userData = await FacebookAuth.instance.getUserData(
+          fields: "name,email,picture.width(200)", // Adjust width as needed
+        );
+
+        final profileImageUrl = userData["picture"]["data"]["url"];
+
+        // ✅ Pass profile image URL to Firestore save function
+        bool userExists = await _checkIfUserExists(user.uid);
+        if (!userExists) {
+          await _saveUserToFirestoreFace(user, profileImageUrl);
+          _navigateToLocationRequestScreen(context);
+        } else {
+          _navigateToHome(context);
+        }
+      } else {
+        print("Facebook sign-in failed: ${result.message}");
+      }
+    } catch (e) {
+      print("Facebook sign-in error: $e");
+    }
+  }
+
+  Future<void> _saveUserToFirestoreFace(
+      User? user, String profileImageUrl) async {
+    if (user != null) {
+      final userRef = _firestore.collection('users').doc(user.uid);
+
+      await userRef.set({
+        'uid': user.uid,
+        'first_name': user.displayName?.split(' ')[0] ?? '',
+        'last_name': user.displayName?.split(' ')[1] ?? '',
+        'third_name': user.displayName?.split(' ')[2] ?? '',
+        'email': user.email ?? 'No Email',
+        'provider': user.providerData.first.providerId,
+        'role': 'Client',
+        'phone': user.phoneNumber ?? '',
+        'createdAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: false));
+
+      await _firestore
+          .collection("user-files")
+          .doc(user.uid)
+          .collection("personalInformation")
+          .doc("profile")
+          .set({
+        "personalImageUrl": profileImageUrl,
+        "updatedAt": FieldValue.serverTimestamp(),
+      }, SetOptions(merge: false));
+    }
   }
 
   @override
@@ -429,16 +498,20 @@ class _SignUpClientState extends State<SignUpClient> {
                           children: [
                             Row(
                               children: [
-                                const Expanded(child: Divider(color: Color(0xFFD6D6D6))),
+                                const Expanded(
+                                    child: Divider(color: Color(0xFFD6D6D6))),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
                                   child: Text(
-                                    "or signin by".tr(),
+                                    "or signup by".tr(),
                                     style: GoogleFonts.inter(
-                                        color: const Color(0xFF898989), fontSize: 12),
+                                        color: const Color(0xFF898989),
+                                        fontSize: 12),
                                   ),
                                 ),
-                                const Expanded(child: Divider(color: Color(0xFFD6D6D6))),
+                                const Expanded(
+                                    child: Divider(color: Color(0xFFD6D6D6))),
                               ],
                             ),
                             const SizedBox(height: 20),
@@ -453,10 +526,12 @@ class _SignUpClientState extends State<SignUpClient> {
                                       padding: const EdgeInsets.all(14),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(color: const Color(0xFFAEAEAE)),
+                                        border: Border.all(
+                                            color: const Color(0xFFAEAEAE)),
                                       ),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Image.asset(
                                             'assets/images/social_media/google.png',
@@ -479,16 +554,18 @@ class _SignUpClientState extends State<SignUpClient> {
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: () {
-                                      // signInWithFacebook(context);
+                                      signInWithFacebook(context);
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.all(14),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(color: const Color(0xFFAEAEAE)),
+                                        border: Border.all(
+                                            color: const Color(0xFFAEAEAE)),
                                       ),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           const FaIcon(
                                             FontAwesomeIcons.facebook,

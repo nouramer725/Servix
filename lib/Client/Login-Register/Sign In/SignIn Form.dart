@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:servix/Client/Home/HomeLayoutClient.dart';
@@ -28,7 +26,7 @@ class _SignInFormState extends State<SignInForm> {
   String? _emailError;
   String? _passwordError;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final TextEditingController _emailController = TextEditingController();
@@ -293,72 +291,72 @@ class _SignInFormState extends State<SignInForm> {
     );
   }
 
-  Future<void> signInWithFacebook(BuildContext context) async {
-    try {
-      final LoginResult result = await FacebookAuth.instance.login(
-        permissions: ['email', 'public_profile'],
-      );
-
-      if (result.status == LoginStatus.success) {
-        final OAuthCredential facebookAuthCredential =
-            FacebookAuthProvider.credential(result.accessToken!.tokenString);
-
-        final UserCredential userCredential =
-            await _auth.signInWithCredential(facebookAuthCredential);
-        User? user = userCredential.user;
-        if (user == null) return;
-
-        // ✅ Get the Facebook profile data, including picture
-        final userData = await FacebookAuth.instance.getUserData(
-          fields: "name,email,picture.width(200)", // Adjust width as needed
-        );
-
-        final profileImageUrl = userData["picture"]["data"]["url"];
-
-        // ✅ Pass profile image URL to Firestore save function
-        bool userExists = await _checkIfUserExists(user.uid);
-        if (!userExists) {
-          await _saveUserToFirestoreFace(user, profileImageUrl);
-          _navigateToLocationRequestScreen(context);
-        } else {
-          _navigateToHome(context);
-        }
-      } else {
-        print("Facebook sign-in failed: ${result.message}");
-      }
-    } catch (e) {
-      print("Facebook sign-in error: $e");
-    }
-  }
-
-  Future<void> _saveUserToFirestoreFace(
-      User? user, String profileImageUrl) async {
-    if (user != null) {
-      final userRef = _firestore.collection('users').doc(user.uid);
-
-      await userRef.set({
-        'uid': user.uid,
-        'first_name': user.displayName?.split(' ')[0] ?? '',
-        'last_name': user.displayName?.split(' ')[1] ?? '',
-        'third_name': user.displayName?.split(' ')[2] ?? '',
-        'email': user.email ?? 'No Email',
-        'provider': user.providerData.first.providerId,
-        'role': 'Client',
-        'phone': user.phoneNumber ?? '',
-        'createdAt': FieldValue.serverTimestamp(),
-      }, SetOptions(merge: false));
-
-      await _firestore
-          .collection("user-files")
-          .doc(user.uid)
-          .collection("personalInformation")
-          .doc("profile")
-          .set({
-        "personalImageUrl": profileImageUrl,
-        "updatedAt": FieldValue.serverTimestamp(),
-      }, SetOptions(merge: false));
-    }
-  }
+  // Future<void> signInWithFacebook(BuildContext context) async {
+  //   try {
+  //     final LoginResult result = await FacebookAuth.instance.login(
+  //       permissions: ['email', 'public_profile'],
+  //     );
+  //
+  //     if (result.status == LoginStatus.success) {
+  //       final OAuthCredential facebookAuthCredential =
+  //           FacebookAuthProvider.credential(result.accessToken!.tokenString);
+  //
+  //       final UserCredential userCredential =
+  //           await _auth.signInWithCredential(facebookAuthCredential);
+  //       User? user = userCredential.user;
+  //       if (user == null) return;
+  //
+  //       // ✅ Get the Facebook profile data, including picture
+  //       final userData = await FacebookAuth.instance.getUserData(
+  //         fields: "name,email,picture.width(200)", // Adjust width as needed
+  //       );
+  //
+  //       final profileImageUrl = userData["picture"]["data"]["url"];
+  //
+  //       // ✅ Pass profile image URL to Firestore save function
+  //       bool userExists = await _checkIfUserExists(user.uid);
+  //       if (!userExists) {
+  //         await _saveUserToFirestoreFace(user, profileImageUrl);
+  //         _navigateToLocationRequestScreen(context);
+  //       } else {
+  //         _navigateToHome(context);
+  //       }
+  //     } else {
+  //       print("Facebook sign-in failed: ${result.message}");
+  //     }
+  //   } catch (e) {
+  //     print("Facebook sign-in error: $e");
+  //   }
+  // }
+  //
+  // Future<void> _saveUserToFirestoreFace(
+  //     User? user, String profileImageUrl) async {
+  //   if (user != null) {
+  //     final userRef = _firestore.collection('users').doc(user.uid);
+  //
+  //     await userRef.set({
+  //       'uid': user.uid,
+  //       'first_name': user.displayName?.split(' ')[0] ?? '',
+  //       'last_name': user.displayName?.split(' ')[1] ?? '',
+  //       'third_name': user.displayName?.split(' ')[2] ?? '',
+  //       'email': user.email ?? 'No Email',
+  //       'provider': user.providerData.first.providerId,
+  //       'role': 'Client',
+  //       'phone': user.phoneNumber ?? '',
+  //       'createdAt': FieldValue.serverTimestamp(),
+  //     }, SetOptions(merge: false));
+  //
+  //     await _firestore
+  //         .collection("user-files")
+  //         .doc(user.uid)
+  //         .collection("personalInformation")
+  //         .doc("profile")
+  //         .set({
+  //       "personalImageUrl": profileImageUrl,
+  //       "updatedAt": FieldValue.serverTimestamp(),
+  //     }, SetOptions(merge: false));
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -481,7 +479,7 @@ class _SignInFormState extends State<SignInForm> {
                               ),
                               const SizedBox(width: 10),
                               Text(
-                                "Google",
+                                "Continue With Google",
                                 style: GoogleFonts.inter(
                                     fontSize: 16,
                                     color: const Color(0xFF828282)),
@@ -491,38 +489,38 @@ class _SignInFormState extends State<SignInForm> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          signInWithFacebook(context);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: const Color(0xFFAEAEAE)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const FaIcon(
-                                FontAwesomeIcons.facebook,
-                                color: Color(0xFF1877F2),
-                                size: 28,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                "Facebook",
-                                style: GoogleFonts.inter(
-                                    fontSize: 16,
-                                    color: const Color(0xFF828282)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
+                    // const SizedBox(width: 10),
+                    // Expanded(
+                    //   child: GestureDetector(
+                    //     onTap: () {
+                    //       signInWithFacebook(context);
+                    //     },
+                    //     child: Container(
+                    //       padding: const EdgeInsets.all(14),
+                    //       decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(10),
+                    //         border: Border.all(color: const Color(0xFFAEAEAE)),
+                    //       ),
+                    //       child: Row(
+                    //         mainAxisAlignment: MainAxisAlignment.center,
+                    //         children: [
+                    //           const FaIcon(
+                    //             FontAwesomeIcons.facebook,
+                    //             color: Color(0xFF1877F2),
+                    //             size: 28,
+                    //           ),
+                    //           const SizedBox(width: 10),
+                    //           Text(
+                    //             "Facebook",
+                    //             style: GoogleFonts.inter(
+                    //                 fontSize: 16,
+                    //                 color: const Color(0xFF828282)),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 )
               ],

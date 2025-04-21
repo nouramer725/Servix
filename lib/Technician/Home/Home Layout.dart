@@ -10,8 +10,10 @@ import 'package:servix/Settings/Contact%20Us.dart';
 import 'package:servix/Settings/Password.dart';
 import 'package:servix/Settings/Privacy%20Policy.dart';
 import 'package:servix/Settings/Terms%20&%20Conditions.dart';
+import 'package:servix/Settings/percentage%20sidebar.dart';
 import 'package:servix/Technician/AITechnician/Intro.dart';
 import 'package:servix/Technician/Home/FirstScreenOfBottomnavbar.dart';
+import 'package:servix/Technician/Login-Register/Percentage/percnetage.dart';
 import 'package:servix/Technician/Profile/Profile.dart';
 import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
@@ -193,6 +195,15 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => const AboutUs(),
+                        ));
+                  }),
+                  _buildMenuItem(
+                      Icons.check_box_outlined, "Technician Policy".tr(),
+                      onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PercentageSide(),
                         ));
                   }),
                   _buildMenuItem(
@@ -596,7 +607,6 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
           .catchError((error) {
         print("Error deleting user from 'users': $error");
       });
-
 
       await firestore
           .collection('ContactUs')

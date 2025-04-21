@@ -26,6 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final nameController2 = TextEditingController();
+  final nameController3 = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
 
@@ -89,6 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (data != null) {
         nameController.text = data['first_name'] ?? '';
         nameController2.text = data['last_name'] ?? '';
+        nameController3.text = data['third_name'] ?? '';
         emailController.text = data['email'] ?? '';
         phoneController.text = data['phone'] ?? '';
       }
@@ -114,6 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       await _firestore.collection('users').doc(uid).update({
         'first_name': nameController.text,
         'last_name': nameController2.text,
+        'third_name': nameController3.text,
         'email': emailController.text,
         'phone': phoneController.text,
       });
@@ -274,7 +277,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               customTextField(
                 controller: nameController2,
                 keyboardTypee: TextInputType.text,
-                labelText: 'Last Name'.tr(),
+                labelText: 'Second Name'.tr(),
+              ),
+              customTextField(
+                controller: nameController3,
+                keyboardTypee: TextInputType.text,
+                labelText: 'Third Name'.tr(),
               ),
               customTextField(
                 controller: emailController,

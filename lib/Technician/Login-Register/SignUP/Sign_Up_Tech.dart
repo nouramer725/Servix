@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Technician/Login-Register/Personal%20Info/Personal%20Info%20tech.dart';
 import 'package:servix/Technician/Login-Register/Sign%20In%20Technician/Sign_In_Tech.dart';
+import 'package:servix/Technician/Login-Register/SignUP/Verification%20Email%20Technician.dart';
 import '../../../Components/Buttons.dart';
 import '../../../Components/Country Code and Phone Number.dart';
 import '../../../Components/Gender Dropdown.dart';
@@ -223,6 +224,9 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
           password: password,
         );
 
+        // Send verification email
+        await userCredential.user?.sendEmailVerification();
+
         await FirebaseFirestore.instance
             .collection('technician')
             .doc(userCredential.user?.uid)
@@ -240,12 +244,13 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
           'created_at': Timestamp.now(),
         });
 
-        Navigator.pushAndRemoveUntil(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const PersonalInformation(),
-          ),
-          (route) => false,
+              builder: (context) => VerificationTech(
+                    email: _emailController.text.trim(),
+                    password: password,
+                  )),
         );
       } on FirebaseAuthException catch (e) {
         Fluttertoast.showToast(

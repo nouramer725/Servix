@@ -132,7 +132,7 @@ class _GoogleMapScreenClientState extends State<GoogleMapScreenClient> {
             right: 20,
             child: GradientButton(
               onPressed: () {
-                Navigator.pushAndRemoveUntil(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => SaveAddressScreenClient(
@@ -141,7 +141,6 @@ class _GoogleMapScreenClientState extends State<GoogleMapScreenClient> {
                             latitude: _currentLocation.latitude,
                             longitude: _currentLocation.longitude,
                           )),
-                  (route) => false,
                 );
               },
               text: "Enter Completed Address".tr(),
