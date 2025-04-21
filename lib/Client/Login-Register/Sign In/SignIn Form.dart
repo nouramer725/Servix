@@ -264,6 +264,7 @@ class _SignInFormState extends State<SignInForm> {
         'uid': user.uid,
         'first_name': user.displayName?.split(' ')[0] ?? '',
         'last_name': user.displayName?.split(' ')[1] ?? '',
+        'third_name': user.displayName?.split(' ')[2] ?? '',
         'email': user.email ?? 'No Email',
         'provider': user.providerData.first.providerId,
         'role': 'Client',
@@ -274,7 +275,7 @@ class _SignInFormState extends State<SignInForm> {
       await _firestore
           .collection("user-files")
           .doc(user.uid)
-          .collection("personalInformation")
+          .collection("personalInformationProvider")
           .doc("profile")
           .set({
         "personalImageUrl": user.photoURL ?? '',
@@ -294,16 +295,34 @@ class _SignInFormState extends State<SignInForm> {
 
   Future<void> signInWithFacebook(BuildContext context) async {
     try {
-      final LoginResult result = await FacebookAuth.instance.login();
+      final LoginResult result = await FacebookAuth.instance.login(
+        permissions: ['email', 'public_profile'],
+      );
 
       if (result.status == LoginStatus.success) {
         final OAuthCredential facebookAuthCredential =
-        FacebookAuthProvider.credential(result.accessToken!.tokenString);
+            FacebookAuthProvider.credential(result.accessToken!.tokenString);
 
         final UserCredential userCredential =
-        await _auth.signInWithCredential(facebookAuthCredential);
-        await _saveUserToFirestore(userCredential.user);
-        _navigateToHome(context);
+            await _auth.signInWithCredential(facebookAuthCredential);
+        User? user = userCredential.user;
+        if (user == null) return;
+
+        // ✅ Get the Facebook profile data, including picture
+        final userData = await FacebookAuth.instance.getUserData(
+          fields: "name,email,picture.width(200)", // Adjust width as needed
+        );
+
+        final profileImageUrl = userData["picture"]["data"]["url"];
+
+        // ✅ Pass profile image URL to Firestore save function
+        bool userExists = await _checkIfUserExists(user.uid);
+        if (!userExists) {
+          await _saveUserToFirestoreFace(user, profileImageUrl);
+          _navigateToLocationRequestScreen(context);
+        } else {
+          _navigateToHome(context);
+        }
       } else {
         print("Facebook sign-in failed: ${result.message}");
       }
@@ -312,55 +331,34 @@ class _SignInFormState extends State<SignInForm> {
     }
   }
 
+  Future<void> _saveUserToFirestoreFace(
+      User? user, String profileImageUrl) async {
+    if (user != null) {
+      final userRef = _firestore.collection('users').doc(user.uid);
 
-  // void _showTechnicianOnlyDialog() {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: true,
-  //     builder: (context) {
-  //       return Dialog(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(10),
-  //         ),
-  //         child: Container(
-  //           padding: const EdgeInsets.all(16),
-  //           decoration: BoxDecoration(
-  //             color: ApplicationColor,
-  //             borderRadius: BorderRadius.circular(10),
-  //           ),
-  //           child: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: [
-  //               const Icon(Icons.close, color: Colors.white, size: 40),
-  //               const SizedBox(height: 8),
-  //               Text(
-  //                 "This account does not have access to Servix".tr(),
-  //                 style: const TextStyle(color: Colors.white, fontSize: 16),
-  //                 textAlign: TextAlign.center,
-  //               ),
-  //               const SizedBox(height: 16),
-  //               ElevatedButton(
-  //                 style: ElevatedButton.styleFrom(
-  //                   backgroundColor: Colors.white,
-  //                 ),
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //                 child: Text(
-  //                   "OK".tr(),
-  //                   style: const TextStyle(
-  //                     color: Colors.black87,
-  //                     fontWeight: FontWeight.bold,
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+      await userRef.set({
+        'uid': user.uid,
+        'first_name': user.displayName?.split(' ')[0] ?? '',
+        'last_name': user.displayName?.split(' ')[1] ?? '',
+        'third_name': user.displayName?.split(' ')[2] ?? '',
+        'email': user.email ?? 'No Email',
+        'provider': user.providerData.first.providerId,
+        'role': 'Client',
+        'phone': user.phoneNumber ?? '',
+        'createdAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: false));
+
+      await _firestore
+          .collection("user-files")
+          .doc(user.uid)
+          .collection("personalInformation")
+          .doc("profile")
+          .set({
+        "personalImageUrl": profileImageUrl,
+        "updatedAt": FieldValue.serverTimestamp(),
+      }, SetOptions(merge: false));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

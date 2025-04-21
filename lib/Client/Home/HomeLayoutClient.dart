@@ -243,7 +243,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                   const SizedBox(height: 10),
                   Text(
                     userData != null
-                        ? "   ${userData!['first_name']} ${userData!['last_name']}"
+                        ? "   ${userData!['first_name']} ${userData!['last_name']} ${userData!['third_name'] ?? ''}"
                         : "Welcome".tr(),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 5,
