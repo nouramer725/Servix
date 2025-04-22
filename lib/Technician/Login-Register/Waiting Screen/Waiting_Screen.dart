@@ -5,6 +5,7 @@ import 'package:mailer/smtp_server.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:servix/On-Boarding/On_Boarding_Screen.dart';
 import 'package:servix/Technician/AITechnician/Welcome%20AI.dart';
 import '../../../constents/constent.dart';
 
@@ -36,17 +37,27 @@ class _WaitingScreenState extends State<WaitingScreen> {
         .listen((snapshot) {
       if (snapshot.exists) {
         String status = snapshot.data()?['status'] ?? 'pending';
+
+        if (!mounted) return;
+
         if (status == "approved") {
-          // ✅ Check if the widget is still mounted before navigation
-          if (mounted) {
-            Future.microtask(() {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => WelcomeAiTech()),
-                (route) => false,
-              );
-            });
-          }
+          Future.microtask(() {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => WelcomeAiTech()),
+              (route) => false,
+            );
+          });
+        } else if (status == "rejected") {
+          Future.microtask(() {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      const OnboardingScreen()), // Replace with your member screen widget
+              (route) => false,
+            );
+          });
         }
       }
     });
