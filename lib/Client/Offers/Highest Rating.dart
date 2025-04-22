@@ -70,16 +70,21 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
             .get();
 
         if (offerSnapshot.docs.isNotEmpty) {
-          final fetchedOffers = offerSnapshot.docs.map((offerDoc) {
-            return Offer.fromFirestore(offerDoc);
+          final fetchedOffers = offerSnapshot.docs.map((offerDoc) async {
+            // Create Offer asynchronously to wait for the technician's rating
+            final offer = await _createOfferWithRating(offerDoc);
+            return offer;
           }).toList();
 
           // Add offers for this service to the list
-          allOffers.addAll(fetchedOffers);
+          allOffers.addAll(await Future.wait(fetchedOffers));
         }
       }
 
       if (allOffers.isNotEmpty) {
+        // Sort offers based on the average rating in descending order
+        allOffers.sort((a, b) => b.averageRating.compareTo(a.averageRating));
+
         setState(() {
           offers = allOffers; // Update the offers list
         });
@@ -92,6 +97,41 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+// Helper method to create Offer asynchronously
+  Future<Offer> _createOfferWithRating(DocumentSnapshot offerDoc) async {
+    final offer = Offer.fromFirestore(offerDoc);
+    final technicianDoc = await FirebaseFirestore.instance
+        .collection('technician')
+        .doc(offer.technicianId)
+        .get();
+    if (technicianDoc.exists) {
+      final technicianData = technicianDoc.data() as Map<String, dynamic>;
+      double averageRating = 0.0;
+      if (technicianData['Ratings'] != null &&
+          technicianData['Ratings'].isNotEmpty) {
+        double total = 0.0;
+        List<dynamic> ratings = technicianData['Ratings'];
+        for (var rating in ratings) {
+          total += rating['rating'];
+        }
+        averageRating = total / ratings.length;
+      }
+      return Offer(
+        id: offer.id,
+        technicianId: offer.technicianId,
+        technicianName: offer.technicianName,
+        technicianImage: offer.technicianImage,
+        offer: offer.offer,
+        street: offer.street,
+        area: offer.area,
+        rating: offer.rating,
+        averageRating: averageRating,
+      );
+    } else {
+      return offer; // Return the offer without an average rating if technician doesn't exist
     }
   }
 
@@ -341,6 +381,18 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
             .delete();
 
         print("✅ Offer deleted for technicianId: $technicianId");
+        fetchOffers(); // Refresh the list of offers
+        setState(() {
+          offers.removeWhere((offer) => offer.technicianId == technicianId);
+        });
+        print("✅ Offers list updated after deletion.");
+
+        // final NotificationServiceTechniciann =
+        //     NotificationServiceTechnician(flutterLocalNotificationsPlugin);
+        // NotificationServiceTechniciann.showAndSaveNotificationTech(
+        //   title: 'Offer Updates!',
+        //   preview: 'Client Rejected your offer',
+        // );
       } else {
         print('🚨 No service found for the given orderId');
       }

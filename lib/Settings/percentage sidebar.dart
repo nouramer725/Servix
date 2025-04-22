@@ -90,12 +90,12 @@ class _PercentageSideState extends State<PercentageSide> {
                   "6) A grace period of 5 days is provided after the end of each month.",
                   "7) Failure to comply with the commission payment terms may result in suspension or termination of the technician’s account.",
                 ].map((policy) => Text(
-                  policy,
-                  style: GoogleFonts.castoro(
-                    fontSize: 16,
-                    color: ApplicationColor3,
-                  ),
-                )),
+                      policy,
+                      style: GoogleFonts.castoro(
+                        fontSize: 16,
+                        color: ApplicationColor3,
+                      ),
+                    )),
               ],
             ),
           ),

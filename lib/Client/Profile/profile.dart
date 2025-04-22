@@ -5,11 +5,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+import 'package:servix/Client/Profile/google%20map%20of%20default%20location.dart';
 import 'package:servix/Client/Profile/savedaddress.dart';
 import 'package:servix/Components/TextFormFiels_SignUp.dart';
 import '../../Components/Buttons.dart';
@@ -293,7 +295,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               customTextField(
                 controller: phoneController,
                 keyboardTypee: TextInputType.phone,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(11),
+                ],
                 labelText: 'Phone Number'.tr(),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Phone number is required'.tr();
+                  } else if (!RegExp(r'^\d{11}$').hasMatch(value)) {
+                    return 'Phone number must be exactly 11 digits'.tr();
+                  }
+                  return null;
+                },
               ),
               if (userLocation != null)
                 Container(
@@ -348,23 +362,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
-                  child: Row(
+                  child: Column(
                     children: [
-                      Icon(Icons.location_pin,
-                          color: ApplicationColor, size: 30),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          "$area, $street, $building building, apartment no.$apartment",
-                          style: GoogleFonts.castoro(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF676565),
+                      Row(
+                        children: [
+                          Icon(Icons.location_pin,
+                              color: ApplicationColor, size: 30),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              "$area, $street, $building building, apartment no.$apartment",
+                              style: GoogleFonts.castoro(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF676565),
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 10,
+                            ),
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 10,
-                        ),
+                        ],
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const GoogleMapDefaultLocation(),
+                                  ));
+                            },
+                            child: Text(
+                              "Change Your Location".tr(),
+                              style: GoogleFonts.castoro(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: ApplicationColor,
+                                decoration: TextDecoration.underline,
+                                decorationColor: ApplicationColor,
+                              ),
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),

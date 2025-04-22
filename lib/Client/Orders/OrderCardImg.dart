@@ -136,9 +136,6 @@ class OrderCardImg extends StatelessWidget {
                               technicianMain: orders.technicianMain,
                               technicianDescription:
                                   orders.technicianDescription,
-                              // technicianRating: orders.technicianRating,
-                              technicianProducts:
-                                  List<String>.from(orders.technicianProducts),
                               technicianLinkSocialMedia:
                                   orders.technicianLinkSocialMedia,
                             ),

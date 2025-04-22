@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import '../../Components/Buttons.dart';
 import '../../Technician/NotificationTech/notification_service_technician.dart';
 import '../../Theme/Theme_Provider.dart';
@@ -354,6 +353,11 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
             .delete();
 
         print("✅ Offer deleted for technicianId: $technicianId");
+        fetchOffers(); // Refresh the list of offers
+        setState(() {
+          offers.removeWhere((offer) => offer.technicianId == technicianId);
+        });
+        print("✅ Offers list updated after deletion.");
 
         // final NotificationServiceTechniciann =
         //     NotificationServiceTechnician(flutterLocalNotificationsPlugin);

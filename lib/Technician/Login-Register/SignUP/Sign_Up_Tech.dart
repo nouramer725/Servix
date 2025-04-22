@@ -242,6 +242,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
           'main_service': selectedMainService ?? "",
           'sub_service': selectedSubService ?? "",
           'role': role,
+          'serviceCount': 0,
           'status': 'pending',
           'created_at': Timestamp.now(),
         });

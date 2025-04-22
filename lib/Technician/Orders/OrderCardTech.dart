@@ -140,9 +140,6 @@ class OrderCardTech extends StatelessWidget {
                               final subService = techData['sub_service'];
                               final mainService = techData['main_service'];
                               final Description = techData['description'];
-                              final Reviews = techData['review'];
-                              final Products = techData['Products'];
-                              final Rating = techData['Ratings'];
                               final LinkSocialMedia =
                                   techData['LinkSocialMedia'];
 
@@ -208,7 +205,9 @@ class OrderCardTech extends StatelessWidget {
                                 await FirebaseFirestore.instance
                                     .doc(orders.docPath!)
                                     .collection("offers")
-                                    .add({
+                                    .doc(
+                                        uid) // Use technician ID as document ID
+                                    .set({
                                   'technicianId': uid,
                                   'technicianFirstName': techData['first_name'],
                                   'technicianLastName': techData['last_name'],
@@ -221,9 +220,6 @@ class OrderCardTech extends StatelessWidget {
                                   'technicianLocationArea': area,
                                   'technicianOffer': offerPrice,
                                   'technicianDescription': Description,
-                                  'technicianRating': Rating,
-                                  'technicianReviews': Reviews,
-                                  'technicianProducts': Products,
                                   'technicianLinkSocialMedia': LinkSocialMedia,
                                   'status': 'offer-made', // ✅ Add this line
                                   'timestamp': FieldValue.serverTimestamp(),
@@ -238,7 +234,6 @@ class OrderCardTech extends StatelessWidget {
                                 //   preview:
                                 //       'Your offer has been submitted successfully. Be waiting for acceptance or rejection from the client',
                                 // );
-
 
                                 Fluttertoast.showToast(
                                     msg: "Offer Submitted Successfully",

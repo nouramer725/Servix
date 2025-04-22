@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import '../../../Theme/Theme_Provider.dart';
 
 class EditableRow extends StatelessWidget {
   final String text;
   final VoidCallback onEdit;
   final int maxLines;
+  final IconData icon;
 
   const EditableRow({
     required this.text,
     required this.onEdit,
+    required this.icon,
     this.maxLines = 5,
     super.key,
   });
@@ -38,7 +39,7 @@ class EditableRow extends StatelessWidget {
         ),
         IconButton(
           icon: FaIcon(
-            FontAwesomeIcons.pencil,
+            icon,
             color: themeProvider.themeMode == ThemeMode.dark
                 ? Colors.white
                 : Color(0xFF676767),

@@ -112,14 +112,14 @@ class _SignInFormState extends State<SignInForm> {
             _navigateToClientHome();
           }
         } else {
-          Fluttertoast.showToast(
-            msg: "This user does not have an account in Servix application",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.SNACKBAR,
-            backgroundColor: ApplicationColorWithOpacity,
-            textColor: Colors.white,
-            fontSize: 15.0,
-          );
+          // Fluttertoast.showToast(
+          //   msg: "This user does not have an account in Servix application",
+          //   toastLength: Toast.LENGTH_LONG,
+          //   gravity: ToastGravity.SNACKBAR,
+          //   backgroundColor: ApplicationColorWithOpacity,
+          //   textColor: Colors.white,
+          //   fontSize: 15.0,
+          // );
         }
       }
     } on FirebaseAuthException catch (e) {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -71,17 +72,142 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.grey[400],
-                              radius: 20,
-                              child: const Icon(Icons.person,
-                                  size: 25, color: Colors.white),
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.grey[400],
+                                  radius: 20,
+                                  child: const Icon(Icons.person,
+                                      size: 25, color: Colors.white),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(data['username'] ?? 'Anonymous',
+                                    style: GoogleFonts.castoro(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22)),
+                              ],
                             ),
-                            const SizedBox(width: 10),
-                            Text(data['username'] ?? 'Anonymous',
-                                style: GoogleFonts.castoro(
-                                    fontWeight: FontWeight.bold, fontSize: 22)),
+                            PopupMenuButton<String>(
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? const Color(0xFF333739)
+                                  : Colors.white,
+                              icon: Icon(
+                                Icons.more_vert,
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                              onSelected: (String value) async {
+                                if (value == 'Delete') {
+                                  bool confirm = await showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      backgroundColor:
+                                          themeProvider.themeMode ==
+                                                  ThemeMode.dark
+                                              ? const Color(0xFF333739)
+                                              : Colors.white,
+                                      title: Row(
+                                        children: [
+                                          Icon(Icons.delete,
+                                              color: themeProvider.themeMode ==
+                                                      ThemeMode.dark
+                                                  ? Colors.white
+                                                  : ApplicationColor),
+                                          const SizedBox(width: 10),
+                                          Text('Delete Post'.tr(),
+                                              style: GoogleFonts.castoro(
+                                                  fontSize: 25)),
+                                        ],
+                                      ),
+                                      content: Text(
+                                          'Are you sure you want to delete this post?'
+                                              .tr(),
+                                          style: GoogleFonts.castoro(
+                                              fontSize: 20)),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(false),
+                                          child: Text('Cancel'.tr(),
+                                              style: GoogleFonts.castoro(
+                                                  fontSize: 20,
+                                                color: themeProvider.themeMode ==
+                                                    ThemeMode.dark
+                                                    ? Colors.white
+                                                    : Colors.black
+                                              )),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(true),
+                                          child: Text(
+                                            'Delete'.tr(),
+                                            style: GoogleFonts.castoro(
+                                              color: themeProvider.themeMode ==
+                                                      ThemeMode.dark
+                                                  ? Colors.white
+                                                  : ApplicationColor,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+
+                                  if (confirm) {
+                                    try {
+                                      await FirebaseFirestore.instance
+                                          .collection('community_posts')
+                                          .doc(postId)
+                                          .delete();
+
+                                      Fluttertoast.showToast(
+                                        msg: "Post deleted successfully!",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        backgroundColor:
+                                            ApplicationColorWithOpacity,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0,
+                                      );
+                                      setState(() {});
+                                    } catch (e) {
+                                      Fluttertoast.showToast(
+                                        msg: "Failed to delete post: $e",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.TOP,
+                                        backgroundColor:
+                                            ApplicationColorWithOpacity,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0,
+                                      );
+                                    }
+                                  }
+                                }
+                              },
+                              itemBuilder: (BuildContext context) {
+                                return [
+                                  PopupMenuItem<String>(
+                                    value: 'Delete',
+                                    child: Text(
+                                      'Delete Post'.tr(),
+                                      style: GoogleFonts.castoro(
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.white
+                                            : ApplicationColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ];
+                              },
+                            ),
                           ],
                         ),
                         const SizedBox(height: 6),
@@ -365,7 +491,8 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
     }
   }
 
-  Future<void> _uploadPost(BuildContext context, TextEditingController _contentController) async {
+  Future<void> _uploadPost(
+      BuildContext context, TextEditingController _contentController) async {
     final user = FirebaseAuth.instance.currentUser;
 
     // Check if content is empty
@@ -482,7 +609,8 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
   Future<String> _getUserNameFromFirestore(String uid) async {
     try {
       // Try fetching from 'users' collection
-      final userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      final userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
       if (userDoc.exists) {
         final firstName = userDoc.data()?['first_name'] ?? 'Anonymous';
         final lastName = userDoc.data()?['last_name'] ?? '';
@@ -490,7 +618,10 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
       }
 
       // If not found in 'users', try 'technicians'
-      final techDoc = await FirebaseFirestore.instance.collection('technician').doc(uid).get();
+      final techDoc = await FirebaseFirestore.instance
+          .collection('technician')
+          .doc(uid)
+          .get();
       if (techDoc.exists) {
         final firstName = techDoc.data()?['first_name'] ?? 'Anonymous';
         final lastName = techDoc.data()?['last_name'] ?? '';
@@ -503,7 +634,6 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
       return 'Anonymous';
     }
   }
-
 
   Widget _buildCommentsInBottomSheet(String postId) {
     return StreamBuilder<QuerySnapshot>(

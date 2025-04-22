@@ -12,30 +12,32 @@ import '../../constents/constent.dart';
 
 class RateTechnicianScreen extends StatefulWidget {
   final String technicianId;
-  const RateTechnicianScreen({required this.technicianId});
+  final String serviceId; // Add this line
+  const RateTechnicianScreen({required this.technicianId, required this.serviceId});
 
   @override
   State<RateTechnicianScreen> createState() => _RateTechnicianScreenState();
 }
 
 class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
-  double _rating = 1.5;
-  String _ratingDescription = "Average";
+  double _rating = 0.0;
+  String _ratingDescription = "";
   final TextEditingController _commentController = TextEditingController();
 
   String getRatingDescription(double rating) {
     if (rating <= 1.0) {
       return "Very Poor";
-    } else if (rating <= 1.5)
+    } else if (rating <= 1.5) {
       return "Poor";
-    else if (rating <= 2.5)
+    } else if (rating <= 2.5) {
       return "Fair";
-    else if (rating <= 3.5)
+    } else if (rating <= 3.5) {
       return "Good";
-    else if (rating <= 4.5)
+    } else if (rating <= 4.5) {
       return "Very Good";
-    else
+    } else {
       return "Excellent";
+    }
   }
 
   @override
@@ -71,9 +73,9 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
                 )),
             RatingBar.builder(
               initialRating: _rating,
-              unratedColor: Colors.grey,
-              minRating: 1,
+              minRating: 0.5,
               allowHalfRating: true,
+              unratedColor: Colors.grey,
               direction: Axis.horizontal,
               itemCount: 5,
               itemSize: 40,
@@ -107,6 +109,10 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
               ),
               child: TextFormField(
                 controller: _commentController,
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.done,
+                cursorColor: Colors.black,
+                cursorWidth: 2,
                 maxLines: 4,
                 style: GoogleFonts.castoro(
                   fontSize: 18,
@@ -114,8 +120,12 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
                   color: isDark ? Colors.white : Colors.black,
                 ),
                 decoration: const InputDecoration(
+                  filled: true,
+                  fillColor: Colors.transparent,
                   hintText: 'Leave a comment...',
                   hintStyle: TextStyle(color: Color(0xFFAEAEAE)),
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(10),
                 ),
@@ -148,6 +158,17 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
   }
 
   void _submitRating(double ratingValue, String comment) async {
+    if (ratingValue == 0.0) {
+      Fluttertoast.showToast(
+        msg: "Please select a rating before submitting.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+      );
+      return;
+    }
+
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
@@ -180,7 +201,8 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
             'clientImage': clientImage,
             'rating': ratingValue,
             'comment': comment,
-            'timestamp': Timestamp.now(), // 👈 Replace this
+            'serviceId': widget.serviceId,
+            'timestamp': Timestamp.now(),
           }
         ])
       }, SetOptions(merge: true));
@@ -189,7 +211,7 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
         msg: "Thank you for your rating!",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
-        backgroundColor:ApplicationColorWithOpacity,
+        backgroundColor: ApplicationColorWithOpacity,
         textColor: Colors.white,
       );
 

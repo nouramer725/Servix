@@ -5,11 +5,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Technician/Profile/google%20map%20of%20default%20location.dart';
 import 'package:servix/Technician/Profile/widgets/EditableRow.dart';
 import 'package:servix/Technician/Profile/widgets/ThemedDivider.dart';
 import 'package:servix/Technician/Profile/widgets/images.dart';
@@ -26,6 +31,7 @@ class ProfileTechnicianEdit extends StatefulWidget {
 
 class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
   Map<String, dynamic>? userData;
+  LatLng? userLocation;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   TextEditingController mainServiceController = TextEditingController();
@@ -37,8 +43,11 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
   String description = "Description";
   String phoneNumber = "N/A";
   String street = "Street not available";
+  String building = "Building not available";
+  String apartment = "Apartment not available";
   String area = "Area not available";
   String linkSocialMedia = "LinkSocialMedia";
+  var themeProvider = ThemeProvider();
 
   Future<String?> uploadToCloudinary(File imageFile) async {
     String cloudinaryUrl =
@@ -143,6 +152,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: themeProvider.themeMode == ThemeMode.dark
+              ? const Color(0xFF333739)
+              : Colors.white,
           title: Text(
             "Edit Name",
             style: GoogleFonts.castoro(
@@ -157,11 +169,34 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                 controller: _firstNameController,
                 decoration: const InputDecoration(
                   labelText: "First Name",
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                  ),
                 ),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: _lastNameController,
-                decoration: const InputDecoration(labelText: "Last Name"),
+                decoration: const InputDecoration(
+                  labelText: "Last Name",
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                  ),
+                ),
               ),
             ],
           ),
@@ -176,7 +211,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             ),
             TextButton(
               onPressed: _updateUserName,
-              child: Text("Save",
+              child: Text("Update",
                   style: GoogleFonts.castoro(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -209,6 +244,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         title: Text(
           "Edit Services",
           style: GoogleFonts.castoro(
@@ -224,11 +262,30 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                 // Main Service Dropdown
                 DropdownButtonFormField<String>(
                   value: selectedMainService,
-                  decoration: const InputDecoration(labelText: "Main Service"),
+                  dropdownColor: themeProvider.themeMode == ThemeMode.dark
+                      ? const Color(0xFF333739)
+                      : Colors.white,
+                  decoration: InputDecoration(
+                    labelText: "Main Service",
+                    labelStyle: GoogleFonts.castoro(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                    ),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                    ),
+                  ),
                   items: subServicesMap.keys.map((String service) {
                     return DropdownMenuItem<String>(
                       value: service,
-                      child: Text(service),
+                      child: Text(service,
+                          style: GoogleFonts.castoro(fontSize: 15)),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
@@ -244,12 +301,31 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                 // Sub Service Dropdown
                 DropdownButtonFormField<String>(
                   value: selectedSubService,
-                  decoration: const InputDecoration(labelText: "Sub Service"),
+                  dropdownColor: themeProvider.themeMode == ThemeMode.dark
+                      ? const Color(0xFF333739)
+                      : Colors.white,
+                  decoration: InputDecoration(
+                    labelText: "Sub Service",
+                    labelStyle: GoogleFonts.castoro(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                    ),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                    ),
+                  ),
                   items: selectedMainService != null
                       ? subServicesMap[selectedMainService]!
                           .map((String sub) => DropdownMenuItem<String>(
                                 value: sub,
-                                child: Text(sub),
+                                child: Text(sub,
+                                    style: GoogleFonts.castoro(fontSize: 15)),
                               ))
                           .toList()
                       : [],
@@ -277,7 +353,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               _updateService(selectedMainService, selectedSubService);
               Navigator.pop(context); // Close the dialog after saving
             },
-            child: Text("Save",
+            child: Text("Update",
                 style: GoogleFonts.castoro(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -289,13 +365,18 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
   }
 
   void _fetchDescription() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection('technician')
-        .doc(FirebaseAuth.instance.currentUser!.uid) // Use actual UID
+        .doc(uid)
         .get();
+
     if (doc.exists) {
+      final data = doc.data() as Map<String, dynamic>;
       setState(() {
-        description = doc['description'] ?? "No Description Available";
+        description = data.containsKey('description')
+            ? data['description']
+            : "No Description Available";
       });
     }
   }
@@ -318,6 +399,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         title: Text(
           "Edit Description",
           style: GoogleFonts.castoro(
@@ -328,7 +412,19 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
         content: TextField(
           controller: _descController,
           maxLines: 5,
-          decoration: const InputDecoration(hintText: "Enter new description"),
+          decoration: InputDecoration(
+            labelText: "Enter new description".tr(),
+            labelStyle: GoogleFonts.castoro(color: Colors.grey),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+            ),
+          ),
         ),
         actions: [
           TextButton(
@@ -344,7 +440,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               _saveDescription(_descController.text);
               Navigator.pop(context);
             },
-            child: Text("Save",
+            child: Text("Update",
                 style: GoogleFonts.castoro(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -378,6 +474,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: themeProvider.themeMode == ThemeMode.dark
+              ? const Color(0xFF333739)
+              : Colors.white,
           title: Text(
             "Edit Phone Number".tr(),
             style: GoogleFonts.castoro(
@@ -388,8 +487,24 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
           content: TextField(
             controller: _phoneController,
             keyboardType: TextInputType.phone,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(11),
+            ],
             decoration: InputDecoration(
+              labelText: "Phone Number".tr(),
               hintText: "Enter new phone number".tr(),
+              labelStyle: GoogleFonts.castoro(color: Colors.grey),
+              border: OutlineInputBorder(
+                borderSide:
+                    const BorderSide(color: Color(0xFFAEAEAE), width: 1),
+              ),
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+              ),
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+              ),
             ),
           ),
           actions: [
@@ -404,22 +519,34 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             TextButton(
               onPressed: () async {
                 String newPhone = _phoneController.text.trim();
-                if (newPhone.isNotEmpty) {
-                  User? user = FirebaseAuth.instance.currentUser;
-                  if (user != null) {
-                    await FirebaseFirestore.instance
-                        .collection('technician')
-                        .doc(user.uid)
-                        .update({'phone': newPhone});
-
-                    setState(() {
-                      phoneNumber = newPhone;
-                    });
-                  }
+                if (newPhone.isEmpty ||
+                    newPhone.length != 11 ||
+                    !RegExp(r'^\d{11}$').hasMatch(newPhone)) {
+                  Fluttertoast.showToast(
+                    msg: "Please enter a valid 11-digit phone number.".tr(),
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.TOP,
+                    backgroundColor: ApplicationColorWithOpacity,
+                    textColor: Colors.white,
+                  );
+                  return;
                 }
+
+                User? user = FirebaseAuth.instance.currentUser;
+                if (user != null) {
+                  await FirebaseFirestore.instance
+                      .collection('technician')
+                      .doc(user.uid)
+                      .update({'phone': newPhone});
+
+                  setState(() {
+                    phoneNumber = newPhone;
+                  });
+                }
+
                 Navigator.pop(context);
               },
-              child: Text("Save".tr(),
+              child: Text("Update".tr(),
                   style: GoogleFonts.castoro(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -446,100 +573,18 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
       setState(() {
         street = data['street'] ?? "Street not available";
         area = data['area'] ?? "Area not available";
+        building = data['building'] ?? "Building not available";
+        apartment = data['apartment'] ?? "Apartment not available";
+        userLocation = LatLng(data['latitude'], data['longitude']);
       });
     } else {
       setState(() {
         street = "Street not available";
         area = "Area not available";
+        building = "Building not available";
+        apartment = "Apartment not available";
       });
     }
-  }
-
-  void _updateLocationDetails(String newStreet, String newArea) async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-
-    // Fetch the latest document ID
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection("user-files")
-        .doc(user.uid)
-        .collection("locationDetails")
-        .orderBy("timestamp", descending: true)
-        .limit(1)
-        .get();
-
-    if (querySnapshot.docs.isNotEmpty) {
-      String latestDocId =
-          querySnapshot.docs.first.id; // Get latest document ID
-
-      await FirebaseFirestore.instance
-          .collection("user-files")
-          .doc(user.uid)
-          .collection("locationDetails")
-          .doc(latestDocId) // Update the same document
-          .update({
-        'street': newStreet,
-        'area': newArea,
-      });
-
-      // Update UI
-      setState(() {
-        street = newStreet;
-        area = newArea;
-      });
-    }
-  }
-
-  void _showEditLocationDialog() {
-    TextEditingController streetController =
-        TextEditingController(text: street);
-    TextEditingController areaController = TextEditingController(text: area);
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Edit Location",
-              style: GoogleFonts.castoro(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: ApplicationColor)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: streetController,
-                decoration: InputDecoration(labelText: "Street"),
-              ),
-              TextField(
-                controller: areaController,
-                decoration: InputDecoration(labelText: "Area"),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("Cancel",
-                  style: GoogleFonts.castoro(
-                      fontSize: 20, color: ApplicationColor3)),
-            ),
-            TextButton(
-              onPressed: () {
-                _updateLocationDetails(
-                    streetController.text, areaController.text);
-                Navigator.pop(context);
-              },
-              child: Text("Save",
-                  style: GoogleFonts.castoro(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: ApplicationColor)),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   void _saveLinkSocialMedia(String newSocial) async {
@@ -560,8 +605,11 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         title: Text(
-          "Edit SocialMedia Link",
+          "Edit Facebook Link",
           style: GoogleFonts.castoro(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -569,9 +617,20 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
         ),
         content: TextField(
           controller: _socialMediaController,
-          maxLines: 5,
-          decoration:
-              const InputDecoration(hintText: "Enter new SocialMedia Link"),
+          maxLines: 1,
+          decoration: InputDecoration(
+            labelText: "Link",
+            labelStyle: GoogleFonts.castoro(color: Colors.grey),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+            ),
+          ),
         ),
         actions: [
           TextButton(
@@ -587,7 +646,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               _saveLinkSocialMedia(_socialMediaController.text);
               Navigator.pop(context);
             },
-            child: Text("Save",
+            child: Text("Update",
                 style: GoogleFonts.castoro(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -618,6 +677,15 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
     if (pickedFiles.isNotEmpty) {
       List<String> uploadedUrls = [];
 
+      // Show a FlutterToast indicating the upload process has started
+      Fluttertoast.showToast(
+        msg: "Uploading...",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+      );
+
       for (var pickedFile in pickedFiles) {
         final file = File(pickedFile.path);
         final url = await uploadToCloudinary(file);
@@ -628,6 +696,8 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
 
       if (uploadedUrls.isNotEmpty) {
         await saveImageUrlsToFirestore(uploadedUrls);
+
+        // Show a success message after uploading
         Fluttertoast.showToast(
           msg: "Images uploaded successfully!",
           toastLength: Toast.LENGTH_SHORT,
@@ -679,50 +749,152 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ProfileImageWidget(onTap: updateProfileImage),
               const SizedBox(height: 20),
               EditableRow(
-                text: userData != null
-                    ? "Name: ${userData!['first_name']} ${userData!['last_name']}"
-                    : "Welcome".tr(),
-                onEdit: _showEditDialog,
-              ),
+                  text: userData != null
+                      ? "Name: ${userData!['first_name']} ${userData!['last_name']}"
+                      : "Welcome".tr(),
+                  onEdit: _showEditDialog,
+                  icon: FontAwesomeIcons.pencil),
               const ThemedDivider(),
               EditableRow(
-                text: "Main Service: ${userData?['main_service'] ?? 'N/A'}\n"
-                    "Sub Service: ${userData?['sub_service'] ?? 'N/A'}",
-                onEdit: _showEditDialogService,
-              ),
+                  text: "Main Service: ${userData?['main_service'] ?? 'N/A'}\n"
+                      "Sub Service: ${userData?['sub_service'] ?? 'N/A'}",
+                  onEdit: _showEditDialogService,
+                  icon: FontAwesomeIcons.pencil),
               const ThemedDivider(),
               EditableRow(
-                text: "Description : $description",
-                onEdit: _showEditDialogDiscription,
-                maxLines: 20,
-              ),
+                  text: "Description : $description",
+                  onEdit: _showEditDialogDiscription,
+                  maxLines: 20,
+                  icon: FontAwesomeIcons.pencil),
               const ThemedDivider(),
               EditableRow(
-                text: "Phone Number: $phoneNumber",
-                onEdit: _showEditPhoneDialog,
+                  text: "Phone Number: $phoneNumber",
+                  onEdit: _showEditPhoneDialog,
+                  icon: FontAwesomeIcons.pencil),
+              const ThemedDivider(),
+              SizedBox(
+                height: 10,
               ),
+              if (userLocation != null)
+                Container(
+                  height: 130,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: const [
+                      BoxShadow(color: Colors.black12, blurRadius: 4)
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: FlutterMap(
+                      options: MapOptions(
+                        initialCenter: userLocation!,
+                        initialZoom: 15.0,
+                      ),
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                              'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          subdomains: const ['a', 'b', 'c'],
+                        ),
+                        MarkerLayer(
+                          markers: [
+                            Marker(
+                              point: userLocation!,
+                              child: Icon(
+                                Icons.location_pin,
+                                color: ApplicationColor,
+                                size: 40,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF9F4F4),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 4,
+                      offset: Offset(10, 10),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.location_pin,
+                            color: ApplicationColor, size: 30),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            "$area, $street, $building building, apartment no.$apartment",
+                            style: GoogleFonts.castoro(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF676565),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 10,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const GoogleMapDefaultLocationTech(),
+                                ));
+                          },
+                          child: Text(
+                            "Change Your Location".tr(),
+                            style: GoogleFonts.castoro(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: ApplicationColor,
+                              decoration: TextDecoration.underline,
+                              decorationColor: ApplicationColor,
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
               const ThemedDivider(),
               EditableRow(
-                text: "Area: $area \n"
-                    "Street: $street",
-                onEdit: _showEditLocationDialog,
-              ),
+                  text: "Facebook Link: $linkSocialMedia",
+                  onEdit: _showEditDialogSocialMedia,
+                  maxLines: 20,
+                  icon: FontAwesomeIcons.pencil),
               const ThemedDivider(),
               EditableRow(
-                text: "Link SocialMedia : $linkSocialMedia",
-                onEdit: _showEditDialogSocialMedia,
-                maxLines: 20,
-              ),
-              const ThemedDivider(),
-              EditableRow(
-                text: "Upload Work images to PRODUCTS part",
+                text: "Upload images of work",
                 onEdit: _pickAndUploadImages,
                 maxLines: 20,
+                icon: FontAwesomeIcons.image,
               ),
             ],
           ),

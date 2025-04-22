@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget customTextField({
@@ -10,7 +11,8 @@ Widget customTextField({
   String? errorText,
   Function()? onVisibilityToggle,
   bool readOnly = false,
-
+  List<TextInputFormatter>? inputFormatters,
+  String? Function(String?)? validator,
 }) {
   return Column(
     children: [
@@ -19,6 +21,8 @@ Widget customTextField({
         obscureText: obscureText,
         keyboardType: keyboardTypee,
         readOnly: readOnly,
+        inputFormatters: inputFormatters,
+        validator: validator,
         cursorColor: Colors.grey[100],
         decoration: InputDecoration(
           labelText: labelText,

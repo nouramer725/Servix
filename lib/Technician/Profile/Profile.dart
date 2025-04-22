@@ -2,12 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Technician/Profile/Edit%20Profile.dart';
 import 'package:servix/constents/constent.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../Theme/Theme_Provider.dart';
+import 'Profile save screen (ison location).dart';
 
 class ProfileTechnician extends StatefulWidget {
   const ProfileTechnician({super.key});
@@ -27,6 +31,16 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
   int selectedIndex = 0;
   List<String> products = [];
   List<Map<String, dynamic>> reviewData = [];
+  String facebookUrl = '';
+  String phoneNumber = '';
+  String street = "Street not available";
+  String building = "Building not available";
+  String apartment = "Apartment not available";
+  String floor = "Floor not available";
+  String directions = "Directions not available";
+  String label = "Label not available";
+  String area = "Area not available";
+  LatLng? userLocation;
 
   Future<Map<String, dynamic>?> getUserData() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -53,13 +67,18 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
   }
 
   void _fetchDescription() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection('technician')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .doc(uid)
         .get();
+
     if (doc.exists) {
+      final data = doc.data() as Map<String, dynamic>;
       setState(() {
-        description = doc['description'] ?? "No Description Available";
+        description = data.containsKey('description')
+            ? data['description']
+            : "No Description Available";
       });
     }
   }
@@ -75,6 +94,41 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
       setState(() {
         final productList = doc['Products'] as List<dynamic>;
         products = productList.cast<String>();
+      });
+    }
+  }
+
+  Future<void> _launchURL(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final uri = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not call $phoneNumber';
+    }
+  }
+
+  void fetchContactInfo() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final doc = await FirebaseFirestore.instance
+        .collection('technician')
+        .doc(uid)
+        .get();
+
+    if (doc.exists) {
+      final data = doc.data() as Map<String, dynamic>;
+
+      setState(() {
+        facebookUrl = data['LinkSocialMedia'] ?? '';
+        phoneNumber = data['phone'] ?? '';
       });
     }
   }
@@ -95,6 +149,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
         final clientNamee = rating['clientName'];
         final clientLastName = rating['clientLastName'];
         final ratingg = rating['rating'];
+        final comment = rating['comment'];
         final clientImage = rating['clientImage'];
 
         ratingsWithClient.add({
@@ -103,12 +158,115 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
           'clientLastName': clientLastName,
           'rating': ratingg,
           'clientImage': clientImage,
+          'comment': comment,
         });
       }
 
       setState(() {
         reviewData = ratingsWithClient;
       });
+    }
+  }
+
+  Future<void> _deleteImage(String imageUrl) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final docRef = FirebaseFirestore.instance.collection('technician').doc(uid);
+
+    try {
+      await docRef.update({
+        'Products': FieldValue.arrayRemove([imageUrl]),
+      });
+
+      setState(() {
+        products.remove(imageUrl);
+      });
+
+      Fluttertoast.showToast(
+        msg: "Image deleted successfully",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Failed to delete image",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  void _fetchLocationDetails() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("user-files")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("locationDetails")
+        .orderBy("timestamp", descending: true) // Get latest entry
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      var data = querySnapshot.docs.first.data() as Map<String, dynamic>;
+
+      setState(() {
+        street = data['street'] ?? "Street not available";
+        area = data['area'] ?? "Area not available";
+        building = data['building'] ?? "Building not available";
+        apartment = data['apartment'] ?? "Apartment not available";
+        floor = data['floor'] ?? "Floor not available";
+        directions = data['directions'] ?? "Directions not available";
+        label = data['label'] ?? "Label not available";
+        userLocation = LatLng(data['latitude'], data['longitude']);
+      });
+    } else {
+      setState(() {
+        street = "Street not available";
+        area = "Area not available";
+        building = "Building not available";
+        apartment = "Apartment not available";
+        floor = "Floor not available";
+        directions = "Directions not available";
+        label = "Label not available";
+        userLocation = null;
+      });
+    }
+  }
+
+  Future<double> getAverageRating(String technicianId) async {
+    try {
+      // Fetch the technician's document
+      DocumentSnapshot technicianSnapshot = await FirebaseFirestore.instance
+          .collection('technician')
+          .doc(technicianId)
+          .get();
+
+      if (!technicianSnapshot.exists) {
+        return 0.0; // Return 0 if technician document doesn't exist
+      }
+
+      // Get the Ratings array from the document
+      List<dynamic> ratings = technicianSnapshot['Ratings'] ?? [];
+
+      if (ratings.isEmpty) {
+        return 0.0; // Return 0 if there are no ratings
+      }
+
+      // Calculate the sum of all ratings
+      double total = 0.0;
+      for (var rating in ratings) {
+        total += rating['rating']; // Assuming the field name is 'rating'
+      }
+
+      // Return the average rating
+      return total / ratings.length;
+    } catch (e) {
+      print("Error calculating average rating: $e");
+      return 0.0; // Return 0 if an error occurs
     }
   }
 
@@ -119,6 +277,8 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
     _fetchDescription();
     _fetchProducts();
     _fetchRating();
+    fetchContactInfo();
+    _fetchLocationDetails();
   }
 
   @override
@@ -197,7 +357,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 5,
                     style: GoogleFonts.castoro(
-                      fontSize: 25,
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: themeProvider.themeMode == ThemeMode.dark
                           ? Colors.white
@@ -206,6 +366,62 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                   ),
                 ],
               ),
+              FutureBuilder<double>(
+                future:
+                    getAverageRating(FirebaseAuth.instance.currentUser!.uid),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return const Text('Error loading rating');
+                  }
+
+                  final avgRating = snapshot.data ?? 0.0;
+
+                  // Determine how many full, half, and empty stars to show
+                  int fullStars = avgRating.floor();
+                  bool hasHalfStar = (avgRating - fullStars) >= 0.5;
+                  int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Full stars
+                      for (int i = 0; i < fullStars; i++)
+                        Icon(
+                          Icons.star,
+                          color: ApplicationColor,
+                          size: 25,
+                        ),
+                      // Half star (if necessary)
+                      if (hasHalfStar)
+                        Icon(
+                          Icons.star_half,
+                          color: ApplicationColor,
+                          size: 25,
+                        ),
+                      // Empty stars
+                      for (int i = 0; i < emptyStars; i++)
+                        const Icon(
+                          Icons.star_border,
+                          color: Colors.grey,
+                          size: 25,
+                        ),
+                      const SizedBox(width: 10),
+                      // Display the numeric rating value
+                      Text(
+                        avgRating.toStringAsFixed(1),
+                        style: GoogleFonts.castoro(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: ApplicationColor3,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
               userData == null
                   ? CircularProgressIndicator(color: ApplicationColor)
                   : Column(
@@ -248,22 +464,47 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  FaIcon(
-                    FontAwesomeIcons.facebook,
-                    color: Colors.blue[700],
-                    size: 30,
+                  GestureDetector(
+                    onTap: () => _launchURL(facebookUrl),
+                    child: FaIcon(
+                      FontAwesomeIcons.facebook,
+                      color: Colors.blue[700],
+                      size: 35,
+                    ),
                   ),
                   const SizedBox(width: 10),
-                  FaIcon(
-                    FontAwesomeIcons.locationDot,
-                    color: ApplicationColor,
-                    size: 30,
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SaveNewAddressIconLocationInProfile(
+                          areaName: area,
+                          streetName: street,
+                          latitude: userLocation!.latitude,
+                          longitude: userLocation!.longitude,
+                          building: building,
+                          apt: apartment,
+                          floor: floor,
+                          directions: directions,
+                          label: label,
+                        ),
+                      ),
+                    ),
+                    child: FaIcon(
+                      FontAwesomeIcons.locationDot,
+                      color: ApplicationColor,
+                      size: 35,
+                    ),
                   ),
                   const SizedBox(width: 10),
-                  const FaIcon(
-                    FontAwesomeIcons.phone,
-                    color: Colors.green,
-                    size: 30,
+                  GestureDetector(
+                    onTap: () => _makePhoneCall(phoneNumber),
+                    child: const FaIcon(
+                      FontAwesomeIcons.phone,
+                      color: Colors.green,
+                      size: 35,
+                    ),
                   ),
                 ],
               ),
@@ -341,23 +582,80 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                     childAspectRatio: 3 / 2,
                   ),
                   itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        image: DecorationImage(
-                          image: NetworkImage(products[index]),
-                          fit: BoxFit.fill,
-                        ),
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.grey),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
+                    return GestureDetector(
+                      onLongPress: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            backgroundColor:
+                                themeProvider.themeMode == ThemeMode.dark
+                                    ? const Color(0xFF333739)
+                                    : Colors.white,
+                            title: Row(
+                              children: [
+                                Icon(Icons.delete_outlined,
+                                    size: 25, color: ApplicationColor),
+                                const SizedBox(width: 8),
+                                Text("Delete Image".tr(),
+                                    style: GoogleFonts.charisSil(
+                                        color: ApplicationColor3,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            content: Text(
+                                "Are you sure you want to delete this image?"
+                                    .tr(),
+                                style: GoogleFonts.charisSil(
+                                    color: ApplicationColor3, fontSize: 18)),
+                            actions: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text("Cancel".tr(),
+                                        style: GoogleFonts.castoro(
+                                            fontSize: 20,
+                                            color: ApplicationColor3,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  TextButton(
+                                    onPressed: () async {
+                                      Navigator.pop(context); // Close dialog
+                                      await _deleteImage(products[
+                                          index]); // Delete from Firestore
+                                    },
+                                    child: Text("Delete".tr(),
+                                        style: GoogleFonts.castoro(
+                                            fontSize: 20,
+                                            color: ApplicationColor,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          image: DecorationImage(
+                            image: NetworkImage(products[index]),
+                            fit: BoxFit.fill,
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.grey),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -395,20 +693,41 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                     color: Colors.black,
                                   ),
                                 ),
+                                Text(
+                                  review['comment'],
+                                  style: GoogleFonts.castoro(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
                                 const SizedBox(height: 4),
                                 Row(
-                                  children: List.generate(
-                                    5,
-                                    (index) {
-                                      if (index < review['rating']) {
-                                        return const Icon(Icons.star,
-                                            color: Colors.black, size: 22);
-                                      } else {
-                                        return const Icon(Icons.star_border,
-                                            color: Colors.black, size: 22);
-                                      }
-                                    },
-                                  ),
+                                  children: [
+                                    Row(
+                                      children: List.generate(
+                                        5,
+                                        (index) {
+                                          if (index < review['rating']) {
+                                            return const Icon(Icons.star,
+                                                color: Colors.black, size: 22);
+                                          } else {
+                                            return const Icon(Icons.star_border,
+                                                color: Colors.black, size: 22);
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      review['rating'].toString(),
+                                      style: GoogleFonts.castoro(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

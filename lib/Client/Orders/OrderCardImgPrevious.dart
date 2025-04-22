@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Client/technician%20View/rating.dart';
@@ -112,30 +115,85 @@ class OrderCardImgPrevious extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RateTechnicianScreen(
-                                technicianId: orders.technicianId),
-                          ));
-                    },
-                    child: Text(
-                      'Rate ${orders.technicianName}',
-                      style: GoogleFonts.castoro(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : ApplicationColor,
-                        decoration: TextDecoration.underline,
-                        decorationColor:
-                            themeProvider.themeMode == ThemeMode.dark
+                  StreamBuilder<DocumentSnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('technician')
+                        .doc(orders.technicianId)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+
+                      if (snapshot.hasError) {
+                        return Text('Error loading data');
+                      }
+
+                      final technicianData = snapshot.data;
+                      if (technicianData == null || !technicianData.exists) {
+                        return Text('No technician found');
+                      }
+
+                      final data = technicianData.data() as Map<String, dynamic>;
+                      final ratings = data.containsKey('Ratings') ? data['Ratings'] as List : [];
+
+                      final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+
+                      // ✅ Filter by both clientId and serviceId
+                      final userRating = ratings.firstWhere(
+                            (rating) =>
+                        rating['clientId'] == currentUserId &&
+                            rating['serviceId'] == orders.orderId,
+                        orElse: () => null,
+                      );
+
+                      return userRating != null
+                          ? RatingBar.builder(
+                        initialRating: (userRating['rating'] as num).toDouble(),
+                        minRating: 0.5,
+                        allowHalfRating: true,
+                        unratedColor: Colors.grey,
+                        direction: Axis.horizontal,
+                        itemCount: 5,
+                        itemSize: 25,
+                        itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
+                        wrapAlignment: WrapAlignment.center,
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: ApplicationColor,
+                        ),
+                        onRatingUpdate: (rating) {
+                          // Optional: Add update logic
+                        },
+                      )
+                          : GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RateTechnicianScreen(
+                                technicianId: orders.technicianId,
+                                serviceId: orders.orderId,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'Rate ${orders.technicianName}',
+                          style: GoogleFonts.castoro(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: themeProvider.themeMode == ThemeMode.dark
                                 ? Colors.white
                                 : ApplicationColor,
-                      ),
-                    ),
+                            decoration: TextDecoration.underline,
+                            decorationColor: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : ApplicationColor,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -164,9 +222,6 @@ class OrderCardImgPrevious extends StatelessWidget {
                               technicianMain: orders.technicianMain,
                               technicianDescription:
                                   orders.technicianDescription,
-                              // technicianRating: orders.technicianRating,
-                              technicianProducts:
-                                  List<String>.from(orders.technicianProducts),
                               technicianLinkSocialMedia:
                                   orders.technicianLinkSocialMedia,
                             ),

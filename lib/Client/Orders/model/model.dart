@@ -14,8 +14,6 @@ class OrderModel {
   final String technicianSub;
   final String technicianMain;
   final String technicianDescription;
-  // final List<dynamic> technicianRating;
-  final List<dynamic> technicianProducts;
   final String technicianLinkSocialMedia;
 
   const OrderModel({
@@ -34,13 +32,6 @@ class OrderModel {
     required this.technicianSub,
     required this.technicianMain,
     required this.technicianDescription,
-    // required this.technicianRating,
-    required this.technicianProducts,
     required this.technicianLinkSocialMedia,
   });
-  // double get averageRating {
-  //   if (technicianRating.isEmpty) return 0.0;
-  //   final total = technicianRating.fold<double>(0.0, (sum, item) => sum + (item as num).toDouble());
-  //   return total / technicianRating.length;
-  // // }
 }

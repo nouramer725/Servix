@@ -40,10 +40,62 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
     });
   }
 
+  Future<double> getAverageRating(String technicianId) async {
+    try {
+      // Fetch the technician's document
+      DocumentSnapshot technicianSnapshot = await FirebaseFirestore.instance
+          .collection('technician')
+          .doc(technicianId)
+          .get();
+
+      if (!technicianSnapshot.exists) {
+        return 0.0; // Return 0 if technician document doesn't exist
+      }
+
+      // Get the Ratings array from the document
+      List<dynamic> ratings = technicianSnapshot['Ratings'] ?? [];
+
+      if (ratings.isEmpty) {
+        return 0.0; // Return 0 if there are no ratings
+      }
+
+      // Calculate the sum of all ratings
+      double total = 0.0;
+      for (var rating in ratings) {
+        total += rating['rating']; // Assuming the field name is 'rating'
+      }
+
+      // Return the average rating
+      return total / ratings.length;
+    } catch (e) {
+      print("Error calculating average rating: $e");
+      return 0.0; // Return 0 if an error occurs
+    }
+  }
+
+  Future<int> getServiceCount(String technicianId) async {
+    try {
+      final docSnapshot = await FirebaseFirestore.instance
+          .collection('technician')
+          .doc(technicianId)
+          .get();
+
+      if (docSnapshot.exists) {
+        return docSnapshot.data()?['serviceCount'] ?? 0;
+      } else {
+        return 0;
+      }
+    } catch (e) {
+      print('Error fetching service count: $e');
+      return 0;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _loadUserData();
+    getServiceCount(FirebaseAuth.instance.currentUser!.uid);
   }
 
   @override
@@ -104,13 +156,11 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
               const SizedBox(
                 height: 40,
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 150,
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
                         color: themeProvider.themeMode == ThemeMode.dark
                             ? Colors.grey.shade700
@@ -125,27 +175,50 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                           ),
                         ],
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          children: [
-                            Text(
-                              "0",
+                      child: Column(
+                        children: [
+                          FutureBuilder<int>(
+                            future: getServiceCount(
+                                FirebaseAuth.instance.currentUser!.uid),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator(
+                                  color: ApplicationColor,
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text("Error fetching data");
+                              } else if (snapshot.hasData) {
+                                return Text(
+                                  snapshot.data
+                                      .toString(), // Display the serviceCount here
+                                  style: GoogleFonts.castoro(
+                                    fontSize: 40,
+                                    color: const Color(0xFF9A9A9A),
+                                  ),
+                                );
+                              } else {
+                                return Text("0",
+                                    style: GoogleFonts.castoro(
+                                      fontSize: 40,
+                                      color: const Color(0xFF9A9A9A),
+                                    ));
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          Text("Total Jobs",
                               style: GoogleFonts.castoro(
-                                  fontSize: 40, color: const Color(0xFF9A9A9A)),
-                            ),
-                            const SizedBox(height: 10),
-                            Text("Total Jobs",
-                                style: GoogleFonts.castoro(
-                                    fontSize: 16,
-                                    color: const Color(0xFF9A9A9A))),
-                          ],
-                        ),
+                                  fontSize: 16,
+                                  color: const Color(0xFF9A9A9A))),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 15),
-                    Container(
-                      width: 150,
+                  ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
                         color: themeProvider.themeMode == ThemeMode.dark
                             ? Colors.grey.shade700
@@ -160,26 +233,39 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                           ),
                         ],
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                          children: [
-                            Text(
-                              "3.2",
-                              style: GoogleFonts.castoro(
-                                  fontSize: 40, color: const Color(0xFF9A9A9A)),
-                            ),
-                            const SizedBox(height: 10),
-                            Text("Review",
+                      child: Column(
+                        children: [
+                          FutureBuilder<double>(
+                            future: getAverageRating(
+                                FirebaseAuth.instance.currentUser!.uid),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator(
+                                  color: ApplicationColor,
+                                );
+                              } else if (snapshot.hasError) {
+                                return const Text('Error loading rating');
+                              }
+                              final avgRating = snapshot.data ?? 0.0;
+                              return Text(
+                                avgRating.toStringAsFixed(1),
                                 style: GoogleFonts.castoro(
-                                    fontSize: 16,
-                                    color: const Color(0xFF9A9A9A))),
-                          ],
-                        ),
+                                    fontSize: 40,
+                                    color: const Color(0xFF9A9A9A)),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          Text("Rating",
+                              style: GoogleFonts.castoro(
+                                  fontSize: 16,
+                                  color: const Color(0xFF9A9A9A))),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               const SizedBox(height: 40),
               Divider(

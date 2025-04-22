@@ -342,6 +342,18 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
             .delete();
 
         print("✅ Offer deleted for technicianId: $technicianId");
+        fetchOffers(); // Refresh the list of offers
+        setState(() {
+          offers.removeWhere((offer) => offer.technicianId == technicianId);
+        });
+        print("✅ Offers list updated after deletion.");
+
+        // final NotificationServiceTechniciann =
+        //     NotificationServiceTechnician(flutterLocalNotificationsPlugin);
+        // NotificationServiceTechniciann.showAndSaveNotificationTech(
+        //   title: 'Offer Updates!',
+        //   preview: 'Client Rejected your offer',
+        // );
       } else {
         print('🚨 No service found for the given orderId');
       }

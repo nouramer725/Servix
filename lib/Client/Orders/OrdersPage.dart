@@ -133,7 +133,6 @@ class _OrdersPageState extends State<OrdersPage> {
             technicianSub: data['technicianSubService'] ?? '',
             technicianMain: data['technicianMainService'] ?? '',
             technicianDescription: data['technicianDescription'] ?? '',
-            technicianProducts: data['technicianProducts'] ?? [],
             technicianLinkSocialMedia: data['technicianLinkSocialMedia'] ?? '',
             technicianId: data['technicianId'] ?? '',
             orderId: doc.id,

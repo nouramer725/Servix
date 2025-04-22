@@ -63,8 +63,6 @@ class ProcessOrderPage extends StatelessWidget {
               data['technicianSubService'] = offerData['technicianSubService'];
               data['technicianMainService'] = offerData['technicianMainService'];
               data['technicianDescription'] = offerData['technicianDescription'];
-              // data['technicianRating'] = offerData['technicianRating'];
-              data['technicianProducts'] = offerData['technicianProducts'];
               data['technicianLinkSocialMedia'] = offerData['technicianLinkSocialMedia'];
               data['technicianId'] = offerData['technicianId'];
 
@@ -88,8 +86,6 @@ class ProcessOrderPage extends StatelessWidget {
               technicianSub: updatedData['technicianSubService'] ?? '',
               technicianMain: updatedData['technicianMainService'] ?? '',
               technicianDescription: updatedData['technicianDescription'] ?? '',
-              // technicianRating: updatedData['technicianRating'] ??  0.0,
-              technicianProducts: updatedData['technicianProducts'] ?? [],
               technicianLinkSocialMedia: updatedData['technicianLinkSocialMedia'] ?? '',
               technicianId: updatedData['technicianId'] ?? '',
             );

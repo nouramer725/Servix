@@ -9,6 +9,7 @@ class Offer {
   final String area;
   final List<dynamic> rating;
   final String id;
+  final double averageRating;  // Add averageRating field
 
   Offer({
     required this.technicianId,
@@ -19,6 +20,7 @@ class Offer {
     required this.area,
     required this.rating,
     required this.id,
+    required this.averageRating,  // Initialize averageRating in constructor
   });
 
   factory Offer.fromFirestore(DocumentSnapshot doc) {
@@ -37,6 +39,32 @@ class Offer {
       parsedOffer = 0.0;
     }
 
+    // Fetch technician rating based on technicianId
+    double averageRating = 0.0;
+    if (data['technicianId'] != null) {
+      final technicianId = data['technicianId'];
+      FirebaseFirestore.instance
+          .collection('technician')
+          .doc(technicianId)
+          .get()
+          .then((technicianDoc) {
+        if (technicianDoc.exists) {
+          final technicianData = technicianDoc.data() as Map<String, dynamic>;
+
+          if (technicianData['Ratings'] != null && technicianData['Ratings'].isNotEmpty) {
+            double total = 0.0;
+            List<dynamic> ratings = technicianData['Ratings'];
+            for (var rating in ratings) {
+              total += rating['rating'];  // Assuming the field name is 'rating'
+            }
+            averageRating = total / ratings.length;
+          }
+        }
+      }).catchError((error) {
+        print("Error fetching technician's rating: $error");
+      });
+    }
+
     return Offer(
       id: doc.id,
       technicianId: data['technicianId'] ?? '',
@@ -45,7 +73,8 @@ class Offer {
       offer: parsedOffer,
       street: data['technicianLocationStreet'] ?? '',
       area: data['technicianLocationArea'] ?? '',
-      rating: data['technicianRating'] ?? [],
+      rating: data['technicianRating'] ?? [],  // Still storing the rating array, though you can use it for display
+      averageRating: averageRating,  // Store calculated averageRating
     );
   }
 }

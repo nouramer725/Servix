@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,45 @@ class OfferCard extends StatefulWidget {
 }
 
 class _OfferCardState extends State<OfferCard> {
+  Future<double> getAverageRating(String technicianId) async {
+    try {
+      // Fetch the technician's document
+      DocumentSnapshot technicianSnapshot = await FirebaseFirestore.instance
+          .collection('technician')
+          .doc(technicianId)
+          .get();
+
+      if (!technicianSnapshot.exists) {
+        return 0.0; // Return 0 if technician document doesn't exist
+      }
+
+      // Get the Ratings array from the document
+      List<dynamic> ratings = technicianSnapshot['Ratings'] ?? [];
+
+      if (ratings.isEmpty) {
+        return 0.0; // Return 0 if there are no ratings
+      }
+
+      // Calculate the sum of all ratings
+      double total = 0.0;
+      for (var rating in ratings) {
+        total += rating['rating']; // Assuming the field name is 'rating'
+      }
+
+      // Return the average rating
+      return total / ratings.length;
+    } catch (e) {
+      print("Error calculating average rating: $e");
+      return 0.0; // Return 0 if an error occurs
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getAverageRating(widget.offer.technicianId);
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -61,33 +101,60 @@ class _OfferCardState extends State<OfferCard> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      // Row(
-                      //   children: [
-                      //     Text(
-                      //       widget.offer.averageRating.toStringAsFixed(1), // e.g., "4.2"
-                      //       style: GoogleFonts.castoro(
-                      //         fontSize: 12,
-                      //         color: themeProvider.themeMode == ThemeMode.dark
-                      //             ? Colors.white
-                      //             : Colors.black,
-                      //       ),
-                      //     ),
-                      //     const SizedBox(width: 4),
-                      //     Row(
-                      //       children: List.generate(5, (index) {
-                      //         return Icon(
-                      //           index < widget.offer.averageRating.round()
-                      //               ? Icons.star_rate_rounded
-                      //               : Icons.star_outline_rounded,
-                      //           size: 20,
-                      //           color: themeProvider.themeMode == ThemeMode.dark
-                      //               ? Colors.white
-                      //               : Colors.black,
-                      //         );
-                      //       }),
-                      //     ),
-                      //   ],
-                      // )
+                      FutureBuilder<double>(
+                        future: getAverageRating(widget.offer.technicianId),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return const Text('Error loading rating');
+                          }
+
+                          final avgRating = snapshot.data ?? 0.0;
+
+                          // Determine how many full, half, and empty stars to show
+                          int fullStars = avgRating.floor();
+                          bool hasHalfStar = (avgRating - fullStars) >= 0.5;
+                          int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Full stars
+                              for (int i = 0; i < fullStars; i++)
+                                Icon(
+                                  Icons.star,
+                                  color: ApplicationColor,
+                                  size: 20,
+                                ),
+                              // Half star (if necessary)
+                              if (hasHalfStar)
+                                Icon(
+                                  Icons.star_half,
+                                  color: ApplicationColor,
+                                  size: 20,
+                                ),
+                              // Empty stars
+                              for (int i = 0; i < emptyStars; i++)
+                                const Icon(
+                                  Icons.star_border,
+                                  color: Colors.grey,
+                                  size: 20,
+                                ),
+                              const SizedBox(width: 10),
+                              // Display the numeric rating value
+                              Text(
+                                avgRating.toStringAsFixed(1),
+                                style: GoogleFonts.castoro(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: ApplicationColor3,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ],

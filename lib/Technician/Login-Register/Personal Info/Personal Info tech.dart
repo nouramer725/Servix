@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:servix/Components/Buttons.dart';
+import 'package:servix/constents/constent.dart';
 import '../../../Components/TextField for National ID.dart';
 import '../LocationTechnician/Access_Location1.dart';
 
@@ -190,7 +191,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
         msg: "Data uploaded successfully.",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.SNACKBAR,
-        backgroundColor: Colors.green,
+        backgroundColor:ApplicationColorWithOpacity,
         textColor: Colors.white,
       );
 

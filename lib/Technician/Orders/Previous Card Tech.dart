@@ -52,28 +52,6 @@ class PreviousOrderCardTech extends StatelessWidget {
                           maxLines: 2,
                         ),
                       ),
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Text(
-                              orders.Date,
-                              style: GoogleFonts.castoro(
-                                fontSize: 14,
-                                color: isDark ? Colors.white : Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              orders.Time,
-                              style: GoogleFonts.castoro(
-                                fontSize: 14,
-                                color: isDark ? Colors.white : Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -119,6 +97,40 @@ class PreviousOrderCardTech extends StatelessWidget {
                       fontSize: 14,
                       color: isDark ? Colors.white : Colors.black,
                     ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.calendar_today, size: 20,),
+                          const SizedBox(width: 4),
+                          Text(
+                            orders.Date,
+                            style: GoogleFonts.castoro(
+                              fontSize: 14,
+                              color: isDark ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 20),
+                      Row(
+                        children: [
+                          const Icon(Icons.access_time, size: 20),
+                          const SizedBox(width: 4),
+                          Text(
+                            orders.Time,
+                            style: GoogleFonts.castoro(
+                              fontSize: 14,
+                              color: isDark ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),

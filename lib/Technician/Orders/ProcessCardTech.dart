@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -56,28 +57,6 @@ class ProcessOrderCardTech extends StatelessWidget {
                           maxLines: 2,
                         ),
                       ),
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Text(
-                              orders.Date,
-                              style: GoogleFonts.castoro(
-                                fontSize: 14,
-                                color: isDark ? Colors.white : Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              orders.Time,
-                              style: GoogleFonts.castoro(
-                                fontSize: 14,
-                                color: isDark ? Colors.white : Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -124,6 +103,43 @@ class ProcessOrderCardTech extends StatelessWidget {
                       color: isDark ? Colors.white : Colors.black,
                     ),
                   ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.calendar_today,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            orders.Date,
+                            style: GoogleFonts.castoro(
+                              fontSize: 14,
+                              color: isDark ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 20),
+                      Row(
+                        children: [
+                          const Icon(Icons.access_time, size: 20),
+                          const SizedBox(width: 4),
+                          Text(
+                            orders.Time,
+                            style: GoogleFonts.castoro(
+                              fontSize: 14,
+                              color: isDark ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -145,15 +161,27 @@ class ProcessOrderCardTech extends StatelessWidget {
     );
   }
 
-  Future<void> _completeOrder(
-      BuildContext context, OrderModelTech order) async {
+  Future<void> incrementServiceCount(String technicianId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('technician') // Collection: technicians
+          .doc(technicianId) // Document: technicianId
+          .update({
+        'serviceCount': FieldValue.increment(1), // Increment serviceCount by 1
+      });
+    } catch (e) {
+      print("Error incrementing service count: $e");
+    }
+  }
+
+  Future<void> _completeOrder(BuildContext context, OrderModelTech order) async {
     try {
       final docRef = FirebaseFirestore.instance.doc(order.docPath!);
-
       await docRef.update({'Status': 'Finished'});
 
-      Navigator.pop(context);
+      await incrementServiceCount(FirebaseAuth.instance.currentUser!.uid);
 
+      // Show success message
       Fluttertoast.showToast(
         msg: 'Order completed successfully!',
         toastLength: Toast.LENGTH_SHORT,
@@ -162,6 +190,7 @@ class ProcessOrderCardTech extends StatelessWidget {
         textColor: Colors.white,
       );
     } catch (e) {
+      // Handle errors
       Fluttertoast.showToast(
         msg: 'Failed to complete order',
         toastLength: Toast.LENGTH_SHORT,
