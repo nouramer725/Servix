@@ -15,8 +15,7 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isImageOnRight =
-        index.isEven; // Even index → Image on right, Text on left
+    final isEven = index.isEven;
 
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -29,38 +28,43 @@ class CategoryItem extends StatelessWidget {
             color: category.color,
             borderRadius: BorderRadius.circular(20),
           ),
+          // Let Flutter auto-flip in RTL:
           child: Row(
-            children: isImageOnRight
-                ? _buildRowWithImageOnRight() // Even index → Image on right
-                : _buildRowWithImageOnLeft(), // Odd index → Image on left
+            children: isEven
+                ? _buildRowWithImageAtOutside()    // “outside” means trailing in LTR, leading in RTL
+                : _buildRowWithImageAtInside(),    // “inside” means leading in LTR, trailing in RTL
           ),
         ),
       ),
     );
   }
 
-  // Image on the right
-  List<Widget> _buildRowWithImageOnRight() {
+  // Even (outside image)
+  List<Widget> _buildRowWithImageAtOutside() {
     return [
+      // Text first (leading in LTR, trailing in RTL)
       _buildTextContainer(),
+      // Image second (trailing in LTR, leading in RTL)
       _buildImageContainer(
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(20),
-          bottomRight: Radius.circular(20),
+        borderRadius: const BorderRadiusDirectional.only(
+          topEnd: Radius.circular(20),
+          bottomEnd: Radius.circular(20),
         ),
       ),
     ];
   }
 
-  // Image on the left
-  List<Widget> _buildRowWithImageOnLeft() {
+  // Odd (inside image)
+  List<Widget> _buildRowWithImageAtInside() {
     return [
+      // Image first (leading in LTR, trailing in RTL)
       _buildImageContainer(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          bottomLeft: Radius.circular(20),
+        borderRadius: const BorderRadiusDirectional.only(
+          topStart: Radius.circular(20),
+          bottomStart: Radius.circular(20),
         ),
       ),
+      // Text second (trailing in LTR, leading in RTL)
       _buildTextContainer(),
     ];
   }
@@ -74,6 +78,7 @@ class CategoryItem extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           category.categoryname,
           style: GoogleFonts.castoro(
+            fontWeight: FontWeight.bold,
             color: Colors.white,
             fontSize: 28,
           ),
@@ -82,7 +87,7 @@ class CategoryItem extends StatelessWidget {
     );
   }
 
-  Widget _buildImageContainer({required BorderRadius borderRadius}) {
+  Widget _buildImageContainer({required BorderRadiusDirectional borderRadius}) {
     return Expanded(
       child: ClipRRect(
         borderRadius: borderRadius,
@@ -95,3 +100,4 @@ class CategoryItem extends StatelessWidget {
     );
   }
 }
+

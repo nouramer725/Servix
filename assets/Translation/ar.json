@@ -380,5 +380,12 @@
   "Verification email sent": "تم إرسال بريد التحقق الإلكتروني",
   "Email verified successfully": "تم التحقق من البريد الإلكتروني بنجاح",
   "Resend Verification Email": "إعادة إرسال بريد التحقق",
-  "This email address is used before": "هذا البريد الإلكتروني مستخدم من قبل"
+  "This email address is used before": "هذا البريد الإلكتروني مستخدم من قبل",
+  "Home \nService":"خدمات\n منزلية",
+  "Private \nTeaching": "تعليم\n خاص",
+  "Care \nService": "خدمات\n الرعايه",
+  "For \nMen": "للرجال",
+  "For \nWomen": "للنساء",
+  "Devices\nMaintenance": "خدمات\n الصيانة",
+  "Delivery\nService": "خدمات\n التوصيل"
 }

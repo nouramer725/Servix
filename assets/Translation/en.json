@@ -376,5 +376,12 @@
   "Verification email sent": "Verification email sent",
   "Email verified successfully": "Email verified successfully",
   "Resend Verification Email": "Resend Verification Email",
-  "This email address is used before": "This email address is used before"
+  "This email address is used before": "This email address is used before",
+  "Home \nService": "Home \n Service",
+  "Private \nTeaching": "Private \nTeaching",
+  "Care \nService": "Care \nService",
+  "For \nMen": "For \nMen",
+  "For \nWomen": "For \nWomen",
+  "Devices\nMaintenance": "Devices\nMaintenance",
+  "Delivery\nService": "Delivery \nService"
 }

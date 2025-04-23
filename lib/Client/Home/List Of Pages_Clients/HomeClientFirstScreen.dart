@@ -28,38 +28,38 @@ class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
       color: const Color(0xFFE37D3E),
       height: 160,
     ),
-    const Category(
-      categoryname: 'Private \nTeaching',
+    Category(
+      categoryname: 'Private \nTeaching'.tr(),
       image: 'assets/images/home/private_teaching3.png',
       color: Color(0xFFB93434),
       height: 160,
     ),
-    const Category(
-      categoryname: 'Care \nService',
+    Category(
+      categoryname: 'Care \nService'.tr(),
       image: 'assets/images/home/care.png',
       color: Color(0xFFF7C86E),
       height: 160,
     ),
-    const Category(
-      categoryname: 'For \nMen',
+    Category(
+      categoryname: 'For \nMen'.tr(),
       image: 'assets/images/home/man.png',
       color: Color(0xFF305D67),
       height: 160,
     ),
-    const Category(
-      categoryname: 'For \nWomen',
+    Category(
+      categoryname: 'For \nWomen'.tr(),
       image: 'assets/images/home/woman.png',
       color: Color(0xFFC37B7B),
       height: 160,
     ),
-    const Category(
-      categoryname: 'Devices\nMaintenance',
+    Category(
+      categoryname: 'Devices\nMaintenance'.tr(),
       image: 'assets/images/home/devices.png',
-      color: Color(0xFF69B5BB),
+      color: const Color(0xFF69B5BB),
       height: 160,
     ),
-    const Category(
-      categoryname: 'Delivery\nService',
+    Category(
+      categoryname: 'Delivery\nService'.tr(),
       image: 'assets/images/home/delivery.png',
       color: Color(0xFFA52754),
       height: 100,
