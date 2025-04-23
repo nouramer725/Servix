@@ -475,69 +475,72 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
         ),
       ),
       body: pages[selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: selectedIndex,
-        onTap: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications_none_outlined,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white60
-                    : ApplicationColor3),
-            label: "Notifications".tr(),
-            activeIcon: Icon(Icons.notifications, color: ApplicationColor),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_long_outlined,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white60
-                    : ApplicationColor3),
-            label: "Services".tr(),
-            activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white60
-                    : ApplicationColor3),
-            label: "Home".tr(),
-            activeIcon: Icon(Icons.home, color: ApplicationColor),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.groups,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white60
-                    : ApplicationColor3),
-            label: "Community Forum".tr(),
-            activeIcon: Icon(Icons.groups, color: ApplicationColor),
-          ),
-          BottomNavigationBarItem(
-            icon: SizedBox(
-              height: 25, // Set a fixed height for both icons
-              child: Image.asset(
-                themeProvider.themeMode == ThemeMode.dark
-                    ? 'assets/NavigationBar/robot.png'
-                    : 'assets/NavigationBar/robotblack.png',
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: selectedIndex,
+          onTap: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications_none_outlined,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
+              label: "Notifications".tr(),
+              activeIcon: Icon(Icons.notifications, color: ApplicationColor),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.receipt_long_outlined,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
+              label: "Services".tr(),
+              activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
+              label: "Home".tr(),
+              activeIcon: Icon(Icons.home, color: ApplicationColor),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.groups,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white60
+                      : ApplicationColor3),
+              label: "Community Forum".tr(),
+              activeIcon: Icon(Icons.groups, color: ApplicationColor),
+            ),
+            BottomNavigationBarItem(
+              icon: SizedBox(
+                height: 25, // Set a fixed height for both icons
+                child: Image.asset(
+                  themeProvider.themeMode == ThemeMode.dark
+                      ? 'assets/NavigationBar/robot.png'
+                      : 'assets/NavigationBar/robotblack.png',
+                ),
+              ),
+              label: "Ai Chat".tr(),
+              activeIcon: SizedBox(
+                height: 25, // Ensures alignment
+                child: Image.asset(
+                  'assets/NavigationBar/robotcolor.png',
+                ),
               ),
             ),
-            label: "Ai Chat".tr(),
-            activeIcon: SizedBox(
-              height: 25, // Ensures alignment
-              child: Image.asset(
-                'assets/NavigationBar/robotcolor.png',
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

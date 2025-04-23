@@ -559,7 +559,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
       ),
       body: pages[selectedIndex],
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 5, right: 5),
+        padding: const EdgeInsets.only(left: 8, right: 8),
         child: BottomNavigationBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
