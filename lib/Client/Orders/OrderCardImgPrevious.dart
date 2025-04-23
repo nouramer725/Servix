@@ -152,25 +152,16 @@ class OrderCardImgPrevious extends StatelessWidget {
                       );
 
                       return userRating != null
-                          ? RatingBar.builder(
-                              initialRating:
-                                  (userRating['rating'] as num).toDouble(),
-                              minRating: 0.5,
-                              allowHalfRating: true,
-                              unratedColor: Colors.grey,
-                              direction: Axis.horizontal,
-                              itemCount: 5,
-                              itemSize: 25,
-                              itemPadding:
-                                  const EdgeInsets.symmetric(horizontal: 1.0),
-                              wrapAlignment: WrapAlignment.center,
-                              itemBuilder: (context, _) => Icon(
+                          ? RatingBarIndicator(
+                              rating: (userRating['rating'] as num).toDouble(),
+                              itemBuilder: (context, index) => Icon(
                                 Icons.star,
                                 color: ApplicationColor,
                               ),
-                              onRatingUpdate: (rating) {
-                                // Optional: Add update logic
-                              },
+                              itemCount: 5,
+                              itemSize: 25.0,
+                              unratedColor: Colors.grey,
+                              direction: Axis.horizontal,
                             )
                           : GestureDetector(
                               onTap: () {
