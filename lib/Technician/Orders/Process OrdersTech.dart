@@ -131,7 +131,8 @@ class ProcessOrderTechPage extends StatelessWidget {
           FName: data['firstName'] ?? 'Unknown',
           LName: data['lastName'] ?? 'Unknown',
           docPath: doc.reference.path,
-          previousOffer: offerValue, // This is where the price is assigned
+          previousOffer: offerValue,
+          Status: data['Status'] ?? 'Unknown',
         ));
       }
     }

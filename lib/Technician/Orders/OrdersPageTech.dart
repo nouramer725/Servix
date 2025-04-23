@@ -181,6 +181,7 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
                 LName: data['lastName'] ?? 'Unknown',
                 docPath: doc.reference.path,
                 previousOffer: data['technicianOffer'],
+                Status: data['Status'] ?? 'Pending',
               );
             }).toList();
 

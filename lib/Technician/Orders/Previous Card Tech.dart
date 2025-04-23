@@ -99,6 +99,14 @@ class PreviousOrderCardTech extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
+                  Text(
+                    'Status : ${orders.Status}',
+                    style: GoogleFonts.castoro(
+                      fontSize: 14,
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
                       Row(

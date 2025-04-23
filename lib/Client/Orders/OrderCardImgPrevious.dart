@@ -134,65 +134,73 @@ class OrderCardImgPrevious extends StatelessWidget {
                         return Text('No technician found');
                       }
 
-                      final data = technicianData.data() as Map<String, dynamic>;
-                      final ratings = data.containsKey('Ratings') ? data['Ratings'] as List : [];
+                      final data =
+                          technicianData.data() as Map<String, dynamic>;
+                      final ratings = data.containsKey('Ratings')
+                          ? data['Ratings'] as List
+                          : [];
 
-                      final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+                      final currentUserId =
+                          FirebaseAuth.instance.currentUser?.uid;
 
                       // ✅ Filter by both clientId and serviceId
                       final userRating = ratings.firstWhere(
-                            (rating) =>
-                        rating['clientId'] == currentUserId &&
+                        (rating) =>
+                            rating['clientId'] == currentUserId &&
                             rating['serviceId'] == orders.orderId,
                         orElse: () => null,
                       );
 
                       return userRating != null
                           ? RatingBar.builder(
-                        initialRating: (userRating['rating'] as num).toDouble(),
-                        minRating: 0.5,
-                        allowHalfRating: true,
-                        unratedColor: Colors.grey,
-                        direction: Axis.horizontal,
-                        itemCount: 5,
-                        itemSize: 25,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 1.0),
-                        wrapAlignment: WrapAlignment.center,
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: ApplicationColor,
-                        ),
-                        onRatingUpdate: (rating) {
-                          // Optional: Add update logic
-                        },
-                      )
-                          : GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RateTechnicianScreen(
-                                technicianId: orders.technicianId,
-                                serviceId: orders.orderId,
+                              initialRating:
+                                  (userRating['rating'] as num).toDouble(),
+                              minRating: 0.5,
+                              allowHalfRating: true,
+                              unratedColor: Colors.grey,
+                              direction: Axis.horizontal,
+                              itemCount: 5,
+                              itemSize: 25,
+                              itemPadding:
+                                  const EdgeInsets.symmetric(horizontal: 1.0),
+                              wrapAlignment: WrapAlignment.center,
+                              itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: ApplicationColor,
                               ),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'Rate ${orders.technicianName}',
-                          style: GoogleFonts.castoro(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : ApplicationColor,
-                            decoration: TextDecoration.underline,
-                            decorationColor: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : ApplicationColor,
-                          ),
-                        ),
-                      );
+                              onRatingUpdate: (rating) {
+                                // Optional: Add update logic
+                              },
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => RateTechnicianScreen(
+                                      technicianId: orders.technicianId,
+                                      serviceId: orders.orderId,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Rate ${orders.technicianName}',
+                                style: GoogleFonts.castoro(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : ApplicationColor,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : ApplicationColor,
+                                ),
+                              ),
+                            );
                     },
                   ),
                 ],

@@ -21,7 +21,7 @@ class PreviousOrderPage extends StatelessWidget {
           .collection('Services Requests')
           .doc(user.uid)
           .collection('user-services')
-          .where('Status', isEqualTo: 'Finished')
+          .where('Status', whereIn: ['Finished', 'Cancelled'])
           .get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

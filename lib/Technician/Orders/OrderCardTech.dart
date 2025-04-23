@@ -339,6 +339,14 @@ class OrderCardTech extends StatelessWidget {
                     color: isDark ? Colors.white : Colors.black,
                   ),
                 ),
+                const SizedBox(height: 4),
+                Text(
+                  'Status : ${orders.Status}',
+                  style: GoogleFonts.castoro(
+                    fontSize: 14,
+                    color: isDark ? Colors.white : Colors.black,
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,

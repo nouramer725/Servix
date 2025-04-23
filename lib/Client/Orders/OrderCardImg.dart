@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Components/Buttons.dart';
 import '../../Theme/Theme_Provider.dart';
+import '../../constents/constent.dart';
 import '../technician View/Profile tech.dart';
 import 'model/model.dart';
 
@@ -109,6 +114,17 @@ class OrderCardImg extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      GradientButtonOffer(
+                          onPressed: () async {
+                            await CancelOrder(context, orders);
+                          },
+                          text: "Cancel",
+                          font: 20),
+                    ],
+                  )
                 ],
               ),
               Positioned(
@@ -174,4 +190,53 @@ class OrderCardImg extends StatelessWidget {
       ),
     );
   }
+
+  Future<void> CancelOrder(BuildContext context, OrderModel order) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      final uid = user!.uid;
+
+      await FirebaseFirestore.instance
+          .collection('Services Requests')
+          .doc(uid)
+          .collection('user-services')
+          .doc(order.orderId)
+          .update({'Status': 'Cancelled'});
+
+      Fluttertoast.showToast(
+        msg: "Order cancelled!".tr(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Failed to cancel order: $e",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+  // Future<void> CancelOrder(BuildContext context, OrderModel order) async {
+  //   try {
+  //     final user = FirebaseFirestore.instance; // if using FirebaseAuth, get current user from FirebaseAuth.instance.currentUser
+  //     final uid = order.userId; // Make sure your OrderModel has `userId` (used in path)
+  //
+  //     await FirebaseFirestore.instance
+  //         .collection('Services Requests')
+  //         .doc(uid)
+  //         .collection('user-services')
+  //         .doc(order.id) // Make sure your OrderModel has an `id` field
+  //         .update({'Status': 'Cancelled'});
+  //
+  //     Fluttertoast.showToast(msg: "Order cancelled successfully".tr());
+  //   } catch (e) {
+  //     Fluttertoast.showToast(msg: "Failed to cancel order: $e");
+  //   }
+  // }
 }

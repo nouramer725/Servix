@@ -104,6 +104,14 @@ class ProcessOrderCardTech extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
+                  Text(
+                    'Status : ${orders.Status}',
+                    style: GoogleFonts.castoro(
+                      fontSize: 14,
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
                   Row(
                     children: [
                       Row(
@@ -140,15 +148,27 @@ class ProcessOrderCardTech extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      GradientButtonOffer(
-                        text: "Complete",
-                        onPressed: () async {
-                          await _completeOrder(context, orders);
-                        },
-                        font: 18,
+                      Expanded(
+                        child: WhiteButtonOffer(
+                          text: "Cancel",
+                          onPressed: () async {
+                            await CancelOrder(context, orders);
+                          },
+                          font: 18,
+                        ),
+                      ),
+                      Expanded(
+                        child: GradientButtonOffer(
+                          text: "Complete",
+                          onPressed: () async {
+                            await _completeOrder(context, orders);
+                          },
+                          font: 18,
+                        ),
                       ),
                     ],
                   )
@@ -174,7 +194,8 @@ class ProcessOrderCardTech extends StatelessWidget {
     }
   }
 
-  Future<void> _completeOrder(BuildContext context, OrderModelTech order) async {
+  Future<void> _completeOrder(
+      BuildContext context, OrderModelTech order) async {
     try {
       final docRef = FirebaseFirestore.instance.doc(order.docPath!);
       await docRef.update({'Status': 'Finished'});
@@ -188,6 +209,7 @@ class ProcessOrderCardTech extends StatelessWidget {
         gravity: ToastGravity.BOTTOM,
         backgroundColor: ApplicationColorWithOpacity,
         textColor: Colors.white,
+        fontSize: 16.0,
       );
     } catch (e) {
       // Handle errors
@@ -197,6 +219,33 @@ class ProcessOrderCardTech extends StatelessWidget {
         gravity: ToastGravity.BOTTOM,
         backgroundColor: ApplicationColorWithOpacity,
         textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  Future<void> CancelOrder(BuildContext context, OrderModelTech order) async {
+    try {
+      final docRef = FirebaseFirestore.instance.doc(order.docPath!);
+      await docRef.update({'Status': 'Cancelled'});
+
+      // Show success message
+      Fluttertoast.showToast(
+        msg: 'Order Cancelled!',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Failed to cancel order',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 16.0,
       );
     }
   }

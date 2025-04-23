@@ -35,8 +35,7 @@ class FinishedOrderTechPage extends StatelessWidget {
           return FutureBuilder<QuerySnapshot>(
             future: FirebaseFirestore.instance
                 .collectionGroup('user-services')
-                .where('Status',
-                    isEqualTo: 'Finished') // Status is 'Finished' now
+                .where('Status', whereIn: ['Finished', 'Cancelled'])
                 .where('serviceTitle', isEqualTo: technicianSubservice)
                 .get(),
             builder: (context, snapshot) {
@@ -133,7 +132,8 @@ class FinishedOrderTechPage extends StatelessWidget {
           FName: data['firstName'] ?? 'Unknown',
           LName: data['lastName'] ?? 'Unknown',
           docPath: doc.reference.path,
-          previousOffer: offerValue, // This is where the price is assigned
+          previousOffer: offerValue,
+          Status: data['Status'] ?? 'Unknown',
         ));
       }
     }
