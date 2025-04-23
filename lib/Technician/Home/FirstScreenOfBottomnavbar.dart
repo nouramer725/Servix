@@ -104,7 +104,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Center(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               GestureDetector(

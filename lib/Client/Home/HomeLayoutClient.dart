@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Client/AIClient/Intro.dart';
@@ -475,81 +476,8 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                   }),
                   _buildMenuItem(Icons.delete, "Delete Account".tr(),
                       onTap: () {
-                    showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        backgroundColor:
-                            themeProvider.themeMode == ThemeMode.dark
-                                ? const Color(0xFF333739)
-                                : Colors.white,
-                        title: Row(
-                          children: [
-                            Icon(Icons.delete,
-                                size: 25,
-                                color: themeProvider.themeMode == ThemeMode.dark
-                                    ? Colors.white
-                                    : ApplicationColor),
-                            const SizedBox(width: 8),
-                            Text("Delete Account".tr(),
-                                style: GoogleFonts.castoro(
-                                    color: themeProvider.themeMode ==
-                                            ThemeMode.dark
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                        content: Text(
-                            "Are you sure you want to delete your account?"
-                                .tr(),
-                            style: GoogleFonts.castoro(
-                                color: themeProvider.themeMode == ThemeMode.dark
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 18)),
-                        actions: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Text("Cancel".tr(),
-                                    style: GoogleFonts.castoro(
-                                        fontSize: 20,
-                                        color: themeProvider.themeMode ==
-                                                ThemeMode.dark
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                              const SizedBox(width: 8),
-                              TextButton(
-                                onPressed: () {
-                                  _deleteAccount(context);
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const OnboardingScreen(),
-                                    ),
-                                    (route) => false,
-                                  );
-                                },
-                                child: Text("Delete".tr(),
-                                    style: GoogleFonts.castoro(
-                                        fontSize: 20,
-                                        color: themeProvider.themeMode ==
-                                                ThemeMode.dark
-                                            ? Colors.redAccent
-                                            : ApplicationColor,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
+                    Navigator.pop(context);
+                    _showPasswordDialog(context);
                   }),
                 ],
               ),
@@ -650,6 +578,115 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
     );
   }
 
+  void _showPasswordDialog(BuildContext context) {
+    final TextEditingController passwordController = TextEditingController();
+    var themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
+        title: Text(
+          "Confirm Password",
+          style: GoogleFonts.castoro(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("Please enter your password to confirm deletion:",
+                  style: GoogleFonts.castoro(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: ApplicationColor3,
+                  )),
+              const SizedBox(height: 10),
+              TextField(
+                controller: passwordController,
+                keyboardType: TextInputType.visiblePassword,
+                textInputAction: TextInputAction.done,
+                autocorrect: false,
+                obscureText: false,
+                decoration: InputDecoration(
+                  labelText: "Password",
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  floatingLabelAlignment: FloatingLabelAlignment.start,
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  labelStyle: GoogleFonts.castoro(color: Colors.grey),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("Cancel",
+                style: GoogleFonts.castoro(
+                  color: ApplicationColor3,
+                  fontSize: 16,
+                )),
+          ),
+          TextButton(
+            onPressed: () async {
+              final password = passwordController.text.trim();
+              final user = FirebaseAuth.instance.currentUser;
+
+              if (user != null && user.email != null) {
+                final cred = EmailAuthProvider.credential(
+                  email: user.email!,
+                  password: password,
+                );
+
+                try {
+                  await user.reauthenticateWithCredential(cred);
+                  Navigator.pop(context);
+                  _showFinalDeleteDialog(context, themeProvider);
+                  Fluttertoast.showToast(
+                    msg: "Correct password",
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.TOP,
+                    backgroundColor: ApplicationColorWithOpacity,
+                    textColor: Colors.white,
+                    fontSize: 16.0,
+                  );
+                } catch (e) {
+                  Fluttertoast.showToast(
+                    msg: "Wrong password. Account not deleted.",
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.TOP,
+                    backgroundColor: ApplicationColorWithOpacity,
+                    textColor: Colors.white,
+                    fontSize: 16.0,
+                  );
+                }
+              }
+            },
+            child: Text("Confirm",
+                style:
+                    GoogleFonts.castoro(fontSize: 16, color: ApplicationColor)),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _deleteAccount(BuildContext context) async {
     User? user = FirebaseAuth.instance.currentUser;
 
@@ -727,6 +764,78 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
       // Delete authentication
       await FirebaseAuth.instance.currentUser?.delete();
     }
+  }
+
+  void _showFinalDeleteDialog(
+      BuildContext context, ThemeProvider themeProvider) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
+        title: Row(
+          children: [
+            Icon(Icons.delete,
+                size: 25,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : ApplicationColor),
+            const SizedBox(width: 8),
+            Text("Delete Account".tr(),
+                style: GoogleFonts.castoro(
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black,
+                    fontWeight: FontWeight.bold)),
+          ],
+        ),
+        content: Text("Are you sure you want to delete your account?".tr(),
+            style: GoogleFonts.castoro(
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black,
+                fontSize: 18)),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Cancel".tr(),
+                    style: GoogleFonts.castoro(
+                        fontSize: 20,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                        fontWeight: FontWeight.bold)),
+              ),
+              const SizedBox(width: 8),
+              TextButton(
+                onPressed: () async {
+                  _deleteAccount(context);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OnboardingScreen(),
+                    ),
+                    (route) => false,
+                  );
+                },
+                child: Text("Delete".tr(),
+                    style: GoogleFonts.castoro(
+                        fontSize: 20,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.redAccent
+                            : ApplicationColor,
+                        fontWeight: FontWeight.bold)),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _saveLocale(Locale locale) async {
