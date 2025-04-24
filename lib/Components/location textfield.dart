@@ -34,10 +34,15 @@ class CustomTextFormFieldLocation extends StatelessWidget {
             initialValue: controller == null ? initialValue : null, // Ensure one is used
             obscureText: obscureText,
             readOnly: readOnly,
+            style: GoogleFonts.castoro(
+              fontSize: 17,
+              fontWeight: FontWeight.w400,
+              color: Colors.black,
+            ),
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
               labelText: label,
-              labelStyle: GoogleFonts.inter(
+              labelStyle: GoogleFonts.castoro(
                 fontSize: 17,
                 fontWeight: FontWeight.w400,
                 color: Colors.black.withOpacity(0.22),

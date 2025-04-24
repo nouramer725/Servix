@@ -57,15 +57,15 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                 final userLiked = usersLiked
                     .any((likedUser) => likedUser['id'] == currentUser?.uid);
 
-                return Card(
+                return Container(
                   margin: const EdgeInsets.all(10),
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
+                  decoration: BoxDecoration(
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? const Color(0xFF333739)
+                        : Colors.white,
                     borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey),
                   ),
-                  color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.grey[500]
-                      : Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Column(
@@ -76,17 +76,22 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                           children: [
                             Row(
                               children: [
-                                CircleAvatar(
-                                  backgroundColor: Colors.grey[400],
+                                const CircleAvatar(
                                   radius: 20,
-                                  child: const Icon(Icons.person,
-                                      size: 25, color: Colors.white),
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: NetworkImage(
+                                      "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
+                                      scale: 50),
                                 ),
                                 const SizedBox(width: 10),
                                 Text(data['username'] ?? 'Anonymous',
                                     style: GoogleFonts.castoro(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 22)),
+                                        fontSize: 22,
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.white
+                                            : Colors.black)),
                               ],
                             ),
                             PopupMenuButton<String>(
@@ -134,11 +139,11 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                           child: Text('Cancel'.tr(),
                                               style: GoogleFonts.castoro(
                                                   fontSize: 20,
-                                                color: themeProvider.themeMode ==
-                                                    ThemeMode.dark
-                                                    ? Colors.white
-                                                    : Colors.black
-                                              )),
+                                                  color:
+                                                      themeProvider.themeMode ==
+                                                              ThemeMode.dark
+                                                          ? Colors.white
+                                                          : Colors.black)),
                                         ),
                                         TextButton(
                                           onPressed: () =>
@@ -213,7 +218,10 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                         const SizedBox(height: 6),
                         Text("${data['content'] ?? ''}",
                             style: GoogleFonts.castoro(
-                                fontSize: 18, color: Colors.black54)),
+                                fontSize: 18,
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black)),
                         if (data['imageUrls'] != null &&
                             (data['imageUrls'] as List).isNotEmpty)
                           SizedBox(
@@ -249,10 +257,21 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                     children: [
                                       Icon(
                                         Icons.favorite,
-                                        color: ApplicationColor,
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? ApplicationColor6
+                                            : ApplicationColor,
                                       ),
                                       const SizedBox(width: 4),
-                                      Text('$likes'),
+                                      Text(
+                                        '$likes',
+                                        style: GoogleFonts.castoro(
+                                            fontSize: 16,
+                                            color: themeProvider.themeMode ==
+                                                    ThemeMode.dark
+                                                ? Colors.white
+                                                : Colors.black),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -270,11 +289,27 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                     .snapshots(),
                                 builder: (context, commentSnap) {
                                   if (!commentSnap.hasData) {
-                                    return const Text("0 comments");
+                                    return Text(
+                                      "0 comments",
+                                      style: GoogleFonts.castoro(
+                                          fontSize: 16,
+                                          color: themeProvider.themeMode ==
+                                                  ThemeMode.dark
+                                              ? Colors.white
+                                              : Colors.black),
+                                    );
                                   }
                                   final commentCount =
                                       commentSnap.data!.docs.length;
-                                  return Text('$commentCount comments');
+                                  return Text(
+                                    '$commentCount comments',
+                                    style: GoogleFonts.castoro(
+                                        fontSize: 16,
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.white
+                                            : Colors.black),
+                                  );
                                 },
                               ),
                             ),
@@ -298,13 +333,24 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                           : Icons.favorite_border,
                                       size: 20,
                                       color: userLiked
-                                          ? ApplicationColor
-                                          : Colors.grey,
+                                          ? themeProvider.themeMode ==
+                                                  ThemeMode.dark
+                                              ? ApplicationColor6
+                                              : ApplicationColor
+                                          : themeProvider.themeMode ==
+                                                  ThemeMode.dark
+                                              ? Colors.white
+                                              : Colors.grey,
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
                                       "Love",
-                                      style: GoogleFonts.castoro(fontSize: 16),
+                                      style: GoogleFonts.castoro(
+                                          fontSize: 16,
+                                          color: themeProvider.themeMode ==
+                                                  ThemeMode.dark
+                                              ? Colors.white
+                                              : Colors.black),
                                     ),
                                   ],
                                 ),
@@ -320,13 +366,17 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                     Icon(Icons.mode_comment_outlined,
                                         color: themeProvider.themeMode ==
                                                 ThemeMode.dark
-                                            ? Colors.black54
+                                            ? Colors.white
                                             : Colors.grey,
                                         size: 20),
                                     const SizedBox(width: 4),
                                     Text("Comment",
-                                        style:
-                                            GoogleFonts.castoro(fontSize: 16)),
+                                        style: GoogleFonts.castoro(
+                                            fontSize: 16,
+                                            color: themeProvider.themeMode ==
+                                                    ThemeMode.dark
+                                                ? Colors.white
+                                                : Colors.black)),
                                   ],
                                 ),
                               ),
@@ -341,13 +391,17 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                     Icon(Icons.reply,
                                         color: themeProvider.themeMode ==
                                                 ThemeMode.dark
-                                            ? Colors.black54
+                                            ? Colors.white
                                             : Colors.grey,
                                         size: 20),
                                     const SizedBox(width: 4),
                                     Text("Share",
-                                        style:
-                                            GoogleFonts.castoro(fontSize: 16)),
+                                        style: GoogleFonts.castoro(
+                                            fontSize: 16,
+                                            color: themeProvider.themeMode ==
+                                                    ThemeMode.dark
+                                                ? Colors.white
+                                                : Colors.black)),
                                   ],
                                 ),
                               ),
@@ -374,15 +428,23 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
   List<File> _selectedImages = [];
 
   void _showPostUploadDialog(BuildContext context) {
+    final themeProvider =
+        Provider.of<ThemeProvider>(context, listen: false); // Set listen: false
     final TextEditingController _contentController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
-            title:
-                Text('Create a Post', style: GoogleFonts.castoro(fontSize: 30)),
+            backgroundColor: themeProvider.themeMode == ThemeMode.dark
+                ? const Color(0xFF333739)
+                : Colors.white,
+            title: Text('Create a Post',
+                style: GoogleFonts.castoro(
+                    fontSize: 30,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black)),
             content: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -391,14 +453,38 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                   TextField(
                     controller: _contentController,
                     keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.done,
                     autocorrect: true,
                     enableSuggestions: true,
                     textCapitalization: TextCapitalization.sentences,
                     autofocus: true,
-                    decoration: const InputDecoration(
+                    cursorColor: Colors.grey[100],
+                    decoration: InputDecoration(
                       hintText: "What's on your mind?",
+                      hintStyle: GoogleFonts.castoro(
+                        fontSize: 17,
+                        color: Colors.grey,
+                      ),
+                      focusColor: Colors.grey,
+                      fillColor: Colors.grey,
+                      border: const UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      focusedBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 2,
+                        ),
+                      ),
                     ),
-                    style: GoogleFonts.castoro(fontSize: 20),
+                    style: GoogleFonts.castoro(
+                      fontSize: 20,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
                     maxLines: 2,
                   ),
                   const SizedBox(height: 10),
@@ -428,15 +514,18 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                     },
                     icon: Icon(
                       Icons.image,
-                      color: ApplicationColor,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : ApplicationColor,
                       size: 20,
                     ),
                     label: Text(
                       "Add Image",
                       style: GoogleFonts.castoro(
-                        color: ApplicationColor,
-                        fontSize: 20,
-                      ),
+                          fontSize: 20,
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.white
+                              : ApplicationColor),
                     ),
                   ),
                 ],
@@ -450,8 +539,11 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                   _selectedImages.clear(); // Clear selected images
                 },
                 child: Text('Cancel',
-                    style:
-                        GoogleFonts.castoro(color: Colors.black, fontSize: 23)),
+                    style: GoogleFonts.castoro(
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                        fontSize: 23)),
               ),
               TextButton(
                 onPressed: () {
@@ -459,7 +551,10 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                 },
                 child: Text('Post',
                     style: GoogleFonts.castoro(
-                        fontSize: 23, color: ApplicationColor)),
+                        fontSize: 24,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : ApplicationColor)),
               ),
             ],
           );
@@ -636,6 +731,8 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
   }
 
   Widget _buildCommentsInBottomSheet(String postId) {
+    final themeProvider =
+        Provider.of<ThemeProvider>(context, listen: false); // Set listen: false
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('community_posts')
@@ -644,7 +741,16 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
           .orderBy('timestamp', descending: false)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Text("Loading comments...");
+        if (!snapshot.hasData) {
+          return Text(
+            "Loading comments...",
+            style: GoogleFonts.castoro(
+                fontSize: 25,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black),
+          );
+        }
 
         final comments = snapshot.data!.docs;
 
@@ -676,12 +782,12 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                         );
                       }
                       return const CircleAvatar(
-                        backgroundColor: Colors.black26,
+                        backgroundColor: Colors.grey,
                         radius: 20,
                         child: Icon(
                           Icons.person,
                           size: 25,
-                          color: Colors.grey,
+                          color: Colors.white,
                         ),
                       );
                     },
@@ -691,16 +797,10 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.grey[200],
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? const Color(0xFF333739)
+                            : Colors.white,
                         border: Border.all(color: Colors.grey),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 1,
-                            blurRadius: 3,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
@@ -709,14 +809,21 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                           Text(
                             "${commentData['username'] ?? 'User'}",
                             style: GoogleFonts.castoro(
-                                fontSize: 17, fontWeight: FontWeight.bold),
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 10,
                           ),
                           Text(
                             "${commentData['text'] ?? ''}",
                             style: GoogleFonts.castoro(
-                                fontSize: 15, color: Colors.black54),
+                                fontSize: 15,
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 10,
                           ),
@@ -734,6 +841,8 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
   }
 
   Widget _buildCommentInput(String postId) {
+    final themeProvider =
+        Provider.of<ThemeProvider>(context, listen: false); // Set listen: false
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -741,13 +850,15 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
           child: TextFormField(
             controller: _commentController,
             keyboardType: TextInputType.multiline,
+            textInputAction: TextInputAction.done,
             decoration: InputDecoration(
               labelText: "Add a comment",
-              labelStyle: GoogleFonts.inter(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                color: Colors.black.withOpacity(0.31),
-              ),
+              labelStyle: GoogleFonts.castoro(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black.withOpacity(0.31)),
               enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
               ),
@@ -763,7 +874,10 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
         ),
         const SizedBox(width: 10),
         IconButton(
-          icon: Icon(Icons.send, color: ApplicationColor),
+          icon: Icon(Icons.send,
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : ApplicationColor),
           onPressed: () => _addComment(postId),
         ),
       ],
@@ -820,12 +934,15 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
   }
 
   void _showCommentsBottomSheet(BuildContext context, String postId) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       clipBehavior: Clip.antiAlias,
-      backgroundColor: Colors.white,
+      backgroundColor: themeProvider.themeMode == ThemeMode.dark
+          ? const Color(0xFF333739)
+          : Colors.white,
       isDismissible: true,
       enableDrag: true,
       elevation: 10,
@@ -845,11 +962,16 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
               children: [
                 Text("Comments",
                     style: GoogleFonts.castoro(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: ApplicationColor,
-                      decoration: TextDecoration.underline,
-                    )),
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : ApplicationColor,
+                        decoration: TextDecoration.underline,
+                        decorationColor:
+                            themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : ApplicationColor)),
                 const SizedBox(height: 10),
                 _buildCommentInput(postId),
                 const SizedBox(height: 10),

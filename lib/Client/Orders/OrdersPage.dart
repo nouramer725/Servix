@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:servix/Client/Orders/Process%20Orders.dart';
 import 'package:servix/constents/constent.dart';
 import '../../Components/OrderGradientButton.dart';
 import '../../Components/OrderWhiteButton.dart';
+import '../../Theme/Theme_Provider.dart';
 import 'OrderCard.dart';
 import 'PreviousOrderPage.dart';
 import 'model/model.dart';
@@ -90,6 +93,7 @@ class _OrdersPageState extends State<OrdersPage> {
   }
 
   Widget _currentOrders() {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
@@ -113,7 +117,12 @@ class _OrdersPageState extends State<OrdersPage> {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('No current orders found.'));
+          return Center(child: Text('No current orders found.',style:  GoogleFonts.castoro(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Colors.black,)));
         }
 
         final orders = snapshot.data!.docs.map((doc) {

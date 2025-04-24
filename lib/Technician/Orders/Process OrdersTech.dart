@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:servix/Technician/Orders/model/modelTech.dart';
 import 'package:servix/constents/constent.dart';
+import '../../Theme/Theme_Provider.dart';
 import 'ProcessCardTech.dart';
 
 class ProcessOrderTechPage extends StatelessWidget {
@@ -10,6 +13,8 @@ class ProcessOrderTechPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
@@ -54,7 +59,13 @@ class ProcessOrderTechPage extends StatelessWidget {
             final docs = snapshot.data!.docs;
 
             if (docs.isEmpty) {
-              return const Center(child: Text('No orders available'));
+              return Center(
+                  child: Text('No Processing orders available',
+                      style: GoogleFonts.castoro(
+                        fontSize: 20,
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.white
+                              : Colors.black)));
             }
 
             return FutureBuilder<List<OrderModelTech>>(

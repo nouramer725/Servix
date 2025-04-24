@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import '../../Theme/Theme_Provider.dart';
 import '../../constents/constent.dart';
-import 'OrderCard.dart';
 import 'OrderCardImg.dart';
 import 'model/model.dart';
 
@@ -11,6 +13,7 @@ class ProcessOrderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
@@ -35,7 +38,16 @@ class ProcessOrderPage extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('No Processing orders found.'));
+          return Center(
+              child: Text('No Processing orders found.',
+                  style: GoogleFonts.castoro(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : Colors.black)
+              )
+          );
         }
 
         final orders = snapshot.data!.docs.map((doc) {
@@ -57,15 +69,19 @@ class ProcessOrderPage extends StatelessWidget {
               final offerData = offerSnapshot.docs.first.data();
               data['technicianImage'] = offerData['technicianImage'];
               data['technicianName'] = offerData['technicianName'];
-              data['technicianLocationArea'] = offerData['technicianLocationArea'];
-              data['technicianLocationStreet'] = offerData['technicianLocationStreet'];
+              data['technicianLocationArea'] =
+                  offerData['technicianLocationArea'];
+              data['technicianLocationStreet'] =
+                  offerData['technicianLocationStreet'];
               data['technicianPhone'] = offerData['technicianPhone'];
               data['technicianSubService'] = offerData['technicianSubService'];
-              data['technicianMainService'] = offerData['technicianMainService'];
-              data['technicianDescription'] = offerData['technicianDescription'];
-              data['technicianLinkSocialMedia'] = offerData['technicianLinkSocialMedia'];
+              data['technicianMainService'] =
+                  offerData['technicianMainService'];
+              data['technicianDescription'] =
+                  offerData['technicianDescription'];
+              data['technicianLinkSocialMedia'] =
+                  offerData['technicianLinkSocialMedia'];
               data['technicianId'] = offerData['technicianId'];
-
             }
             return data;
           });
@@ -80,13 +96,16 @@ class ProcessOrderPage extends StatelessWidget {
               orderId: doc.id,
               technicianImage: updatedData['technicianImage'],
               technicianName: updatedData['technicianName'],
-              technicianLocationArea: updatedData['technicianLocationArea'] ?? '',
-              technicianLocationStreet: updatedData['technicianLocationStreet'] ?? '',
+              technicianLocationArea:
+                  updatedData['technicianLocationArea'] ?? '',
+              technicianLocationStreet:
+                  updatedData['technicianLocationStreet'] ?? '',
               technicianPhone: updatedData['technicianPhone'] ?? '',
               technicianSub: updatedData['technicianSubService'] ?? '',
               technicianMain: updatedData['technicianMainService'] ?? '',
               technicianDescription: updatedData['technicianDescription'] ?? '',
-              technicianLinkSocialMedia: updatedData['technicianLinkSocialMedia'] ?? '',
+              technicianLinkSocialMedia:
+                  updatedData['technicianLinkSocialMedia'] ?? '',
               technicianId: updatedData['technicianId'] ?? '',
             );
           });
@@ -101,7 +120,7 @@ class ProcessOrderPage extends StatelessWidget {
             }
 
             if (orderSnapshot.hasError) {
-               print('Error: ${orderSnapshot.error}');
+              print('Error: ${orderSnapshot.error}');
             }
 
             final orders = orderSnapshot.data ?? [];

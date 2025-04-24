@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import '../../Theme/Theme_Provider.dart';
 import '../../constents/constent.dart';
 import 'OrderCardImgPrevious.dart';
 import 'model/model.dart';
@@ -10,6 +13,7 @@ class PreviousOrderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
@@ -34,7 +38,12 @@ class PreviousOrderPage extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('No Previous orders found.'));
+          return  Center(child: Text('No Previous orders found.',style: GoogleFonts.castoro(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Colors.black),));
         }
 
         final orders = snapshot.data!.docs.map((doc) {

@@ -233,38 +233,59 @@ class _SignUpClientState extends State<SignUpClient> {
 
   Future<User?> signInWithGoogle(BuildContext context) async {
     try {
-      final googleSignIn = GoogleSignIn();
-      await googleSignIn.signOut(); // Force prompt
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        scopes: ['email', 'profile'], // Recommended for user info
+      );
+
+      // Optional: sign out to force account picker prompt
+      await googleSignIn.signOut();
 
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-      if (googleUser == null) return null;
+      if (googleUser == null) {
+        print("Google Sign-In was cancelled by the user.");
+        return null;
+      }
 
       final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      await googleUser.authentication;
 
-      final credential = GoogleAuthProvider.credential(
+      // Debug logging to inspect tokens
+      print("Access Token: ${googleAuth.accessToken}");
+      print("ID Token: ${googleAuth.idToken}");
+
+      if (googleAuth.accessToken == null || googleAuth.idToken == null) {
+        print("Missing Google authentication tokens.");
+        return null;
+      }
+
+      final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      User? user = userCredential.user;
+      final UserCredential userCredential =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      final User? user = userCredential.user;
 
-      if (user != null) {
-        bool userExists = await _checkIfUserExists(user.uid);
-
-        if (userExists == false) {
-          // First time user
-          await _saveUserToFirestore(user);
-          _navigateToLocationRequestScreen(context);
-        } else {
-          _navigateToHome(context);
-        }
+      if (user == null) {
+        print("Firebase user is null after credential sign-in.");
+        return null;
       }
+
+      // Check if user exists in your Firestore
+      final bool userExists = await _checkIfUserExists(user.uid);
+
+      if (!userExists) {
+        await _saveUserToFirestore(user);
+        _navigateToLocationRequestScreen(context);
+      } else {
+        _navigateToHome(context);
+      }
+
       return user;
-    } catch (e) {
+    } catch (e, stacktrace) {
       print("Google sign-in failed: $e");
+      print("Stacktrace: $stacktrace");
       return null;
     }
   }
@@ -297,13 +318,19 @@ class _SignUpClientState extends State<SignUpClient> {
 
   Future<void> _saveUserToFirestore(User? user) async {
     if (user != null) {
+      final nameParts = user.displayName?.split(' ') ?? [];
+
+      final firstName = nameParts.isNotEmpty ? nameParts[0] : '';
+      final lastName = nameParts.length > 1 ? nameParts[1] : '';
+      final thirdName = nameParts.length > 2 ? nameParts[2] : '';
+
       final userRef = _firestore.collection('users').doc(user.uid);
 
-      // Save to main 'users' collection
       await userRef.set({
         'uid': user.uid,
-        'first_name': user.displayName?.split(' ')[0] ?? '',
-        'last_name': user.displayName?.split(' ')[1] ?? '',
+        'first_name': firstName,
+        'last_name': lastName,
+        'third_name': thirdName,
         'email': user.email ?? 'No Email',
         'provider': user.providerData.first.providerId,
         'role': 'Client',
@@ -314,7 +341,7 @@ class _SignUpClientState extends State<SignUpClient> {
       await _firestore
           .collection("user-files")
           .doc(user.uid)
-          .collection("personalInformation")
+          .collection("personalInformationProvider")
           .doc("profile")
           .set({
         "personalImageUrl": user.photoURL ?? '',

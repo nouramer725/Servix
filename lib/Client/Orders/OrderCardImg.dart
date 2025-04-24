@@ -222,21 +222,4 @@ class OrderCardImg extends StatelessWidget {
       );
     }
   }
-  // Future<void> CancelOrder(BuildContext context, OrderModel order) async {
-  //   try {
-  //     final user = FirebaseFirestore.instance; // if using FirebaseAuth, get current user from FirebaseAuth.instance.currentUser
-  //     final uid = order.userId; // Make sure your OrderModel has `userId` (used in path)
-  //
-  //     await FirebaseFirestore.instance
-  //         .collection('Services Requests')
-  //         .doc(uid)
-  //         .collection('user-services')
-  //         .doc(order.id) // Make sure your OrderModel has an `id` field
-  //         .update({'Status': 'Cancelled'});
-  //
-  //     Fluttertoast.showToast(msg: "Order cancelled successfully".tr());
-  //   } catch (e) {
-  //     Fluttertoast.showToast(msg: "Failed to cancel order: $e");
-  //   }
-  // }
 }

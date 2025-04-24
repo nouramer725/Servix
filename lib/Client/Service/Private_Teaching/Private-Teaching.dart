@@ -124,30 +124,6 @@ class Privateteachingservice extends StatelessWidget {
                     ),
                   );
                 }),
-            // ServiceCard(
-            //   serviceName: 'Math'.tr(),
-            //   imagePath: 'assets/images/private-teaching/math.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Science'.tr(),
-            //   imagePath: 'assets/images/private-teaching/science.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'History'.tr(),
-            //   imagePath: 'assets/images/private-teaching/history.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Geography'.tr(),
-            //   imagePath: 'assets/images/private-teaching/geography.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Art'.tr(),
-            //   imagePath: 'assets/images/private-teaching/art.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Physical Education'.tr(),
-            //   imagePath: 'assets/images/private-teaching/pe.jpg',
-            // ),
           ],
         ),
       ),

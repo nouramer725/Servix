@@ -311,9 +311,11 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
               child: Text(
                 "Edit",
                 style: GoogleFonts.castoro(
-                  fontSize: 20,
+                  fontSize: 23,
                   fontWeight: FontWeight.bold,
-                  color: ApplicationColor,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : ApplicationColor,
                 ),
               )),
         ],
@@ -414,7 +416,9 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                         style: GoogleFonts.castoro(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
-                          color: ApplicationColor3,
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.white
+                              : Colors.black,
                         ),
                       ),
                     ],
@@ -431,14 +435,18 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                           style: GoogleFonts.castoro(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: const Color(0xFF676767)),
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : const Color(0xFF676767)),
                         ),
                         Text(
                           "Sub Service: ${userData!['sub_service'] ?? 'N/A'}",
                           style: GoogleFonts.castoro(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: const Color(0xFF676767)),
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : const Color(0xFF676767)),
                         ),
                       ],
                     ),
@@ -448,13 +456,20 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                 margin: const EdgeInsets.all(17),
                 padding: const EdgeInsets.all(17),
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? const Color(0xFF333739)
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : Colors.grey[500]!,
+                    )),
                 child: Center(
                   child: Text(
                     description,
-                    style: TextStyle(color: Colors.grey[600], fontSize: 18),
+                    style: GoogleFonts.castoro(
+                        color: Colors.grey[600], fontSize: 18),
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 20,
@@ -469,7 +484,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                     child: FaIcon(
                       FontAwesomeIcons.facebook,
                       color: Colors.blue[700],
-                      size: 35,
+                      size: 30,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -494,7 +509,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                     child: FaIcon(
                       FontAwesomeIcons.locationDot,
                       color: ApplicationColor,
-                      size: 35,
+                      size: 30,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -503,7 +518,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                     child: const FaIcon(
                       FontAwesomeIcons.phone,
                       color: Colors.green,
-                      size: 35,
+                      size: 30,
                     ),
                   ),
                 ],
@@ -536,11 +551,16 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: selectedIndex == 0
-                                ? Colors.black
+                                ? Colors.white
                                 : Colors.grey[600],
                             decoration: selectedIndex == 0
                                 ? TextDecoration.underline
                                 : null,
+                            decorationStyle: selectedIndex == 0
+                                ? TextDecorationStyle.solid
+                                : null,
+                            decorationColor:
+                                selectedIndex == 0 ? Colors.white : null,
                           ),
                         ),
                       ),
@@ -556,11 +576,16 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: selectedIndex == 1
-                                ? Colors.black
+                                ? Colors.white
                                 : Colors.grey[600],
                             decoration: selectedIndex == 1
                                 ? TextDecoration.underline
                                 : null,
+                            decorationStyle: selectedIndex == 1
+                                ? TextDecorationStyle.solid
+                                : null,
+                            decorationColor:
+                                selectedIndex == 1 ? Colors.white : null,
                           ),
                         ),
                       ),
@@ -690,7 +715,10 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                   style: GoogleFonts.castoro(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+                                    color: themeProvider.themeMode ==
+                                            ThemeMode.dark
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
                                 ),
                                 Text(
@@ -698,7 +726,10 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                   style: GoogleFonts.castoro(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.grey[600],
+                                    color: themeProvider.themeMode ==
+                                            ThemeMode.dark
+                                        ? Colors.white
+                                        : Colors.grey[400],
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -710,10 +741,10 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                         (index) {
                                           if (index < review['rating']) {
                                             return const Icon(Icons.star,
-                                                color: Colors.black, size: 22);
+                                                color: Colors.yellow, size: 22);
                                           } else {
                                             return const Icon(Icons.star_border,
-                                                color: Colors.black, size: 22);
+                                                color: Colors.grey, size: 22);
                                           }
                                         },
                                       ),
@@ -724,7 +755,10 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                       style: GoogleFonts.castoro(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.black,
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.white
+                                            : Colors.black,
                                       ),
                                     ),
                                   ],

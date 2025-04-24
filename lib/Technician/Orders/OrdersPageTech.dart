@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:servix/Technician/NotificationTech/notification_service_technician.dart';
 import 'package:servix/Technician/Orders/OrderCardTech.dart';
@@ -10,6 +12,7 @@ import 'package:servix/constents/constent.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Components/OrderGradientButton.dart';
 import '../../Components/OrderWhiteButton.dart';
+import '../../Theme/Theme_Provider.dart';
 import 'Process OrdersTech.dart';
 
 class OrdersPageTech extends StatefulWidget {
@@ -114,6 +117,8 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
   }
 
   Widget _currentOrdersTech() {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return FutureBuilder<String>(
       future: getTechnicianSubservice(),
       builder: (context, subserviceSnapshot) {
@@ -148,7 +153,14 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
             final docs = snapshot.data!.docs;
 
             if (docs.isEmpty) {
-              return const Center(child: Text('No orders available'));
+              return Center(
+                  child: Text('No orders available',
+                      style: GoogleFonts.castoro(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.white
+                              : Colors.black)));
             }
 
             final orders = docs.map((doc) {

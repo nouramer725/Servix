@@ -160,42 +160,6 @@ class HomeService extends StatelessWidget {
                     ),
                   );
                 }),
-            // ServiceCard(
-            //   serviceName: 'Tiling'.tr(),
-            //   imagePath: 'assets/images/home-service/tiling.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Pest Control'.tr(),
-            //   imagePath: 'assets/images/home-service/pest_control.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Masonry'.tr(),
-            //   imagePath: 'assets/images/home-service/masonry.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Roofing'.tr(),
-            //   imagePath: 'assets/images/home-service/roofing.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Furniture Assembly'.tr(),
-            //   imagePath: 'assets/images/home-service/furniture_assembly.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Window Cleaning'.tr(),
-            //   imagePath: 'assets/images/home-service/window_cleaning.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Car Detailing'.tr(),
-            //   imagePath: 'assets/images/home-service/car_detailing.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Laundry Service'.tr(),
-            //   imagePath: 'assets/images/home-service/laundry.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Handyman'.tr(),
-            //   imagePath: 'assets/images/home-service/handyman.jpg',
-            // ),
           ],
         ),
       ),

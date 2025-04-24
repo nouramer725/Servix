@@ -67,6 +67,10 @@ class _SavedAddressesprofileState extends State<SavedAddressesprofile> {
           'Saved Address'.tr(),
           style: GoogleFonts.castoro(
             fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
           ),
         ),
         actions: [
@@ -101,7 +105,9 @@ class _SavedAddressesprofileState extends State<SavedAddressesprofile> {
                 style: GoogleFonts.castoro(
                   fontSize: 25,
                   fontWeight: FontWeight.w600,
-                  color: Colors.grey,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
             )
@@ -140,7 +146,7 @@ class _SavedAddressesprofileState extends State<SavedAddressesprofile> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => EditAddress(),
+                                            builder: (context) => const EditAddress(),
                                           ));
                                     },
                                     child: const Icon(

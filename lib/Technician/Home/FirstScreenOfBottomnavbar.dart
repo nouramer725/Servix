@@ -153,9 +153,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                         ? Colors.white
                         : Colors.black),
               ),
-              const SizedBox(
-                height: 40,
-              ),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   Expanded(
@@ -190,8 +188,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                                 return Text("Error fetching data");
                               } else if (snapshot.hasData) {
                                 return Text(
-                                  snapshot.data
-                                      .toString(), // Display the serviceCount here
+                                  snapshot.data.toString(),
                                   style: GoogleFonts.castoro(
                                     fontSize: 40,
                                     color: const Color(0xFF9A9A9A),
@@ -267,7 +264,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 10),
               Divider(
                 color: themeProvider.themeMode == ThemeMode.dark
                     ? Colors.white.withOpacity(0.5)
@@ -281,7 +278,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
               Text(
                 "Pending Orders",
                 style: GoogleFonts.castoro(
-                    fontSize: 22,
+                    fontSize: 25,
                     decoration: TextDecoration.underline,
                     decorationColor: const Color(0xFF9A9A9A),
                     fontWeight: FontWeight.w500,
@@ -331,7 +328,15 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                       print('Fetched orders count: ${docs.length}');
 
                       if (docs.isEmpty) {
-                        return const Center(child: Text('No orders available'));
+                        return Text(
+                          'No orders available',
+                          style: GoogleFonts.castoro(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black),
+                        );
                       }
 
                       return FutureBuilder<List<OrderModelTech>>(
@@ -371,7 +376,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                     },
                   );
                 },
-              )
+              ),
             ],
           ),
         ),
