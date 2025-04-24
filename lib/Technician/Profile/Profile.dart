@@ -551,7 +551,9 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: selectedIndex == 0
-                                ? Colors.white
+                                ? themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black
                                 : Colors.grey[600],
                             decoration: selectedIndex == 0
                                 ? TextDecoration.underline
@@ -559,8 +561,11 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                             decorationStyle: selectedIndex == 0
                                 ? TextDecorationStyle.solid
                                 : null,
-                            decorationColor:
-                                selectedIndex == 0 ? Colors.white : null,
+                            decorationColor: selectedIndex == 0
+                                ? themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black
+                                : null,
                           ),
                         ),
                       ),
@@ -576,7 +581,9 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: selectedIndex == 1
-                                ? Colors.white
+                                ? themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black
                                 : Colors.grey[600],
                             decoration: selectedIndex == 1
                                 ? TextDecoration.underline
@@ -584,8 +591,11 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                             decorationStyle: selectedIndex == 1
                                 ? TextDecorationStyle.solid
                                 : null,
-                            decorationColor:
-                                selectedIndex == 1 ? Colors.white : null,
+                            decorationColor: selectedIndex == 1
+                                ? themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black
+                                : null,
                           ),
                         ),
                       ),
