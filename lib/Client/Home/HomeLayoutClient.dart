@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:servix/Client/AIClient/Intro.dart';
 import 'package:servix/Client/Home/List%20Of%20Pages_Clients/HomeClientFirstScreen.dart';
 import 'package:servix/Client/Orders/OrdersPage.dart';
@@ -500,72 +503,114 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
       ),
       body: pages[selectedIndex],
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 8, right: 8),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: selectedIndex,
-          onTap: (index) {
-            setState(() {
-              selectedIndex = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_none_outlined,
-                  color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white60
-                      : ApplicationColor3),
-              label: "Notifications".tr(),
-              activeIcon: Icon(Icons.notifications, color: ApplicationColor),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.receipt_long_outlined,
-                  color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white60
-                      : ApplicationColor3),
-              label: "Orders".tr(),
-              activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined,
-                  color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white60
-                      : ApplicationColor3),
-              label: "Home".tr(),
-              activeIcon: Icon(Icons.home, color: ApplicationColor),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.groups,
-                  color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white60
-                      : ApplicationColor3),
-              label: "Community Forum".tr(),
-              activeIcon: Icon(Icons.groups, color: ApplicationColor),
-            ),
-            BottomNavigationBarItem(
-              icon: SizedBox(
-                height: 25, // Set a fixed height for both icons
-                child: Image.asset(
-                  themeProvider.themeMode == ThemeMode.dark
-                      ? 'assets/NavigationBar/robot.png'
-                      : 'assets/NavigationBar/robotblack.png',
-                ),
+        padding: const EdgeInsets.only(top: 20),
+        child: CurvedNavigationBar(
+          height: 70,
+            index: selectedIndex,
+            onTap: (index) {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
+            backgroundColor: Colors.transparent,
+            color: ApplicationColor,
+            buttonBackgroundColor: ApplicationColor,
+            items: [
+              Icon(
+                Icons.notifications,
+                color: Colors.white,
+                size: 35,
               ),
-              label: "Ai Chat".tr(),
-              activeIcon: SizedBox(
-                height: 25, // Ensures alignment
-                child: Image.asset(
-                  'assets/NavigationBar/robotcolor.png',
-                ),
+              Icon(
+                Icons.receipt_long,
+                color: Colors.white,
+                size: 35,
               ),
-            ),
-          ],
-        ),
+              Icon(
+                Icons.home_rounded,
+                color: Colors.white,
+                size: 35,
+              ),
+              Icon(
+                Icons.groups_rounded,
+                color: Colors.white,
+                size: 35,
+              ),
+              Icon(
+                Icons.chat,
+                color: Colors.white,
+                size: 35,
+              ),
+            ]),
       ),
+
+      // bottomNavigationBar: Padding(
+      //   padding: const EdgeInsets.only(left: 8, right: 8),
+      //   child: BottomNavigationBar(
+      //     backgroundColor: Colors.transparent,
+      //     elevation: 0,
+      //     showSelectedLabels: true,
+      //     showUnselectedLabels: true,
+      //     type: BottomNavigationBarType.fixed,
+      //     currentIndex: selectedIndex,
+      //     onTap: (index) {
+      //       setState(() {
+      //         selectedIndex = index;
+      //       });
+      //     },
+      //     items: [
+      //       BottomNavigationBarItem(
+      //         icon: Icon(Icons.notifications_none_outlined,
+      //             color: themeProvider.themeMode == ThemeMode.dark
+      //                 ? Colors.white60
+      //                 : ApplicationColor3),
+      //         label: "Notifications".tr(),
+      //         activeIcon: Icon(Icons.notifications, color: ApplicationColor),
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(Icons.receipt_long_outlined,
+      //             color: themeProvider.themeMode == ThemeMode.dark
+      //                 ? Colors.white60
+      //                 : ApplicationColor3),
+      //         label: "Orders".tr(),
+      //         activeIcon: Icon(Icons.receipt_long, color: ApplicationColor),
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(Icons.home_outlined,
+      //             color: themeProvider.themeMode == ThemeMode.dark
+      //                 ? Colors.white60
+      //                 : ApplicationColor3),
+      //         label: "Home".tr(),
+      //         activeIcon: Icon(Icons.home, color: ApplicationColor),
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(Icons.groups,
+      //             color: themeProvider.themeMode == ThemeMode.dark
+      //                 ? Colors.white60
+      //                 : ApplicationColor3),
+      //         label: "Community Forum".tr(),
+      //         activeIcon: Icon(Icons.groups, color: ApplicationColor),
+      //       ),
+      //       BottomNavigationBarItem(
+      //         icon: SizedBox(
+      //           height: 25, // Set a fixed height for both icons
+      //           child: Image.asset(
+      //             themeProvider.themeMode == ThemeMode.dark
+      //                 ? 'assets/NavigationBar/robot.png'
+      //                 : 'assets/NavigationBar/robotblack.png',
+      //           ),
+      //         ),
+      //         label: "Ai Chat".tr(),
+      //         activeIcon: SizedBox(
+      //           height: 25, // Ensures alignment
+      //           child: Image.asset(
+      //             'assets/NavigationBar/robotcolor.png',
+      //           ),
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 
