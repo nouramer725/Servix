@@ -383,5 +383,29 @@
   "For \nMen": "For \nMen",
   "For \nWomen": "For \nWomen",
   "Devices\nMaintenance": "Devices\nMaintenance",
-  "Delivery\nService": "Delivery \nService"
+  "Delivery\nService": "Delivery \nService",
+  "It’s me, your AI assistant! Ready to make magic happen? ✨": "It’s me, your AI assistant! Ready to make magic happen? ✨",
+  "Knock, knock… Who’s there? 👀": "Knock, knock… Who’s there? 👀",
+  "Delete Post": "Delete Post",
+  "Are you sure you want to delete this post?": "Are you sure you want to delete this post?",
+  "Post deleted successfully!": "Post deleted successfully!",
+  "Failed to delete post: $e": "Failed to delete post:",
+  "Love": "Love",
+  "Comment": "Comment",
+  "Share": "Share",
+  "Create a Post": "Create a Post",
+  "Add Image" : "Add Image",
+  "Please enter content before posting." : "Please enter content before posting.",
+  "Post uploaded successfully!" : "Post uploaded successfully!",
+  "Error uploading post: $e" : "Error uploading post:",
+  "Add a comment": "Add a comment",
+  "Comment added successfully!": "Comment added successfully!",
+  "Error adding comment: $e": "Error adding comment:",
+  "Comments": "Comments",
+  "Loading comments...": "Loading comments..."
+
+
+
+
+
 }

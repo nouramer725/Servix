@@ -166,7 +166,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                           .delete();
 
                                       Fluttertoast.showToast(
-                                        msg: "Post deleted successfully!",
+                                        msg: "Post deleted successfully!".tr(),
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.TOP,
                                         backgroundColor:
@@ -177,7 +177,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                       setState(() {});
                                     } catch (e) {
                                       Fluttertoast.showToast(
-                                        msg: "Failed to delete post: $e",
+                                        msg: "Failed to delete post: $e".tr(),
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.TOP,
                                         backgroundColor:
@@ -303,7 +303,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
-                                      "Love",
+                                      "Love".tr(),
                                       style: GoogleFonts.castoro(fontSize: 16),
                                     ),
                                   ],
@@ -324,7 +324,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                             : Colors.grey,
                                         size: 20),
                                     const SizedBox(width: 4),
-                                    Text("Comment",
+                                    Text("Comment".tr(),
                                         style:
                                             GoogleFonts.castoro(fontSize: 16)),
                                   ],
@@ -345,7 +345,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                             : Colors.grey,
                                         size: 20),
                                     const SizedBox(width: 4),
-                                    Text("Share",
+                                    Text("Share".tr(),
                                         style:
                                             GoogleFonts.castoro(fontSize: 16)),
                                   ],
@@ -382,7 +382,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
             title:
-                Text('Create a Post', style: GoogleFonts.castoro(fontSize: 30)),
+                Text('Create a Post'.tr(), style: GoogleFonts.castoro(fontSize: 30)),
             content: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -432,7 +432,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                       size: 20,
                     ),
                     label: Text(
-                      "Add Image",
+                      "Add Image".tr(),
                       style: GoogleFonts.castoro(
                         color: ApplicationColor,
                         fontSize: 20,
@@ -449,7 +449,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                   _contentController.clear();
                   _selectedImages.clear(); // Clear selected images
                 },
-                child: Text('Cancel',
+                child: Text('Cancel'.tr(),
                     style:
                         GoogleFonts.castoro(color: Colors.black, fontSize: 23)),
               ),
@@ -457,7 +457,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                 onPressed: () {
                   _uploadPost(context, _contentController);
                 },
-                child: Text('Post',
+                child: Text('Post'.tr(),
                     style: GoogleFonts.castoro(
                         fontSize: 23, color: ApplicationColor)),
               ),
@@ -498,7 +498,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
     // Check if content is empty
     if (_contentController.text.trim().isEmpty) {
       Fluttertoast.showToast(
-        msg: 'Please enter content before posting.',
+        msg: 'Please enter content before posting.'.tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
@@ -553,7 +553,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
       Navigator.of(context).pop();
 
       Fluttertoast.showToast(
-        msg: 'Post uploaded successfully!',
+        msg: 'Post uploaded successfully!'.tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: ApplicationColorWithOpacity,
@@ -561,7 +561,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error uploading post: $e')),
+        SnackBar(content: Text('Error uploading post: $e'.tr())),
       );
       print('Error uploading post: $e');
     }
@@ -644,7 +644,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
           .orderBy('timestamp', descending: false)
           .snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Text("Loading comments...");
+        if (!snapshot.hasData) return const Text("Loading comments...").tr();
 
         final comments = snapshot.data!.docs;
 
@@ -742,7 +742,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
             controller: _commentController,
             keyboardType: TextInputType.multiline,
             decoration: InputDecoration(
-              labelText: "Add a comment",
+              labelText: "Add a comment".tr(),
               labelStyle: GoogleFonts.inter(
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
@@ -808,14 +808,14 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
 
       // Optionally show a success message or do any other actions
       Fluttertoast.showToast(
-        msg: 'Comment added successfully!',
+        msg: 'Comment added successfully!'.tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: ApplicationColorWithOpacity,
         textColor: Colors.white,
       );
     } catch (e) {
-      print('Error adding comment: $e');
+      print('Error adding comment: $e'.tr());
     }
   }
 
@@ -843,7 +843,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
-                Text("Comments",
+                Text("Comments".tr(),
                     style: GoogleFonts.castoro(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
