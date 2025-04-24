@@ -505,7 +505,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: CurvedNavigationBar(
-          height: 70,
+            height: 70,
             index: selectedIndex,
             onTap: (index) {
               setState(() {
@@ -515,31 +515,31 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
             backgroundColor: Colors.transparent,
             color: ApplicationColor,
             buttonBackgroundColor: ApplicationColor,
-            items: [
+            items: const [
               Icon(
                 Icons.notifications,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.receipt_long,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.home_rounded,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.groups_rounded,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.chat,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
             ]),
       ),

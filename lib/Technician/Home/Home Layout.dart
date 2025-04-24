@@ -434,31 +434,31 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
             backgroundColor: Colors.transparent,
             color: ApplicationColor,
             buttonBackgroundColor: ApplicationColor,
-            items: [
+            items: const [
               Icon(
                 Icons.notifications,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.receipt_long,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.home_rounded,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.groups_rounded,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.chat,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
             ]),
       ),
