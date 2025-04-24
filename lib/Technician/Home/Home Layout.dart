@@ -421,7 +421,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
         ),
       ),
       body: pages[selectedIndex],
-      bottomNavigationBar:Padding(
+      bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: CurvedNavigationBar(
             height: 70,
@@ -525,9 +525,9 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                 keyboardType: TextInputType.visiblePassword,
                 textInputAction: TextInputAction.done,
                 style: GoogleFonts.castoro(
-                   color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : ApplicationColor,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : ApplicationColor,
                 ),
                 autocorrect: false,
                 obscureText: false,
@@ -599,8 +599,9 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
               }
             },
             child: Text("Confirm",
-                style:
-                    GoogleFonts.castoro(fontSize: 16, color: themeProvider.themeMode == ThemeMode.dark
+                style: GoogleFonts.castoro(
+                    fontSize: 16,
+                    color: themeProvider.themeMode == ThemeMode.dark
                         ? Colors.white
                         : ApplicationColor)),
           ),
