@@ -24,12 +24,19 @@ Widget customTextField({
         inputFormatters: inputFormatters,
         validator: validator,
         cursorColor: Colors.grey[100],
+        style: GoogleFonts.castoro(
+          fontSize: 18,
+          fontWeight: FontWeight.w400,
+          color: Colors.black87,
+          letterSpacing: 0.2,
+        ),
         decoration: InputDecoration(
+          errorText: errorText,
           labelText: labelText,
-          labelStyle: GoogleFonts.inter(
+          labelStyle: GoogleFonts.castoro(
             fontSize: 18,
             fontWeight: FontWeight.w400,
-            color: Colors.black.withOpacity(0.31),
+            color: Colors.grey,
             letterSpacing: 0.2,
           ),
           filled: false,

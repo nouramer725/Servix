@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Client/Notification/notifaction%20really.dart';
 import 'package:servix/Member/MemberShip.dart';
 import 'package:servix/Settings/About%20US.dart';
 import 'package:servix/Settings/Contact%20Us.dart';
@@ -15,7 +16,6 @@ import 'package:servix/Settings/Terms%20&%20Conditions.dart';
 import 'package:servix/Settings/percentage%20sidebar.dart';
 import 'package:servix/Technician/AITechnician/Intro.dart';
 import 'package:servix/Technician/Home/FirstScreenOfBottomnavbar.dart';
-import 'package:servix/Technician/Login-Register/Percentage/percnetage.dart';
 import 'package:servix/Technician/Profile/Profile.dart';
 import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
@@ -24,9 +24,7 @@ import '../../Client/community forum/community_feed_screen.dart';
 import '../../Language/Local_Provider.dart';
 import '../../On-Boarding/On_Boarding_Screen.dart';
 import '../../Theme/Theme_Provider.dart';
-import '../NotificationTech/notifaction really.dart';
 import '../Orders/OrdersPageTech.dart';
-import 'SecondScreenOfBottomnavbar.dart';
 
 class HomeTechnicianLayout extends StatefulWidget {
   const HomeTechnicianLayout({super.key});
@@ -53,7 +51,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
   bool isDarkMode = false; // Default mode
 
   final List<Widget> pages = [
-    const NotificationScreenRealTech(),
+    const NotificationScreenReal(),
     const OrdersPageTech(),
     const HomeTechFirstScreen(),
     CommunityFeedScreen(),
@@ -423,7 +421,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
         ),
       ),
       body: pages[selectedIndex],
-      bottomNavigationBar:Padding(
+      bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: CurvedNavigationBar(
             height: 70,
@@ -436,31 +434,31 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
             backgroundColor: Colors.transparent,
             color: ApplicationColor,
             buttonBackgroundColor: ApplicationColor,
-            items: [
+            items: const [
               Icon(
                 Icons.notifications,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.receipt_long,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.home_rounded,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.groups_rounded,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.chat,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
             ]),
       ),
@@ -503,9 +501,11 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
         title: Text(
           "Confirm Password",
           style: GoogleFonts.castoro(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Colors.black),
         ),
         content: SingleChildScrollView(
           child: Column(
@@ -515,13 +515,20 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                   style: GoogleFonts.castoro(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: ApplicationColor3,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : ApplicationColor3,
                   )),
               const SizedBox(height: 10),
               TextField(
                 controller: passwordController,
                 keyboardType: TextInputType.visiblePassword,
                 textInputAction: TextInputAction.done,
+                style: GoogleFonts.castoro(
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : ApplicationColor,
+                ),
                 autocorrect: false,
                 obscureText: false,
                 decoration: InputDecoration(
@@ -550,7 +557,9 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
             onPressed: () => Navigator.pop(context),
             child: Text("Cancel",
                 style: GoogleFonts.castoro(
-                  color: ApplicationColor3,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : ApplicationColor3,
                   fontSize: 16,
                 )),
           ),
@@ -590,8 +599,11 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
               }
             },
             child: Text("Confirm",
-                style:
-                    GoogleFonts.castoro(fontSize: 16, color: ApplicationColor)),
+                style: GoogleFonts.castoro(
+                    fontSize: 16,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : ApplicationColor)),
           ),
         ],
       ),

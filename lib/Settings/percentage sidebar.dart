@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:servix/Components/Buttons.dart';
-import 'package:servix/Technician/Login-Register/Waiting%20Screen/Waiting_Screen.dart';
+import 'package:provider/provider.dart';
 import '../../../constents/constent.dart';
+import '../Theme/Theme_Provider.dart';
 
 class PercentageSide extends StatefulWidget {
   const PercentageSide({super.key});
@@ -19,15 +18,20 @@ class _PercentageSideState extends State<PercentageSide> {
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         title: Text(
           "Technician Policy".tr(),
           style: GoogleFonts.cantataOne(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
           ),
           maxLines: 2,
         ),
@@ -51,10 +55,14 @@ class _PercentageSideState extends State<PercentageSide> {
                     "Commission Information",
                     style: GoogleFonts.castoro(
                       fontSize: 20,
-                      color: ApplicationColor,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : ApplicationColor,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
-                      decorationColor: ApplicationColor,
+                      decorationColor: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : ApplicationColor,
                     ),
                   ),
                 ),
@@ -63,7 +71,9 @@ class _PercentageSideState extends State<PercentageSide> {
                   "As a technician using our platform, you agree that 10% of the total service fee you receive from a customer will be deducted as a commission for the app.",
                   style: GoogleFonts.castoro(
                     fontSize: 16,
-                    color: ApplicationColor3,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : ApplicationColor3,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -74,9 +84,13 @@ class _PercentageSideState extends State<PercentageSide> {
                     style: GoogleFonts.castoro(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: ApplicationColor,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : ApplicationColor,
                       decoration: TextDecoration.underline,
-                      decorationColor: ApplicationColor,
+                      decorationColor: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : ApplicationColor,
                     ),
                   ),
                 ),
@@ -93,7 +107,9 @@ class _PercentageSideState extends State<PercentageSide> {
                       policy,
                       style: GoogleFonts.castoro(
                         fontSize: 16,
-                        color: ApplicationColor3,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : ApplicationColor3,
                       ),
                     )),
               ],

@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:provider/provider.dart';
 import 'package:servix/Client/Profile/savedaddress.dart';
 import '../../../../Components/Buttons.dart';
 import '../../../../Components/location textfield.dart';
 import '../../../../constents/constent.dart';
+import '../../Theme/Theme_Provider.dart';
 
 class SaveNewAddressClient extends StatefulWidget {
   final String areaName;
@@ -102,9 +104,9 @@ class _SaveNewAddressClientState extends State<SaveNewAddressClient> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       extendBodyBehindAppBar: false,
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -157,7 +159,9 @@ class _SaveNewAddressClientState extends State<SaveNewAddressClient> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF9F4F4),
+                  color:  themeProvider.themeMode == ThemeMode.dark
+                      ? const Color(0xFF333739)
+                      : Color(0xFFF9F4F4) ,
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     const BoxShadow(color: Colors.black12, blurRadius: 4)
@@ -174,14 +178,18 @@ class _SaveNewAddressClientState extends State<SaveNewAddressClient> {
                           Text(
                             "Area".tr(),
                             style: GoogleFonts.charisSil(
-                                fontSize: 20, color: Colors.grey),
+                                fontSize: 20, color:themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white60
+                                : Colors.black ),
                           ),
                           Text(
                             widget.areaName,
                             style: GoogleFonts.castoro(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
-                              color: const Color(0xFF676565),
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,

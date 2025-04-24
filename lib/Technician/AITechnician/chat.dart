@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -61,10 +63,10 @@ class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> chatData = messages
         .map((msg) => jsonEncode({
-      'text': msg.text,
-      'userId': msg.user.id,
-      'createdAt': msg.createdAt.toIso8601String(),
-    }))
+              'text': msg.text,
+              'userId': msg.user.id,
+              'createdAt': msg.createdAt.toIso8601String(),
+            }))
         .toList();
     await prefs.setStringList('chat_history_technician', chatData);
   }
@@ -175,15 +177,97 @@ class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
         currentUser: _technician!,
         onSend: onSend,
         messages: messages,
+        messageListOptions:
+            MessageListOptions(dateSeparatorBuilder: (DateTime date) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              DateFormat('yyyy-MM-dd').format(date),
+              style: GoogleFonts.castoro(
+                fontWeight: FontWeight.bold,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black,
+              ),
+            ),
+          );
+        }),
         inputOptions: InputOptions(
+          cursorStyle: CursorStyle(
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.grey[300]
+                : Colors.grey[700],
+          ),
+          // trailing: [
+          //   IconButton(
+          //       icon: Icon(Icons.camera_alt,
+          //           color: themeProvider.themeMode == ThemeMode.dark
+          //               ? Colors.white
+          //               : Colors.black,
+          //           size: 30),
+          //       onPressed: () async {
+          //         final ImagePicker picker = ImagePicker();
+          //         final XFile? image =
+          //             await picker.pickImage(source: ImageSource.camera);
+          //
+          //         if (image != null) {
+          //           File imageFile = File(image.path);
+          //           print("Picked image path: ${imageFile.path}");
+          //         } else {
+          //           print("No image selected.");
+          //         }
+          //       }),
+          // ],
+          inputDecoration: InputDecoration(
+            hintText: 'Type your message here'.tr(),
+            filled: true,
+            fillColor: themeProvider.themeMode == ThemeMode.dark
+                ? const Color(0xFF333739)
+                : Colors.white,
+            hintStyle: GoogleFonts.castoro(
+              fontSize: 17,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black,
+              ),
+            ),
+          ),
           inputTextStyle: GoogleFonts.castoro(
             fontSize: 17,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
           ),
           sendButtonBuilder: (Function send) {
             return IconButton(
-              icon: Icon(Icons.send, color: ApplicationColor, size: 30),
+              icon: Icon(Icons.send,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : ApplicationColor,
+                  size: 30),
               onPressed: () => send(),
               color: ApplicationColor,
             );

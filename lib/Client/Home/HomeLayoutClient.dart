@@ -76,6 +76,39 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
     }
   }
 
+  Future<String?> _getProfileImageUrl() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return null;
+
+    final firestore = FirebaseFirestore.instance;
+
+    // Check first path
+    final firstDoc = await firestore
+        .collection("user-files")
+        .doc(uid)
+        .collection("personalInformation")
+        .doc("profile")
+        .get();
+
+    if (firstDoc.exists && firstDoc.data()?['personalImageUrl'] != null) {
+      return firstDoc.data()?['personalImageUrl'];
+    }
+
+    // Check second path
+    final secondDoc = await firestore
+        .collection("user-files")
+        .doc(uid)
+        .collection("personalInformationProvider")
+        .doc("profile")
+        .get();
+
+    if (secondDoc.exists && secondDoc.data()?['personalImageUrl'] != null) {
+      return secondDoc.data()?['personalImageUrl'];
+    }
+
+    return null;
+  }
+
   bool isDarkMode = false; // Default mode
 
   final List<Widget> pages = [
@@ -119,30 +152,18 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("user-files")
-                    .doc(FirebaseAuth
-                        .instance.currentUser?.uid) // Null safe check here
-                    .collection("personalInformation")
-                    .doc("profile")
-                    .snapshots(),
+              FutureBuilder<String?>(
+                future: _getProfileImageUrl(),
                 builder: (context, snapshot) {
-                  String? personalImageUrl;
-
-                  // Check if snapshot has data and if the document exists
-                  if (snapshot.hasData && snapshot.data?.exists == true) {
-                    personalImageUrl =
-                        snapshot.data?.data()?['personalImageUrl'];
-                  }
+                  String? personalImageUrl = snapshot.data;
 
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ProfileScreen(),
-                          ));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProfileScreen()),
+                      );
                     },
                     child: CircleAvatar(
                       backgroundColor: Colors.grey[200],
@@ -215,19 +236,11 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                             builder: (context) => const ProfileScreen(),
                           ));
                     },
-                    child: StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection("user-files")
-                          .doc(FirebaseAuth.instance.currentUser?.uid)
-                          .collection("personalInformation")
-                          .doc("profile")
-                          .snapshots(),
+                    child: FutureBuilder<String?>(
+                      future: _getProfileImageUrl(),
                       builder: (context, snapshot) {
-                        String? personalImageUrl;
-                        if (snapshot.hasData && snapshot.data?.exists == true) {
-                          personalImageUrl =
-                              snapshot.data?.data()?['personalImageUrl'];
-                        }
+                        String? personalImageUrl = snapshot.data;
+
                         return GestureDetector(
                           child: CircleAvatar(
                             backgroundColor: Colors.grey[200],
@@ -492,7 +505,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(top: 20),
         child: CurvedNavigationBar(
-          height: 70,
+            height: 70,
             index: selectedIndex,
             onTap: (index) {
               setState(() {
@@ -502,31 +515,31 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
             backgroundColor: Colors.transparent,
             color: ApplicationColor,
             buttonBackgroundColor: ApplicationColor,
-            items: [
+            items: const [
               Icon(
                 Icons.notifications,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.receipt_long,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.home_rounded,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.groups_rounded,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
               Icon(
                 Icons.chat,
                 color: Colors.white,
-                size: 35,
+                size: 27,
               ),
             ]),
       ),
@@ -658,6 +671,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                 textInputAction: TextInputAction.done,
                 autocorrect: false,
                 obscureText: false,
+                cursorColor: Colors.grey[100],
                 decoration: InputDecoration(
                   labelText: "Password",
                   floatingLabelBehavior: FloatingLabelBehavior.always,

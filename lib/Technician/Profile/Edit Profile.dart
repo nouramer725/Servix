@@ -160,23 +160,31 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             style: GoogleFonts.castoro(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
-                color: ApplicationColor),
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : ApplicationColor),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: _firstNameController,
-                decoration: const InputDecoration(
+                style: GoogleFonts.castoro(
+                  fontSize: 15,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black,
+                ),
+                decoration: InputDecoration(
                   labelText: "First Name",
-                  labelStyle: TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
+                  labelStyle: GoogleFonts.castoro(color: Colors.grey),
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
                   ),
                 ),
@@ -184,16 +192,22 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               const SizedBox(height: 10),
               TextField(
                 controller: _lastNameController,
-                decoration: const InputDecoration(
+                style: GoogleFonts.castoro(
+                  fontSize: 15,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black,
+                ),
+                decoration: InputDecoration(
                   labelText: "Last Name",
-                  labelStyle: TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
+                  labelStyle: GoogleFonts.castoro(color: Colors.grey),
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
                   ),
-                  enabledBorder: OutlineInputBorder(
+                  enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
                   ),
-                  focusedBorder: OutlineInputBorder(
+                  focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
                   ),
                 ),
@@ -205,8 +219,11 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               onPressed: () => Navigator.pop(context),
               child: Text(
                 "Cancel",
-                style:
-                    GoogleFonts.castoro(fontSize: 20, color: ApplicationColor3),
+                style: GoogleFonts.castoro(
+                    fontSize: 20,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black),
               ),
             ),
             TextButton(
@@ -215,7 +232,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                   style: GoogleFonts.castoro(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: ApplicationColor)),
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : ApplicationColor)),
             ),
           ],
         );
@@ -252,7 +271,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
           style: GoogleFonts.castoro(
               fontSize: 25,
               fontWeight: FontWeight.bold,
-              color: ApplicationColor),
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : ApplicationColor),
         ),
         content: StatefulBuilder(
           builder: (context, setState) {
@@ -268,9 +289,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                   decoration: InputDecoration(
                     labelText: "Main Service",
                     labelStyle: GoogleFonts.castoro(color: Colors.grey),
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderSide:
-                          const BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                          BorderSide(color: Color(0xFFAEAEAE), width: 1),
                     ),
                     enabledBorder: const OutlineInputBorder(
                       borderSide:
@@ -285,7 +306,11 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                     return DropdownMenuItem<String>(
                       value: service,
                       child: Text(service,
-                          style: GoogleFonts.castoro(fontSize: 15)),
+                          style: GoogleFonts.castoro(
+                              fontSize: 15,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black)),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
@@ -307,9 +332,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                   decoration: InputDecoration(
                     labelText: "Sub Service",
                     labelStyle: GoogleFonts.castoro(color: Colors.grey),
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                       borderSide:
-                          const BorderSide(color: Color(0xFFAEAEAE), width: 1),
+                          BorderSide(color: Color(0xFFAEAEAE), width: 1),
                     ),
                     enabledBorder: const OutlineInputBorder(
                       borderSide:
@@ -325,7 +350,12 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                           .map((String sub) => DropdownMenuItem<String>(
                                 value: sub,
                                 child: Text(sub,
-                                    style: GoogleFonts.castoro(fontSize: 15)),
+                                    style: GoogleFonts.castoro(
+                                        fontSize: 15,
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.white
+                                            : Colors.black)),
                               ))
                           .toList()
                       : [],
@@ -344,8 +374,11 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               "Cancel",
-              style:
-                  GoogleFonts.castoro(fontSize: 20, color: ApplicationColor3),
+              style: GoogleFonts.castoro(
+                  fontSize: 20,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black),
             ),
           ),
           TextButton(
@@ -357,7 +390,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                 style: GoogleFonts.castoro(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: ApplicationColor)),
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : ApplicationColor)),
           ),
         ],
       ),
@@ -407,21 +442,29 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
           style: GoogleFonts.castoro(
               fontSize: 25,
               fontWeight: FontWeight.bold,
-              color: ApplicationColor),
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : ApplicationColor),
         ),
         content: TextField(
           controller: _descController,
           maxLines: 5,
+          style: GoogleFonts.castoro(
+            fontSize: 15,
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
+          ),
           decoration: InputDecoration(
             labelText: "Enter new description".tr(),
             labelStyle: GoogleFonts.castoro(color: Colors.grey),
-            border: OutlineInputBorder(
+            border: const OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
             ),
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
             ),
-            focusedBorder: OutlineInputBorder(
+            focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
             ),
           ),
@@ -431,8 +474,11 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               "Cancel",
-              style:
-                  GoogleFonts.castoro(fontSize: 20, color: ApplicationColor3),
+              style: GoogleFonts.castoro(
+                  fontSize: 20,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black),
             ),
           ),
           TextButton(
@@ -444,7 +490,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                 style: GoogleFonts.castoro(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: ApplicationColor)),
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : ApplicationColor)),
           ),
         ],
       ),
@@ -482,11 +530,19 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             style: GoogleFonts.castoro(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
-                color: ApplicationColor),
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : ApplicationColor),
           ),
           content: TextField(
             controller: _phoneController,
             keyboardType: TextInputType.phone,
+            style: GoogleFonts.castoro(
+              fontSize: 15,
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Colors.black,
+            ),
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
               LengthLimitingTextInputFormatter(11),
@@ -495,9 +551,8 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               labelText: "Phone Number".tr(),
               hintText: "Enter new phone number".tr(),
               labelStyle: GoogleFonts.castoro(color: Colors.grey),
-              border: OutlineInputBorder(
-                borderSide:
-                    const BorderSide(color: Color(0xFFAEAEAE), width: 1),
+              border: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
               ),
               enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
@@ -512,8 +567,11 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               onPressed: () => Navigator.pop(context),
               child: Text(
                 "Cancel".tr(),
-                style:
-                    GoogleFonts.castoro(fontSize: 20, color: ApplicationColor3),
+                style: GoogleFonts.castoro(
+                    fontSize: 20,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black),
               ),
             ),
             TextButton(
@@ -550,7 +608,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                   style: GoogleFonts.castoro(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: ApplicationColor)),
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : ApplicationColor)),
             ),
           ],
         );
@@ -613,21 +673,29 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
           style: GoogleFonts.castoro(
               fontSize: 25,
               fontWeight: FontWeight.bold,
-              color: ApplicationColor),
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : ApplicationColor),
         ),
         content: TextField(
           controller: _socialMediaController,
+          style: GoogleFonts.castoro(
+            fontSize: 15,
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
+          ),
           maxLines: 1,
           decoration: InputDecoration(
             labelText: "Link",
             labelStyle: GoogleFonts.castoro(color: Colors.grey),
-            border: OutlineInputBorder(
+            border: const OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
             ),
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
             ),
-            focusedBorder: OutlineInputBorder(
+            focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
             ),
           ),
@@ -637,8 +705,11 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               "Cancel",
-              style:
-                  GoogleFonts.castoro(fontSize: 20, color: ApplicationColor3),
+              style: GoogleFonts.castoro(
+                  fontSize: 20,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black),
             ),
           ),
           TextButton(
@@ -650,7 +721,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                 style: GoogleFonts.castoro(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: ApplicationColor)),
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : ApplicationColor)),
           ),
         ],
       ),
@@ -777,7 +850,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                   onEdit: _showEditPhoneDialog,
                   icon: FontAwesomeIcons.pencil),
               const ThemedDivider(),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               if (userLocation != null)
@@ -822,7 +895,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF9F4F4),
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? const Color(0x9DEAEAEA)
+                      : const Color(0xFFF9F4F4),
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: const [
                     BoxShadow(

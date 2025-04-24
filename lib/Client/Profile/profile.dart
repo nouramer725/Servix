@@ -11,10 +11,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+import 'package:provider/provider.dart';
 import 'package:servix/Client/Profile/google%20map%20of%20default%20location.dart';
 import 'package:servix/Client/Profile/savedaddress.dart';
 import 'package:servix/Components/TextFormFiels_SignUp.dart';
 import '../../Components/Buttons.dart';
+import '../../Theme/Theme_Provider.dart';
 import '../../constents/constent.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -28,7 +30,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final nameController2 = TextEditingController();
-  final nameController3 = TextEditingController();
   final emailController = TextEditingController();
   final phoneController = TextEditingController();
 
@@ -81,6 +82,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  Future<String?> _getProfileImageUrl() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return null;
+
+    final firestore = FirebaseFirestore.instance;
+
+    // Check first path
+    final firstDoc = await firestore
+        .collection("user-files")
+        .doc(uid)
+        .collection("personalInformation")
+        .doc("profile")
+        .get();
+
+    if (firstDoc.exists && firstDoc.data()?['personalImageUrl'] != null) {
+      return firstDoc.data()?['personalImageUrl'];
+    }
+
+    // Check second path
+    final secondDoc = await firestore
+        .collection("user-files")
+        .doc(uid)
+        .collection("personalInformationProvider")
+        .doc("profile")
+        .get();
+
+    if (secondDoc.exists && secondDoc.data()?['personalImageUrl'] != null) {
+      return secondDoc.data()?['personalImageUrl'];
+    }
+
+    return null;
+  }
+
   void fetchUserData() async {
     try {
       final uid = _auth.currentUser?.uid;
@@ -92,7 +126,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (data != null) {
         nameController.text = data['first_name'] ?? '';
         nameController2.text = data['last_name'] ?? '';
-        nameController3.text = data['third_name'] ?? '';
         emailController.text = data['email'] ?? '';
         phoneController.text = data['phone'] ?? '';
       }
@@ -118,7 +151,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       await _firestore.collection('users').doc(uid).update({
         'first_name': nameController.text,
         'last_name': nameController2.text,
-        'third_name': nameController3.text,
         'email': emailController.text,
         'phone': phoneController.text,
       });
@@ -202,13 +234,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         title: Text(
           'Profile'.tr(),
           style: GoogleFonts.castoro(
             fontSize: 20,
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -224,19 +262,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 LinearProgressIndicator(
                   color: ApplicationColor,
                 ),
-              StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("user-files")
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .collection("personalInformation")
-                    .doc("profile")
-                    .snapshots(),
+              FutureBuilder<String?>(
+                future: _getProfileImageUrl(),
                 builder: (context, snapshot) {
-                  String? personalImageUrl;
-                  if (snapshot.hasData && snapshot.data?.exists == true) {
-                    personalImageUrl =
-                        snapshot.data?.data()?['personalImageUrl'];
-                  }
+                  String? personalImageUrl = snapshot.data;
+
                   return Stack(
                     children: [
                       GestureDetector(
@@ -280,11 +310,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 controller: nameController2,
                 keyboardTypee: TextInputType.text,
                 labelText: 'Second Name'.tr(),
-              ),
-              customTextField(
-                controller: nameController3,
-                keyboardTypee: TextInputType.text,
-                labelText: 'Third Name'.tr(),
               ),
               customTextField(
                 controller: emailController,
@@ -347,12 +372,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               if (area != null)
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF9F4F4),
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? const Color(0xFF333739)
+                        : Color(0xFFF9F4F4),
                     borderRadius: BorderRadius.circular(8),
                     boxShadow: const [
                       BoxShadow(
@@ -375,13 +402,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               style: GoogleFonts.castoro(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: const Color(0xFF676565),
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black,
                               ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 10,
                             ),
                           ),
                         ],
+                      ),
+                      SizedBox(
+                        height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -400,9 +432,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               style: GoogleFonts.castoro(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: ApplicationColor,
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : ApplicationColor,
                                 decoration: TextDecoration.underline,
-                                decorationColor: ApplicationColor,
+                                decorationColor:
+                                    themeProvider.themeMode == ThemeMode.dark
+                                        ? Colors.white
+                                        : ApplicationColor,
                               ),
                             ),
                           )
@@ -437,15 +474,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: GoogleFonts.castoro(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF676565),
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.white
+                              : const Color(0xFF676565),
                         ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
-                      const Icon(
+                      Icon(
                         Icons.arrow_forward_ios,
                         size: 20,
-                        color: Color(0xFF676565),
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : const Color(0xFF676565),
                       ),
                     ],
                   ),
