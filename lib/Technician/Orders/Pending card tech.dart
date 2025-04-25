@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +58,7 @@ class PreviousOrderCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Type of service :',
+                    'Type of service :'.tr(),
                     style: GoogleFonts.cantataOne(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -68,37 +69,86 @@ class PreviousOrderCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    'Service: ${orders.ServiceType}',
-                    style: GoogleFonts.castoro(
-                      fontSize: 14,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Service:'.tr(),
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        orders.ServiceType,
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    'Description : ${orders.Description}',
-                    style: GoogleFonts.castoro(
-                      fontSize: 14,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Description :'.tr(),
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                       orders.Description,
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    'Location : ${orders.Location}',
-                    style: GoogleFonts.castoro(
-                      fontSize: 14,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        "Location :".tr(),
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        orders.Location,
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    'Your Offer: ${orders.previousOffer}',
-                    style: GoogleFonts.castoro(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Your Offer:'.tr(),
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${orders.previousOffer}',
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
                   Row(

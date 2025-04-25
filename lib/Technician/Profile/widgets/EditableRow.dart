@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../Theme/Theme_Provider.dart';
 
 class EditableRow extends StatelessWidget {
+  final String title;
   final String text;
   final VoidCallback onEdit;
   final int maxLines;
@@ -12,6 +13,7 @@ class EditableRow extends StatelessWidget {
 
   const EditableRow({
     required this.text,
+    required this.title,
     required this.onEdit,
     required this.icon,
     this.maxLines = 5,
@@ -25,16 +27,32 @@ class EditableRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: Text(
-            text,
-            style: GoogleFonts.castoro(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Color(0xFF676767)),
-            overflow: TextOverflow.ellipsis,
-            maxLines: maxLines,
+          child: Row(
+            children: [
+              Text(
+                title,
+                style: GoogleFonts.castoro(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Color(0xFF676767)),
+                overflow: TextOverflow.ellipsis,
+                maxLines: maxLines,
+              ),
+              SizedBox(width: 5,),
+              Text(
+                text,
+                style: GoogleFonts.castoro(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Color(0xFF676767)),
+                overflow: TextOverflow.ellipsis,
+                maxLines: maxLines,
+              ),
+            ],
           ),
         ),
         IconButton(

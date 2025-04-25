@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -48,7 +49,7 @@ class OrderCardTech extends StatelessWidget {
                         Icon(Icons.attach_money,
                             size: 32, color: ApplicationColor),
                         Text(
-                          'Offer to',
+                          "Offer to".tr(),
                           style: GoogleFonts.judson(
                               fontSize: 28, fontWeight: FontWeight.w500),
                         ),
@@ -64,7 +65,7 @@ class OrderCardTech extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Your Offer Price is:',
+                          "Your Offer Price is:".tr(),
                           style: GoogleFonts.judson(fontSize: 20),
                         ),
                         const SizedBox(width: 10),
@@ -95,7 +96,7 @@ class OrderCardTech extends StatelessWidget {
                       children: [
                         TextButton(
                           child: Text(
-                            'Cancel',
+                            "Cancel".tr(),
                             style: GoogleFonts.judson(
                                 fontSize: 25, color: Colors.black),
                           ),
@@ -105,7 +106,7 @@ class OrderCardTech extends StatelessWidget {
                         ),
                         TextButton(
                           child: Text(
-                            'Offer',
+                            "Offer".tr(),
                             style: GoogleFonts.judson(
                                 fontSize: 25, color: ApplicationColor),
                           ),
@@ -113,7 +114,7 @@ class OrderCardTech extends StatelessWidget {
                             String offerPrice = priceController.text;
                             if (priceController.text.isEmpty) {
                               Fluttertoast.showToast(
-                                  msg: "Please enter a price",
+                                  msg: "Please enter a price".tr(),
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.TOP,
                                   backgroundColor: ApplicationColorWithOpacity,
@@ -193,7 +194,7 @@ class OrderCardTech extends StatelessWidget {
                                 });
 
                                 Fluttertoast.showToast(
-                                    msg: "Offer Updated Successfully",
+                                    msg: "Offer Updated Successfully".tr(),
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.TOP,
                                     backgroundColor:
@@ -236,7 +237,7 @@ class OrderCardTech extends StatelessWidget {
                                 // );
 
                                 Fluttertoast.showToast(
-                                    msg: "Offer Submitted Successfully",
+                                    msg: "Offer Submitted Successfully".tr(),
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.TOP,
                                     backgroundColor:
@@ -249,7 +250,7 @@ class OrderCardTech extends StatelessWidget {
                             } catch (e) {
                               print('Error submitting offer: $e');
                               Fluttertoast.showToast(
-                                  msg: "Failed to submit offer",
+                                  msg: "Failed to submit offer".tr(),
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.TOP,
                                   backgroundColor: ApplicationColorWithOpacity,
@@ -305,7 +306,7 @@ class OrderCardTech extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Type of service :',
+                  "Type of service :".tr(),
                   style: GoogleFonts.cantataOne(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -316,36 +317,84 @@ class OrderCardTech extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Text(
-                  'Service: ${orders.ServiceType}',
-                  style: GoogleFonts.castoro(
-                    fontSize: 14,
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      "Service:".tr(),
+                      style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      orders.ServiceType,
+                      style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  'Description : ${orders.Description}',
-                  style: GoogleFonts.castoro(
-                    fontSize: 14,
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      "Description :".tr(),
+                      style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      orders.Description,
+                      style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  'Location : ${orders.Location}',
-                  style: GoogleFonts.castoro(
-                    fontSize: 14,
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      "Location :".tr(),
+                      style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      orders.Location ,
+                      style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  'Status : ${orders.Status}',
-                  style: GoogleFonts.castoro(
-                    fontSize: 14,
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      "Status :".tr(),
+                      style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      ' ${orders.Status}',
+                      style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

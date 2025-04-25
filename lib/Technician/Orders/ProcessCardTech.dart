@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -61,7 +62,7 @@ class ProcessOrderCardTech extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Type of service :',
+                    'Type of service :'.tr(),
                     style: GoogleFonts.cantataOne(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -72,44 +73,104 @@ class ProcessOrderCardTech extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    'Service: ${orders.ServiceType}',
-                    style: GoogleFonts.castoro(
-                      fontSize: 14,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Service:'.tr(),
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        orders.ServiceType,
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    'Description : ${orders.Description}',
-                    style: GoogleFonts.castoro(
-                      fontSize: 14,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Description :'.tr(),
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        orders.Description,
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    'Location : ${orders.Location}',
-                    style: GoogleFonts.castoro(
-                      fontSize: 14,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        "Location :".tr(),
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        ' ${orders.Location}',
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    'Offer Price : ${orders.previousOffer}',
-                    style: GoogleFonts.castoro(
-                      fontSize: 14,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        "Offer Price :".tr(),
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        ' ${orders.previousOffer}',
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    'Status : ${orders.Status}',
-                    style: GoogleFonts.castoro(
-                      fontSize: 14,
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Status :'.tr(),
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        ' ${orders.Status}',
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -154,7 +215,7 @@ class ProcessOrderCardTech extends StatelessWidget {
                     children: [
                       Expanded(
                         child: WhiteButtonOffer(
-                          text: "Cancel",
+                          text: "Cancel".tr(),
                           onPressed: () async {
                             await CancelOrder(context, orders);
                           },
@@ -163,7 +224,7 @@ class ProcessOrderCardTech extends StatelessWidget {
                       ),
                       Expanded(
                         child: GradientButtonOffer(
-                          text: "Complete",
+                          text: "Complete".tr(),
                           onPressed: () async {
                             await _completeOrder(context, orders);
                           },
@@ -204,7 +265,7 @@ class ProcessOrderCardTech extends StatelessWidget {
 
       // Show success message
       Fluttertoast.showToast(
-        msg: 'Order completed successfully!',
+        msg: "Order completed successfully!".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: ApplicationColorWithOpacity,
@@ -214,7 +275,7 @@ class ProcessOrderCardTech extends StatelessWidget {
     } catch (e) {
       // Handle errors
       Fluttertoast.showToast(
-        msg: 'Failed to complete order',
+        msg: 'Failed to complete order'.tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: ApplicationColorWithOpacity,
@@ -231,7 +292,7 @@ class ProcessOrderCardTech extends StatelessWidget {
 
       // Show success message
       Fluttertoast.showToast(
-        msg: 'Order Cancelled!',
+        msg: "Order Cancelled!".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
@@ -240,7 +301,7 @@ class ProcessOrderCardTech extends StatelessWidget {
       );
     } catch (e) {
       Fluttertoast.showToast(
-        msg: 'Failed to cancel order',
+        msg: "Failed to cancel order".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,

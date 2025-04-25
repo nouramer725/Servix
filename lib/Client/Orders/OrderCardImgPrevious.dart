@@ -155,12 +155,12 @@ class OrderCardImgPrevious extends StatelessWidget {
                       }
 
                       if (snapshot.hasError) {
-                        return Text('Error loading data');
+                        return Text("Error loading data".tr());
                       }
 
                       final technicianData = snapshot.data;
                       if (technicianData == null || !technicianData.exists) {
-                        return Text('No technician found');
+                        return Text("No technician found".tr());
                       }
 
                       final data =

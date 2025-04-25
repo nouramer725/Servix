@@ -182,7 +182,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
       });
 
       Fluttertoast.showToast(
-        msg: "Image deleted successfully",
+        msg: "Image deleted successfully".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
@@ -191,7 +191,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
       );
     } catch (e) {
       Fluttertoast.showToast(
-        msg: "Failed to delete image",
+        msg: "Failed to delete image".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
@@ -290,7 +290,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
             ? const Color(0xFF333739)
             : Colors.white,
         title: Text(
-          "Profile",
+          "Profile".tr(),
           style: GoogleFonts.castoro(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -309,7 +309,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                     ));
               },
               child: Text(
-                "Edit",
+                "Edit".tr(),
                 style: GoogleFonts.castoro(
                   fontSize: 23,
                   fontWeight: FontWeight.bold,
@@ -375,7 +375,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
-                    return const Text('Error loading rating');
+                    return  Text("Error loading rating".tr());
                   }
 
                   final avgRating = snapshot.data ?? 0.0;
@@ -430,23 +430,51 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                   ? CircularProgressIndicator(color: ApplicationColor)
                   : Column(
                       children: [
-                        Text(
-                          "Main Service: ${userData!['main_service'] ?? 'N/A'}",
-                          style: GoogleFonts.castoro(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : const Color(0xFF676767)),
+                        Row(
+                          children: [
+                            Text(
+                              "Main Service:".tr(),
+                              style: GoogleFonts.castoro(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: themeProvider.themeMode == ThemeMode.dark
+                                      ? Colors.white
+                                      : const Color(0xFF676767)),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              "${userData!['main_service'] ?? 'N/A'}",
+                              style: GoogleFonts.castoro(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: themeProvider.themeMode == ThemeMode.dark
+                                      ? Colors.white
+                                      : const Color(0xFF676767)),
+                            ),
+                          ],
                         ),
-                        Text(
-                          "Sub Service: ${userData!['sub_service'] ?? 'N/A'}",
-                          style: GoogleFonts.castoro(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : const Color(0xFF676767)),
+                        Row(
+                          children: [
+                            Text(
+                              "Sub Service:".tr(),
+                              style: GoogleFonts.castoro(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: themeProvider.themeMode == ThemeMode.dark
+                                      ? Colors.white
+                                      : const Color(0xFF676767)),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              "${userData!['sub_service'] ?? 'N/A'}",
+                              style: GoogleFonts.castoro(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: themeProvider.themeMode == ThemeMode.dark
+                                      ? Colors.white
+                                      : const Color(0xFF676767)),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -546,7 +574,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                           });
                         },
                         child: Text(
-                          'Products',
+                          "Products".tr(),
                           style: GoogleFonts.castoro(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -576,7 +604,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                           });
                         },
                         child: Text(
-                          'Reviews',
+                          "Reviews".tr(),
                           style: GoogleFonts.castoro(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

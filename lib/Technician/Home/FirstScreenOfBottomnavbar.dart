@@ -204,7 +204,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                             },
                           ),
                           const SizedBox(height: 10),
-                          Text("Total Jobs",
+                          Text("Total Jobs".tr(),
                               style: GoogleFonts.castoro(
                                   fontSize: 16,
                                   color: const Color(0xFF9A9A9A))),
@@ -242,7 +242,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                                   color: ApplicationColor,
                                 );
                               } else if (snapshot.hasError) {
-                                return const Text('Error loading rating');
+                                return const Text("Error loading rating").tr();
                               }
                               final avgRating = snapshot.data ?? 0.0;
                               return Text(
@@ -254,7 +254,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                             },
                           ),
                           const SizedBox(height: 10),
-                          Text("Rating",
+                          Text("Rating".tr(),
                               style: GoogleFonts.castoro(
                                   fontSize: 16,
                                   color: const Color(0xFF9A9A9A))),
@@ -276,7 +276,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                 height: 10,
               ),
               Text(
-                "Pending Orders",
+                "Pending Orders".tr(),
                 style: GoogleFonts.castoro(
                     fontSize: 25,
                     decoration: TextDecoration.underline,
@@ -298,7 +298,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
 
                   if (subserviceSnapshot.hasError ||
                       !subserviceSnapshot.hasData) {
-                    return Center(child: Text('Error fetching subservice'));
+                    return Center(child: Text("Error fetching subservice".tr()));
                   }
 
                   final technicianSubservice = subserviceSnapshot.data!;
@@ -320,8 +320,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
 
                       if (snapshot.hasError || !snapshot.hasData) {
                         print('Error fetching orders: ${snapshot.error}');
-                        return const Center(
-                            child: Text('Error loading orders'));
+                        return  Center(child: Text("Error loading orders".tr()));
                       }
 
                       final docs = snapshot.data!.docs;
@@ -329,7 +328,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
 
                       if (docs.isEmpty) {
                         return Text(
-                          'No orders available',
+                          "No orders available".tr(),
                           style: GoogleFonts.castoro(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -352,14 +351,14 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
 
                           if (filteredSnapshot.hasError ||
                               !filteredSnapshot.hasData) {
-                            return const Center(
-                                child: Text('Error loading filtered orders'));
+                            return  Center(
+                                child: Text("Error loading filtered orders".tr()));
                           }
 
                           final orders = filteredSnapshot.data!;
 
                           if (orders.isEmpty) {
-                            return const Center(child: Text('No Offers Made'));
+                            return  Center(child: Text("No Offers Made".tr()));
                           }
 
                           return Expanded(

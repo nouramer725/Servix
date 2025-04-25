@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -59,7 +60,7 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
                   child: _selectedIndex == 0
                       ? OrderGradientButton(
                           onPressed: () {},
-                          text: 'Current',
+                          text: 'Current'.tr(),
                         )
                       : OrderWhiteButton(
                           onPressed: () {
@@ -67,14 +68,14 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
                               _selectedIndex = 0;
                             });
                           },
-                          text: 'Current',
+                          text: 'Current'.tr(),
                         ),
                 ),
                 Expanded(
                   child: _selectedIndex == 1
                       ? OrderGradientButton(
                           onPressed: () {},
-                          text: 'Processing',
+                          text: 'Processing'.tr(),
                         )
                       : OrderWhiteButton(
                           onPressed: () {
@@ -82,14 +83,14 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
                               _selectedIndex = 1;
                             });
                           },
-                          text: 'Processing',
+                          text: 'Processing'.tr(),
                         ),
                 ),
                 Expanded(
                   child: _selectedIndex == 2
                       ? OrderGradientButton(
                           onPressed: () {},
-                          text: 'Finished',
+                          text: 'Finished'.tr(),
                         )
                       : OrderWhiteButton(
                           onPressed: () {
@@ -97,7 +98,7 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
                               _selectedIndex = 2;
                             });
                           },
-                          text: 'Finished',
+                          text: 'Finished'.tr(),
                         ),
                 ),
               ],
@@ -128,7 +129,7 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
         }
 
         if (subserviceSnapshot.hasError || !subserviceSnapshot.hasData) {
-          return Center(child: Text('Error fetching subservice'));
+          return Center(child: Text('Error fetching subservice'.tr()));
         }
 
         final technicianSubservice = subserviceSnapshot.data!;
@@ -147,14 +148,14 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
 
             if (snapshot.hasError || !snapshot.hasData) {
               print('Error fetching orders: ${snapshot.error}');
-              return const Center(child: Text('Error loading orders'));
+              return  Center(child: Text('Error loading orders'.tr()));
             }
 
             final docs = snapshot.data!.docs;
 
             if (docs.isEmpty) {
               return Center(
-                  child: Text('No orders available',
+                  child: Text('No orders available'.tr(),
                       style: GoogleFonts.castoro(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,

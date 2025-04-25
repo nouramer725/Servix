@@ -49,7 +49,7 @@ class _PercentageState extends State<Percentage> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Commission Information",
+                    "Commission Information".tr(),
                     style: GoogleFonts.castoro(
                       fontSize: 20,
                       color: ApplicationColor,
@@ -61,7 +61,7 @@ class _PercentageState extends State<Percentage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "As a technician using our platform, you agree that 10% of the total service fee you receive from a customer will be deducted as a commission for the app.",
+                  "As a technician using our platform, you agree that 10% of the total service fee you receive from a customer will be deducted as a commission for the app.".tr(),
                   style: GoogleFonts.castoro(
                     fontSize: 16,
                     color: ApplicationColor3,
@@ -71,7 +71,7 @@ class _PercentageState extends State<Percentage> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Application Policies",
+                    "Application Policies".tr(),
                     style: GoogleFonts.castoro(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -83,13 +83,13 @@ class _PercentageState extends State<Percentage> {
                 ),
                 const SizedBox(height: 8),
                 ...[
-                  "1) You must provide accurate and honest service to customers.",
-                  "2) You are responsible for showing up on time and maintaining professionalism.",
-                  "3) Misuse of the app or customer information is prohibited.",
-                  "4) Violations of policy may result in suspension or termination from the platform.",
-                  "5) The technician must transfer the commission (10% of the service fee) to the company’s designated bank account on a monthly basis.",
-                  "6) A grace period of 5 days is provided after the end of each month.",
-                  "7) Failure to comply with the commission payment terms may result in suspension or termination of the technician’s account.",
+                  "1) You must provide accurate and honest service to customers.".tr(),
+                  "2) You are responsible for showing up on time and maintaining professionalism.".tr(),
+                  "3) Misuse of the app or customer information is prohibited.".tr(),
+                  "4) Violations of policy may result in suspension or termination from the platform.".tr(),
+                  "5) The technician must transfer the commission (10% of the service fee) to the company’s designated bank account on a monthly basis.".tr(),
+                  "6) A grace period of 5 days is provided after the end of each month.".tr(),
+                  "7) Failure to comply with the commission payment terms may result in suspension or termination of the technician’s account.".tr(),
                 ].map((policy) => Text(
                       policy,
                       style: GoogleFonts.castoro(
@@ -131,7 +131,7 @@ class _PercentageState extends State<Percentage> {
                       );
                     } else {
                       Fluttertoast.showToast(
-                        msg: "You must accept the policies to continue.",
+                        msg: "You must accept the policies to continue.".tr(),
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.TOP,
                         backgroundColor: Colors.redAccent,
@@ -140,7 +140,7 @@ class _PercentageState extends State<Percentage> {
                       );
                     }
                   },
-                  text: "Continue",
+                  text: "Continue".tr(),
                 ),
               ],
             ),

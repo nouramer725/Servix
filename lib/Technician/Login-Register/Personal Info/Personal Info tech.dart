@@ -128,7 +128,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
         criminalRecordError ||
         nationalIdError) {
       Fluttertoast.showToast(
-        msg: "Please fill all required fields properly.",
+        msg: "Please fill all required fields properly.".tr(),
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.SNACKBAR,
         backgroundColor: Colors.redAccent,
@@ -141,7 +141,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       Fluttertoast.showToast(
-        msg: "No user is logged in.",
+        msg: "No user is logged in.".tr(),
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.SNACKBAR,
         backgroundColor: Colors.redAccent,
@@ -188,7 +188,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
       });
 
       Fluttertoast.showToast(
-        msg: "Data uploaded successfully.",
+        msg: "Data uploaded successfully.".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.SNACKBAR,
         backgroundColor:ApplicationColorWithOpacity,
@@ -202,7 +202,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
       );
     } on SocketException catch (_) {
       Fluttertoast.showToast(
-        msg: "Network connection issue. Please check your internet.",
+        msg: "Network connection issue. Please check your internet.".tr(),
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.SNACKBAR,
         backgroundColor: Colors.orange,

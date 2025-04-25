@@ -290,7 +290,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                   ),
                   _buildMenuItem(Icons.share, "Share App".tr(), onTap: () {
                     String quoteText =
-                        "💡Join the Servix community! Get expert help for any service you need—quick, easy, and hassle-free. Download now!";
+                        "💡Join the Servix community! Get expert help for any service you need—quick, easy, and hassle-free. Download now!".tr();
                     Share.share(quoteText);
                   }),
                   _buildMenuItem(Icons.phone_outlined, "Contact Us".tr(),
@@ -499,7 +499,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
             ? const Color(0xFF333739)
             : Colors.white,
         title: Text(
-          "Confirm Password",
+          "Confirm Password".tr(),
           style: GoogleFonts.castoro(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -511,7 +511,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Please enter your password to confirm deletion:",
+              Text("Please enter your password to confirm deletion:".tr(),
                   style: GoogleFonts.castoro(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -555,7 +555,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text("Cancel",
+            child: Text("Cancel".tr(),
                 style: GoogleFonts.castoro(
                   color: themeProvider.themeMode == ThemeMode.dark
                       ? Colors.white
@@ -579,7 +579,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                   Navigator.pop(context);
                   _showFinalDeleteDialog(context, themeProvider);
                   Fluttertoast.showToast(
-                    msg: "Correct password",
+                    msg: "Correct password".tr(),
                     toastLength: Toast.LENGTH_LONG,
                     gravity: ToastGravity.TOP,
                     backgroundColor: ApplicationColorWithOpacity,
@@ -588,7 +588,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                   );
                 } catch (e) {
                   Fluttertoast.showToast(
-                    msg: "Wrong password. Account not deleted.",
+                    msg: "Wrong password. Account not deleted.".tr(),
                     toastLength: Toast.LENGTH_LONG,
                     gravity: ToastGravity.TOP,
                     backgroundColor: ApplicationColorWithOpacity,
@@ -598,7 +598,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                 }
               }
             },
-            child: Text("Confirm",
+            child: Text("Confirm".tr(),
                 style: GoogleFonts.castoro(
                     fontSize: 16,
                     color: themeProvider.themeMode == ThemeMode.dark

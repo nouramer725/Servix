@@ -63,7 +63,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
         _isLoading = false;
       });
       Fluttertoast.showToast(
-        msg: "No internet connection. Please try again later.",
+        msg: "No internet connection. Please try again later.".tr(),
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: ApplicationColorWithOpacity,
@@ -147,11 +147,11 @@ class _SignInFormTechState extends State<SignInFormTech> {
       print(e);
       String message = '';
       if (e.code == 'user-not-found') {
-        message = 'No user found for that email.';
+        message = "No user found for that email.".tr();
       } else if (e.code == 'wrong-password') {
-        message = 'Wrong password provided.';
+        message = "Wrong password provided.".tr();
       } else {
-        message = 'This email address does not exist'.tr();
+        message = "This email address does not exist".tr();
       }
       Fluttertoast.showToast(
         msg: message,
@@ -164,7 +164,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
     } catch (e) {
       print(e);
       Fluttertoast.showToast(
-        msg: "An error occurred. Please try again later.",
+        msg: "An error occurred. Please try again later.".tr(),
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.SNACKBAR,
         backgroundColor: ApplicationColorWithOpacity,

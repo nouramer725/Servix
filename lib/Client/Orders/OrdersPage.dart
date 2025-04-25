@@ -98,7 +98,7 @@ class _OrdersPageState extends State<OrdersPage> {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      return const Center(child: Text('No user logged in'));
+      return  Center(child: Text('No user logged in'.tr()));
     }
 
     return FutureBuilder<QuerySnapshot>(

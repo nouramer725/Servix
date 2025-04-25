@@ -39,7 +39,7 @@ class _VerificationTechState extends State<VerificationTech> {
       _startVerificationCheck();
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(
-        msg: e.message ?? "Sign in failed",
+        msg: e.message ?? "Sign in failed".tr(),
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
@@ -109,7 +109,7 @@ class _VerificationTechState extends State<VerificationTech> {
                 width: 500,
               ),
               Text(
-                "Verify Your Email Address",
+                "Verify Your Email Address".tr(),
                 style: GoogleFonts.charisSil(
                   fontSize: 25,
                   color: ApplicationColor3,

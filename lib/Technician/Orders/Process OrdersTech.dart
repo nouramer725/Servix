@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,7 +19,7 @@ class ProcessOrderTechPage extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      return const Center(child: Text('No user logged in'));
+      return  Center(child: Text('No user logged in'.tr()));
     }
 
     return FutureBuilder<String>(
@@ -32,7 +33,7 @@ class ProcessOrderTechPage extends StatelessWidget {
         }
 
         if (subserviceSnapshot.hasError || !subserviceSnapshot.hasData) {
-          return Center(child: Text('Error fetching subservice'));
+          return Center(child: Text('Error fetching subservice'.tr()));
         }
 
         final technicianSubservice = subserviceSnapshot.data!;
@@ -53,14 +54,14 @@ class ProcessOrderTechPage extends StatelessWidget {
 
             if (snapshot.hasError || !snapshot.hasData) {
               print('Error fetching orders: ${snapshot.error}');
-              return const Center(child: Text('Error loading orders'));
+              return  Center(child: Text('Error loading orders'.tr()));
             }
 
             final docs = snapshot.data!.docs;
 
             if (docs.isEmpty) {
               return Center(
-                  child: Text('No Processing orders available',
+                  child: Text("No Processing orders available".tr(),
                       style: GoogleFonts.castoro(
                         fontSize: 20,
                           color: themeProvider.themeMode == ThemeMode.dark
@@ -79,7 +80,7 @@ class ProcessOrderTechPage extends StatelessWidget {
                 }
 
                 if (orderSnapshot.hasError || !orderSnapshot.hasData) {
-                  return const Center(child: Text('Error loading offers'));
+                  return  Center(child: Text('Error loading offers'.tr()));
                 }
 
                 final orders = orderSnapshot.data!;

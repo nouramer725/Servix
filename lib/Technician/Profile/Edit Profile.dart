@@ -156,7 +156,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               ? const Color(0xFF333739)
               : Colors.white,
           title: Text(
-            "Edit Name",
+            "Edit Name".tr(),
             style: GoogleFonts.castoro(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -176,7 +176,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                       : Colors.black,
                 ),
                 decoration: InputDecoration(
-                  labelText: "First Name",
+                  labelText: "First Name".tr(),
                   labelStyle: GoogleFonts.castoro(color: Colors.grey),
                   border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
@@ -199,7 +199,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                       : Colors.black,
                 ),
                 decoration: InputDecoration(
-                  labelText: "Last Name",
+                  labelText: "Last Name".tr(),
                   labelStyle: GoogleFonts.castoro(color: Colors.grey),
                   border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
@@ -218,7 +218,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
-                "Cancel",
+                "Cancel".tr(),
                 style: GoogleFonts.castoro(
                     fontSize: 20,
                     color: themeProvider.themeMode == ThemeMode.dark
@@ -228,7 +228,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             ),
             TextButton(
               onPressed: _updateUserName,
-              child: Text("Update",
+              child: Text("Update".tr(),
                   style: GoogleFonts.castoro(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -267,7 +267,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             ? const Color(0xFF333739)
             : Colors.white,
         title: Text(
-          "Edit Services",
+          "Edit Services".tr(),
           style: GoogleFonts.castoro(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -287,7 +287,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                       ? const Color(0xFF333739)
                       : Colors.white,
                   decoration: InputDecoration(
-                    labelText: "Main Service",
+                    labelText: "Main Service".tr(),
                     labelStyle: GoogleFonts.castoro(color: Colors.grey),
                     border: const OutlineInputBorder(
                       borderSide:
@@ -330,7 +330,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                       ? const Color(0xFF333739)
                       : Colors.white,
                   decoration: InputDecoration(
-                    labelText: "Sub Service",
+                    labelText: "Sub Service".tr(),
                     labelStyle: GoogleFonts.castoro(color: Colors.grey),
                     border: const OutlineInputBorder(
                       borderSide:
@@ -373,7 +373,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              "Cancel",
+              "Cancel".tr(),
               style: GoogleFonts.castoro(
                   fontSize: 20,
                   color: themeProvider.themeMode == ThemeMode.dark
@@ -386,7 +386,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               _updateService(selectedMainService, selectedSubService);
               Navigator.pop(context); // Close the dialog after saving
             },
-            child: Text("Update",
+            child: Text("Update".tr(),
                 style: GoogleFonts.castoro(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -438,7 +438,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             ? const Color(0xFF333739)
             : Colors.white,
         title: Text(
-          "Edit Description",
+          "Edit Description".tr(),
           style: GoogleFonts.castoro(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -473,7 +473,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              "Cancel",
+              "Cancel".tr(),
               style: GoogleFonts.castoro(
                   fontSize: 20,
                   color: themeProvider.themeMode == ThemeMode.dark
@@ -486,7 +486,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               _saveDescription(_descController.text);
               Navigator.pop(context);
             },
-            child: Text("Update",
+            child: Text("Update".tr(),
                 style: GoogleFonts.castoro(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -669,7 +669,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             ? const Color(0xFF333739)
             : Colors.white,
         title: Text(
-          "Edit Facebook Link",
+          "Edit Facebook Link".tr(),
           style: GoogleFonts.castoro(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -687,7 +687,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
           ),
           maxLines: 1,
           decoration: InputDecoration(
-            labelText: "Link",
+            labelText: "Link".tr(),
             labelStyle: GoogleFonts.castoro(color: Colors.grey),
             border: const OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
@@ -704,7 +704,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              "Cancel",
+              "Cancel".tr(),
               style: GoogleFonts.castoro(
                   fontSize: 20,
                   color: themeProvider.themeMode == ThemeMode.dark
@@ -717,7 +717,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               _saveLinkSocialMedia(_socialMediaController.text);
               Navigator.pop(context);
             },
-            child: Text("Update",
+            child: Text("Update".tr(),
                 style: GoogleFonts.castoro(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -752,7 +752,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
 
       // Show a FlutterToast indicating the upload process has started
       Fluttertoast.showToast(
-        msg: "Uploading...",
+        msg: "Uploading...".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
@@ -772,7 +772,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
 
         // Show a success message after uploading
         Fluttertoast.showToast(
-          msg: "Images uploaded successfully!",
+          msg: "Images uploaded successfully!".tr(),
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
           backgroundColor: ApplicationColorWithOpacity,
@@ -808,7 +808,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
             ? const Color(0xFF333739)
             : Colors.white,
         title: Text(
-          "Edit Profile",
+          "Edit Profile".tr(),
           style: GoogleFonts.castoro(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -827,28 +827,36 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               ProfileImageWidget(onTap: updateProfileImage),
               const SizedBox(height: 20),
               EditableRow(
-                  text: userData != null
-                      ? "Name: ${userData!['first_name']} ${userData!['last_name']}"
-                      : "Welcome".tr(),
-                  onEdit: _showEditDialog,
-                  icon: FontAwesomeIcons.pencil),
+                title: "Name:".tr(),
+                text: userData != null
+                    ? "${userData!['first_name']} ${userData!['last_name']}"
+                    : "Welcome".tr(),
+                onEdit: _showEditDialog,
+                icon: FontAwesomeIcons.pencil,
+              ),
               const ThemedDivider(),
               EditableRow(
-                  text: "Main Service: ${userData?['main_service'] ?? 'N/A'}\n"
-                      "Sub Service: ${userData?['sub_service'] ?? 'N/A'}",
-                  onEdit: _showEditDialogService,
-                  icon: FontAwesomeIcons.pencil),
+                title: "Main Service:\nSub Service:".tr(),
+                text:
+                "${userData?['main_service'] ?? 'N/A'}\n${userData?['sub_service'] ?? 'N/A'}",
+                onEdit: _showEditDialogService,
+                icon: FontAwesomeIcons.pencil,
+              ),
               const ThemedDivider(),
               EditableRow(
-                  text: "Description : $description",
-                  onEdit: _showEditDialogDiscription,
-                  maxLines: 20,
-                  icon: FontAwesomeIcons.pencil),
+                title: "Description:".tr(),
+                text: description,
+                onEdit: _showEditDialogDiscription,
+                maxLines: 20,
+                icon: FontAwesomeIcons.pencil,
+              ),
               const ThemedDivider(),
               EditableRow(
-                  text: "Phone Number: $phoneNumber",
+                  title: "Phone Number:".tr(),
+                  text: phoneNumber,
                   onEdit: _showEditPhoneDialog,
-                  icon: FontAwesomeIcons.pencil),
+                  icon: FontAwesomeIcons.pencil,
+                  ),
               const ThemedDivider(),
               const SizedBox(
                 height: 10,
@@ -916,7 +924,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            "$area, $street, $building building, apartment no.$apartment",
+                            "$area, $street, $building ,$apartment",
                             style: GoogleFonts.castoro(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -960,13 +968,15 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               const SizedBox(height: 20),
               const ThemedDivider(),
               EditableRow(
-                  text: "Facebook Link: $linkSocialMedia",
+                  title: "Facebook Link:".tr(),
+                  text: linkSocialMedia,
                   onEdit: _showEditDialogSocialMedia,
                   maxLines: 20,
                   icon: FontAwesomeIcons.pencil),
               const ThemedDivider(),
               EditableRow(
-                text: "Upload images of work",
+                title: "Products:".tr(),
+                text: "Upload images of work".tr(),
                 onEdit: _pickAndUploadImages,
                 maxLines: 20,
                 icon: FontAwesomeIcons.image,
