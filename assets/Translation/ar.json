@@ -404,6 +404,9 @@
   "Error uploading post: $e": "حدث خطأ أثناء رفع المنشور:",
   "Add a comment": "أضف تعليقًا",
   "Comment added successfully!": "تم إضافة التعليق بنجاح!",
-  "Error adding comment: $e": "حدث خطأ أثناء إضافة التعليق:",
-  "Comments": "التعليقات"
+  "Error adding comment": "حدث خطأ أثناء إضافة التعليق",
+  "Comments": "التعليقات",
+  "0 comments": "0 تعليقات",
+  "What's on your mind?": "فيما تفكر؟",
+  "comments": "تعليقات"
 }

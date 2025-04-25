@@ -397,12 +397,14 @@
   "Add Image" : "Add Image",
   "Please enter content before posting." : "Please enter content before posting.",
   "Post uploaded successfully!" : "Post uploaded successfully!",
-  "Error uploading post: $e" : "Error uploading post:",
+  "Error uploading post" : "Error uploading post",
   "Add a comment": "Add a comment",
   "Comment added successfully!": "Comment added successfully!",
   "Error adding comment: $e": "Error adding comment:",
   "Comments": "Comments",
-  "Loading comments...": "Loading comments..."
+  "Loading comments...": "Loading comments...",
+  "What's on your mind?": "What's on your mind?",
+  "comments": "comments"
 
 
 
