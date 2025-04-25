@@ -22,7 +22,7 @@ Widget countryCodePhoneFieldContactUs({
             child:  Center(
               child: Text(
                 "+20".tr(),
-                style: TextStyle(fontSize: 16, color: themeProvider.themeMode == ThemeMode.dark ? Colors.grey.shade400 : Colors.black),
+                style: GoogleFonts.castoro(fontSize: 16, color: themeProvider.themeMode == ThemeMode.dark ? Colors.grey.shade400 : Colors.black),
               ),
             ),
           ),
@@ -34,7 +34,7 @@ Widget countryCodePhoneFieldContactUs({
               cursorColor: Colors.grey[100],
               decoration: InputDecoration(
                 labelText: "Phone Number".tr(),
-                labelStyle: GoogleFonts.inter(
+                labelStyle: GoogleFonts.castoro(
                   fontSize: 18,
                   fontWeight: FontWeight.w400,
                   color: Colors.grey.shade400,
@@ -61,7 +61,7 @@ Widget countryCodePhoneFieldContactUs({
             children: [
               Text(
                 errorText,
-                style: const TextStyle(color: Colors.red, fontSize: 14),
+                style:GoogleFonts.castoro(color: Colors.red, fontSize: 14),
               ),
             ],
           ),

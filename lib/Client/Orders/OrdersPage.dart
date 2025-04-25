@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,7 +36,7 @@ class _OrdersPageState extends State<OrdersPage> {
                   child: _selectedIndex == 0
                       ? OrderGradientButton(
                           onPressed: () {},
-                          text: 'Current',
+                          text: 'Current'.tr(),
                         )
                       : OrderWhiteButton(
                           onPressed: () {
@@ -43,14 +44,14 @@ class _OrdersPageState extends State<OrdersPage> {
                               _selectedIndex = 0;
                             });
                           },
-                          text: 'Current',
+                          text: 'Current'.tr(),
                         ),
                 ),
                 Expanded(
                   child: _selectedIndex == 1
                       ? OrderGradientButton(
                           onPressed: () {},
-                          text: 'Processing',
+                          text: 'Processing'.tr(),
                         )
                       : OrderWhiteButton(
                           onPressed: () {
@@ -58,14 +59,14 @@ class _OrdersPageState extends State<OrdersPage> {
                               _selectedIndex = 1;
                             });
                           },
-                          text: 'Processing',
+                          text: 'Processing'.tr(),
                         ),
                 ),
                 Expanded(
                   child: _selectedIndex == 2
                       ? OrderGradientButton(
                           onPressed: () {},
-                          text: 'Finished',
+                          text: 'Finished'.tr(),
                         )
                       : OrderWhiteButton(
                           onPressed: () {
@@ -73,7 +74,7 @@ class _OrdersPageState extends State<OrdersPage> {
                               _selectedIndex = 2;
                             });
                           },
-                          text: 'Finished',
+                          text: 'Finished'.tr(),
                         ),
                 ),
               ],
@@ -113,23 +114,26 @@ class _OrdersPageState extends State<OrdersPage> {
         }
 
         if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          print('Error: ${snapshot.error}');
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(child: Text('No current orders found.',style:  GoogleFonts.castoro(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: themeProvider.themeMode == ThemeMode.dark
-                  ? Colors.white
-                  : Colors.black,)));
+          return Center(
+              child: Text('No current orders found.'.tr(),
+                  style: GoogleFonts.castoro(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black,
+                  )));
         }
 
         final orders = snapshot.data!.docs.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
 
           return OrderModel(
-            ServiceType: data['serviceTitle'] ?? 'No Service Type',
+            ServiceType: data['serviceTitle'] ?? 'No Service Type'.tr(),
             Description: data['description'] ?? '',
             Status: data['Status'] ?? '',
             Date: data['selectedDate'] ?? '',
@@ -152,7 +156,7 @@ class _OrdersPageState extends State<OrdersPage> {
           itemCount: orders.length,
           itemBuilder: (context, index) {
             final order = orders[index];
-              return OrderCard(orders: order);
+            return OrderCard(orders: order);
           },
         );
       },

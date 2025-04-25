@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -13,7 +14,8 @@ import '../../constents/constent.dart';
 class RateTechnicianScreen extends StatefulWidget {
   final String technicianId;
   final String serviceId; // Add this line
-  const RateTechnicianScreen({required this.technicianId, required this.serviceId});
+  const RateTechnicianScreen(
+      {required this.technicianId, required this.serviceId});
 
   @override
   State<RateTechnicianScreen> createState() => _RateTechnicianScreenState();
@@ -26,17 +28,17 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
 
   String getRatingDescription(double rating) {
     if (rating <= 1.0) {
-      return "Very Poor";
+      return "Very Poor".tr();
     } else if (rating <= 1.5) {
-      return "Poor";
+      return "Poor".tr();
     } else if (rating <= 2.5) {
-      return "Fair";
+      return "Fair".tr();
     } else if (rating <= 3.5) {
-      return "Good";
+      return "Good".tr();
     } else if (rating <= 4.5) {
-      return "Very Good";
+      return "Very Good".tr();
     } else {
-      return "Excellent";
+      return "Excellent".tr();
     }
   }
 
@@ -49,7 +51,7 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
       appBar: AppBar(
         backgroundColor: isDark ? const Color(0xFF333739) : Colors.white,
         title: Text(
-          'Rate Technician',
+          'Rate Technician'.tr(),
           style: GoogleFonts.castoro(
             fontSize: 25,
             fontWeight: FontWeight.bold,
@@ -65,7 +67,7 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('How was your service?',
+            Text('How was your service?'.tr(),
                 style: GoogleFonts.castoro(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
@@ -119,11 +121,11 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
                   fontWeight: FontWeight.bold,
                   color: isDark ? Colors.white : Colors.black,
                 ),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.transparent,
-                  hintText: 'Leave a comment...',
-                  hintStyle: TextStyle(color: Color(0xFFAEAEAE)),
+                  hintText: 'Leave a comment...'.tr(),
+                  hintStyle: GoogleFonts.castoro(color: Color(0xFFAEAEAE)),
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   border: InputBorder.none,
@@ -138,7 +140,7 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
                   child: WhiteButtonOffer(
                     onPressed: () => Navigator.pop(context),
                     font: 20,
-                    text: 'Cancel',
+                    text: 'Cancel'.tr(),
                   ),
                 ),
                 Expanded(
@@ -147,7 +149,7 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
                         _submitRating(_rating, _commentController.text);
                       },
                       font: 20,
-                      text: 'Submit'),
+                      text: 'Submit'.tr()),
                 ),
               ],
             ),
@@ -160,12 +162,12 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
   void _submitRating(double ratingValue, String comment) async {
     if (ratingValue == 0.0) {
       Fluttertoast.showToast(
-        msg: "Please select a rating before submitting.",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
-        backgroundColor: ApplicationColorWithOpacity,
-        textColor: Colors.white,
-      );
+          msg: "Please select a rating before submitting.".tr(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0);
       return;
     }
 
@@ -208,7 +210,7 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
       }, SetOptions(merge: true));
 
       Fluttertoast.showToast(
-        msg: "Thank you for your rating!",
+        msg: "Thank you for your rating!".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
@@ -219,7 +221,7 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
     } catch (e) {
       print("Error submitting rating: $e");
       Fluttertoast.showToast(
-        msg: "Error submitting rating. Please try again.",
+        msg: "Error submitting rating. Please try again.".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,

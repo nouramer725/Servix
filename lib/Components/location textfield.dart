@@ -64,7 +64,7 @@ class CustomTextFormFieldLocation extends StatelessWidget {
             padding: const EdgeInsets.only(top: 5, left: 5),
             child: Text(
               errorText!,
-              style:  GoogleFonts.inter(color: Colors.red, fontSize: 14),
+              style:  GoogleFonts.castoro(color: Colors.red, fontSize: 14),
             ),
           ),
       ],

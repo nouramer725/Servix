@@ -33,7 +33,7 @@ class OrderCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Type of service :',
+                    'Type of service :'.tr(),
                     style: GoogleFonts.castoro(
                       color: themeProvider.themeMode == ThemeMode.dark
                           ? Colors.white
@@ -51,7 +51,7 @@ class OrderCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Service Type:',
+                        'Service Type:'.tr(),
                         style: GoogleFonts.castoro(
                             fontSize: 14,
                             color: themeProvider.themeMode == ThemeMode.dark
@@ -60,7 +60,7 @@ class OrderCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        orders.ServiceType,
+                        orders.ServiceType.tr(),
                         style: GoogleFonts.castoro(
                             fontSize: 14,
                             color: themeProvider.themeMode == ThemeMode.dark
@@ -70,24 +70,52 @@ class OrderCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Description : ${orders.Description}',
-                    style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
+                  Row(
+                    children: [
+                      Text(
+                        'Description :'.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                          child: Text(
+                        orders.Description,
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      ))
+                    ],
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Status : ${orders.Status}',
-                    style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black),
+                  Row(
+                    children: [
+                      Text(
+                        'Status :'.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        orders.Status.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 12),
                   Row(

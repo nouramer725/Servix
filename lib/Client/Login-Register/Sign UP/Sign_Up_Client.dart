@@ -45,6 +45,7 @@ class _SignUpClientState extends State<SignUpClient> {
   String? _passwordError;
   String? _confirmError;
   String? _phoneError;
+  String? Gender;
 
   bool _isLoading = false;
 
@@ -56,6 +57,7 @@ class _SignUpClientState extends State<SignUpClient> {
       _phoneError = null;
       _LnameError = null;
       _FnameError = null;
+      Gender== null;
     });
 
     bool isValid = true;
@@ -144,6 +146,12 @@ class _SignUpClientState extends State<SignUpClient> {
     } else if (!RegExp(r'^\d{11}$').hasMatch(_PhoneNumberController.text)) {
       setState(() {
         _phoneError = "Phone number must be exactly 11 digits".tr();
+      });
+      isValid = false;
+    }
+    if (gender == null) {
+      setState(() {
+        Gender = "Please select your gender".tr();
       });
       isValid = false;
     }
@@ -508,6 +516,7 @@ class _SignUpClientState extends State<SignUpClient> {
                           errorText: _phoneError,
                         ),
                         genderDropdown(
+                          errorText: Gender,
                           selectedValue: gender,
                           onChanged: (newValue) {
                             setState(() {
@@ -597,7 +606,7 @@ class _SignUpClientState extends State<SignUpClient> {
                                           ),
                                           const SizedBox(width: 10),
                                           Text(
-                                            "Google",
+                                            "Google".tr(),
                                             style: GoogleFonts.inter(
                                                 fontSize: 16,
                                                 color: const Color(0xFF828282)),
@@ -631,7 +640,7 @@ class _SignUpClientState extends State<SignUpClient> {
                                           ),
                                           const SizedBox(width: 10),
                                           Text(
-                                            "Facebook",
+                                            "Facebook".tr(),
                                             style: GoogleFonts.inter(
                                                 fontSize: 16,
                                                 color: const Color(0xFF828282)),

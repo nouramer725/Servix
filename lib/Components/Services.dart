@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ServicesRow extends StatelessWidget {
   final List<String> mainServices;
@@ -42,13 +43,22 @@ class ServicesRow extends StatelessWidget {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: selectedMainService,
-                    hint: Text("Main Service".tr()),
+                    hint: Text(
+                      "Main Service".tr(),
+                      style: GoogleFonts.castoro(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     dropdownColor: Colors.white,
                     isExpanded: true,
                     items: mainServices.map((String service) {
                       return DropdownMenuItem<String>(
                         value: service,
-                        child: Text(service),
+                        child: Text(service,
+                            style: GoogleFonts.castoro(
+                              fontSize: 14,
+                            )),
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
@@ -71,22 +81,31 @@ class ServicesRow extends StatelessWidget {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: (selectedSubService != null &&
-                        subServicesMap[selectedMainService]?.contains(selectedSubService) == true)
+                            subServicesMap[selectedMainService]
+                                    ?.contains(selectedSubService) ==
+                                true)
                         ? selectedSubService
                         : null, // Ensure selectedSubService is valid
-                    hint: Text("Sub Service".tr()),
+                    hint: Text("Sub Service".tr(),
+                        style: GoogleFonts.castoro(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        )),
                     dropdownColor: Colors.white,
                     isExpanded: true,
-                    items: (selectedMainService == null || subServicesMap[selectedMainService] == null)
+                    items: (selectedMainService == null ||
+                            subServicesMap[selectedMainService] == null)
                         ? []
                         : subServicesMap[selectedMainService]!
-                        .toSet() // Remove duplicates
-                        .map((String service) {
-                      return DropdownMenuItem<String>(
-                        value: service,
-                        child: Text(service),
-                      );
-                    }).toList(),
+                            .toSet() // Remove duplicates
+                            .map((String service) {
+                            return DropdownMenuItem<String>(
+                              value: service,
+                              child: Text(service,style: GoogleFonts.castoro(
+                                fontSize: 14
+                              ),),
+                            );
+                          }).toList(),
                     onChanged: (String? newValue) {
                       onSubChanged(newValue);
                     },

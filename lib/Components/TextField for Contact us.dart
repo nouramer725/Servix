@@ -46,7 +46,7 @@ Widget customTextFieldContact({
               Expanded(
                 child: Text(
                   errorText,
-                  style: const TextStyle(
+                  style: GoogleFonts.castoro(
                     color: Colors.red,
                     fontSize: 14,
                   ),

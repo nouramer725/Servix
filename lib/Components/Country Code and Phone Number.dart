@@ -21,7 +21,7 @@ Widget countryCodePhoneField({
             child:  Center(
               child: Text(
                 "+20".tr(),
-                style: TextStyle(fontSize: 16),
+                style: GoogleFonts.castoro(fontSize: 16),
               ),
             ),
           ),
@@ -33,7 +33,7 @@ Widget countryCodePhoneField({
               cursorColor: Colors.grey[100],
               decoration: InputDecoration(
                 labelText: "Phone Number".tr(),
-                labelStyle: GoogleFonts.inter(
+                labelStyle: GoogleFonts.castoro(
                   fontSize: 18,
                   fontWeight: FontWeight.w400,
                   color: Colors.black.withOpacity(0.31),
@@ -45,6 +45,12 @@ Widget countryCodePhoneField({
                 focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Color(0xFFAEAEAE), width: 1),
                 ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.red, width: 1),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.red, width: 1),
+                )
               ),
             ),
           ),
@@ -58,7 +64,7 @@ Widget countryCodePhoneField({
             children: [
               Text(
                 errorText,
-                style: const TextStyle(color: Colors.red, fontSize: 14),
+                style: GoogleFonts.castoro(color: Colors.red, fontSize: 14),
               ),
             ],
           ),

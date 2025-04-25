@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,13 +23,13 @@ class _ReportScreenState extends State<ReportScreen> {
   final TextEditingController _controller = TextEditingController();
 
   final List<String> reasons = [
-    'Nudity or sexual activity',
-    'Bullying or harassment',
-    'Suicide, self-injury or eating disorders',
-    'Violence, hate or exploitation',
-    'Selling or promoting restricted items',
-    'Scam, fraud or impersonation',
-    "I just don't like it",
+    'Nudity or sexual activity'.tr(),
+    'Bullying or harassment'.tr(),
+    'Suicide, self-injury or eating disorders'.tr(),
+    'Violence, hate or exploitation'.tr(),
+    'Selling or promoting restricted items'.tr(),
+    'Scam, fraud or impersonation'.tr(),
+    "I just don't like it".tr(),
   ];
 
   @override
@@ -41,7 +42,7 @@ class _ReportScreenState extends State<ReportScreen> {
               ? const Color(0xFF333739)
               : Colors.white,
           title: Text(
-            'Reporting Technician',
+            'Reporting Technician'.tr(),
             style: GoogleFonts.castoro(
               fontSize: 20,
               color: themeProvider.themeMode == ThemeMode.dark
@@ -58,14 +59,28 @@ class _ReportScreenState extends State<ReportScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Why are you reporting Nour ?',
-                    style: GoogleFonts.charisSil(
-                      fontSize: 24,
-                      color: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.white
-                          : Colors.black,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Why are you reporting'.tr(),
+                        style: GoogleFonts.charisSil(
+                          fontSize: 24,
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(' ${widget.technicianName} ?'.tr(),
+                          style: GoogleFonts.charisSil(
+                            fontSize: 24,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ))
+                    ],
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -140,11 +155,11 @@ class _ReportScreenState extends State<ReportScreen> {
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(20.0),
           child: GradientButton(
-              text: 'Done',
+              text: 'Send Report'.tr(),
               onPressed: () async {
                 if (selectedReason == null) {
                   Fluttertoast.showToast(
-                    msg: "Please select a reason",
+                    msg: "Please select a reason".tr(),
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.TOP,
                     backgroundColor: ApplicationColorWithOpacity,
@@ -172,37 +187,61 @@ class _ReportScreenState extends State<ReportScreen> {
                             themeProvider.themeMode == ThemeMode.dark
                                 ? const Color(0xFF333739)
                                 : Colors.white,
-                        title: Text(
-                          'Block ${widget.technicianName}',
-                          style: GoogleFonts.castoro(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+                        title: Row(
+                          children: [
+                            Text(
+                              'Block'.tr(),
+                              style: GoogleFonts.castoro(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(widget.technicianName,
+                                style: GoogleFonts.castoro(
+                                    color: themeProvider.themeMode ==
+                                            ThemeMode.dark
+                                        ? Colors.white
+                                        : Colors.black))
+                          ],
                         ),
-                        content: Text(
-                            '${widget.technicianName} will no longer be able to see your posts or start a conversation with you',
-                            style: GoogleFonts.castoro(
-                              fontSize: 18,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black,
-                            )),
+                        content: Row(
+                          children: [
+                            Text('${widget.technicianName}',
+                                style: GoogleFonts.castoro(
+                                  fontSize: 18,
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black,
+                                )),
+                            Text(
+                                'will no longer be able to see your posts or start a conversation with you'
+                                    .tr(),
+                                style: GoogleFonts.castoro(
+                                    fontSize: 18,
+                                    color: themeProvider.themeMode ==
+                                            ThemeMode.dark
+                                        ? Colors.white
+                                        : Colors.black))
+                          ],
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.pop(context); // Close dialog
                               Fluttertoast.showToast(
-                                msg: "Your report has been submitted.",
+                                msg: "Your report has been submitted.".tr(),
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.TOP,
                                 backgroundColor: ApplicationColorWithOpacity,
                                 textColor: Colors.white,
                               );
                             },
-                            child: Text("No",
+                            child: Text("No".tr(),
                                 style: GoogleFonts.castoro(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -228,15 +267,15 @@ class _ReportScreenState extends State<ReportScreen> {
                               Navigator.pop(context);
 
                               Fluttertoast.showToast(
-                                msg:
-                                    "Technician has been reported and blocked.",
+                                msg: "Technician has been reported and blocked."
+                                    .tr(),
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.TOP,
                                 backgroundColor: ApplicationColorWithOpacity,
                                 textColor: Colors.white,
                               );
                             },
-                            child: Text("Yes",
+                            child: Text("Yes".tr(),
                                 style: GoogleFonts.castoro(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -248,7 +287,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   );
                 } catch (e) {
                   Fluttertoast.showToast(
-                    msg: "Failed to submit report: $e",
+                    msg: "Failed to submit report".tr(),
                     toastLength: Toast.LENGTH_LONG,
                     gravity: ToastGravity.TOP,
                     backgroundColor: Colors.red,

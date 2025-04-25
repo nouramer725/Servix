@@ -32,7 +32,7 @@ class CustomTextFormField extends StatelessWidget {
           obscureText: obscureText,
           decoration: InputDecoration(
             labelText: label,
-            labelStyle: GoogleFonts.inter(
+            labelStyle: GoogleFonts.castoro(
               fontSize: 18,
               fontWeight: FontWeight.w400,
               color: Colors.black.withOpacity(0.31),
@@ -65,11 +65,11 @@ class CustomTextFormField extends StatelessWidget {
                 Expanded(
                   child: Text(
                     errorText!,
-                    style: const TextStyle(
+                    style: GoogleFonts.castoro(
                       color: Colors.red,
                       fontSize: 14,
-                      overflow: TextOverflow.ellipsis,
                     ),
+                    overflow: TextOverflow.ellipsis,
                     maxLines: 5,
                   ),
                 ),

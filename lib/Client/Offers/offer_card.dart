@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -107,7 +108,7 @@ class _OfferCardState extends State<OfferCard> {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             return const CircularProgressIndicator();
                           } else if (snapshot.hasError) {
-                            return const Text('Error loading rating');
+                            print('Error loading rating');
                           }
 
                           final avgRating = snapshot.data ?? 0.0;
@@ -160,13 +161,26 @@ class _OfferCardState extends State<OfferCard> {
                 ],
               ),
               const SizedBox(height: 8),
-              Text(
-                "EGP ${widget.offer.offer}",
-                style: GoogleFonts.castoro(
-                    fontSize: 20,
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : Colors.black),
+              Row(
+                children: [
+                  Text(
+                    "EGP".tr(),
+                    style: GoogleFonts.castoro(
+                        fontSize: 20,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black),
+                  ),
+                  Text(
+                    "${widget.offer.offer}",
+                    style: GoogleFonts.castoro(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black),
+                  ),
+                ],
               ),
               Row(
                 children: [
@@ -190,7 +204,7 @@ class _OfferCardState extends State<OfferCard> {
                 children: [
                   Expanded(
                     child: GradientButtonOffer(
-                      text: "Accept",
+                      text: "Accept".tr(),
                       font: 18,
                       onPressed: widget.onAccept,
                     ),
@@ -198,7 +212,7 @@ class _OfferCardState extends State<OfferCard> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: WhiteButtonOffer(
-                      text: "Reject",
+                      text: "Reject".tr(),
                       font: 18,
                       onPressed: widget.onDecline,
                     ),

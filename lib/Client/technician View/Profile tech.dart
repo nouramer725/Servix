@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -143,7 +144,6 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
     }
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -169,7 +169,7 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
         )),
         body: Center(
           child: Text(
-            "This User is blocked",
+            "This User is blocked".tr(),
             style: GoogleFonts.castoro(
               fontSize: 20,
               color: themeProvider.themeMode == ThemeMode.dark
@@ -185,7 +185,7 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
         backgroundColor: themeProvider.themeMode == ThemeMode.dark
             ? Color(0xFF333739)
             : Colors.white,
-        title: Text("Profile Technician",
+        title: Text("Profile Technician".tr(),
             style: GoogleFonts.castoro(
               fontSize: 20,
               color: themeProvider.themeMode == ThemeMode.dark
@@ -255,8 +255,7 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                   ),
                 ),
                 FutureBuilder<double>(
-                  future:
-                  getAverageRating(widget.technicianId),
+                  future: getAverageRating(widget.technicianId),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
@@ -310,27 +309,57 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                Text(
-                  'Main Service: ${widget.technicianMain}',
-                  style: GoogleFonts.castoro(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : const Color(0xFF626262),
-                  ),
-                  textAlign: TextAlign.center,
+                Row(
+                  children: [
+                    Text(
+                      'Main Service:'.tr(),
+                      style: GoogleFonts.castoro(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : const Color(0xFF626262),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      widget.technicianMain.tr(),
+                      style: GoogleFonts.castoro(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : const Color(0xFF626262),
+                      ),
+                    )
+                  ],
                 ),
-                Text(
-                  'Sub Service: ${widget.technicianSub}',
-                  style: GoogleFonts.castoro(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : const Color(0xFF626262),
-                  ),
-                  textAlign: TextAlign.center,
+                Row(
+                  children: [
+                    Text(
+                      'Sub Service:',
+                      style: GoogleFonts.castoro(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : const Color(0xFF626262),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      widget.technicianSub.tr(),
+                      style: GoogleFonts.castoro(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : const Color(0xFF626262),
+                      ),
+                    )
+                  ],
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.8,
@@ -367,11 +396,13 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                           await launchUrl(Uri.parse(url),
                               mode: LaunchMode.externalApplication);
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content:
-                                    Text("Could not open social media link")),
-                          );
+                          Fluttertoast.showToast(
+                              msg: "Couldn't upload the Url".tr(),
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.TOP,
+                              backgroundColor: ApplicationColorWithOpacity,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
                         }
                       },
                       child: Icon(
@@ -393,25 +424,44 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text("Technician Location",
+                                Text("Technician Location".tr(),
                                     style: GoogleFonts.castoro(
                                       fontSize: 30,
                                       fontWeight: FontWeight.bold,
                                     )),
                                 const SizedBox(height: 10),
-                                Text(
-                                  "Area: ${widget.technicianLocationArea}",
-                                  style: GoogleFonts.castoro(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Area:".tr(),
+                                      style: GoogleFonts.castoro(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(widget.technicianLocationArea,
+                                        style: GoogleFonts.castoro(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ))
+                                  ],
                                 ),
-                                Text(
-                                    "Street: ${widget.technicianLocationStreet}",
-                                    style: GoogleFonts.castoro(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                                Row(
+                                  children: [
+                                    Text("Street:".tr(),
+                                        style: GoogleFonts.castoro(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                    const SizedBox(width: 10),
+                                    Text(widget.technicianLocationStreet,
+                                        style: GoogleFonts.castoro(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ))
+                                  ],
+                                ),
                               ],
                             ),
                           ),
@@ -432,10 +482,13 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                         if (await canLaunchUrl(phoneUri)) {
                           await launchUrl(phoneUri);
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Could not launch phone dialer")),
-                          );
+                          Fluttertoast.showToast(
+                              msg: "Could not launch phone dialer".tr(),
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.TOP,
+                              backgroundColor: ApplicationColorWithOpacity,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
                         }
                       },
                       child: Icon(
@@ -471,7 +524,7 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                             });
                           },
                           child: Text(
-                            'Products',
+                            'Products'.tr(),
                             style: GoogleFonts.castoro(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -498,7 +551,7 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                             });
                           },
                           child: Text(
-                            'Reviews',
+                            'Reviews'.tr(),
                             style: GoogleFonts.castoro(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,

@@ -33,7 +33,7 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
-        throw Exception("No user logged in");
+        throw Exception("No user logged in".tr());
       }
 
       final userUid = user.uid;
@@ -112,7 +112,7 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
           .get();
 
       if (snapshot.docs.isEmpty) {
-        print("📭 No user services found.");
+        print("📭 No user services found.".tr());
         return null;
       }
 
@@ -214,9 +214,9 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
             // Buttons for selection
             Row(
               children: [
-                Expanded(child: buildOptionButton("The Nearest", 0)),
-                Expanded(child: buildOptionButton("Highest Rating", 1)),
-                Expanded(child: buildOptionButton("Lowest price", 2)),
+                Expanded(child: buildOptionButton("The Nearest".tr(), 0)),
+                Expanded(child: buildOptionButton("Highest Rating".tr(), 1)),
+                Expanded(child: buildOptionButton("Lowest price".tr(), 2)),
               ],
             ),
             const SizedBox(height: 20),
@@ -225,7 +225,17 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
                     child: CircularProgressIndicator(color: ApplicationColor))
                 : Expanded(
                     child: offers.isEmpty
-                        ? const Center(child: Text('No offers found.'))
+                        ? Center(
+                            child: Text(
+                            'No offers found.'.tr(),
+                            style: GoogleFonts.castoro(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ))
                         : ListView.builder(
                             itemCount: offers.length,
                             itemBuilder: (context, index) {

@@ -19,12 +19,13 @@ Widget customDOBField({
         cursorColor: Colors.grey[100],
         decoration: InputDecoration(
           labelText: labelText,
-          labelStyle: GoogleFonts.inter(
+          labelStyle: GoogleFonts.castoro(
             fontSize: 18,
             fontWeight: FontWeight.w400,
             color: Colors.black.withOpacity(0.31),
           ),
-          prefixIcon:  Icon(Icons.calendar_today_outlined, color: ApplicationColor),
+          prefixIcon:
+              Icon(Icons.calendar_today_outlined, color: ApplicationColor),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
           ),
@@ -38,7 +39,7 @@ Widget customDOBField({
           padding: const EdgeInsets.only(top: 5, left: 5),
           child: Text(
             errorText,
-            style: const TextStyle(color: Colors.red, fontSize: 14),
+            style: GoogleFonts.castoro(color: Colors.red, fontSize: 14),
           ),
         ),
       const SizedBox(height: 17),

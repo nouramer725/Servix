@@ -53,7 +53,7 @@ class OfferButtonInOrderCard extends StatelessWidget {
               ),
             ),
             child: Text(
-              'Offers',
+              'Offers'.tr(),
               style: GoogleFonts.charisSil(
                 fontSize: 18, // Adjusted for button size
                 color: Colors.white,

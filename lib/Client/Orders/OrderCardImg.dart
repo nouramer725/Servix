@@ -37,7 +37,7 @@ class OrderCardImg extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Type of service :',
+                    'Type of service :'.tr(),
                     style: GoogleFonts.castoro(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -52,33 +52,76 @@ class OrderCardImg extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    orders.ServiceType,
-                    style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black),
+                  Row(
+                    children: [
+                      Text(
+                        'Service Type :'.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        orders.ServiceType.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Description : ${orders.Description}',
-                    style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
+                  Row(
+                    children: [
+                      Text(
+                        'Description :'.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          orders.Description,
+                          style: GoogleFonts.castoro(
+                              fontSize: 14,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Status : ${orders.Status}',
-                    style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black),
+                  Row(
+                    children: [
+                      Text(
+                        'Status :'.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        orders.Status.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 12),
                   Row(
@@ -90,7 +133,7 @@ class OrderCardImg extends StatelessWidget {
                               : Colors.black),
                       const SizedBox(width: 4),
                       Text(
-                        orders.Date,
+                        orders.Date.tr(),
                         style: GoogleFonts.castoro(
                             fontSize: 14,
                             color: themeProvider.themeMode == ThemeMode.dark
@@ -105,7 +148,7 @@ class OrderCardImg extends StatelessWidget {
                               : Colors.black),
                       const SizedBox(width: 4),
                       Text(
-                        orders.Time,
+                        orders.Time.tr(),
                         style: GoogleFonts.castoro(
                             fontSize: 14,
                             color: themeProvider.themeMode == ThemeMode.dark
@@ -121,7 +164,7 @@ class OrderCardImg extends StatelessWidget {
                           onPressed: () async {
                             await CancelOrder(context, orders);
                           },
-                          text: "Cancel",
+                          text: "Cancel Post".tr(),
                           font: 20),
                     ],
                   )
@@ -213,7 +256,7 @@ class OrderCardImg extends StatelessWidget {
       );
     } catch (e) {
       Fluttertoast.showToast(
-        msg: "Failed to cancel order: $e",
+        msg: "Failed to cancel order".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,

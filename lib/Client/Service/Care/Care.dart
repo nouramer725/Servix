@@ -46,8 +46,8 @@ class Careservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                      title: 'Elder Care',
+                    builder: (context) =>  DescriptionnScreen(
+                      title: 'Elder Care'.tr(),
                       imagePath: 'assets/images/care/Elder.jpg', // Custom image
                     ),
                   ),
@@ -61,8 +61,8 @@ class Careservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                      title: 'Children Care', // Custom title
+                    builder: (context) =>  DescriptionnScreen(
+                      title: 'Children Care'.tr(), // Custom title
                       imagePath:
                           'assets/images/care/children.jpg', // Custom image
                     ),
@@ -77,8 +77,8 @@ class Careservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                      title: 'Nursing Care', // Custom title
+                    builder: (context) => DescriptionnScreen(
+                      title: 'Nursing Care'.tr(), // Custom title
                       imagePath:
                           'assets/images/care/nursing.jpg', // Custom image
                     ),
@@ -93,8 +93,8 @@ class Careservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                      title: 'Pet Care', // Custom title
+                    builder: (context) => DescriptionnScreen(
+                      title: 'Pet Care'.tr(), // Custom title
                       imagePath: 'assets/images/care/pet.jpg', // Custom image
                     ),
                   ),
@@ -108,8 +108,8 @@ class Careservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                      title: 'Disability Care', // Custom title
+                    builder: (context) => DescriptionnScreen(
+                      title: 'Disability Care'.tr(), // Custom title
                       imagePath:
                           'assets/images/care/disability.jpg', // Custom image
                     ),
@@ -117,62 +117,6 @@ class Careservice extends StatelessWidget {
                 );
               },
             ),
-            // ServiceCard(
-            //   serviceName: 'Mental Health'.tr(),
-            //   imagePath: 'assets/images/care/mental_health.jpg',
-            //   onTap: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => const DescriptionnScreen(
-            //           title: 'Children Care', // Custom title
-            //           imagePath:
-            //               'assets/images/care/children.jpg', // Custom image
-            //         ),
-            //       ),
-            //     );
-            //   },
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Hospice'.tr(),
-            //   imagePath: 'assets/images/care/hospice.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Physiotherapy'.tr(),
-            //   imagePath: 'assets/images/care/physiotherapy.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Speech Therapy'.tr(),
-            //   imagePath: 'assets/images/care/speech_therapy.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Home Health Care'.tr(),
-            //   imagePath: 'assets/images/care/home_health.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Pregnancy Care'.tr(),
-            //   imagePath: 'assets/images/care/pregnancy_care.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Post Surgery Care'.tr(),
-            //   imagePath: 'assets/images/care/post_surgery.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Infant Care'.tr(),
-            //   imagePath: 'assets/images/care/infant_care.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Disabled Children'.tr(),
-            //   imagePath: 'assets/images/care/disabled_children.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Rehabilitation Care'.tr(),
-            //   imagePath: 'assets/images/care/rehabilitation.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Personal Care'.tr(),
-            //   imagePath: 'assets/images/care/personal_care.jpg',
-            // ),
           ],
         ),
       ),

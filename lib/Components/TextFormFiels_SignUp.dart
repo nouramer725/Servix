@@ -31,7 +31,6 @@ Widget customTextField({
           letterSpacing: 0.2,
         ),
         decoration: InputDecoration(
-          errorText: errorText,
           labelText: labelText,
           labelStyle: GoogleFonts.castoro(
             fontSize: 18,
@@ -69,16 +68,9 @@ Widget customTextField({
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Expanded(
-                child: Text(
-                  errorText,
-                  style: const TextStyle(
-                    color: Colors.red,
-                    fontSize: 14,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 5,
-                ),
+              Text(
+                errorText,
+                style: GoogleFonts.castoro(color: Colors.red, fontSize: 14),
               ),
             ],
           ),

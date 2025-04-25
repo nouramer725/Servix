@@ -46,8 +46,8 @@ class Privateteachingservice extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                          title: "Primary",
+                      builder: (context) => DescriptionnScreen(
+                          title: "Primary".tr(),
                           imagePath:
                               "assets/images/private-teaching/primary.jpg"),
                     ),
@@ -60,8 +60,8 @@ class Privateteachingservice extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                          title: "Preparatory",
+                      builder: (context) => DescriptionnScreen(
+                          title: "Preparatory".tr(),
                           imagePath:
                               "assets/images/private-teaching/Preparatory.jpg"),
                     ),
@@ -74,23 +74,23 @@ class Privateteachingservice extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                          title: "Secondary",
+                      builder: (context) => DescriptionnScreen(
+                          title: "Secondary".tr(),
                           imagePath:
                               "assets/images/private-teaching/secondary.jpg"),
                     ),
                   );
                 }),
             ServiceCard(
-                serviceName: 'Musical Instrument '.tr(),
+                serviceName: 'Musical Instrument'.tr(),
                 imagePath:
                     'assets/images/private-teaching/musical-instruments.jpg',
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                          title: "Musical Instrument",
+                      builder: (context) => DescriptionnScreen(
+                          title: "Musical Instrument".tr(),
                           imagePath:
                               "assets/images/private-teaching/musical-instruments.jpg"),
                     ),
@@ -103,8 +103,8 @@ class Privateteachingservice extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                          title: "Religion",
+                      builder: (context) => DescriptionnScreen(
+                          title: "Religion".tr(),
                           imagePath:
                               "assets/images/private-teaching/Religion.jpg"),
                     ),
@@ -117,8 +117,8 @@ class Privateteachingservice extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                          title: "Languages",
+                      builder: (context) => DescriptionnScreen(
+                          title: "Languages".tr(),
                           imagePath:
                               "assets/images/private-teaching/Languages.jpg"),
                     ),

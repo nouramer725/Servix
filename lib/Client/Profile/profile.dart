@@ -398,7 +398,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              "$area, $street, $building building, apartment no.$apartment",
+                              "$area,$street,$building,$apartment",
                               style: GoogleFonts.castoro(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

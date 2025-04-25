@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -237,7 +238,7 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
             ? const Color(0xFF333739)
             : Colors.white,
         title: Text(
-          "Offers",
+          "Offers".tr(),
           style: GoogleFonts.castoro(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -253,9 +254,9 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
           children: [
             Row(
               children: [
-                Expanded(child: buildOptionButton("The Nearest", 0)),
-                Expanded(child: buildOptionButton("Highest Rating", 1)),
-                Expanded(child: buildOptionButton("Lowest price", 2)),
+                Expanded(child: buildOptionButton("The Nearest".tr(), 0)),
+                Expanded(child: buildOptionButton("Highest Rating".tr(), 1)),
+                Expanded(child: buildOptionButton("Lowest price".tr(), 2)),
               ],
             ),
             const SizedBox(height: 20),
@@ -264,7 +265,16 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
                     child: CircularProgressIndicator(color: ApplicationColor))
                 : Expanded(
                     child: offers.isEmpty
-                        ? const Center(child: Text('No offers found.'))
+                        ?  Center(child: Text(
+                      'No offers found.'.tr()
+                      ,style: GoogleFonts.castoro(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                    )
+                    ))
                         : ListView.builder(
                             itemCount: offers.length,
                             itemBuilder: (context, index) {
@@ -288,7 +298,7 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
-        throw Exception("No user logged in");
+        throw Exception("No user logged in".tr());
       }
 
       final userUid = user.uid;
@@ -347,7 +357,7 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
       // 1. Get the current logged-in user
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
-        throw Exception("No user logged in");
+        throw Exception("No user logged in".tr());
       }
 
       final userUid = user.uid;

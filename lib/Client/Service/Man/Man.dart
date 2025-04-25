@@ -46,8 +46,8 @@ class Manservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                        title: "Haircut",
+                    builder: (context) => DescriptionnScreen(
+                        title: "Haircut".tr(),
                         imagePath: "assets/images/men/Shaving.jpg"),
                   ),
                 );
@@ -60,8 +60,8 @@ class Manservice extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                          title: "Tailoring Man",
+                      builder: (context) => DescriptionnScreen(
+                          title: "Tailoring Man".tr(),
                           imagePath: "assets/images/men/Tailoring-man.jpg"),
                     ),
                   );
@@ -73,8 +73,8 @@ class Manservice extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                          title: "Massage Man",
+                      builder: (context) => DescriptionnScreen(
+                          title: "Massage Man".tr(),
                           imagePath: "assets/images/men/massage-man.jpg"),
                     ),
                   );
@@ -86,57 +86,13 @@ class Manservice extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: "Private Coach",
+                      builder: (context) => DescriptionnScreen(
+                        title: "Private Coach".tr(),
                         imagePath: "assets/images/men/Privatecoach-man.jpeg",
                       ),
                     ),
                   );
                 }),
-            // ServiceCard(
-            //   serviceName: 'Haircut'.tr(),
-            //   imagePath: 'assets/images/men/haircut.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Grooming'.tr(),
-            //   imagePath: 'assets/images/men/grooming.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Shower'.tr(),
-            //   imagePath: 'assets/images/men/shower.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Personal Shopper'.tr(),
-            //   imagePath: 'assets/images/men/personal-shopper.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Yoga Instructor'.tr(),
-            //   imagePath: 'assets/images/men/yoga.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Personal Chef'.tr(),
-            //   imagePath: 'assets/images/men/personal-chef.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Fitness Trainer'.tr(),
-            //   imagePath: 'assets/images/men/fitness-trainer.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Boxing Coach'.tr(),
-            //   imagePath: 'assets/images/men/boxing-coach.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Nutritionist'.tr(),
-            //   imagePath: 'assets/images/men/nutritionist.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Shoe Cleaning'.tr(),
-            //   imagePath: 'assets/images/men/shoe-cleaning.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Fashion Consultant'.tr(),
-            //   imagePath: 'assets/images/men/fashion-consultant.jpg',
-            // ),
           ],
         ),
       ),

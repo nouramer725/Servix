@@ -408,7 +408,7 @@ class _SignInFormState extends State<SignInForm> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
-                        "or signin by".tr(),
+                        "or signing by".tr(),
                         style: GoogleFonts.inter(
                             color: const Color(0xFF898989), fontSize: 12),
                       ),
@@ -440,7 +440,7 @@ class _SignInFormState extends State<SignInForm> {
                               ),
                               const SizedBox(width: 10),
                               Text(
-                                "Continue With Google",
+                                "Continue With Google".tr(),
                                 style: GoogleFonts.inter(
                                     fontSize: 16,
                                     color: const Color(0xFF828282)),

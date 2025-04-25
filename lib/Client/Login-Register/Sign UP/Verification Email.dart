@@ -108,7 +108,7 @@ class _VerificationState extends State<Verification> {
                 width: 500,
               ),
               Text(
-                "Verify Your Email Address",
+                "Verify Your Email Address".tr(),
                 style: GoogleFonts.charisSil(
                   fontSize: 25,
                   color: ApplicationColor3,

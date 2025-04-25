@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,7 +18,7 @@ class PreviousOrderPage extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      return const Center(child: Text('No user logged in'));
+      return  Center(child: Text('No user logged in'.tr()));
     }
 
     return FutureBuilder<QuerySnapshot>(
@@ -34,11 +35,11 @@ class PreviousOrderPage extends StatelessWidget {
         }
 
         if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          print('Error: ${snapshot.error}');
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return  Center(child: Text('No Previous orders found.',style: GoogleFonts.castoro(
+          return  Center(child: Text('No Previous orders found.'.tr(),style: GoogleFonts.castoro(
               fontSize: 18,
               fontWeight: FontWeight.w500,
               color: themeProvider.themeMode == ThemeMode.dark
@@ -84,7 +85,7 @@ class PreviousOrderPage extends StatelessWidget {
 
           return offerFuture.then((updatedData) {
             return OrderModel(
-              ServiceType: updatedData['serviceTitle'] ?? 'No Service Type',
+              ServiceType: updatedData['serviceTitle'] ?? 'No Service Type'.tr(),
               Description: updatedData['description'] ?? '',
               Status: updatedData['Status'] ?? '',
               Date: updatedData['selectedDate'] ?? '',

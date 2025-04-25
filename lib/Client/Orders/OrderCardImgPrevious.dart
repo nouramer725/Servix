@@ -37,7 +37,7 @@ class OrderCardImgPrevious extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Type of service :',
+                    'Type of service :'.tr(),
                     style: GoogleFonts.castoro(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -53,7 +53,7 @@ class OrderCardImgPrevious extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    orders.ServiceType,
+                    orders.ServiceType.tr(),
                     style: GoogleFonts.castoro(
                         fontSize: 14,
                         color: themeProvider.themeMode == ThemeMode.dark
@@ -61,24 +61,53 @@ class OrderCardImgPrevious extends StatelessWidget {
                             : Colors.black),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Description : ${orders.Description}',
-                    style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
+                  Row(
+                    children: [
+                      Text(
+                        'Description :'.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          orders.Description,
+                          style: GoogleFonts.castoro(
+                              fontSize: 14,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black),
+                          maxLines: 3,
+                        )
+                      )
+                    ],
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Status : ${orders.Status}',
-                    style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black),
+                  Row(
+                    children: [
+                      Text(
+                        'Status :'.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        orders.Status.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 12),
                   Row(
@@ -175,21 +204,41 @@ class OrderCardImgPrevious extends StatelessWidget {
                                   ),
                                 );
                               },
-                              child: Text(
-                                'Rate ${orders.technicianName}',
-                                style: GoogleFonts.castoro(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color:
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Rate'.tr(),
+                                    style: GoogleFonts.castoro(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          themeProvider.themeMode == ThemeMode.dark
+                                              ? Colors.white
+                                              : ApplicationColor,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor:
+                                          themeProvider.themeMode == ThemeMode.dark
+                                              ? Colors.white
+                                              : ApplicationColor,
+                                    ),
+                                  ),
+                                  Text(
+                                    orders.technicianName,
+                                    style: GoogleFonts.castoro(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color:
                                       themeProvider.themeMode == ThemeMode.dark
                                           ? Colors.white
                                           : ApplicationColor,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor:
+                                      decoration: TextDecoration.underline,
+                                      decorationColor:
                                       themeProvider.themeMode == ThemeMode.dark
                                           ? Colors.white
                                           : ApplicationColor,
-                                ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             );
                     },
