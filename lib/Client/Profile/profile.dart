@@ -390,6 +390,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
                         children: [
@@ -415,35 +416,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         height: 10,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const GoogleMapDefaultLocation(),
-                                  ));
-                            },
-                            child: Text(
-                              "Change Your Location".tr(),
-                              style: GoogleFonts.castoro(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: themeProvider.themeMode == ThemeMode.dark
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const GoogleMapDefaultLocation(),
+                              ));
+                        },
+                        child: Text(
+                          "Change Your Location".tr(),
+                          style: GoogleFonts.castoro(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : ApplicationColor,
+                            decoration: TextDecoration.underline,
+                            decorationColor:
+                                themeProvider.themeMode == ThemeMode.dark
                                     ? Colors.white
                                     : ApplicationColor,
-                                decoration: TextDecoration.underline,
-                                decorationColor:
-                                    themeProvider.themeMode == ThemeMode.dark
-                                        ? Colors.white
-                                        : ApplicationColor,
-                              ),
-                            ),
-                          )
-                        ],
+                          ),
+                        ),
                       )
                     ],
                   ),
@@ -461,7 +457,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: const EdgeInsets.all(10),
                   width: double.infinity,
                   alignment: Alignment.centerLeft,
-                  height: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: const Color(0xFFAEAEAE)),
@@ -469,17 +464,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "Saved Address".tr(),
-                        style: GoogleFonts.castoro(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: themeProvider.themeMode == ThemeMode.dark
-                              ? Colors.white
-                              : const Color(0xFF676565),
+                      Expanded(
+                        child: Text(
+                          "Saved Address".tr(),
+                          style: GoogleFonts.castoro(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : const Color(0xFF676565),
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
                       ),
                       Icon(
                         Icons.arrow_forward_ios,

@@ -498,5 +498,8 @@
   "Submit": "Submit",
   "Please select a rating before submitting.": "Please select a rating before submitting.",
   "Thank you for your rating!": "Thank you for your rating!",
-  "Error submitting rating. Please try again.":"Error submitting rating. Please try again."
+  "Error submitting rating. Please try again.":"Error submitting rating. Please try again.",
+  "Please enter your password to confirm deletion:": "Please enter your password to confirm deletion:",
+  "Correct password": "Correct password",
+  "Wrong password. Account not deleted.": "Wrong password. Account not deleted."
 }

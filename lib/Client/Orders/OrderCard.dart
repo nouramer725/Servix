@@ -126,13 +126,15 @@ class OrderCard extends StatelessWidget {
                               ? Colors.white
                               : Colors.black),
                       const SizedBox(width: 4),
-                      Text(
-                        orders.Date,
-                        style: GoogleFonts.castoro(
-                            fontSize: 14,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black),
+                      Expanded(
+                        child: Text(
+                          orders.Date,
+                          style: GoogleFonts.castoro(
+                              fontSize: 14,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
                       ),
                       const SizedBox(width: 16),
                       Icon(Icons.access_time,
@@ -141,34 +143,31 @@ class OrderCard extends StatelessWidget {
                               ? Colors.white
                               : Colors.black),
                       const SizedBox(width: 4),
-                      Text(
-                        orders.Time,
-                        style: GoogleFonts.castoro(
-                            fontSize: 14,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black),
+                      Expanded(
+                        child: Text(
+                          orders.Time,
+                          style: GoogleFonts.castoro(
+                              fontSize: 14,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
                       ),
                     ],
                   ),
+                  OfferButtonInOrderCard(
+                    onPressed: () {
+                      print('Navigating with orderId: ${orders.orderId}');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TheNearestScreen(
+                              orderId: orders.orderId,
+                            ),
+                          ));
+                    },
+                  ),
                 ],
-              ),
-              Positioned(
-                bottom: 15,
-                left: context.locale.languageCode == 'ar' ? 5 : null,
-                right: context.locale.languageCode == 'en' ? 5 : null,
-                child: OfferButtonInOrderCard(
-                  onPressed: () {
-                    print('Navigating with orderId: ${orders.orderId}');
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TheNearestScreen(
-                            orderId: orders.orderId,
-                          ),
-                        ));
-                  },
-                ),
               ),
             ],
           ),

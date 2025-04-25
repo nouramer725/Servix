@@ -502,5 +502,8 @@
   "Submit": "إرسال",
   "Please select a rating before submitting.": "الرجاء تحديد تقييم قبل الإرسال.",
   "Thank you for your rating!": "شكراً لتقييمك!",
-  "Error submitting rating. Please try again.": "حدث خطأ أثناء إرسال التقييم. يرجى المحاولة مرة أخرى."
+  "Error submitting rating. Please try again.": "حدث خطأ أثناء إرسال التقييم. يرجى المحاولة مرة أخرى.",
+  "Please enter your password to confirm deletion:": "يرجى إدخال كلمة المرور الخاصة بك لتأكيد الحذف:",
+  "Correct password": "كلمة المرور صحيحة",
+  "Wrong password. Account not deleted.": "كلمة المرور خاطئة. لم يتم حذف الحساب."
 }

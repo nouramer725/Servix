@@ -106,10 +106,25 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
       return secondDoc.data()?['personalImageUrl'];
     }
 
+    // Check third path
+    final thirdSec = await firestore
+        .collection("user-files")
+        .doc(uid)
+        .collection("uploads")
+        .limit(1)
+        .get();
+
+    if (thirdSec.docs.isNotEmpty) {
+      final docData = thirdSec.docs.first.data();
+      if (docData['personalFileUrl'] != null) {
+        return docData['personalFileUrl'];
+      }
+    }
+
     return null;
   }
 
-  bool isDarkMode = false; // Default mode
+  bool isDarkMode = false;
 
   final List<Widget> pages = [
     const NotificationScreenReal(),
@@ -392,16 +407,17 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                                 ? Colors.white
                                 : ApplicationColor),
                         const SizedBox(width: 16),
-                        Text(
-                          "Dark Theme".tr(),
-                          style: GoogleFonts.castoro(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black),
+                        Expanded(
+                          child: Text(
+                            "Dark Theme".tr(),
+                            style: GoogleFonts.castoro(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black),
+                          ),
                         ),
-                        const Spacer(),
                         Switch(
                           activeTrackColor: ApplicationColor,
                           value: themeProvider.themeMode == ThemeMode.dark,
@@ -428,63 +444,69 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 10),
-                          child: Column(
-                            mainAxisSize:
-                                MainAxisSize.min, // Adjusts to content size
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text(
-                                  "Log out of your account?".tr(),
-                                  style: GoogleFonts.castoro(
-                                      color: themeProvider.themeMode ==
-                                              ThemeMode.dark
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontSize: 20),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: Text(
-                                      "CANCEL".tr(),
-                                      style: GoogleFonts.castoro(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize:
+                                  MainAxisSize.min, // Adjusts to content size
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    "Log out of your account?".tr(),
+                                    style: GoogleFonts.castoro(
                                         color: themeProvider.themeMode ==
                                                 ThemeMode.dark
                                             ? Colors.white
                                             : Colors.black,
-                                        fontSize: 16,
+                                        fontSize: 20),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Expanded(
+                                      child: TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text(
+                                          "CANCEL".tr(),
+                                          style: GoogleFonts.castoro(
+                                            color: themeProvider.themeMode ==
+                                                    ThemeMode.dark
+                                                ? Colors.white
+                                                : Colors.black,
+                                            fontSize: 14,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  TextButton(
-                                    onPressed: () async {
-                                      await FirebaseAuth.instance.signOut();
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MemberShip()),
-                                        (route) => false,
-                                      );
-                                    },
-                                    child: Text(
-                                      "LOG OUT".tr(),
-                                      style: GoogleFonts.castoro(
-                                        fontSize: 16,
-                                        color: ApplicationColor,
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: TextButton(
+                                        onPressed: () async {
+                                          await FirebaseAuth.instance.signOut();
+                                          Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const MemberShip()),
+                                            (route) => false,
+                                          );
+                                        },
+                                        child: Text(
+                                          "LOG OUT".tr(),
+                                          style: GoogleFonts.castoro(
+                                            fontSize: 14,
+                                            color: ApplicationColor,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -580,7 +602,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
             ? const Color(0xFF333739)
             : Colors.white,
         title: Text(
-          "Confirm Password",
+          "Confirm Password".tr(),
           style: GoogleFonts.castoro(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -593,7 +615,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Please enter your password to confirm deletion:",
+              Text("Please enter your password to confirm deletion:".tr(),
                   style: GoogleFonts.castoro(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -617,7 +639,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                 ),
                 cursorColor: Colors.grey[100],
                 decoration: InputDecoration(
-                  labelText: "Password",
+                  labelText: "Password".tr(),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   floatingLabelAlignment: FloatingLabelAlignment.start,
                   contentPadding:
@@ -640,7 +662,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text("Cancel",
+            child: Text("Cancel".tr(),
                 style: GoogleFonts.castoro(
                   color: themeProvider.themeMode == ThemeMode.dark
                       ? Colors.white
@@ -664,7 +686,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                   Navigator.pop(context);
                   _showFinalDeleteDialog(context, themeProvider);
                   Fluttertoast.showToast(
-                    msg: "Correct password",
+                    msg: "Correct password".tr(),
                     toastLength: Toast.LENGTH_LONG,
                     gravity: ToastGravity.TOP,
                     backgroundColor: ApplicationColorWithOpacity,
@@ -673,7 +695,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                   );
                 } catch (e) {
                   Fluttertoast.showToast(
-                    msg: "Wrong password. Account not deleted.",
+                    msg: "Wrong password. Account not deleted.".tr(),
                     toastLength: Toast.LENGTH_LONG,
                     gravity: ToastGravity.TOP,
                     backgroundColor: ApplicationColorWithOpacity,
@@ -683,7 +705,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                 }
               }
             },
-            child: Text("Confirm",
+            child: Text("Confirm".tr(),
                 style: GoogleFonts.castoro(
                     fontSize: 16,
                     color: themeProvider.themeMode == ThemeMode.dark
@@ -791,12 +813,15 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                     ? Colors.white
                     : ApplicationColor),
             const SizedBox(width: 8),
-            Text("Delete Account".tr(),
-                style: GoogleFonts.castoro(
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : Colors.black,
-                    fontWeight: FontWeight.bold)),
+            Expanded(
+              child: Text("Delete Account".tr(),
+                  style: GoogleFonts.castoro(
+                      fontSize: 25,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : Colors.black,
+                      fontWeight: FontWeight.bold)),
+            ),
           ],
         ),
         content: Text("Are you sure you want to delete your account?".tr(),
@@ -809,35 +834,39 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text("Cancel".tr(),
-                    style: GoogleFonts.castoro(
-                        fontSize: 20,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black,
-                        fontWeight: FontWeight.bold)),
+              Expanded(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text("Cancel".tr(),
+                      style: GoogleFonts.castoro(
+                          fontSize: 20,
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.white
+                              : Colors.black,
+                          fontWeight: FontWeight.bold)),
+                ),
               ),
               const SizedBox(width: 8),
-              TextButton(
-                onPressed: () async {
-                  _deleteAccount(context);
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const OnboardingScreen(),
-                    ),
-                    (route) => false,
-                  );
-                },
-                child: Text("Delete".tr(),
-                    style: GoogleFonts.castoro(
-                        fontSize: 20,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.redAccent
-                            : ApplicationColor,
-                        fontWeight: FontWeight.bold)),
+              Expanded(
+                child: TextButton(
+                  onPressed: () async {
+                    _deleteAccount(context);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const OnboardingScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                  child: Text("Delete".tr(),
+                      style: GoogleFonts.castoro(
+                          fontSize: 20,
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.redAccent
+                              : ApplicationColor,
+                          fontWeight: FontWeight.bold)),
+                ),
               ),
             ],
           ),

@@ -74,25 +74,23 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                const CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor: Colors.white,
-                                  backgroundImage: NetworkImage(
-                                      "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
-                                      scale: 50),
-                                ),
-                                const SizedBox(width: 10),
-                                Text(data['username'] ?? 'Anonymous',
-                                    style: GoogleFonts.castoro(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 22,
-                                        color: themeProvider.themeMode ==
-                                                ThemeMode.dark
-                                            ? Colors.white
-                                            : Colors.black)),
-                              ],
+                            const CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.white,
+                              backgroundImage: NetworkImage(
+                                  "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
+                                  scale: 50),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(data['username'] ?? 'Anonymous',
+                                  style: GoogleFonts.castoro(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22,
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black)),
                             ),
                             PopupMenuButton<String>(
                               color: themeProvider.themeMode == ThemeMode.dark
