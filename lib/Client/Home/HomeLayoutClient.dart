@@ -652,6 +652,9 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
           style: GoogleFonts.castoro(
             fontSize: 20,
             fontWeight: FontWeight.bold,
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
           ),
         ),
         content: SingleChildScrollView(
@@ -662,7 +665,9 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                   style: GoogleFonts.castoro(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: ApplicationColor3,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black,
                   )),
               const SizedBox(height: 10),
               TextField(
@@ -671,6 +676,13 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                 textInputAction: TextInputAction.done,
                 autocorrect: false,
                 obscureText: false,
+                style: GoogleFonts.castoro(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black,
+                ),
                 cursorColor: Colors.grey[100],
                 decoration: InputDecoration(
                   labelText: "Password",
@@ -698,7 +710,9 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
             onPressed: () => Navigator.pop(context),
             child: Text("Cancel",
                 style: GoogleFonts.castoro(
-                  color: ApplicationColor3,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black,
                   fontSize: 16,
                 )),
           ),
@@ -738,8 +752,11 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
               }
             },
             child: Text("Confirm",
-                style:
-                    GoogleFonts.castoro(fontSize: 16, color: ApplicationColor)),
+                style: GoogleFonts.castoro(
+                    fontSize: 16,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : ApplicationColor)),
           ),
         ],
       ),
