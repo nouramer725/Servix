@@ -43,7 +43,7 @@ class _WelcomeAiTechState extends State<WelcomeAiTech> {
           child: Column(
             children: [
               Text(
-                "Knock, knock… Who’s there? 👀",
+                "Knock, knock… Who’s there? 👀".tr(),
                 style: GoogleFonts.charisSil(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
@@ -55,7 +55,7 @@ class _WelcomeAiTechState extends State<WelcomeAiTech> {
               ),
               const SizedBox(height: 20),
               Text(
-                "It’s me, your AI assistant! Ready to make magic happen? ✨",
+                "It’s me, your AI assistant! Ready to make magic happen? ✨".tr(),
                 style: GoogleFonts.charisSil(
                   fontSize: 25,
                   color: ApplicationColor3,

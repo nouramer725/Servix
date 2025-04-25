@@ -386,7 +386,8 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                   ),
                   _buildMenuItem(Icons.share, "Share App".tr(), onTap: () {
                     String quoteText =
-                        "💡Join the Servix community! Get expert help for any service you need—quick, easy, and hassle-free. Download now!";
+                        "💡Join the Servix community! Get expert help for any service you need—quick, easy, and hassle-free. Download now!"
+                            .tr();
                     Share.share(quoteText);
                   }),
                   _buildMenuItem(Icons.phone_outlined, "Contact Us".tr(),

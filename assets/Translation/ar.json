@@ -592,7 +592,10 @@
   "Complete": "إكمال",
   "Order completed successfully!": "تم إكمال الطلب بنجاح!",
   "Failed to complete order": "فشل في إكمال الطلب",
-  "Order Cancelled!": "تم إلغاء الطلب!"
+  "Order Cancelled!": "تم إلغاء الطلب!",
+  "No Description Available": "لا يوجد وصف",
+  "No SocialMedia Link Available": "لا يوجد رابط لوسائل التواصل الاجتماعي",
+  "LinkSocialMedia": "رابط وسائل التواصل الاجتماعي"
 
 
 }

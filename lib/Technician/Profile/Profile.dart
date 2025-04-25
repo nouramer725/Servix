@@ -78,7 +78,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
       setState(() {
         description = data.containsKey('description')
             ? data['description']
-            : "No Description Available";
+            : "No Description Available".tr();
       });
     }
   }
@@ -324,6 +324,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               StreamBuilder(
                 stream: FirebaseFirestore.instance
@@ -375,7 +376,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
-                    return  Text("Error loading rating".tr());
+                    return Text("Error loading rating".tr());
                   }
 
                   final avgRating = snapshot.data ?? 0.0;
@@ -429,17 +430,21 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
               userData == null
                   ? CircularProgressIndicator(color: ApplicationColor)
                   : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "Main Service:".tr(),
                               style: GoogleFonts.castoro(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
-                                  color: themeProvider.themeMode == ThemeMode.dark
-                                      ? Colors.white
-                                      : const Color(0xFF676767)),
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : const Color(0xFF676767)),
                             ),
                             SizedBox(width: 5),
                             Text(
@@ -447,22 +452,25 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                               style: GoogleFonts.castoro(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
-                                  color: themeProvider.themeMode == ThemeMode.dark
-                                      ? Colors.white
-                                      : const Color(0xFF676767)),
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : const Color(0xFF676767)),
                             ),
                           ],
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "Sub Service:".tr(),
                               style: GoogleFonts.castoro(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
-                                  color: themeProvider.themeMode == ThemeMode.dark
-                                      ? Colors.white
-                                      : const Color(0xFF676767)),
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : const Color(0xFF676767)),
                             ),
                             SizedBox(width: 5),
                             Text(
@@ -470,9 +478,10 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                               style: GoogleFonts.castoro(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
-                                  color: themeProvider.themeMode == ThemeMode.dark
-                                      ? Colors.white
-                                      : const Color(0xFF676767)),
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : const Color(0xFF676767)),
                             ),
                           ],
                         ),

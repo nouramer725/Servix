@@ -46,7 +46,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
   String building = "Building not available";
   String apartment = "Apartment not available";
   String area = "Area not available";
-  String linkSocialMedia = "LinkSocialMedia";
+  String linkSocialMedia = "LinkSocialMedia".tr();
   var themeProvider = ThemeProvider();
 
   Future<String?> uploadToCloudinary(File imageFile) async {
@@ -411,7 +411,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
       setState(() {
         description = data.containsKey('description')
             ? data['description']
-            : "No Description Available";
+            : "No Description Available".tr();
       });
     }
   }
@@ -738,7 +738,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
     if (doc.exists) {
       setState(() {
         linkSocialMedia =
-            doc['LinkSocialMedia'] ?? "No SocialMedia Link Available";
+            doc['LinkSocialMedia'] ?? "No SocialMedia Link Available".tr();
       });
     }
   }

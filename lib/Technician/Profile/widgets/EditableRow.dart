@@ -27,6 +27,7 @@ class EditableRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
+          // Wrap the inner Row with Expanded
           child: Row(
             children: [
               Text(
@@ -36,21 +37,26 @@ class EditableRow extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: themeProvider.themeMode == ThemeMode.dark
                         ? Colors.white
-                        : Color(0xFF676767)),
+                        : const Color(0xFF676767)),
                 overflow: TextOverflow.ellipsis,
                 maxLines: maxLines,
               ),
-              SizedBox(width: 5,),
-              Text(
-                text,
-                style: GoogleFonts.castoro(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : Color(0xFF676767)),
-                overflow: TextOverflow.ellipsis,
-                maxLines: maxLines,
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                // Add Expanded to the text Text
+                child: Text(
+                  text,
+                  style: GoogleFonts.castoro(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : const Color(0xFF676767)),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: maxLines,
+                ),
               ),
             ],
           ),
@@ -60,7 +66,7 @@ class EditableRow extends StatelessWidget {
             icon,
             color: themeProvider.themeMode == ThemeMode.dark
                 ? Colors.white
-                : Color(0xFF676767),
+                : const Color(0xFF676767),
             size: 20,
           ),
           onPressed: onEdit,

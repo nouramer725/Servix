@@ -14,7 +14,6 @@ class PercentageSide extends StatefulWidget {
 
 class _PercentageSideState extends State<PercentageSide> {
   bool isChecked = false;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,84 +35,87 @@ class _PercentageSideState extends State<PercentageSide> {
           maxLines: 2,
         ),
       ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Image.asset(
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Image.asset(
                   "assets/images/lang-member/langmem.png",
                   width: 191,
                   height: 196,
                 ),
-                const SizedBox(height: 30),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Commission Information",
+              ),
+              const SizedBox(height: 30),
+              Text(
+                "Commission Information".tr(),
+                style: GoogleFonts.castoro(
+                  fontSize: 20,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : ApplicationColor,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                  decorationColor: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : ApplicationColor,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "As a technician using our platform, you agree that 10% of the total service fee you receive from a customer will be deducted as a commission for the app."
+                    .tr(),
+                style: GoogleFonts.castoro(
+                  fontSize: 16,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : ApplicationColor3,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                "Application Policies".tr(),
+                style: GoogleFonts.castoro(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : ApplicationColor,
+                  decoration: TextDecoration.underline,
+                  decorationColor: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : ApplicationColor,
+                ),
+              ),
+              const SizedBox(height: 8),
+              ...[
+                "1) You must provide accurate and honest service to customers."
+                    .tr(),
+                "2) You are responsible for showing up on time and maintaining professionalism."
+                    .tr(),
+                "3) Misuse of the app or customer information is prohibited."
+                    .tr(),
+                "4) Violations of policy may result in suspension or termination from the platform."
+                    .tr(),
+                "5) The technician must transfer the commission (10% of the service fee) to the company’s designated bank account on a monthly basis."
+                    .tr(),
+                "6) A grace period of 5 days is provided after the end of each month."
+                    .tr(),
+                "7) Failure to comply with the commission payment terms may result in suspension or termination of the technician’s account."
+                    .tr(),
+              ].map((policy) => Text(
+                    policy,
                     style: GoogleFonts.castoro(
-                      fontSize: 20,
+                      fontSize: 16,
                       color: themeProvider.themeMode == ThemeMode.dark
                           ? Colors.white
-                          : ApplicationColor,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
-                      decorationColor: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.white
-                          : ApplicationColor,
+                          : ApplicationColor3,
                     ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  "As a technician using our platform, you agree that 10% of the total service fee you receive from a customer will be deducted as a commission for the app.",
-                  style: GoogleFonts.castoro(
-                    fontSize: 16,
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : ApplicationColor3,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Application Policies",
-                    style: GoogleFonts.castoro(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.white
-                          : ApplicationColor,
-                      decoration: TextDecoration.underline,
-                      decorationColor: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.white
-                          : ApplicationColor,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                ...[
-                  "1) You must provide accurate and honest service to customers.",
-                  "2) You are responsible for showing up on time and maintaining professionalism.",
-                  "3) Misuse of the app or customer information is prohibited.",
-                  "4) Violations of policy may result in suspension or termination from the platform.",
-                  "5) The technician must transfer the commission (10% of the service fee) to the company’s designated bank account on a monthly basis.",
-                  "6) A grace period of 5 days is provided after the end of each month.",
-                  "7) Failure to comply with the commission payment terms may result in suspension or termination of the technician’s account.",
-                ].map((policy) => Text(
-                      policy,
-                      style: GoogleFonts.castoro(
-                        fontSize: 16,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : ApplicationColor3,
-                      ),
-                    )),
-              ],
-            ),
+                  )),
+            ],
           ),
         ),
       ),

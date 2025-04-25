@@ -290,7 +290,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                   ),
                   _buildMenuItem(Icons.share, "Share App".tr(), onTap: () {
                     String quoteText =
-                        "💡Join the Servix community! Get expert help for any service you need—quick, easy, and hassle-free. Download now!".tr();
+                        "💡Join the Servix community! Get expert help for any service you need—quick, easy, and hassle-free. Download now!"
+                            .tr();
                     Share.share(quoteText);
                   }),
                   _buildMenuItem(Icons.phone_outlined, "Contact Us".tr(),
@@ -532,7 +533,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                 autocorrect: false,
                 obscureText: false,
                 decoration: InputDecoration(
-                  labelText: "Password",
+                  labelText: "Password".tr(),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   floatingLabelAlignment: FloatingLabelAlignment.start,
                   contentPadding:
