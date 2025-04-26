@@ -442,10 +442,10 @@ List<Service> Allservices = [
           },
           image: 'assets/images/delivery/school.jpg'),
       SubService(
-          title: 'Spend'.tr(),
+          title: 'Parcels'.tr(),
           onTap: () {
             const DescriptionnScreen(
-                title: "Spend", imagePath: "assets/images/delivery/spend.jpg");
+                title: "Parcels", imagePath: "assets/images/delivery/spend.jpg");
           },
           image: 'assets/images/delivery/spend.jpg'),
       SubService(

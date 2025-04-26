@@ -57,7 +57,7 @@ final Map<String, List<String>> subServicesMap = {
   ],
   "Delivery Service".tr(): [
     "School Delivery".tr(),
-    "Spend".tr(),
+    "Parcels".tr(),
     "Taxi".tr(),
     "Bus".tr(),
     "Truck".tr(),

@@ -55,14 +55,14 @@ class DeliveryServices extends StatelessWidget {
                   );
                 }),
             ServiceCard(
-                serviceName: 'Spend'.tr(),
+                serviceName: 'Parcels'.tr(),
                 imagePath: 'assets/images/delivery/spend.jpg',
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const DescriptionnScreen(
-                        title: 'Spend', // Custom title
+                        title: 'Parcels', // Custom title
                         imagePath:
                             'assets/images/delivery/spend.jpg', // Custom image
                       ),
