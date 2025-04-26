@@ -10,7 +10,6 @@ import '../../constents/constent.dart';
 import 'Highest Rating.dart';
 import 'The Nearest.dart';
 import 'Model/Offer.dart';
-import 'OfferDetailsScreen.dart';
 import 'offer_card.dart';
 
 class LowestPriceScreen extends StatefulWidget {

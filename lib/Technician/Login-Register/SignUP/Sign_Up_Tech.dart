@@ -271,7 +271,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.TOP,
         );
-      } on FirebaseException catch (e) {
+      } on FirebaseException {
         Fluttertoast.showToast(
           msg: "Network error. Please check your internet connection.".tr(),
           backgroundColor: ApplicationColorWithOpacity,

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +9,6 @@ import '../../../../Components/Buttons.dart';
 import '../../../../Theme/Theme_Provider.dart';
 import '../../../../constents/constent.dart';
 import '../Home/HomeLayoutClient.dart';
-import '../Notification/notification_service.dart';
 import 'google maps new address.dart';
 
 class NewAddress extends StatefulWidget {

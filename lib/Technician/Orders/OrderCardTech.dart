@@ -2,14 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../../Client/Notification/notification_service.dart';
 import '../../Theme/Theme_Provider.dart';
 import '../../constents/constent.dart';
-import '../NotificationTech/notification_service_technician.dart';
 import 'model/modelTech.dart';
 
 class OrderCardTech extends StatelessWidget {
@@ -24,9 +21,6 @@ class OrderCardTech extends StatelessWidget {
     final TextEditingController priceController = TextEditingController(
       text: orders.previousOffer,
     );
-    // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    //     FlutterLocalNotificationsPlugin();
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       child: GestureDetector(

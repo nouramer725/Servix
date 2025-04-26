@@ -4,8 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:servix/Technician/NotificationTech/notification_service_technician.dart';
 import 'package:servix/Technician/Orders/OrderCardTech.dart';
 import 'package:servix/Technician/Orders/PreviousOrderPageTech.dart';
 import 'package:servix/Technician/Orders/model/modelTech.dart';
@@ -29,7 +27,7 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
   // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
 
-  Set<String> _notifiedOrderIds = {};
+  Set<String> notifiedOrderIds = {};
 
   @override
   void initState() {
@@ -39,13 +37,9 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
 
   Future<void> _loadNotifiedOrderIds() async {
     final prefs = await SharedPreferences.getInstance();
-    _notifiedOrderIds = prefs.getStringList('notifiedOrderIds')?.toSet() ?? {};
+    notifiedOrderIds = prefs.getStringList('notifiedOrderIds')?.toSet() ?? {};
   }
 
-  Future<void> _saveNotifiedOrderIds() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('notifiedOrderIds', _notifiedOrderIds.toList());
-  }
 
   @override
   Widget build(BuildContext context) {

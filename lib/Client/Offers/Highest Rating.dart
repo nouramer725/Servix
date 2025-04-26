@@ -9,7 +9,6 @@ import '../../Theme/Theme_Provider.dart';
 import '../../constents/constent.dart';
 import 'Lowest Price.dart';
 import 'Model/Offer.dart';
-import 'OfferDetailsScreen.dart';
 import 'The Nearest.dart';
 import 'offer_card.dart';
 

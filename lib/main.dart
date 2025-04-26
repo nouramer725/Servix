@@ -22,8 +22,8 @@ import 'Client/Home/HomeLayoutClient.dart';
 import 'Client/Login-Register/LocationClient/Access_Location1.dart';
 import 'Client/Login-Register/Sign In/Sign_In_Client.dart';
 import 'Language/Local_Provider.dart';
+import 'Splash Screen/Splash.dart';
 import 'Theme/Theme_Provider.dart';
-import 'constents/constent.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -79,6 +79,7 @@ class MyApp extends StatelessWidget {
             locale: context.locale,
             routes: {
               "/": (context) => const CheckUserState(),
+              "/splash": (context) => const SplashScreen(),
               "/onboarding": (context) => const OnboardingScreen(),
               "/signinChoice": (context) => const Language(),
               "/signinClient": (context) => SignInClient(),
@@ -120,7 +121,7 @@ class _CheckUserStateState extends State<CheckUserState> {
     bool seenOnboarding = prefs.getBool("seenOnboarding") ?? false;
     User? user = FirebaseAuth.instance.currentUser;
 
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 5));
 
 // ✅ Only redirect to onboarding if it hasn't been seen yet
     if (!seenOnboarding) {
@@ -243,11 +244,6 @@ class _CheckUserStateState extends State<CheckUserState> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-          child: CircularProgressIndicator(
-        color: ApplicationColor,
-      )),
-    );
+    return const Scaffold(body: Center(child: SplashScreen()));
   }
 }

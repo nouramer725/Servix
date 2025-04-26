@@ -6,8 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:servix/Technician/Login-Register/Percentage/percnetage.dart';
-import 'package:servix/Technician/Login-Register/Waiting%20Screen/Waiting_Screen.dart';
-
 import '../../../Components/Buttons.dart';
 import '../../../Components/location textfield.dart';
 import '../../../constents/constent.dart';

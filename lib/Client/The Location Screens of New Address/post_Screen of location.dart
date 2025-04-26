@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,7 +12,6 @@ import 'package:servix/Components/Buttons.dart';
 
 import '../../../../Theme/Theme_Provider.dart';
 import '../../../../constents/constent.dart';
-import '../Notification/notification_service.dart';
 import 'add new address.dart';
 
 class LocationPosting extends StatefulWidget {
