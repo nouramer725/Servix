@@ -46,8 +46,8 @@ class Womenservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                        title: "Hair Styling",
+                    builder: (context) => DescriptionnScreen(
+                        title: "Hair Styling".tr(),
                         imagePath: "assets/images/woman/hair-styling.jpg"),
                   ),
                 );
@@ -60,8 +60,8 @@ class Womenservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                        title: "Henna",
+                    builder: (context) => DescriptionnScreen(
+                        title: "Henna".tr(),
                         imagePath: "assets/images/woman/henna.jpg"),
                   ),
                 );
@@ -74,8 +74,8 @@ class Womenservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                        title: "Tailoring",
+                    builder: (context) => DescriptionnScreen(
+                        title: "Tailoring".tr(),
                         imagePath: "assets/images/woman/tailoring-woman.jpg"),
                   ),
                 );
@@ -88,8 +88,8 @@ class Womenservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                        title: "Massage",
+                    builder: (context) => DescriptionnScreen(
+                        title: "Massage".tr(),
                         imagePath: "assets/images/woman/massage-woman.jpg"),
                   ),
                 );
@@ -102,8 +102,8 @@ class Womenservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                        title: "Private Coach Woman",
+                    builder: (context) => DescriptionnScreen(
+                        title: "Private Coach Woman".tr(),
                         imagePath:
                             "assets/images/woman/Privatecoach-woman.jpg"),
                   ),
@@ -111,14 +111,14 @@ class Womenservice extends StatelessWidget {
               },
             ),
             ServiceCard(
-              serviceName: 'Makeup Artist'.tr(),
+              serviceName: 'MakeUp Artist'.tr(),
               imagePath: 'assets/images/woman/Makeup.jpg',
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                        title: "Makeup Artist",
+                    builder: (context) => DescriptionnScreen(
+                        title: "MakeUp Artist".tr(),
                         imagePath: "assets/images/woman/Makeup.jpg"),
                   ),
                 );
@@ -131,8 +131,8 @@ class Womenservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                        title: "Nails",
+                    builder: (context) => DescriptionnScreen(
+                        title: "Nails".tr(),
                         imagePath: "assets/images/woman/nails.jpg"),
                   ),
                 );
@@ -145,45 +145,13 @@ class Womenservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DescriptionnScreen(
-                        title: "Pedicure",
+                    builder: (context) => DescriptionnScreen(
+                        title: "Pedicure".tr(),
                         imagePath: "assets/images/woman/padicure.jpg"),
                   ),
                 );
               },
             ),
-            // ServiceCard(
-            //   serviceName: 'Facial'.tr(),
-            //   imagePath: 'assets/images/woman/facial.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Spa'.tr(),
-            //   imagePath: 'assets/images/woman/spa.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Waxing'.tr(),
-            //   imagePath: 'assets/images/woman/waxing.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Eyebrow Threading'.tr(),
-            //   imagePath: 'assets/images/woman/eyebrow-threading.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Bridal Makeup'.tr(),
-            //   imagePath: 'assets/images/woman/bridal-makeup.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Skincare'.tr(),
-            //   imagePath: 'assets/images/woman/skincare.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Body Massage'.tr(),
-            //   imagePath: 'assets/images/woman/body-massage.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Hair Treatment'.tr(),
-            //   imagePath: 'assets/images/woman/hair-treatment.jpg',
-            // ),
           ],
         ),
       ),

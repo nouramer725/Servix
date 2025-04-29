@@ -13,7 +13,7 @@ class DevicesMaintenaceService extends StatelessWidget {
         child: AppBar(
           backgroundColor: const Color(0xff69B5BB),
           title: Text(
-            'Devices Maintenance'.tr(),
+            'Devices Service'.tr(),
             style: TextStyle(
               fontSize: 19,
               fontWeight: FontWeight.bold,
@@ -45,8 +45,8 @@ class DevicesMaintenaceService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Mobile', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Mobile'.tr(), // Custom title
                         imagePath:
                             'assets/images/devices/mobile.jpg', // Custom image
                       ),
@@ -60,8 +60,8 @@ class DevicesMaintenaceService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Air Conditioning', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Air Conditioning'.tr(), // Custom title
                         imagePath:
                             'assets/images/devices/air.jpg', // Custom image
                       ),
@@ -75,8 +75,8 @@ class DevicesMaintenaceService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Computer', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Computer'.tr(), // Custom title
                         imagePath:
                             'assets/images/devices/computer.jpg', // Custom image
                       ),
@@ -90,8 +90,8 @@ class DevicesMaintenaceService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Fridge', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Fridge'.tr(), // Custom title
                         imagePath:
                             'assets/images/devices/fridge.jpg', // Custom image
                       ),
@@ -105,8 +105,8 @@ class DevicesMaintenaceService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Washing Machine', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Washing Machine'.tr(), // Custom title
                         imagePath:
                             'assets/images/devices/Washing.jpg', // Custom image
                       ),
@@ -120,8 +120,8 @@ class DevicesMaintenaceService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Stove', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Stove'.tr(), // Custom title
                         imagePath:
                             'assets/images/devices/stove.jpg', // Custom image
                       ),
@@ -129,14 +129,14 @@ class DevicesMaintenaceService extends StatelessWidget {
                   );
                 }),
             ServiceCard(
-                serviceName: 'Screen'.tr(),
+                serviceName: 'Screens'.tr(),
                 imagePath: 'assets/images/devices/screen.jpg',
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Screen', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Screens'.tr(), // Custom title
                         imagePath:
                             'assets/images/devices/screen.jpg', // Custom image
                       ),
@@ -150,8 +150,8 @@ class DevicesMaintenaceService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Microwave', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Microwave'.tr(), // Custom title
                         imagePath:
                             'assets/images/devices/microwave.jpg', // Custom image
                       ),
@@ -159,14 +159,14 @@ class DevicesMaintenaceService extends StatelessWidget {
                   );
                 }),
             ServiceCard(
-                serviceName: 'Water Heating'.tr(),
+                serviceName: 'Water Heater'.tr(),
                 imagePath: 'assets/images/devices/water-heating.jpg',
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Water Heating', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Water Heater'.tr(), // Custom title
                         imagePath:
                             'assets/images/devices/water-heating.jpg', // Custom image
                       ),
@@ -180,50 +180,14 @@ class DevicesMaintenaceService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Fan', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Fan'.tr(), // Custom title
                         imagePath:
                             'assets/images/devices/fan.jpg', // Custom image
                       ),
                     ),
                   );
                 }),
-            // ServiceCard(
-            //   serviceName: 'Refrigerator'.tr(),
-            //   imagePath: 'assets/images/devices/refrigerator.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Coffee Machine'.tr(),
-            //   imagePath: 'assets/images/devices/coffee_machine.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Toaster'.tr(),
-            //   imagePath: 'assets/images/devices/toaster.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Iron'.tr(),
-            //   imagePath: 'assets/images/devices/iron.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Vacuum Cleaner'.tr(),
-            //   imagePath: 'assets/images/devices/vacuum_cleaner.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Air Fryer'.tr(),
-            //   imagePath: 'assets/images/devices/air_fryer.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Electric Kettle'.tr(),
-            //   imagePath: 'assets/images/devices/electric_kettle.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Sewing Machine'.tr(),
-            //   imagePath: 'assets/images/devices/sewing_machine.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Blender'.tr(),
-            //   imagePath: 'assets/images/devices/blender.jpg',
-            // ),
           ],
         ),
       ),

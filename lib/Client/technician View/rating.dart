@@ -180,17 +180,60 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
           .doc(user.uid)
           .get();
 
-      final image = await FirebaseFirestore.instance
+      // Fetching profile image (profile document in 'personalInformation')
+      final imageDoc = await FirebaseFirestore.instance
           .collection("user-files")
           .doc(user.uid)
           .collection("personalInformation")
           .doc("profile")
           .get();
 
+      String? clientImage;
+
+      // Check if the 'profile' document exists
+      if (imageDoc.exists) {
+        // Check if the 'personalImageUrl' field exists
+        if (imageDoc.data() != null && imageDoc.data()!.containsKey('personalImageUrl')) {
+          clientImage = imageDoc['personalImageUrl'];
+        } else {
+          // Handle case where the 'personalImageUrl' field is missing
+          clientImage = null;
+        }
+      }
+
+      // Fetching file data from 'uploads' collection
+      final imagetech = await FirebaseFirestore.instance
+          .collection("user-files")
+          .doc(user.uid)
+          .collection("uploads")
+          .limit(1)
+          .get();
+
+      String? clientimage2;
+      if (imagetech.docs.isNotEmpty) {
+        final docData = imagetech.docs.first.data();
+        clientimage2 = docData['personalFileUrl']; // Access personalFileUrl from the first document
+      }
+
+      // Final image to use for technician rating submission
+      final finalClientImage = clientimage2 ?? clientImage;
+
+      // Ensure that a valid image URL is available
+      if (finalClientImage == null) {
+        Fluttertoast.showToast(
+          msg: "No image found for the user.".tr(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+        );
+        return;
+      }
+
       final clientName = userDoc['first_name'];
       final clientLastName = userDoc['last_name'];
-      final clientImage = image['personalImageUrl'];
 
+      // Submit rating to Firestore
       await FirebaseFirestore.instance
           .collection('technician')
           .doc(widget.technicianId)
@@ -200,7 +243,7 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
             'clientId': user.uid,
             'clientName': clientName,
             'clientLastName': clientLastName,
-            'clientImage': clientImage,
+            'clientImage': finalClientImage, // Use the final image (either from 'image' or 'imagetech')
             'rating': ratingValue,
             'comment': comment,
             'serviceId': widget.serviceId,

@@ -14,7 +14,7 @@ class DeliveryServices extends StatelessWidget {
           backgroundColor: const Color(0xffA52754),
           iconTheme: const IconThemeData(color: Colors.white),
           title: Text(
-            'Delivery Services'.tr(),
+            'Delivery Service'.tr(),
             style: GoogleFonts.castoro(
               fontSize: 19,
               fontWeight: FontWeight.bold,
@@ -40,14 +40,14 @@ class DeliveryServices extends StatelessWidget {
           mainAxisSpacing: 10,
           children: [
             ServiceCard(
-                serviceName: 'School delivery'.tr(),
+                serviceName: 'School Delivery'.tr(),
                 imagePath: 'assets/images/delivery/school.jpg',
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'School delivery', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'School Delivery'.tr(), // Custom title
                         imagePath:
                             'assets/images/delivery/school.jpg', // Custom image
                       ),
@@ -61,8 +61,8 @@ class DeliveryServices extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Parcels', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Parcels'.tr(), // Custom title
                         imagePath:
                             'assets/images/delivery/spend.jpg', // Custom image
                       ),
@@ -76,8 +76,8 @@ class DeliveryServices extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Taxi', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Taxi'.tr(), // Custom title
                         imagePath:
                             'assets/images/delivery/Taxi.jpg', // Custom image
                       ),
@@ -91,8 +91,8 @@ class DeliveryServices extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Bus', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Bus'.tr(), // Custom title
                         imagePath:
                             'assets/images/delivery/bus.jpg', // Custom image
                       ),
@@ -106,8 +106,8 @@ class DeliveryServices extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Truck', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Truck'.tr(), // Custom title
                         imagePath:
                             'assets/images/delivery/truck.jpg', // Custom image
                       ),
@@ -121,8 +121,8 @@ class DeliveryServices extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Scooter', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Scooter'.tr(), // Custom title
                         imagePath:
                             'assets/images/delivery/scooter.jpg', // Custom image
                       ),
@@ -136,50 +136,14 @@ class DeliveryServices extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Loader Truck', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Loader Truck'.tr(), // Custom title
                         imagePath:
                             'assets/images/delivery/loader.jpg', // Custom image
                       ),
                     ),
                   );
                 }),
-            // ServiceCard(
-            //   serviceName: 'Motorcycle'.tr(),
-            //   imagePath: 'assets/images/delivery/motorcycle.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Food Delivery'.tr(),
-            //   imagePath: 'assets/images/delivery/food_delivery.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Courier'.tr(),
-            //   imagePath: 'assets/images/delivery/courier.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Furniture Delivery'.tr(),
-            //   imagePath: 'assets/images/delivery/furniture_delivery.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Grocery Delivery'.tr(),
-            //   imagePath: 'assets/images/delivery/grocery_delivery.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Parcel Delivery'.tr(),
-            //   imagePath: 'assets/images/delivery/parcel_delivery.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Mail Delivery'.tr(),
-            //   imagePath: 'assets/images/delivery/mail_delivery.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Moving Services'.tr(),
-            //   imagePath: 'assets/images/delivery/moving_services.jpg',
-            // ),
-            // ServiceCard(
-            //   serviceName: 'Flower Delivery'.tr(),
-            //   imagePath: 'assets/images/delivery/flower_delivery.jpg',
-            // ),
           ],
         ),
       ),

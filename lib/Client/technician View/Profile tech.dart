@@ -310,6 +310,7 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                 ),
                 const SizedBox(height: 10),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'Main Service:'.tr(),
@@ -336,6 +337,7 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'Sub Service:',

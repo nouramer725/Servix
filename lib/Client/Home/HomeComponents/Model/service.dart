@@ -46,8 +46,8 @@ List<Service> Allservices = [
           title: 'Cleaning'.tr(),
           image: 'assets/images/home-service/cleaning.jpg',
           onTap: () {
-            const DescriptionnScreen(
-              title: 'Cleaning', // Custom title
+            DescriptionnScreen(
+              title: 'Cleaning'.tr(), // Custom title
               imagePath:
                   'assets/images/home-service/cleaning.jpg', // Custom image
             );
@@ -55,8 +55,8 @@ List<Service> Allservices = [
       SubService(
           title: 'Carpentry'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-              title: 'Carpentry', // Custom title
+            DescriptionnScreen(
+              title: 'Carpentry'.tr(), // Custom title
               imagePath:
                   'assets/images/home-service/Carpentry.jpg', // Custom image
             );
@@ -65,8 +65,8 @@ List<Service> Allservices = [
       SubService(
           title: 'Electricity'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-              title: 'Electricity', // Custom title
+            DescriptionnScreen(
+              title: 'Electricity'.tr(), // Custom title
               imagePath:
                   'assets/images/home-service/Electricity.jpg', // Custom image
             );
@@ -75,8 +75,8 @@ List<Service> Allservices = [
       SubService(
           title: 'Plumbing'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-              title: 'Plumbing', // Custom title
+            DescriptionnScreen(
+              title: 'Plumbing'.tr(), // Custom title
               imagePath:
                   'assets/images/home-service/Plumbing.jpg', // Custom image
             );
@@ -85,8 +85,8 @@ List<Service> Allservices = [
       SubService(
           title: 'Kitchen Technician'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-              title: 'Kitchen Technician', // Custom title
+            DescriptionnScreen(
+              title: 'Kitchen Technician'.tr(), // Custom title
               imagePath:
                   'assets/images/home-service/Kitchentechnician.jpg', // Custom image
             );
@@ -95,8 +95,8 @@ List<Service> Allservices = [
       SubService(
           title: 'Painting'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-              title: 'Painting', // Custom title
+            DescriptionnScreen(
+              title: 'Painting'.tr(), // Custom title
               imagePath:
                   'assets/images/home-service/painting.jpg', // Custom image
             );
@@ -105,8 +105,8 @@ List<Service> Allservices = [
       SubService(
           title: 'Camera Technician'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-              title: 'Camera Technician', // Custom title
+            DescriptionnScreen(
+              title: 'Camera Technician'.tr(), // Custom title
               imagePath:
                   'assets/images/home-service/camera.jpg', // Custom image
             );
@@ -115,8 +115,8 @@ List<Service> Allservices = [
       SubService(
           title: 'Landscaper'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-              title: 'Gardener', // Custom title
+            DescriptionnScreen(
+              title: 'Gardener'.tr(), // Custom title
               imagePath:
                   'assets/images/home-service/LandScaper.jpg', // Custom image
             );
@@ -134,32 +134,32 @@ List<Service> Allservices = [
       SubService(
           title: 'Primary'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Primary",
+            DescriptionnScreen(
+                title: "Primary".tr(),
                 imagePath: "assets/images/private-teaching/primary.jpg");
           },
           image: 'assets/images/private-teaching/primary.jpg'),
       SubService(
           title: 'Preparatory'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Preparatory",
+            DescriptionnScreen(
+                title: "Preparatory".tr(),
                 imagePath: "assets/images/private-teaching/Preparatory.jpg");
           },
           image: 'assets/images/private-teaching/Preparatory.jpg'),
       SubService(
           title: 'Secondary'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Secondary",
+            DescriptionnScreen(
+                title: "Secondary".tr(),
                 imagePath: "assets/images/private-teaching/secondary.jpg");
           },
           image: 'assets/images/private-teaching/secondary.jpg'),
       SubService(
           title: 'Musical Instrument'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Musical Instrument",
+            DescriptionnScreen(
+                title: "Musical Instrument".tr(),
                 imagePath:
                     "assets/images/private-teaching/musical_instruments.jpg");
           },
@@ -167,16 +167,16 @@ List<Service> Allservices = [
       SubService(
           title: 'Religion'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Religion",
+            DescriptionnScreen(
+                title: "Religion".tr(),
                 imagePath: "assets/images/private-teaching/Religion.jpg");
           },
           image: 'assets/images/private-teaching/Religion.jpg'),
       SubService(
           title: 'Languages'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Languages",
+            DescriptionnScreen(
+                title: "Languages".tr(),
                 imagePath: "assets/images/private-teaching/Languages.jpg");
           },
           image: 'assets/images/private-teaching/Languages.jpg'),
@@ -192,31 +192,32 @@ List<Service> Allservices = [
       SubService(
           title: 'Private Coach'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Private Coach",
+            DescriptionnScreen(
+                title: "Private Coach".tr(),
                 imagePath: "assets/images/men/Privatecoach-man.jpeg");
           },
           image: 'assets/images/men/Privatecoach-man.jpeg'),
       SubService(
-          title: 'Shaving'.tr(),
+          title: 'Haircut'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Shaving", imagePath: "assets/images/men/Shaving.jpg");
+            DescriptionnScreen(
+                title: "Haircut".tr(),
+                imagePath: "assets/images/men/Shaving.jpg");
           },
           image: 'assets/images/men/Shaving.jpg'),
       SubService(
-          title: 'Massage'.tr(),
+          title: 'Massage Man'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Massage",
+            DescriptionnScreen(
+                title: "Massage Man".tr(),
                 imagePath: "assets/images/men/massage-man.jpg");
           },
           image: 'assets/images/men/massage-man.jpg'),
       SubService(
-          title: 'Tailoring'.tr(),
+          title: 'Tailoring Man'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Tailoring",
+            DescriptionnScreen(
+                title: "Tailoring Man".tr(),
                 imagePath: "assets/images/men/Tailoring-man.jpg");
           },
           image: 'assets/images/men/Tailoring-man.jpg'),
@@ -232,62 +233,64 @@ List<Service> Allservices = [
       SubService(
           title: 'Hair Styling'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Hair Styling",
+            DescriptionnScreen(
+                title: "Hair Styling".tr(),
                 imagePath: "assets/images/woman/hair_styling.jpg");
           },
           image: 'assets/images/woman/hair_styling.jpg'),
       SubService(
           title: 'Pedicure',
           onTap: () {
-            const DescriptionnScreen(
-                title: "Pedicure",
+            DescriptionnScreen(
+                title: "Pedicure".tr(),
                 imagePath: "assets/images/woman/pedicure.jpg");
           },
           image: 'assets/images/woman/pedicure.jpg'),
       SubService(
           title: 'Tailoring'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Tailoring",
+            DescriptionnScreen(
+                title: "Tailoring".tr(),
                 imagePath: "assets/images/woman/tailoring-woman.jpg");
           },
           image: 'assets/images/woman/tailoring-woman.jpg'),
       SubService(
           title: 'Henna',
           onTap: () {
-            const DescriptionnScreen(
-                title: "Henna", imagePath: "assets/images/woman/henna.jpg");
+            DescriptionnScreen(
+                title: "Henna".tr(),
+                imagePath: "assets/images/woman/henna.jpg");
           },
           image: 'assets/images/woman/henna.jpg'),
       SubService(
           title: 'Massage'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Massage",
+            DescriptionnScreen(
+                title: "Massage".tr(),
                 imagePath: "assets/images/woman/massage_women.jpg");
           },
           image: 'assets/images/woman/massage_women.jpg'),
       SubService(
-          title: 'Makeup Artist'.tr(),
+          title: 'MakeUp Artist'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Makeup Artist",
+            DescriptionnScreen(
+                title: "MakeUp Artist".tr(),
                 imagePath: "assets/images/woman/Makeup.jpg");
           },
           image: 'assets/images/woman/Makeup.jpg'),
       SubService(
-          title: 'Nails',
+          title: 'Nails'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Nails", imagePath: "assets/images/woman/nails.jpg");
+            DescriptionnScreen(
+                title: "Nails".tr(),
+                imagePath: "assets/images/woman/nails.jpg");
           },
           image: 'assets/images/woman/nails.jpg'),
       SubService(
-          title: 'Private Coach'.tr(),
+          title: 'Private Coach Woman'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Private Coach",
+            DescriptionnScreen(
+                title: "Private Coach Woman".tr(),
                 imagePath: "assets/images/woman/Privatecoach-woman.jpg");
           },
           image: 'assets/images/woman/Privatecoach-woman.jpg'),
@@ -301,41 +304,41 @@ List<Service> Allservices = [
     },
     subServices: [
       SubService(
-          title: 'Children Care'.tr(),
+          title: 'Children'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Children Care",
+            DescriptionnScreen(
+                title: "Children".tr(),
                 imagePath: "assets/images/care/children.jpg");
           },
           image: 'assets/images/care/children.jpg'),
       SubService(
-          title: 'Elderly Care'.tr(),
+          title: 'Elderly'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Elderly Care",
+            DescriptionnScreen(
+                title: "Elderly".tr(),
                 imagePath: "assets/images/care/Elder.jpg");
           },
           image: 'assets/images/care/Elder.jpg'),
       SubService(
-          title: 'Pet Care'.tr(),
+          title: 'Pet'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Pet Care", imagePath: "assets/images/care/pet.jpg");
+            DescriptionnScreen(
+                title: "Pet".tr(), imagePath: "assets/images/care/pet.jpg");
           },
           image: 'assets/images/care/pet.jpg'),
       SubService(
-          title: 'Nursing Care'.tr(),
+          title: 'Nursing'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Nursing Care",
+            DescriptionnScreen(
+                title: "Nursing".tr(),
                 imagePath: "assets/images/care/nursing.jpg");
           },
           image: 'assets/images/care/nursing.jpg'),
       SubService(
-          title: 'Disabilities Care'.tr(),
+          title: 'Disabilities'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Disabilities Care",
+            DescriptionnScreen(
+                title: "Disabilities".tr(),
                 imagePath: "assets/images/care/disability.jpg");
           },
           image: 'assets/images/care/disability.jpg'),
@@ -351,77 +354,80 @@ List<Service> Allservices = [
       SubService(
           title: 'Mobile'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Mobile", imagePath: "assets/images/devices/mobile.jpg");
+            DescriptionnScreen(
+                title: "Mobile".tr(),
+                imagePath: "assets/images/devices/mobile.jpg");
           },
           image: 'assets/images/devices/mobile.jpg'),
       SubService(
           title: 'Computer'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Computer",
+            DescriptionnScreen(
+                title: "Computer".tr(),
                 imagePath: "assets/images/devices/computer.jpg");
           },
           image: 'assets/images/devices/computer.jpg'),
       SubService(
           title: 'Air Conditioning'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Air Conditioning",
+            DescriptionnScreen(
+                title: "Air Conditioning".tr(),
                 imagePath: "assets/images/devices/air.jpg");
           },
           image: 'assets/images/devices/air.jpg'),
       SubService(
           title: 'Fridge',
           onTap: () {
-            const DescriptionnScreen(
-                title: "Fridge", imagePath: "assets/images/devices/fridge.jpg");
+            DescriptionnScreen(
+                title: "Fridge".tr(),
+                imagePath: "assets/images/devices/fridge.jpg");
           },
           image: 'assets/images/devices/fridge.jpg'),
       SubService(
           title: 'Washing Machine'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Washing Machine",
+            DescriptionnScreen(
+                title: "Washing Machine".tr(),
                 imagePath: "assets/images/devices/Washing.jpg");
           },
           image: 'assets/images/devices/Washing.jpg'),
       SubService(
           title: 'Screens',
           onTap: () {
-            const DescriptionnScreen(
-                title: "Screens",
+            DescriptionnScreen(
+                title: "Screens".tr(),
                 imagePath: "assets/images/devices/screen.jpg");
           },
           image: 'assets/images/devices/screen.jpg'),
       SubService(
           title: 'Microwave'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Microwave",
+            DescriptionnScreen(
+                title: "Microwave".tr(),
                 imagePath: "assets/images/devices/microwave.jpg");
           },
           image: 'assets/images/devices/microwave.jpg'),
       SubService(
           title: 'Stove'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Stove", imagePath: "assets/images/devices/stove.jpg");
+            DescriptionnScreen(
+                title: "Stove".tr(),
+                imagePath: "assets/images/devices/stove.jpg");
           },
           image: 'assets/images/devices/stove.jpg'),
       SubService(
           title: 'Water Heater'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Water Heater",
+            DescriptionnScreen(
+                title: "Water Heater".tr(),
                 imagePath: "assets/images/devices/water_heater.jpg");
           },
           image: 'assets/images/devices/water_heater.jpg'),
       SubService(
           title: 'Fan'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Fan", imagePath: "assets/images/devices/fan.jpg");
+            DescriptionnScreen(
+                title: "Fan".tr(), imagePath: "assets/images/devices/fan.jpg");
           },
           image: 'assets/images/devices/fan.jpg'),
     ],
@@ -436,52 +442,55 @@ List<Service> Allservices = [
       SubService(
           title: 'School Delivery'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "School Delivery",
+            DescriptionnScreen(
+                title: "School Delivery".tr(),
                 imagePath: "assets/images/delivery/school.jpg");
           },
           image: 'assets/images/delivery/school.jpg'),
       SubService(
           title: 'Parcels'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Parcels", imagePath: "assets/images/delivery/spend.jpg");
+            DescriptionnScreen(
+                title: "Parcels".tr(),
+                imagePath: "assets/images/delivery/spend.jpg");
           },
           image: 'assets/images/delivery/spend.jpg'),
       SubService(
           title: 'Taxi'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Taxi", imagePath: "assets/images/delivery/Taxi.jpg");
+            DescriptionnScreen(
+                title: "Taxi".tr(),
+                imagePath: "assets/images/delivery/Taxi.jpg");
           },
           image: 'assets/images/delivery/Taxi.jpg'),
       SubService(
           title: 'Bus'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Bus", imagePath: "assets/images/delivery/bus.jpg");
+            DescriptionnScreen(
+                title: "Bus".tr(), imagePath: "assets/images/delivery/bus.jpg");
           },
           image: 'assets/images/delivery/bus.jpg'),
       SubService(
           title: 'Truck'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Truck", imagePath: "assets/images/delivery/truck.jpg");
+            DescriptionnScreen(
+                title: "Truck".tr(),
+                imagePath: "assets/images/delivery/truck.jpg");
           },
           image: 'assets/images/delivery/truck.jpg'),
       SubService(
           title: 'Scooter'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Scooter",
+            DescriptionnScreen(
+                title: "Scooter".tr(),
                 imagePath: "assets/images/delivery/scooter.jpg");
           },
           image: 'assets/images/delivery/scooter.jpg'),
       SubService(
           title: 'Loader Truck'.tr(),
           onTap: () {
-            const DescriptionnScreen(
-                title: "Loader Truck",
+            DescriptionnScreen(
+                title: "Loader Truck".tr(),
                 imagePath: "assets/images/delivery/loader.jpg");
           },
           image: 'assets/images/delivery/loader.jpg'),

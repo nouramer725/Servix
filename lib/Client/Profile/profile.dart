@@ -391,6 +391,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [

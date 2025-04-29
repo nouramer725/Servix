@@ -257,8 +257,8 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
   }
 
   void _showEditDialogService() {
-    String? selectedMainService = userData?['main_service'];
-    String? selectedSubService = userData?['sub_service'];
+    String? selectedMainService = userData?['main_service'.tr()];
+    String? selectedSubService = userData?['sub_service'.tr()];
 
     showDialog(
       context: context,
@@ -277,12 +277,24 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
         ),
         content: StatefulBuilder(
           builder: (context, setState) {
+            // Before building the dropdown:
+            if (selectedMainService != null &&
+                !subServicesMap.keys.contains(selectedMainService)) {
+              selectedMainService = null;
+            }
+            if (selectedSubService != null &&
+                (selectedMainService == null ||
+                    !subServicesMap[selectedMainService]!
+                        .contains(selectedSubService))) {
+              selectedSubService = null;
+            }
+
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Main Service Dropdown
                 DropdownButtonFormField<String>(
-                  value: selectedMainService,
+                  value: selectedMainService?.tr(),
                   dropdownColor: themeProvider.themeMode == ThemeMode.dark
                       ? const Color(0xFF333739)
                       : Colors.white,
@@ -316,7 +328,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                   onChanged: (String? newValue) {
                     setState(() {
                       selectedMainService = newValue;
-                      selectedSubService = null; // Reset sub-service
+                      selectedSubService = null;
                     });
                   },
                 ),
@@ -838,7 +850,8 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               EditableRow(
                 title: "Main Service:\nSub Service:".tr(),
                 text:
-                "${userData?['main_service'] ?? 'N/A'}\n${userData?['sub_service'] ?? 'N/A'}",
+                    "${userData?['main_service'] ?? 'N/A'}\n${userData?['sub_service'] ?? 'N/A'}"
+                        .tr(),
                 onEdit: _showEditDialogService,
                 icon: FontAwesomeIcons.pencil,
               ),
@@ -852,11 +865,11 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               ),
               const ThemedDivider(),
               EditableRow(
-                  title: "Phone Number:".tr(),
-                  text: phoneNumber,
-                  onEdit: _showEditPhoneDialog,
-                  icon: FontAwesomeIcons.pencil,
-                  ),
+                title: "Phone Number:".tr(),
+                text: phoneNumber,
+                onEdit: _showEditPhoneDialog,
+                icon: FontAwesomeIcons.pencil,
+              ),
               const ThemedDivider(),
               const SizedBox(
                 height: 10,

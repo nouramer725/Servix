@@ -80,7 +80,7 @@ class PreviousOrderCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        orders.ServiceType,
+                        orders.ServiceType.tr(),
                         style: GoogleFonts.castoro(
                           fontSize: 14,
                           color: isDark ? Colors.white : Colors.black,
@@ -141,7 +141,7 @@ class PreviousOrderCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        '${orders.previousOffer}',
+                        '${orders.previousOffer}'.tr(),
                         style: GoogleFonts.castoro(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -158,7 +158,7 @@ class PreviousOrderCard extends StatelessWidget {
                           const Icon(Icons.calendar_today, size: 20,),
                           const SizedBox(width: 4),
                           Text(
-                            orders.Date,
+                            orders.Date.tr(),
                             style: GoogleFonts.castoro(
                               fontSize: 14,
                               color: isDark ? Colors.white : Colors.black,
@@ -173,7 +173,7 @@ class PreviousOrderCard extends StatelessWidget {
                           const Icon(Icons.access_time, size: 20),
                           const SizedBox(width: 4),
                           Text(
-                            orders.Time,
+                            orders.Time.tr(),
                             style: GoogleFonts.castoro(
                               fontSize: 14,
                               color: isDark ? Colors.white : Colors.black,

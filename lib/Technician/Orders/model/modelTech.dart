@@ -10,7 +10,7 @@ class OrderModelTech {
   final String? userId;
   final String? docPath;
   final String? previousOffer;
-  final String? Status;
+  final String Status;
 
   const OrderModelTech(
       {required this.ServiceType,
@@ -23,6 +23,6 @@ class OrderModelTech {
       this.userId,
       this.docPath,
       this.previousOffer,
-      this.Status,
+     required this.Status,
       this.image});
 }

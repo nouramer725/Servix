@@ -40,14 +40,14 @@ class Careservice extends StatelessWidget {
           mainAxisSpacing: 10,
           children: [
             ServiceCard(
-              serviceName: 'Elder'.tr(),
+              serviceName: 'Elderly'.tr(),
               imagePath: 'assets/images/care/Elder.jpg',
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>  DescriptionnScreen(
-                      title: 'Elder Care'.tr(),
+                    builder: (context) => DescriptionnScreen(
+                      title: 'Elderly'.tr(),
                       imagePath: 'assets/images/care/Elder.jpg', // Custom image
                     ),
                   ),
@@ -61,8 +61,8 @@ class Careservice extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>  DescriptionnScreen(
-                      title: 'Children Care'.tr(), // Custom title
+                    builder: (context) => DescriptionnScreen(
+                      title: 'Children'.tr(), // Custom title
                       imagePath:
                           'assets/images/care/children.jpg', // Custom image
                     ),
@@ -78,7 +78,7 @@ class Careservice extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => DescriptionnScreen(
-                      title: 'Nursing Care'.tr(), // Custom title
+                      title: 'Nursing'.tr(), // Custom title
                       imagePath:
                           'assets/images/care/nursing.jpg', // Custom image
                     ),
@@ -94,7 +94,7 @@ class Careservice extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => DescriptionnScreen(
-                      title: 'Pet Care'.tr(), // Custom title
+                      title: 'Pet'.tr(), // Custom title
                       imagePath: 'assets/images/care/pet.jpg', // Custom image
                     ),
                   ),
@@ -102,14 +102,14 @@ class Careservice extends StatelessWidget {
               },
             ),
             ServiceCard(
-              serviceName: 'Disability'.tr(),
+              serviceName: 'Disabilities'.tr(),
               imagePath: 'assets/images/care/disability.jpg',
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => DescriptionnScreen(
-                      title: 'Disability Care'.tr(), // Custom title
+                      title: 'Disabilities'.tr(), // Custom title
                       imagePath:
                           'assets/images/care/disability.jpg', // Custom image
                     ),

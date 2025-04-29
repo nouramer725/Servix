@@ -15,13 +15,13 @@ final Map<String, List<String>> subServicesMap = {
     "Primary".tr(),
     "Preparatory".tr(),
     "Secondary".tr(),
-    "Musical Instrument ".tr(),
+    "Musical Instrument".tr(),
     "Religion".tr(),
     "Languages".tr()
   ],
   "For Men".tr(): [
     "Private Coach".tr(),
-    "Shaving".tr(),
+    "Haircut".tr(),
     "Massage Man".tr(),
     "Tailoring Man".tr(),
   ],
@@ -31,17 +31,16 @@ final Map<String, List<String>> subServicesMap = {
     "Tailoring".tr(),
     "Henna".tr(),
     "Massage".tr(),
-    "Make Artist".tr(),
-    "Massage".tr(),
+    "MakeUp Artist".tr(),
     "Nails".tr(),
     "Private Coach Woman".tr()
   ],
   "Care Service".tr(): [
-    "Children Care".tr(),
-    "Elderly Care".tr(),
-    "Pet Care".tr(),
-    "Nursing Care".tr(),
-    "Disabilities Care".tr()
+    "Children".tr(),
+    "Elderly".tr(),
+    "Pet".tr(),
+    "Nursing".tr(),
+    "Disabilities".tr()
   ],
   "Devices Service".tr(): [
     "Mobile".tr(),

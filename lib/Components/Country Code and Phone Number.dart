@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget countryCodePhoneField({
@@ -31,6 +32,10 @@ Widget countryCodePhoneField({
               controller: controller,
               keyboardType: TextInputType.phone,
               cursorColor: Colors.grey[100],
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(11),
+              ],
               decoration: InputDecoration(
                 labelText: "Phone Number".tr(),
                 labelStyle: GoogleFonts.castoro(

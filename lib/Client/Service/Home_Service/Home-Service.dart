@@ -47,8 +47,8 @@ class HomeService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Cleaning', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Cleaning'.tr(), // Custom title
                         imagePath:
                             'assets/images/home-service/cleaning.jpg', // Custom image
                       ),
@@ -62,8 +62,8 @@ class HomeService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Carpentry', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Carpentry'.tr(), // Custom title
                         imagePath:
                             'assets/images/home-service/Carpentry.jpg', // Custom image
                       ),
@@ -77,8 +77,8 @@ class HomeService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Electricity', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Electricity'.tr(), // Custom title
                         imagePath:
                             'assets/images/home-service/Electricity.jpg', // Custom image
                       ),
@@ -92,8 +92,8 @@ class HomeService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Plumbing', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Plumbing'.tr(), // Custom title
                         imagePath:
                             'assets/images/home-service/Plumbing.jpg', // Custom image
                       ),
@@ -107,8 +107,8 @@ class HomeService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Kitchen Technician', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Kitchen Technician'.tr(), // Custom title
                         imagePath:
                             'assets/images/home-service/Kitchentechnician.jpg', // Custom image
                       ),
@@ -122,8 +122,8 @@ class HomeService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Painting', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Painting'.tr(), // Custom title
                         imagePath:
                             'assets/images/home-service/painting.jpg', // Custom image
                       ),
@@ -137,8 +137,8 @@ class HomeService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Camera Technician', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Camera Technician'.tr(), // Custom title
                         imagePath:
                             'assets/images/home-service/camera.jpg', // Custom image
                       ),
@@ -152,8 +152,8 @@ class HomeService extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const DescriptionnScreen(
-                        title: 'Gardener', // Custom title
+                      builder: (context) => DescriptionnScreen(
+                        title: 'Gardener'.tr(), // Custom title
                         imagePath:
                             'assets/images/home-service/LandScaper.jpg', // Custom image
                       ),

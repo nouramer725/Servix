@@ -322,7 +322,7 @@ class OrderCardTech extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      orders.ServiceType,
+                      orders.ServiceType.tr(),
                       style: GoogleFonts.castoro(
                         fontSize: 14,
                         color: isDark ? Colors.white : Colors.black,
@@ -341,11 +341,13 @@ class OrderCardTech extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      orders.Description,
-                      style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: isDark ? Colors.white : Colors.black,
+                    Expanded(
+                      child: Text(
+                        orders.Description,
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
                       ),
                     ),
                   ],
@@ -382,7 +384,7 @@ class OrderCardTech extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      ' ${orders.Status}',
+                      orders.Status.tr(),
                       style: GoogleFonts.castoro(
                         fontSize: 14,
                         color: isDark ? Colors.white : Colors.black,
@@ -405,7 +407,7 @@ class OrderCardTech extends StatelessWidget {
                                 color: isDark ? Colors.white : Colors.black),
                             const SizedBox(width: 4),
                             Text(
-                              orders.Date,
+                              orders.Date.tr(),
                               style: GoogleFonts.castoro(
                                 fontSize: 14,
                                 color: isDark ? Colors.white : Colors.black,
@@ -421,7 +423,7 @@ class OrderCardTech extends StatelessWidget {
                                 color: isDark ? Colors.white : Colors.black),
                             const SizedBox(width: 4),
                             Text(
-                              orders.Time,
+                              orders.Time.tr(),
                               style: GoogleFonts.castoro(
                                 fontSize: 14,
                                 color: isDark ? Colors.white : Colors.black,

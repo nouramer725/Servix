@@ -121,7 +121,7 @@ class _CheckUserStateState extends State<CheckUserState> {
     bool seenOnboarding = prefs.getBool("seenOnboarding") ?? false;
     User? user = FirebaseAuth.instance.currentUser;
 
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 4));
 
 // ✅ Only redirect to onboarding if it hasn't been seen yet
     if (!seenOnboarding) {

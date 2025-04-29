@@ -54,7 +54,7 @@ class Manservice extends StatelessWidget {
               },
             ),
             ServiceCard(
-                serviceName: 'Tailoring'.tr(),
+                serviceName: 'Tailoring Man'.tr(),
                 imagePath: 'assets/images/men/Tailoring-man.jpg',
                 onTap: () {
                   Navigator.push(
@@ -67,7 +67,7 @@ class Manservice extends StatelessWidget {
                   );
                 }),
             ServiceCard(
-                serviceName: 'Massage'.tr(),
+                serviceName: 'Massage Man'.tr(),
                 imagePath: 'assets/images/men/massage-man.jpg',
                 onTap: () {
                   Navigator.push(

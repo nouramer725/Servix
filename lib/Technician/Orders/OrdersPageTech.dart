@@ -40,7 +40,6 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
     notifiedOrderIds = prefs.getStringList('notifiedOrderIds')?.toSet() ?? {};
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,7 +141,7 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
 
             if (snapshot.hasError || !snapshot.hasData) {
               print('Error fetching orders: ${snapshot.error}');
-              return  Center(child: Text('Error loading orders'.tr()));
+              return Center(child: Text('Error loading orders'.tr()));
             }
 
             final docs = snapshot.data!.docs;
@@ -160,21 +159,6 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
 
             final orders = docs.map((doc) {
               final data = doc.data() as Map<String, dynamic>;
-
-              // if (!_notifiedOrderIds.contains(doc.id)) {
-              //   final NotificationServiceTechniciann =
-              //       NotificationServiceTechnician(
-              //           flutterLocalNotificationsPlugin);
-              //
-              //   NotificationServiceTechniciann.showAndSaveNotificationTech(
-              //     title: 'New service',
-              //     preview:
-              //         'A new order is waiting for your service type. Do not miss the chance to take a look!',
-              //   );
-              //
-              //   _notifiedOrderIds.add(doc.id);
-              //   _saveNotifiedOrderIds(); // Save the updated list persistently
-              // }
 
               return OrderModelTech(
                 ServiceType: data['serviceTitle'] ?? '',
@@ -211,6 +195,6 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
         .collection('technician')
         .doc(uid)
         .get();
-    return doc['sub_service'];
+    return doc['sub_service'.tr()];
   }
 }

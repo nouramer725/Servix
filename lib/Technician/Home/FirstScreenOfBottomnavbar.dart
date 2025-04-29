@@ -361,7 +361,10 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                             return  Center(child: Text("No Offers Made".tr()));
                           }
 
-                          return Expanded(
+                          return ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxHeight: 250, // 👉 Set a maximum height
+                            ),
                             child: ListView.builder(
                               itemCount: orders.length,
                               itemBuilder: (context, index) {
@@ -431,6 +434,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
           FName: data['firstName'] ?? 'Unknown',
           LName: data['lastName'] ?? 'Unknown',
           docPath: doc.reference.path,
+          Status: data['Status'],
           previousOffer: offerValue, // assign offer value here
         ));
       }
