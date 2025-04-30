@@ -536,32 +536,32 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
             backgroundColor: Colors.transparent,
             color: ApplicationColor,
             buttonBackgroundColor: ApplicationColor,
-            items: const [
-              Icon(
+            items: [
+              const Icon(
                 Icons.notifications,
                 color: Colors.white,
                 size: 27,
               ),
-              Icon(
+              const Icon(
                 Icons.receipt_long,
                 color: Colors.white,
                 size: 27,
               ),
-              Icon(
+              const Icon(
                 Icons.home_rounded,
                 color: Colors.white,
                 size: 27,
               ),
-              Icon(
+              const Icon(
                 Icons.groups_rounded,
                 color: Colors.white,
                 size: 27,
               ),
-              Icon(
-                Icons.chat,
-                color: Colors.white,
-                size: 27,
-              ),
+              Image.asset(
+                "assets/NavigationBar/robot.png",
+                width: 30,
+                height: 30,
+              )
             ]),
       ),
     );
