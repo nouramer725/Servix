@@ -58,27 +58,31 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
   @override
   void initState() {
     super.initState();
-    // Initialize mainServices from the keys of subServicesMap
     mainServices = subServicesMap.keys.toList();
   }
 
-  // Date Picker logic for Date of Birth
   Future<void> _pickDateOfBirth() async {
+    final DateTime initialDate = _dobController.text.isNotEmpty
+        ? DateFormat('yyyy-MM-dd').parse(_dobController.text)
+        : DateTime(1950);
+
     final DateTime? pickedDate = await showDatePicker(
       context: context,
+      initialDate: initialDate,
       firstDate: DateTime(1950),
       lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.light(
-              primary: ApplicationColor,
+              primary: ApplicationColor, // Use your theme color here
             ),
           ),
           child: child!,
         );
       },
     );
+
     if (pickedDate != null) {
       setState(() {
         _dobController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
