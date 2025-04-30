@@ -59,6 +59,130 @@ class _LocationPostingState extends State<LocationPosting> {
     fetchProfileImageUrl();
   }
 
+  String _getArabicTranslation(String englishTitle) {
+    Map<String, String> translationMap = {
+      "Home Service": "خدمات منزلية",
+      "Cleaning": "تنظيف",
+      "Carpentry": "نجارة",
+      "Electricity": "كهرباء",
+      "Plumping": "سباكة",
+      "Kitchen Technician": "فني مطبخ",
+      "Painting": "دهان",
+      "Camera Technician": "فني كاميرات",
+      "Gardener": "جنايني",
+      "Private Teaching": "تعليم خاص",
+      "Primary": "ابتدائي",
+      "Preparatory": "إعدادي",
+      "Secondary": "ثانوي",
+      "Musical Instrument": "آلة موسيقية",
+      "Religion": "ديني",
+      "Languages": "لغات",
+      "For Men": "للرجال",
+      "Haircut": "حلاق",
+      "Private Coach": "مدرب خاص",
+      "Massage Man": "مساج",
+      "Tailoring Man": "خياط",
+      "For Women": "للنساء",
+      "Tailoring": "خياطة",
+      "MakeUp Artist": "أخصائية تجميل",
+      "Hair Styling": "تصفيف الشعر",
+      "Pedicure": "باديكير",
+      "Henna": "حناء",
+      "Nails": "أظافر",
+      "Massage": "مساج",
+      "Private Coach Woman": "مدربة خاصة",
+      "Care Service": "خدمات الرعاية",
+      "Children": "رعاية الأطفال",
+      "Elderly": "رعاية المسنين",
+      "Pet": "رعاية الحيوانات الأليفة",
+      "Nursing": "تمريض",
+      "Disabilities": "رعاية ذوي الاحتياجات الخاصة",
+      "Devices Service": "صيانة الأجهزة",
+      "Mobile": "موبايل",
+      "Computer": "كمبيوتر",
+      "Air Conditioning": "تكييف",
+      "Fridge": "ثلاجة",
+      "Washing Machine": "غسالة",
+      "Screens": "شاشات",
+      "Microwave": "ميكروويف",
+      "Stove": "بوتجاز",
+      "Water Heater": "سخان مياه",
+      "Fan": "مروحة",
+      "Delivery Service": "خدمات التوصيل",
+      "School Delivery": "توصيل للمدارس",
+      "Parcels": "طرود",
+      "Taxi": "تاكسي",
+      "Bus": "حافلة",
+      "Truck": "شاحنة",
+      "Scooter": "سكوتر",
+      "Loader Truck": "شاحنة نقل",
+    };
+
+    return translationMap[englishTitle] ?? englishTitle;
+  }
+
+  final Map<String, String> _arabicToEnglishMap = {
+    "خدمات منزلية": "Home Service",
+    "تنظيف": "Cleaning",
+    "نجارة": "Carpentry",
+    "كهرباء": "Electricity",
+    "سباكة": "Plumbing",
+    "فني مطبخ": "Kitchen Technician",
+    "دهان": "Painting",
+    "فني كاميرات": "Camera Technician",
+    "جنايني": "Gardener",
+    "تعليم خاص": "Private Teaching",
+    "ابتدائي": "Primary",
+    "إعدادي": "Preparatory",
+    "ثانوي": "Secondary",
+    "آلة موسيقية": "Musical Instrument",
+    "ديني": "Religion",
+    "لغات": "Languages",
+    "للرجال": "For Men",
+    "حلاق": "Haircut",
+    "مدرب خاص": "Private Coach",
+    "مساج": "Massage Man",
+    "خياط": "Tailoring Man",
+    "للنساء": "For Women",
+    "خياطة": "Tailoring",
+    "أخصائية تجميل": "MakeUp Artist",
+    "تصفيف الشعر": "Hair Styling",
+    "باديكير": "Pedicure",
+    "حناء": "Henna",
+    "أظافر": "Nails",
+    "مساج": "Massage",
+    "مدربة خاصة": "Private Coach Woman",
+    "خدمات الرعاية": "Care Service",
+    "رعاية الأطفال": "Children",
+    "رعاية المسنين": "Elderly",
+    "رعاية الحيوانات الأليفة": "Pet",
+    "تمريض": "Nursing",
+    "رعاية ذوي الاحتياجات الخاصة": "Disabilities",
+    "صيانة الأجهزة": "Devices Service",
+    "موبايل": "Mobile",
+    "كمبيوتر": "Computer",
+    "تكييف": "Air Conditioning",
+    "ثلاجة": "Fridge",
+    "غسالة": "Washing Machine",
+    "شاشات": "Screens",
+    "ميكروويف": "Microwave",
+    "بوتجاز": "Stove",
+    "سخان مياه": "Water Heater",
+    "مروحة": "Fan",
+    "خدمات التوصيل": "Delivery Service",
+    "توصيل للمدارس": "School Delivery",
+    "طرود": "Parcels",
+    "تاكسي": "Taxi",
+    "حافلة": "Bus",
+    "شاحنة": "Truck",
+    "سكوتر": "Scooter",
+    "شاحنة نقل": "Loader Truck",
+  };
+
+  String _getEnglishVersion(String arabic) {
+    return _arabicToEnglishMap[arabic.trim()] ?? arabic;
+  }
+
   Future<void> fetchUserLocation() async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -321,21 +445,90 @@ class _LocationPostingState extends State<LocationPosting> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20.0),
         child: GradientButton(
-            onPressed: () async {
-              if (!rememberMe) {
+          onPressed: () async {
+            if (!rememberMe) {
+              Fluttertoast.showToast(
+                msg: "You must accept the terms and conditions.".tr(),
+                backgroundColor: Colors.redAccent,
+                textColor: Colors.white,
+                fontSize: 16.0,
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.TOP,
+                timeInSecForIosWeb: 1,
+              );
+              return;
+            }
+
+            Fluttertoast.showToast(
+              msg: "Posting..".tr(),
+              backgroundColor: ApplicationColorWithOpacity,
+              textColor: Colors.white,
+              fontSize: 16.0,
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 1,
+            );
+
+            try {
+              final user = FirebaseAuth.instance.currentUser;
+
+              if (user == null) {
                 Fluttertoast.showToast(
-                  msg: "You must accept the terms and conditions.".tr(),
-                  backgroundColor: Colors.redAccent,
+                  msg: "User not logged in".tr(),
+                  backgroundColor: Colors.red,
                   textColor: Colors.white,
-                  fontSize: 16.0,
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.TOP,
-                  timeInSecForIosWeb: 1,
                 );
                 return;
               }
+
+              final userNames = await getUserNames(); // Fetch names
+              final profileImageUrl =
+                  await fetchProfileImageUrl(); // Fetch profile image URL
+
+              final isArabic = context.locale.languageCode == 'ar';
+
+              final serviceTitleMap = {
+                'en': isArabic
+                    ? _getEnglishVersion(widget.serviceTitle ?? '')
+                    : widget.serviceTitle ?? '',
+                'ar': isArabic
+                    ? widget.serviceTitle ?? ''
+                    : _getArabicTranslation(widget.serviceTitle ?? ''),
+              };
+
+              Map<String, dynamic> selectedLocation = {
+                'latitude': userLocation!.latitude,
+                'longitude': userLocation!.longitude,
+                'area': area ?? '',
+                'street': street ?? '',
+                'building': building ?? '',
+                'apartment': apartment ?? '',
+                'description': widget.description,
+                'serviceTitle': serviceTitleMap, // <-- Store as a map
+                'fileUrls': widget.fileUrls,
+                'selectedDate':
+                    DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
+                'selectedTime': widget.selectedTime!.format(context),
+                'Status': 'Pending',
+                'userId': user.uid,
+                'orderId': widget.orderId,
+                'firstName': userNames['first_name'],
+                'lastName': userNames['last_name'],
+                'profileImageUrl': profileImageUrl,
+                'timestamp': FieldValue.serverTimestamp(),
+              };
+
+              await FirebaseFirestore.instance
+                  .collection('Services Requests')
+                  .doc(user.uid)
+                  .collection('user-services')
+                  .doc(widget.orderId)
+                  .set(selectedLocation);
+
+              await Future.delayed(const Duration(seconds: 2));
+
               Fluttertoast.showToast(
-                msg: "Posting..".tr(),
+                msg: "Posted".tr(),
                 backgroundColor: ApplicationColorWithOpacity,
                 textColor: Colors.white,
                 fontSize: 16.0,
@@ -344,85 +537,22 @@ class _LocationPostingState extends State<LocationPosting> {
                 timeInSecForIosWeb: 1,
               );
 
-              try {
-                final user = FirebaseAuth.instance.currentUser;
-
-                if (user == null) {
-                  Fluttertoast.showToast(
-                    msg: "User not logged in".tr(),
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                  );
-                  return;
-                }
-                final userNames = await getUserNames(); // Fetch names
-                final profileImageUrl =
-                    await fetchProfileImageUrl(); // Fetch profile image URL
-
-                Map<String, dynamic> selectedLocation = {
-                  'latitude': userLocation!.latitude,
-                  'longitude': userLocation!.longitude,
-                  'area': area ?? '',
-                  'street': street ?? '',
-                  'building': building ?? '',
-                  'apartment': apartment ?? '',
-                  'description': widget.description,
-                  'serviceTitle': widget.serviceTitle,
-                  'fileUrls': widget.fileUrls,
-                  'selectedDate':
-                      DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
-                  'selectedTime': widget.selectedTime!.format(context),
-                  'Status': 'Pending',
-                  'userId': user.uid,
-                  'orderId': widget.orderId,
-                  'firstName': userNames['first_name'],
-                  'lastName': userNames['last_name'],
-                  'profileImageUrl': profileImageUrl,
-                  'timestamp': FieldValue.serverTimestamp(),
-                };
-
-                await FirebaseFirestore.instance
-                    .collection('Services Requests')
-                    .doc(user.uid)
-                    .collection('user-services')
-                    .doc(widget.orderId)
-                    .set(selectedLocation);
-
-                await Future.delayed(const Duration(seconds: 2));
-
-                Fluttertoast.showToast(
-                  msg: "Posted".tr(),
-                  backgroundColor: ApplicationColorWithOpacity,
-                  textColor: Colors.white,
-                  fontSize: 16.0,
-                  toastLength: Toast.LENGTH_LONG,
-                  gravity: ToastGravity.TOP,
-                  timeInSecForIosWeb: 1,
-                );
-
-                // final NotificationService notificationService =
-                //     NotificationService(flutterLocalNotificationsPlugin);
-                //
-                // await notificationService.showAndSaveNotification(
-                //   title: '${widget.serviceTitle} Posted',
-                //   preview: 'Wow!! Your Service has been successfully posted!',
-                // );
-
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const HomeClientLayout()),
-                );
-              } catch (e) {
-                Fluttertoast.showToast(
-                  msg: "Error posting location: $e",
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white,
-                );
-                print("Error saving location: $e");
-              }
-            },
-            text: "Post".tr()),
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const HomeClientLayout()),
+              );
+            } catch (e) {
+              Fluttertoast.showToast(
+                msg: "Error posting location: $e",
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+              );
+              print("Error saving location: $e");
+            }
+          },
+          text: "Post".tr(),
+        ),
       ),
     );
   }

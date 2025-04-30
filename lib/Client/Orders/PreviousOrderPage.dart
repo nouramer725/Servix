@@ -85,7 +85,8 @@ class PreviousOrderPage extends StatelessWidget {
 
           return offerFuture.then((updatedData) {
             return OrderModel(
-              ServiceType: updatedData['serviceTitle'] ?? 'No Service Type'.tr(),
+              ServiceType:
+              data['serviceTitle']?.toString() ?? 'No Service Type'.tr(),
               Description: updatedData['description'] ?? '',
               Status: updatedData['Status'] ?? '',
               Date: updatedData['selectedDate'] ?? '',

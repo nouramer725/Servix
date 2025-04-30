@@ -107,6 +107,12 @@
   "Loader Truck": "شاحنة نقل",
 
 
+  "This Technician doesn't has a social media link": "هذا الفني ليس لديه رابط لوسائل التواصل الاجتماعي",
+  "Order cancellation was not confirmed": "لم يتم الغاء هذا الطلب",
+  "Confirm Cancellation": "تأكيد الإلغاء",
+  "In Progress": "قيد المعالجة",
+  "Are you sure you want to cancel this order?": "هل أنت متأكد أنك تريد إلغاء هذا الطلب؟",
+  "Description Of Service :": "تفاصيل الخدمة:",
   "Welcome": "مرحباً",
   "First Name: ": "الاسم الأول: ",
   "Last Name: ": "اسم العائلة: ",

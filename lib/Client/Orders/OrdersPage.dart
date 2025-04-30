@@ -98,7 +98,7 @@ class _OrdersPageState extends State<OrdersPage> {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      return  Center(child: Text('No user logged in'.tr()));
+      return Center(child: Text('No user logged in'.tr()));
     }
 
     return FutureBuilder<QuerySnapshot>(
@@ -110,44 +110,54 @@ class _OrdersPageState extends State<OrdersPage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-              child: CircularProgressIndicator(color: ApplicationColor));
+            child: CircularProgressIndicator(color: ApplicationColor),
+          );
         }
 
         if (snapshot.hasError) {
           print('Error: ${snapshot.error}');
+          return Center(child: Text('An error occurred'.tr()));
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return Center(
-              child: Text('No current orders found.'.tr(),
-                  style: GoogleFonts.castoro(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : Colors.black,
-                  )));
+            child: Text(
+              'No current orders found.'.tr(),
+              style: GoogleFonts.castoro(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black,
+              ),
+            ),
+          );
         }
 
         final orders = snapshot.data!.docs.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
 
           return OrderModel(
-            ServiceType: data['serviceTitle'] ?? 'No Service Type'.tr(),
-            Description: data['description'] ?? '',
-            Status: data['Status'] ?? '',
-            Date: data['selectedDate'] ?? '',
-            Time: data['selectedTime'] ?? '',
-            technicianName: data['technicianName'] ?? '',
-            technicianImage: data['technicianImage'] ?? '',
-            technicianLocationArea: data['technicianLocationArea'] ?? '',
-            technicianLocationStreet: data['technicianLocationStreet'] ?? '',
-            technicianPhone: data['technicianPhone'] ?? '',
-            technicianSub: data['technicianSubService'] ?? '',
-            technicianMain: data['technicianMainService'] ?? '',
-            technicianDescription: data['technicianDescription'] ?? '',
-            technicianLinkSocialMedia: data['technicianLinkSocialMedia'] ?? '',
-            technicianId: data['technicianId'] ?? '',
+            ServiceType:
+                data['serviceTitle']?.toString() ?? 'No Service Type'.tr(),
+            Description: data['description']?.toString() ?? '',
+            Status: data['Status']?.toString() ?? '',
+            Date: data['selectedDate']?.toString() ?? '',
+            Time: data['selectedTime']?.toString() ?? '',
+            technicianName: data['technicianName']?.toString() ?? '',
+            technicianImage: data['technicianImage']?.toString() ?? '',
+            technicianLocationArea:
+                data['technicianLocationArea']?.toString() ?? '',
+            technicianLocationStreet:
+                data['technicianLocationStreet']?.toString() ?? '',
+            technicianPhone: data['technicianPhone']?.toString() ?? '',
+            technicianSub: data['technicianSubService']?.toString() ?? '',
+            technicianMain: data['technicianMainService']?.toString() ?? '',
+            technicianDescription:
+                data['technicianDescription']?.toString() ?? '',
+            technicianLinkSocialMedia:
+                data['technicianLinkSocialMedia']?.toString() ?? '',
+            technicianId: data['technicianId']?.toString() ?? '',
             orderId: doc.id,
           );
         }).toList();

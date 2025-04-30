@@ -300,25 +300,30 @@ class OrderCardTech extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "Type of service :".tr(),
-                  style: GoogleFonts.cantataOne(
-                    fontSize: 16,
+                  'Description Of Service :'.tr(),
+                  style: GoogleFonts.castoro(
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black,
                     decoration: TextDecoration.underline,
-                    decorationColor: isDark ? Colors.white : Colors.black,
+                    decorationColor: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black,
                     decorationThickness: 2,
-                    color: isDark ? Colors.white : Colors.black,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     Text(
-                      "Service:".tr(),
+                      'Type of service :'.tr(),
                       style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
+                          fontSize: 14,
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.white
+                              : Colors.black),
                     ),
                     const SizedBox(width: 8),
                     Text(

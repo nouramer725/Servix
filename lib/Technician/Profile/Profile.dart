@@ -345,7 +345,8 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                   return const CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 70,
-                    child: Icon(Icons.person, size: 100),
+                    backgroundImage: NetworkImage(
+                        "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg"),
                   );
                 },
               ),
@@ -374,7 +375,6 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                     getAverageRating(FirebaseAuth.instance.currentUser!.uid),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text("Error loading rating".tr());
                   }
@@ -427,67 +427,63 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                 },
               ),
               const SizedBox(height: 10),
-              userData == null
-                  ? CircularProgressIndicator(color: ApplicationColor)
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Main Service:".tr(),
-                              style: GoogleFonts.castoro(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      themeProvider.themeMode == ThemeMode.dark
-                                          ? Colors.white
-                                          : const Color(0xFF676767)),
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              "${userData!['main_service'] ?? 'N/A'}",
-                              style: GoogleFonts.castoro(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      themeProvider.themeMode == ThemeMode.dark
-                                          ? Colors.white
-                                          : const Color(0xFF676767)),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Sub Service:".tr(),
-                              style: GoogleFonts.castoro(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      themeProvider.themeMode == ThemeMode.dark
-                                          ? Colors.white
-                                          : const Color(0xFF676767)),
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              "${userData!['sub_service'] ?? 'N/A'}",
-                              style: GoogleFonts.castoro(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      themeProvider.themeMode == ThemeMode.dark
-                                          ? Colors.white
-                                          : const Color(0xFF676767)),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-              Container(
+          userData == null
+              ? SizedBox.shrink() // No content to display when userData is null
+              : Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Main Service:".tr(),
+                    style: GoogleFonts.castoro(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : const Color(0xFF676767)),
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    "${userData!['main_service'] ?? 'N/A'}",
+                    style: GoogleFonts.castoro(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : const Color(0xFF676767)),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Sub Service:".tr(),
+                    style: GoogleFonts.castoro(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : const Color(0xFF676767)),
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    "${userData!['sub_service'] ?? 'N/A'}",
+                    style: GoogleFonts.castoro(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : const Color(0xFF676767)),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: MediaQuery.of(context).size.height * 0.19,
                 margin: const EdgeInsets.all(17),

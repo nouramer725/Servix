@@ -131,7 +131,6 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
           future: FirebaseFirestore.instance
               .collectionGroup('user-services')
               .where('Status', isEqualTo: 'Pending')
-              .where('serviceTitle', isEqualTo: technicianSubservice)
               .get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -146,22 +145,50 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
 
             final docs = snapshot.data!.docs;
 
-            if (docs.isEmpty) {
+            // 🔎 Filter orders where service title (localized) == technician subservice
+            final filteredOrders = docs.where((doc) {
+              final data = doc.data() as Map<String, dynamic>;
+              final serviceTitleMap = data['serviceTitle'];
+
+              if (serviceTitleMap is Map<String, dynamic>) {
+                final localizedMap = Map<String, String>.from(serviceTitleMap);
+                final normalizedSubservice =
+                    technicianSubservice.toLowerCase().trim();
+
+                // Check against all language values
+                return localizedMap.values.any(
+                  (title) => title.toLowerCase().trim() == normalizedSubservice,
+                );
+              }
+              return false;
+            }).toList();
+
+            if (filteredOrders.isEmpty) {
               return Center(
-                  child: Text('No orders available'.tr(),
-                      style: GoogleFonts.castoro(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: themeProvider.themeMode == ThemeMode.dark
-                              ? Colors.white
-                              : Colors.black)));
+                child: Text('No orders available'.tr(),
+                    style: GoogleFonts.castoro(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black)),
+              );
             }
 
-            final orders = docs.map((doc) {
+            final orders = filteredOrders.map((doc) {
               final data = doc.data() as Map<String, dynamic>;
+              final serviceTitleMap = data['serviceTitle'];
+              Map<String, String> serviceTitleMapChecked = {};
+              if (serviceTitleMap is Map<String, dynamic>) {
+                serviceTitleMapChecked =
+                    Map<String, String>.from(serviceTitleMap);
+              }
+
+              final localizedServiceTitle =
+                  _getServiceTitle(serviceTitleMapChecked);
 
               return OrderModelTech(
-                ServiceType: data['serviceTitle'] ?? '',
+                ServiceType: localizedServiceTitle,
                 Description: data['description'] ?? '',
                 Date: data['selectedDate'] ?? '',
                 Time: data['selectedTime'] ?? '',
@@ -195,6 +222,11 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
         .collection('technician')
         .doc(uid)
         .get();
-    return doc['sub_service'.tr()];
+    return doc['sub_service'];
+  }
+
+  String _getServiceTitle(Map<String, String> serviceTitleMap) {
+    final locale = context.locale.languageCode;
+    return serviceTitleMap[locale] ?? serviceTitleMap['en'] ?? '';
   }
 }

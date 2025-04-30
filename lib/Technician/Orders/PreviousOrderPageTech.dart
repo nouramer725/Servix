@@ -19,7 +19,7 @@ class FinishedOrderTechPage extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      return  Center(child: Text('No user logged in'.tr()));
+      return Center(child: Text('No user logged in'.tr()));
     }
 
     return FutureBuilder<String>(
@@ -37,13 +37,12 @@ class FinishedOrderTechPage extends StatelessWidget {
           }
 
           final technicianSubservice = subserviceSnapshot.data!;
+          final uid = FirebaseAuth.instance.currentUser!.uid;
 
           return FutureBuilder<QuerySnapshot>(
             future: FirebaseFirestore.instance
                 .collectionGroup('user-services')
-                .where('Status', whereIn: ['Finished', 'Cancelled'])
-                .where('serviceTitle', isEqualTo: technicianSubservice)
-                .get(),
+                .where('Status', whereIn: ['Finished', 'Cancelled']).get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
@@ -54,24 +53,24 @@ class FinishedOrderTechPage extends StatelessWidget {
 
               if (snapshot.hasError || !snapshot.hasData) {
                 print('Error fetching orders: ${snapshot.error}');
-                return  Center(child: Text("Error loading orders".tr()));
+                return Center(child: Text("Error loading orders".tr()));
               }
 
               final docs = snapshot.data!.docs;
 
               if (docs.isEmpty) {
                 return Center(
-                    child: Text("No finished orders available".tr()
-                        ,style: GoogleFonts.castoro(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black)));
+                    child: Text("No finished orders available".tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black)));
               }
 
               return FutureBuilder<List<OrderModelTech>>(
-                future: _filterOrdersWithOffers(docs, user.uid),
+                future: _filterOrdersWithOffers(docs, user.uid, context),
                 builder: (context, orderSnapshot) {
                   if (orderSnapshot.connectionState ==
                       ConnectionState.waiting) {
@@ -82,7 +81,7 @@ class FinishedOrderTechPage extends StatelessWidget {
                   }
 
                   if (orderSnapshot.hasError || !orderSnapshot.hasData) {
-                    return  Center(child: Text("Error loading offers".tr()));
+                    return Center(child: Text("Error loading offers".tr()));
                   }
 
                   final orders = orderSnapshot.data!;
@@ -111,45 +110,70 @@ class FinishedOrderTechPage extends StatelessWidget {
   }
 
   Future<List<OrderModelTech>> _filterOrdersWithOffers(
-      List<QueryDocumentSnapshot> docs, String uid) async {
+      List<QueryDocumentSnapshot> docs,
+      String uid,
+      BuildContext context) async {
     List<OrderModelTech> orders = [];
 
     for (var doc in docs) {
       final data = doc.data() as Map<String, dynamic>;
 
-      // Fetch offers for the order
+      // Log data to check if it contains offers
+      print("Processing Order: ${data['serviceTitle']}");
+
+      // Fetch offers for this order where the technicianId matches the provided uid
       final offersSnapshot = await doc.reference
           .collection('offers')
           .where('technicianId', isEqualTo: uid)
           .limit(1)
           .get();
 
+      // Log offers snapshot data
+      if (offersSnapshot.docs.isEmpty) {
+        print("No offers for this order.");
+      } else {
+        print("Found offers for this order.");
+      }
+
+      // If offers are found, process them
       if (offersSnapshot.docs.isNotEmpty) {
         final offerData = offersSnapshot.docs.first.data();
         final offerValue =
             offerData['technicianOffer']?.toString() ?? 'Not Available';
 
-        // Log the price data to check if it's correct
-        print(
-            "Offer found for order: ${data['serviceTitle']}, price: $offerValue");
+        final serviceTitleMap = data['serviceTitle'];
+        Map<String, String> serviceTitleMapChecked = {};
+        if (serviceTitleMap is Map<String, dynamic>) {
+          serviceTitleMapChecked = Map<String, String>.from(serviceTitleMap);
+        }
 
+        final localizedServiceTitle =
+            getServiceTitle(serviceTitleMapChecked, context);
+
+        // Create an OrderModelTech object with the filtered data
         orders.add(OrderModelTech(
-          ServiceType: data['serviceTitle'] ?? '',
-          Description: data['description'] ?? '',
-          Date: data['selectedDate'] ?? '',
-          Time: data['selectedTime'] ?? '',
+          ServiceType: localizedServiceTitle,
+          Description: data['description'] ?? 'No Description',
+          Date: data['selectedDate'] ?? 'No Date',
+          Time: data['selectedTime'] ?? 'No Time',
           Location: data['area'] ?? 'No Location',
           image: data['profileImageUrl'] ??
               "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
           FName: data['firstName'] ?? 'Unknown',
           LName: data['lastName'] ?? 'Unknown',
           docPath: doc.reference.path,
-          previousOffer: offerValue,
           Status: data['Status'] ?? 'Unknown',
+          previousOffer: offerValue, // assign offer value here
         ));
       }
     }
 
     return orders;
+  }
+
+  String getServiceTitle(
+      Map<String, String> serviceTitleMap, BuildContext context) {
+    final locale = context.locale.languageCode;
+    return serviceTitleMap[locale] ?? serviceTitleMap['en'] ?? '';
   }
 }

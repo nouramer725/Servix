@@ -134,7 +134,8 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                     return const CircleAvatar(
                       backgroundColor: Colors.white,
                       radius: 70,
-                      child: Icon(Icons.person, size: 100),
+                      backgroundImage: NetworkImage(
+                          "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg"),
                     );
                   },
                 ),
@@ -179,12 +180,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                             future: getServiceCount(
                                 FirebaseAuth.instance.currentUser!.uid),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return CircularProgressIndicator(
-                                  color: ApplicationColor,
-                                );
-                              } else if (snapshot.hasError) {
+                              if (snapshot.hasError) {
                                 return Text("Error fetching data");
                               } else if (snapshot.hasData) {
                                 return Text(
@@ -195,6 +191,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                                   ),
                                 );
                               } else {
+                                // Fallback value if no data or loading
                                 return Text("0",
                                     style: GoogleFonts.castoro(
                                       fontSize: 40,
@@ -236,12 +233,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                             future: getAverageRating(
                                 FirebaseAuth.instance.currentUser!.uid),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return CircularProgressIndicator(
-                                  color: ApplicationColor,
-                                );
-                              } else if (snapshot.hasError) {
+                              if (snapshot.hasError) {
                                 return const Text("Error loading rating").tr();
                               }
                               final avgRating = snapshot.data ?? 0.0;
@@ -290,15 +282,12 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                 future: getTechnicianSubservice(),
                 builder: (context, subserviceSnapshot) {
                   if (subserviceSnapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(color: ApplicationColor),
-                    );
-                  }
+                      ConnectionState.waiting) {}
 
                   if (subserviceSnapshot.hasError ||
                       !subserviceSnapshot.hasData) {
-                    return Center(child: Text("Error fetching subservice".tr()));
+                    return Center(
+                        child: Text("Error fetching subservice".tr()));
                   }
 
                   final technicianSubservice = subserviceSnapshot.data!;
@@ -308,68 +297,68 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                     future: FirebaseFirestore.instance
                         .collectionGroup('user-services')
                         .where('Status', isEqualTo: 'Pending')
-                        .where('serviceTitle', isEqualTo: technicianSubservice)
                         .get(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                              color: ApplicationColor),
-                        );
-                      }
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {}
 
                       if (snapshot.hasError || !snapshot.hasData) {
-                        print('Error fetching orders: ${snapshot.error}');
-                        return  Center(child: Text("Error loading orders".tr()));
+                        return Center(child: Text("Error loading orders".tr()));
                       }
 
                       final docs = snapshot.data!.docs;
-                      print('Fetched orders count: ${docs.length}');
 
-                      if (docs.isEmpty) {
-                        return Text(
-                          "No orders available".tr(),
-                          style: GoogleFonts.castoro(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black),
-                        );
-                      }
+                      // Filter by localized service title
+                      final filteredDocs = docs.where((doc) {
+                        final data = doc.data() as Map<String, dynamic>;
+                        final serviceTitle = data['serviceTitle'];
+                        if (serviceTitle is Map<String, dynamic>) {
+                          return serviceTitle.values.any(
+                            (val) =>
+                                val.toString().toLowerCase().trim() ==
+                                technicianSubservice.toLowerCase().trim(),
+                          );
+                        }
+                        return false;
+                      }).toList();
 
                       return FutureBuilder<List<OrderModelTech>>(
-                        future: _filterOrdersWithOffers(docs, uid),
+                        future: _filterOrdersWithOffers(filteredDocs, uid),
                         builder: (context, filteredSnapshot) {
                           if (filteredSnapshot.connectionState ==
                               ConnectionState.waiting) {
                             return Center(
-                              child: CircularProgressIndicator(
-                                  color: ApplicationColor),
-                            );
+                                child: CircularProgressIndicator(
+                                    color: ApplicationColor));
                           }
 
                           if (filteredSnapshot.hasError ||
                               !filteredSnapshot.hasData) {
-                            return  Center(
-                                child: Text("Error loading filtered orders".tr()));
+                            return Center(
+                                child:
+                                    Text("Error loading filtered orders".tr()));
                           }
 
                           final orders = filteredSnapshot.data!;
-
                           if (orders.isEmpty) {
-                            return  Center(child: Text("No Offers Made".tr()));
+                            return Center(
+                                child: Text(
+                              "No Offers Made".tr(),
+                              style: GoogleFonts.castoro(
+                                  fontSize: 12,
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black),
+                            ));
                           }
 
-                          return ConstrainedBox(
-                            constraints: BoxConstraints(
-                              maxHeight: 250, // 👉 Set a maximum height
-                            ),
+                          return SizedBox(
+                            height: 250,
                             child: ListView.builder(
                               itemCount: orders.length,
                               itemBuilder: (context, index) {
-                                final order = orders[index];
-                                return PreviousOrderCard(orders: order);
+                                return PreviousOrderCard(orders: orders[index]);
                               },
                             ),
                           );
@@ -405,6 +394,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
       // Log data to check if it contains offers
       print("Processing Order: ${data['serviceTitle']}");
 
+      // Fetch offers for this order where the technicianId matches the provided uid
       final offersSnapshot = await doc.reference
           .collection('offers')
           .where('technicianId', isEqualTo: uid)
@@ -418,28 +408,43 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
         print("Found offers for this order.");
       }
 
+      // If offers are found, process them
       if (offersSnapshot.docs.isNotEmpty) {
         final offerData = offersSnapshot.docs.first.data();
         final offerValue =
             offerData['technicianOffer']?.toString() ?? 'Not Available';
 
+        final serviceTitleMap = data['serviceTitle'];
+        Map<String, String> serviceTitleMapChecked = {};
+        if (serviceTitleMap is Map<String, dynamic>) {
+          serviceTitleMapChecked = Map<String, String>.from(serviceTitleMap);
+        }
+
+        final localizedServiceTitle = getServiceTitle(serviceTitleMapChecked);
+
+        // Create an OrderModelTech object with the filtered data
         orders.add(OrderModelTech(
-          ServiceType: data['serviceTitle'] ?? '',
-          Description: data['description'] ?? '',
-          Date: data['selectedDate'] ?? '',
-          Time: data['selectedTime'] ?? '',
+          ServiceType: localizedServiceTitle,
+          Description: data['description'] ?? 'No Description',
+          Date: data['selectedDate'] ?? 'No Date',
+          Time: data['selectedTime'] ?? 'No Time',
           Location: data['area'] ?? 'No Location',
           image: data['profileImageUrl'] ??
               "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
           FName: data['firstName'] ?? 'Unknown',
           LName: data['lastName'] ?? 'Unknown',
           docPath: doc.reference.path,
-          Status: data['Status'],
+          Status: data['Status'] ?? 'Unknown',
           previousOffer: offerValue, // assign offer value here
         ));
       }
     }
 
     return orders;
+  }
+
+  String getServiceTitle(Map<String, String> serviceTitleMap) {
+    final locale = context.locale.languageCode;
+    return serviceTitleMap[locale] ?? serviceTitleMap['en'] ?? '';
   }
 }

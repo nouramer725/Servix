@@ -150,11 +150,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                         return const CircleAvatar(
                           backgroundColor: Colors.white,
                           radius: 40,
-                          child: Icon(
-                            Icons.person,
-                            size: 70,
-                            color: Colors.grey,
-                          ),
+                          backgroundImage: NetworkImage(
+                              "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg"),
                         );
                       },
                     ),
@@ -458,8 +455,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
               ),
               Image.asset(
                 "assets/NavigationBar/robot.png",
-                width: 30,
-                height: 30,
+                width: 27,
+                height: 27,
               )
             ]),
       ),

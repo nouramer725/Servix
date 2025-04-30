@@ -33,13 +33,13 @@ class OrderCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Type of service :'.tr(),
+                    'Description Of Service :'.tr(),
                     style: GoogleFonts.castoro(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                       color: themeProvider.themeMode == ThemeMode.dark
                           ? Colors.white
                           : Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
                       decorationColor: themeProvider.themeMode == ThemeMode.dark
                           ? Colors.white
@@ -51,7 +51,7 @@ class OrderCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'Service Type:'.tr(),
+                        'Type of service :'.tr(),
                         style: GoogleFonts.castoro(
                             fontSize: 14,
                             color: themeProvider.themeMode == ThemeMode.dark
@@ -59,13 +59,16 @@ class OrderCard extends StatelessWidget {
                                 : Colors.black),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        orders.ServiceType.tr(),
-                        style: GoogleFonts.castoro(
-                            fontSize: 14,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black),
+                      Expanded(
+                        child: Text(
+                          orders.ServiceType,
+                          style: GoogleFonts.castoro(
+                              fontSize: 14,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black),
+                          maxLines: 5,
+                        ),
                       ),
                     ],
                   ),

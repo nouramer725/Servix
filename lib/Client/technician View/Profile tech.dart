@@ -258,7 +258,6 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                   future: getAverageRating(widget.technicianId),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
                     } else if (snapshot.hasError) {
                       return const Text('Error loading rating');
                     }
@@ -399,7 +398,9 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                               mode: LaunchMode.externalApplication);
                         } else {
                           Fluttertoast.showToast(
-                              msg: "Couldn't upload the Url".tr(),
+                              msg:
+                                  "This Technician doesn't has a social media link"
+                                      .tr(),
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.TOP,
                               backgroundColor: ApplicationColorWithOpacity,
@@ -442,11 +443,16 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                                       ),
                                     ),
                                     const SizedBox(width: 10),
-                                    Text(widget.technicianLocationArea,
+                                    Expanded(
+                                      child: Text(
+                                        widget.technicianLocationArea,
                                         style: GoogleFonts.castoro(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
-                                        ))
+                                        ),
+                                        maxLines: 5,
+                                      ),
+                                    )
                                   ],
                                 ),
                                 Row(
@@ -457,11 +463,16 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                                           fontWeight: FontWeight.bold,
                                         )),
                                     const SizedBox(width: 10),
-                                    Text(widget.technicianLocationStreet,
+                                    Expanded(
+                                      child: Text(
+                                        widget.technicianLocationStreet,
                                         style: GoogleFonts.castoro(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
-                                        ))
+                                        ),
+                                        maxLines: 5,
+                                      ),
+                                    )
                                   ],
                                 ),
                               ],

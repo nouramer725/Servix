@@ -106,7 +106,6 @@ class _OfferCardState extends State<OfferCard> {
                         future: getAverageRating(widget.offer.technicianId),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
                           } else if (snapshot.hasError) {
                             print('Error loading rating');
                           }
@@ -171,6 +170,7 @@ class _OfferCardState extends State<OfferCard> {
                             ? Colors.white
                             : Colors.black),
                   ),
+                  const SizedBox(width: 5,),
                   Text(
                     "${widget.offer.offer}",
                     style: GoogleFonts.castoro(

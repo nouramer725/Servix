@@ -37,7 +37,7 @@ class OrderCardImgPrevious extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Type of service :'.tr(),
+                    'Description Of Service :'.tr(),
                     style: GoogleFonts.castoro(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -52,13 +52,26 @@ class OrderCardImgPrevious extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    orders.ServiceType.tr(),
-                    style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black),
+                  Row(
+                    children: [
+                      Text(
+                        'Type of service :'.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                            ?Colors.white
+                            :Colors.black),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        orders.ServiceType.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 8),
                   Row(
