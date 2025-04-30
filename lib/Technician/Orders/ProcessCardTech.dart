@@ -182,10 +182,9 @@ class ProcessOrderCardTech extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          const Icon(
-                            Icons.calendar_today,
-                            size: 20,
-                          ),
+                          Icon(Icons.calendar_today,
+                              size: 20,
+                              color: isDark ? Colors.white : Colors.black),
                           const SizedBox(width: 4),
                           Text(
                             orders.Date,
@@ -200,7 +199,9 @@ class ProcessOrderCardTech extends StatelessWidget {
                       const SizedBox(width: 20),
                       Row(
                         children: [
-                          const Icon(Icons.access_time, size: 20),
+                          Icon(Icons.access_time,
+                              size: 20,
+                              color: isDark ? Colors.white : Colors.black),
                           const SizedBox(width: 4),
                           Text(
                             orders.Time,
