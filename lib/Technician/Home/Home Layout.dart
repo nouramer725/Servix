@@ -22,7 +22,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Client/community forum/community_feed_screen.dart';
 import '../../Language/Local_Provider.dart';
-import '../../On-Boarding/On_Boarding_Screen.dart';
 import '../../Theme/Theme_Provider.dart';
 import '../Orders/OrdersPageTech.dart';
 
@@ -717,7 +716,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const OnboardingScreen(),
+                      builder: (context) => const MemberShip(),
                     ),
                     (route) => false,
                   );

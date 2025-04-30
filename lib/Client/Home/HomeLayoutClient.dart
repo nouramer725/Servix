@@ -853,7 +853,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const OnboardingScreen(),
+                        builder: (context) => const MemberShip(),
                       ),
                       (route) => false,
                     );

@@ -1,9 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:servix/Language/Language.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
+import '../Language/Language.dart';
 import '../constents/constent.dart';
 
 class Onboarding {
@@ -25,21 +25,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   List<Onboarding> boarding = [
     Onboarding(
       image: 'assets/images/on-boarding/explore.png',
-      title: 'Explore Our Services',
+      title: 'Explore Our Services'.tr(),
       body:
-      'Our app offers a seamless experience, connecting you with skilled technicians for home repairs and maintenance.',
+          'Our app offers a seamless experience, connecting you with skilled technicians for home repairs and maintenance.'
+              .tr(),
     ),
     Onboarding(
       image: 'assets/images/on-boarding/tech.png',
-      title: 'Find Skilled Technicians',
+      title: 'Find Skilled Technicians'.tr(),
       body:
-      'Need a repair, installation, or maintenance service? Our platform connects you with certified and experienced technicians.',
+          'Need a repair, installation, or maintenance service? Our platform connects you with certified and experienced technicians.'
+              .tr(),
     ),
     Onboarding(
       image: 'assets/images/on-boarding/robot.png',
-      title: 'Smart AI',
+      title: 'Smart AI'.tr(),
       body:
-      'Our AI assistant helps with instant troubleshooting, smart recommendations, and automated support for various tasks.',
+          'Our AI assistant helps with instant troubleshooting, smart recommendations, and automated support for various tasks.'
+              .tr(),
     ),
   ];
 
@@ -67,7 +70,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             TextButton(
               onPressed: completeOnboarding, // Skip onboarding
               child: Text(
-                'Skip',
+                'Skip'.tr(),
                 style: GoogleFonts.charisSil(
                   fontSize: 26,
                   color: Colors.white,
@@ -135,8 +138,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       );
                     }
                   },
-                  child:  Icon(Icons.arrow_forward_ios,
-                      color: ApplicationColor),
+                  child: Icon(Icons.arrow_forward_ios, color: ApplicationColor),
                   elevation: 5,
                 ),
               ],
@@ -172,7 +174,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             Text(
               model.body,
-              style: GoogleFonts.baskervville(fontSize: 17, color: Colors.white),
+              style:
+                  GoogleFonts.baskervville(fontSize: 17, color: Colors.white),
             ),
           ],
         ),
