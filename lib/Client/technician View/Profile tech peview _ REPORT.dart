@@ -61,30 +61,23 @@ class _ReportScreenState extends State<ReportScreen> {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        'Why are you reporting'.tr(),
-                        style: GoogleFonts.charisSil(
-                          fontSize: 24,
-                          color: themeProvider.themeMode == ThemeMode.dark
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(' ${widget.technicianName} ?'.tr(),
+                      Expanded(
+                        child: Text(
+                          'Why are you reporting'.tr(),
                           style: GoogleFonts.charisSil(
                             fontSize: 24,
                             color: themeProvider.themeMode == ThemeMode.dark
                                 ? Colors.white
                                 : Colors.black,
-                          ))
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'If someone is in immediate danger, get help before reporting to Facebook. Don’t wait.',
+                    'If someone is in immediate danger, get help before reporting to Facebook. Don’t wait.'
+                        .tr(),
                     style: GoogleFonts.castoro(
                       fontSize: 15,
                       color: themeProvider.themeMode == ThemeMode.dark
@@ -129,7 +122,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       cursorColor: const Color(0xffA7A7A7),
                       maxLines: 5,
                       decoration: InputDecoration.collapsed(
-                        hintText: 'Any additional information',
+                        hintText: 'Any additional information'.tr(),
                         hintStyle: GoogleFonts.cantataOne(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

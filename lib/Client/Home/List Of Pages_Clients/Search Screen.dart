@@ -62,6 +62,9 @@ class _SearchScreenState extends State<SearchScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: themeProvider.themeMode == ThemeMode.dark
+            ? const Color(0xFF333739)
+            : Colors.white,
         title: Text(
           'Search'.tr(),
           style: GoogleFonts.castoro(
@@ -81,6 +84,7 @@ class _SearchScreenState extends State<SearchScreen> {
             TextField(
               controller: searchController,
               textInputAction: TextInputAction.search,
+              cursorColor: Colors.grey[400],
               style: TextStyle(
                 color: themeProvider.themeMode == ThemeMode.dark
                     ? Colors.white
@@ -232,10 +236,10 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   serviceItem(
                     "assets/images/care/Elder.jpg",
-                    "Elder".tr(),
+                    "Elderly".tr(),
                     context,
                     const DescriptionnScreen(
-                      title: 'Elder Care',
+                      title: 'Elderly',
                       imagePath: 'assets/images/care/Elder.jpg', // Custom image
                     ),
                   ),

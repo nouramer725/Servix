@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Technician/Orders/model/modelTech.dart';
 import 'package:servix/constents/constent.dart';
 import 'ProcessCardTech.dart';
@@ -84,7 +85,13 @@ class ProcessOrderTechPage extends StatelessWidget {
 
                 final orders = filteredSnapshot.data!;
                 if (orders.isEmpty) {
-                  return Center(child: Text("No Offers Made".tr()));
+                  return Center(
+                      child: Text(
+                    "No Offers Made".tr(),
+                    style: GoogleFonts.castoro(
+                      fontSize: 18,
+                    ),
+                  ));
                 }
 
                 return ListView.builder(

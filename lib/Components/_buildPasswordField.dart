@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import '../Theme/Theme_Provider.dart';
 
 class PasswordTextField extends StatefulWidget {
   final String label;
@@ -26,6 +29,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return TextField(
       controller: widget.controller,
       obscureText: _isObscured,
@@ -33,7 +37,12 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       textInputAction: TextInputAction.next,
       cursorColor: Colors.grey[100],
       style: GoogleFonts.castoro(
-        color: Colors.black87,
+        fontSize: 18,
+        fontWeight: FontWeight.w400,
+        color: themeProvider.themeMode == ThemeMode.dark
+            ? Colors.white
+            : Colors.black,
+        letterSpacing: 0.2,
       ),
       decoration: InputDecoration(
         labelText: widget.label,

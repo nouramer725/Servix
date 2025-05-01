@@ -55,6 +55,12 @@ class _TimePickerFieldState extends State<TimePickerField> {
       child: AbsorbPointer(
         child: TextFormField(
           controller: _controller,
+          style: GoogleFonts.castoro(
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black, // Set text color based on theme mode
+            fontSize: 15,
+          ),
           decoration: InputDecoration(
             hintText: widget.hintText,
             hintStyle: GoogleFonts.castoro(

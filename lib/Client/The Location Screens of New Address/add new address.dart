@@ -50,7 +50,6 @@ class _NewAddressState extends State<NewAddress> {
   // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   //     FlutterLocalNotificationsPlugin();
 
-
   String _getArabicTranslation(String englishTitle) {
     Map<String, String> translationMap = {
       "Home Service": "خدمات منزلية",
@@ -479,9 +478,22 @@ class _NewAddressState extends State<NewAddress> {
                 ),
                 const SizedBox(height: 30),
                 GradientButton(
-                    onPressed: () async {
+                  onPressed: () async {
+                    Fluttertoast.showToast(
+                      msg: "Posting..".tr(),
+                      backgroundColor: ApplicationColorWithOpacity,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.TOP,
+                      timeInSecForIosWeb: 1,
+                    );
+
+                    await saveServiceWithSelectedLocation();
+
+                    Future.delayed(const Duration(seconds: 2), () {
                       Fluttertoast.showToast(
-                        msg: "Posting..".tr(),
+                        msg: "Posted".tr(),
                         backgroundColor: ApplicationColorWithOpacity,
                         textColor: Colors.white,
                         fontSize: 16.0,
@@ -489,26 +501,17 @@ class _NewAddressState extends State<NewAddress> {
                         gravity: ToastGravity.TOP,
                         timeInSecForIosWeb: 1,
                       );
-                      await saveServiceWithSelectedLocation();
+                    });
 
-                      Future.delayed(const Duration(seconds: 2), () {
-                        Fluttertoast.showToast(
-                          msg: "Posted".tr(),
-                          backgroundColor: ApplicationColorWithOpacity,
-                          textColor: Colors.white,
-                          fontSize: 16.0,
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.TOP,
-                          timeInSecForIosWeb: 1,
-                        );
-                      });
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomeClientLayout(),
-                          ));
-                    },
-                    text: "Post".tr()),
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeClientLayout(),
+                      ),
+                    );
+                  },
+                  text: "Post".tr(),
+                ),
                 const SizedBox(height: 15),
                 GradientButton(
                     onPressed: () {
@@ -571,7 +574,7 @@ class _NewAddressState extends State<NewAddress> {
           'building': newLocations[selectedIndex!]['building'],
           'apartment': newLocations[selectedIndex!]['apartment'],
           'description': widget.description,
-          'serviceTitle': serviceTitleMap, // <-- Store as a map
+          'serviceTitle': serviceTitleMap,
           'fileUrls': widget.fileUrls,
           'selectedDate': DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
           'selectedTime': widget.selectedTime!.format(context),

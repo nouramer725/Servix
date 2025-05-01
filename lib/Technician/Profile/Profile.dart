@@ -764,15 +764,17 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                         : Colors.black,
                                   ),
                                 ),
-                                Text(
-                                  review['comment'],
-                                  style: GoogleFonts.castoro(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: themeProvider.themeMode ==
-                                            ThemeMode.dark
-                                        ? Colors.white
-                                        : Colors.grey[400],
+                                Expanded(
+                                  child: Text(
+                                    review['comment'],
+                                    style: GoogleFonts.castoro(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.grey[400],
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 4),

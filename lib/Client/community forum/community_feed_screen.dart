@@ -787,33 +787,14 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(
                 children: [
-                  StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection("user-files")
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .collection("uploads")
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                        String personalFileUrl =
-                            snapshot.data!.docs.first['personalFileUrl'];
-                        return CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 20, // ✅ Adjust size
-                          backgroundImage: NetworkImage(
-                              personalFileUrl), // ✅ Fetch from Firestore
-                        );
-                      }
-                      return const CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        radius: 20,
-                        child: Icon(
-                          Icons.person,
-                          size: 25,
-                          color: Colors.white,
-                        ),
-                      );
-                    },
+                  const CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    radius: 20,
+                    child: Icon(
+                      Icons.person,
+                      size: 25,
+                      color: Colors.white,
+                    ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -918,16 +899,31 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
       // Fetch user data from the 'users' collection using the user UID
       final userDoc = await FirebaseFirestore.instance
           .collection('users')
-          .doc(user.uid) // Assuming UID is used as the document ID
+          .doc(user.uid)
           .get();
 
-      if (!userDoc.exists) {
+      // Fetch technician data from the 'technician' collection using the user UID
+      final techDoc = await FirebaseFirestore.instance
+          .collection('technician')
+          .doc(user.uid)
+          .get();
+
+      if (!userDoc.exists && !techDoc.exists) {
         throw Exception('User not found');
       }
 
-      // Fetch the first name or set to 'Anonymous' if not available
-      final firstName = userDoc.data()?['first_name'] ?? 'Anonymous';
-      final lastName = userDoc.data()?['last_name'] ?? '';
+      // Fetch first name and last name from 'users' collection if available
+      String firstName = 'Anonymous';
+      String lastName = '';
+
+      if (userDoc.exists) {
+        firstName = userDoc.data()?['first_name'] ?? 'Anonymous';
+        lastName = userDoc.data()?['last_name'] ?? '';
+      } else if (techDoc.exists) {
+        // If user is not in the 'users' collection, fall back to 'technician' collection
+        firstName = techDoc.data()?['first_name'] ?? 'Anonymous';
+        lastName = techDoc.data()?['last_name'] ?? '';
+      }
 
       // Combine first name and last name
       final username = '$firstName $lastName'.trim();

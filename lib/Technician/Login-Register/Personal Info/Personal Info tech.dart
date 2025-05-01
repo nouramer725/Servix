@@ -191,7 +191,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
         msg: "Data uploaded successfully.".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.SNACKBAR,
-        backgroundColor:ApplicationColorWithOpacity,
+        backgroundColor: ApplicationColorWithOpacity,
         textColor: Colors.white,
       );
 
@@ -209,16 +209,10 @@ class _PersonalInformationState extends State<PersonalInformation> {
         textColor: Colors.white,
       );
     } on FirebaseException catch (e) {
-      Fluttertoast.showToast(
-        msg: "Firebase error: ${e.message}",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.SNACKBAR,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      print("Firebase error: ${e.message}");
     } catch (e) {
       Fluttertoast.showToast(
-        msg: "An unexpected error occurred: $e",
+        msg: "Please try another image".tr(),
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.SNACKBAR,
         backgroundColor: Colors.red,

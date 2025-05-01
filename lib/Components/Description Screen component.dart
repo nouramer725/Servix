@@ -165,7 +165,7 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
                 style: GoogleFonts.castoro(
                   fontSize: 15,
                   color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white54
+                      ? Colors.white
                       : Colors.black54,
                 ),
               ),
@@ -174,7 +174,7 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
                 style: GoogleFonts.castoro(
                   fontSize: 15,
                   color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white54
+                      ? Colors.white
                       : Colors.black54,
                 ),
               ),
@@ -420,12 +420,24 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
       maxLines: maxLines,
       controller: controller,
       keyboardType: TextInputType.text,
+      cursorColor: Colors.grey[400],
+      style: GoogleFonts.castoro(
+        color: themeProvider.themeMode == ThemeMode.dark
+            ? Colors.white
+            : Colors.black,
+        fontSize: 15,
+      ),
       decoration: InputDecoration(
         hintText: hintText,
+        labelStyle: GoogleFonts.castoro(
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black,
+            fontSize: 15),
         hintStyle: GoogleFonts.castoro(
             color: themeProvider.themeMode == ThemeMode.dark
-                ? Colors.white54
-                : Colors.black54,
+                ? Colors.white
+                : Colors.black,
             fontSize: 15),
         filled: true,
         fillColor: Colors.transparent,

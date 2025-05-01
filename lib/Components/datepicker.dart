@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +28,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
+      barrierDismissible: true,
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
       builder: (context, child) {
@@ -55,6 +57,12 @@ class _DatePickerFieldState extends State<DatePickerField> {
         child: TextFormField(
           controller: _controller,
           cursorColor: Colors.grey[100],
+          style: GoogleFonts.castoro(
+            color: themeProvider.themeMode == ThemeMode.dark
+                ? Colors.white
+                : Colors.black, // Set text color based on theme mode
+            fontSize: 15,
+          ),
           decoration: InputDecoration(
             hintText: widget.hintText,
             hintStyle: GoogleFonts.castoro(

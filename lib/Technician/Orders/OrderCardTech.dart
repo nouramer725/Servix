@@ -48,10 +48,12 @@ class OrderCardTech extends StatelessWidget {
                               fontSize: 28, fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(width: 4),
-                        Text(
-                          '${orders.FName}',
-                          style: GoogleFonts.judson(
-                              fontSize: 28, fontWeight: FontWeight.w500),
+                        Expanded(
+                          child: Text(
+                            '${orders.FName}',
+                            style: GoogleFonts.judson(
+                                fontSize: 28, fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ],
                     ),
@@ -369,7 +371,7 @@ class OrderCardTech extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      orders.Location ,
+                      orders.Location,
                       style: GoogleFonts.castoro(
                         fontSize: 14,
                         color: isDark ? Colors.white : Colors.black,

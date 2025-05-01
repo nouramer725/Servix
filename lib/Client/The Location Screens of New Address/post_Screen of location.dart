@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Client/Home/HomeLayoutClient.dart';
 import 'package:servix/Components/Buttons.dart';
-
 import '../../../../Theme/Theme_Provider.dart';
 import '../../../../constents/constent.dart';
 import 'add new address.dart';
@@ -437,7 +436,10 @@ class _LocationPostingState extends State<LocationPosting> {
                               style: GoogleFonts.castoro(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
-                                  color: const Color(0xFF676565)),
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black),
                             ),
                           ],
                         ),
