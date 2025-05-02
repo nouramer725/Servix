@@ -234,7 +234,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                                 FirebaseAuth.instance.currentUser!.uid),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
-                                return const Text("Error loading rating").tr();
+                                // return const Text("Error loading rating").tr();
                               }
                               final avgRating = snapshot.data ?? 0.0;
                               return Text(
@@ -282,15 +282,23 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                 future: getTechnicianSubservice(),
                 builder: (context, subserviceSnapshot) {
                   if (subserviceSnapshot.connectionState ==
-                      ConnectionState.waiting) {}
+                      ConnectionState.waiting) {
+                    // Show loading indicator while waiting for data
+                    return Center(
+                        child: CircularProgressIndicator(
+                      color: ApplicationColor,
+                    ));
+                  }
 
                   if (subserviceSnapshot.hasError ||
                       !subserviceSnapshot.hasData) {
+                    // Handle error and no data case
                     return Center(
                         child: Text("Error fetching subservice".tr()));
                   }
 
-                  final technicianSubservice = subserviceSnapshot.data!;
+                  final technicianSubservice = subserviceSnapshot
+                      .data!; // Ensure that data is non-null here
                   final uid = FirebaseAuth.instance.currentUser!.uid;
 
                   return FutureBuilder<QuerySnapshot>(
@@ -299,11 +307,16 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                         .where('Status', isEqualTo: 'Pending')
                         .get(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {}
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        // Show loading indicator while waiting for orders data
+                        // return Center(child: CircularProgressIndicator(
+                        //   color: ApplicationColor,
+                        // ));
+                      }
 
                       if (snapshot.hasError || !snapshot.hasData) {
-                        return Center(child: Text("Error loading orders".tr()));
+                        // Handle error or no data in orders
+                        return Center(child: Text("loading orders...".tr()));
                       }
 
                       final docs = snapshot.data!.docs;
@@ -327,9 +340,11 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                         builder: (context, filteredSnapshot) {
                           if (filteredSnapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Center(
-                                child: CircularProgressIndicator(
-                                    color: ApplicationColor));
+                            // Show loading indicator while filtering orders
+                            // return Center(
+                            //     child: CircularProgressIndicator(
+                            //   color: ApplicationColor,
+                            // ));
                           }
 
                           if (filteredSnapshot.hasError ||
@@ -342,15 +357,16 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                           final orders = filteredSnapshot.data!;
                           if (orders.isEmpty) {
                             return Center(
-                                child: Text(
-                              "No Offers Made".tr(),
-                              style: GoogleFonts.castoro(
-                                  fontSize: 12,
-                                  color:
-                                      themeProvider.themeMode == ThemeMode.dark
-                                          ? Colors.white
-                                          : Colors.black),
-                            ));
+                              child: Text(
+                                "No Offers Made".tr(),
+                                style: GoogleFonts.castoro(
+                                    fontSize: 12,
+                                    color: themeProvider.themeMode ==
+                                            ThemeMode.dark
+                                        ? Colors.white
+                                        : Colors.black),
+                              ),
+                            );
                           }
 
                           return SizedBox(
@@ -367,7 +383,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                     },
                   );
                 },
-              ),
+              )
             ],
           ),
         ),
@@ -429,6 +445,10 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
           Date: data['selectedDate'] ?? 'No Date',
           Time: data['selectedTime'] ?? 'No Time',
           Location: data['area'] ?? 'No Location',
+          apartment: data['apartment'] ?? 'No Apartment',
+          building: data['building'] ?? 'No building',
+          street: data['street'] ?? 'No street',
+          fileUrls: List<String>.from(data['fileUrls'] ?? []),
           image: data['profileImageUrl'] ??
               "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
           FName: data['firstName'] ?? 'Unknown',

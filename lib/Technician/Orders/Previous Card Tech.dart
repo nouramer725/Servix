@@ -83,11 +83,13 @@ class PreviousOrderCardTech extends StatelessWidget {
                                 : Colors.black),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        orders.ServiceType.tr(),
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          orders.ServiceType.tr(),
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -103,11 +105,13 @@ class PreviousOrderCardTech extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        orders.Description,
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          orders.Description,
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -123,11 +127,13 @@ class PreviousOrderCardTech extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        ' ${orders.Location}',
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          ' ${orders.Location}',
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -143,11 +149,13 @@ class PreviousOrderCardTech extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        ' ${orders.previousOffer}',
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          ' ${orders.previousOffer}',
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -163,11 +171,13 @@ class PreviousOrderCardTech extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        orders.Status.tr(),
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          orders.Status.tr(),
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],

@@ -84,11 +84,13 @@ class PreviousOrderCard extends StatelessWidget {
                                 : Colors.black),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        orders.ServiceType.tr(),
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          orders.ServiceType.tr(),
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -104,11 +106,13 @@ class PreviousOrderCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        orders.Description,
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          orders.Description,
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -124,11 +128,13 @@ class PreviousOrderCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        orders.Location,
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          orders.Location,
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -145,12 +151,14 @@ class PreviousOrderCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        '${orders.previousOffer}'.tr(),
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          '${orders.previousOffer}'.tr(),
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],

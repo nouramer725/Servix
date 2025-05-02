@@ -7,10 +7,14 @@ class OrderModelTech {
   final String? LName;
   final String? image;
   final String Location;
+  final String apartment;
+  final String building;
+  final String street;
   final String? userId;
   final String? docPath;
   final String? previousOffer;
   final String Status;
+  final List<String> fileUrls;
 
   const OrderModelTech(
       {required this.ServiceType,
@@ -18,11 +22,15 @@ class OrderModelTech {
       required this.Date,
       required this.Time,
       required this.Location,
+      required this.apartment,
+      required this.building,
+      required this.street,
+      required this.fileUrls,
       this.FName,
       this.LName,
       this.userId,
       this.docPath,
       this.previousOffer,
-     required this.Status,
+      required this.Status,
       this.image});
 }

@@ -1,12 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Technician/Orders/Details_Screen.dart';
 import '../../Theme/Theme_Provider.dart';
-import '../../constents/constent.dart';
 import 'model/modelTech.dart';
 
 class OrderCardTech extends StatelessWidget {
@@ -18,250 +15,17 @@ class OrderCardTech extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDark = themeProvider.themeMode == ThemeMode.dark;
-    final TextEditingController priceController = TextEditingController(
-      text: orders.previousOffer,
-    );
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       child: GestureDetector(
         onTap: () {
-          showDialog(
-            context: context,
-            builder: (context) => Dialog(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
-              child: Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Title
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(Icons.attach_money,
-                            size: 32, color: ApplicationColor),
-                        Text(
-                          "Offer to".tr(),
-                          style: GoogleFonts.judson(
-                              fontSize: 28, fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            '${orders.FName}',
-                            style: GoogleFonts.judson(
-                                fontSize: 28, fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Text(
-                          "Your Offer Price is:".tr(),
-                          style: GoogleFonts.judson(fontSize: 20),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                            child: TextField(
-                              controller: priceController,
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.judson(
-                                  fontSize: 19, fontWeight: FontWeight.bold),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          child: Text(
-                            "Cancel".tr(),
-                            style: GoogleFonts.judson(
-                                fontSize: 25, color: Colors.black),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: Text(
-                            "Offer".tr(),
-                            style: GoogleFonts.judson(
-                                fontSize: 25, color: ApplicationColor),
-                          ),
-                          onPressed: () async {
-                            String offerPrice = priceController.text;
-                            if (priceController.text.isEmpty) {
-                              Fluttertoast.showToast(
-                                  msg: "Please enter a price".tr(),
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.TOP,
-                                  backgroundColor: ApplicationColorWithOpacity,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                              return;
-                            }
-
-                            try {
-                              final currentUser =
-                                  FirebaseAuth.instance.currentUser!;
-                              final uid = currentUser.uid;
-
-                              // Fetch technician basic info
-                              final technicianDoc = await FirebaseFirestore
-                                  .instance
-                                  .collection('technician')
-                                  .doc(uid)
-                                  .get();
-                              final techData = technicianDoc.data()!;
-                              final fullName =
-                                  "${techData['first_name']} ${techData['last_name']}";
-                              final phone = techData['phone'];
-                              final subService = techData['sub_service'];
-                              final mainService = techData['main_service'];
-                              final Description = techData['description'];
-                              final LinkSocialMedia =
-                                  techData['LinkSocialMedia'];
-
-                              // Fetch profile image from uploads
-                              final uploadsSnapshot = await FirebaseFirestore
-                                  .instance
-                                  .collection("user-files")
-                                  .doc(uid)
-                                  .collection("uploads")
-                                  .limit(1)
-                                  .get();
-                              String? profileImageUrl;
-                              if (uploadsSnapshot.docs.isNotEmpty) {
-                                profileImageUrl = uploadsSnapshot
-                                    .docs.first['personalFileUrl'];
-                              }
-
-                              // Fetch latest location
-                              final locationSnapshot = await FirebaseFirestore
-                                  .instance
-                                  .collection("user-files")
-                                  .doc(uid)
-                                  .collection("locationDetails")
-                                  .orderBy("timestamp", descending: true)
-                                  .limit(1)
-                                  .get();
-                              String street = "Street not available";
-                              String area = "Area not available";
-                              if (locationSnapshot.docs.isNotEmpty) {
-                                final locData =
-                                    locationSnapshot.docs.first.data();
-                                street = locData['street'] ?? street;
-                                area = locData['area'] ?? area;
-                              }
-
-                              // Check if an offer already exists for this technician
-                              final existingOfferQuery = await FirebaseFirestore
-                                  .instance
-                                  .doc(orders.docPath!)
-                                  .collection("offers")
-                                  .where('technicianId', isEqualTo: uid)
-                                  .limit(1)
-                                  .get();
-
-                              if (existingOfferQuery.docs.isNotEmpty) {
-                                final existingOfferDoc =
-                                    existingOfferQuery.docs.first;
-                                await existingOfferDoc.reference.update({
-                                  'technicianOffer': offerPrice,
-                                  'timestamp': FieldValue.serverTimestamp(),
-                                });
-
-                                Fluttertoast.showToast(
-                                    msg: "Offer Updated Successfully".tr(),
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.TOP,
-                                    backgroundColor:
-                                        ApplicationColorWithOpacity,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                              } else {
-                                // If no offer exists, create a new one
-                                await FirebaseFirestore.instance
-                                    .doc(orders.docPath!)
-                                    .collection("offers")
-                                    .doc(
-                                        uid) // Use technician ID as document ID
-                                    .set({
-                                  'technicianId': uid,
-                                  'technicianFirstName': techData['first_name'],
-                                  'technicianLastName': techData['last_name'],
-                                  'technicianPhone': phone,
-                                  'technicianSubService': subService,
-                                  'technicianMainService': mainService,
-                                  'technicianName': fullName,
-                                  'technicianImage': profileImageUrl,
-                                  'technicianLocationStreet': street,
-                                  'technicianLocationArea': area,
-                                  'technicianOffer': offerPrice,
-                                  'technicianDescription': Description,
-                                  'technicianLinkSocialMedia': LinkSocialMedia,
-                                  'status': 'offer-made', // ✅ Add this line
-                                  'timestamp': FieldValue.serverTimestamp(),
-                                });
-
-                                // final NotificationServiceTechniciann =
-                                //     NotificationServiceTechnician(
-                                //         flutterLocalNotificationsPlugin);
-                                // NotificationServiceTechniciann
-                                //     .showAndSaveNotificationTech(
-                                //   title: 'Offer Submitted',
-                                //   preview:
-                                //       'Your offer has been submitted successfully. Be waiting for acceptance or rejection from the client',
-                                // );
-
-                                Fluttertoast.showToast(
-                                    msg: "Offer Submitted Successfully".tr(),
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.TOP,
-                                    backgroundColor:
-                                        ApplicationColorWithOpacity,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0);
-                              }
-
-                              Navigator.of(context).pop();
-                            } catch (e) {
-                              print('Error submitting offer: $e');
-                              Fluttertoast.showToast(
-                                  msg: "Failed to submit offer".tr(),
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.TOP,
-                                  backgroundColor: ApplicationColorWithOpacity,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                  ],
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailsScreen(
+                  orders: orders,
                 ),
-              ),
-            ),
-          );
+              ));
         },
         child: Container(
           decoration: BoxDecoration(
@@ -301,22 +65,6 @@ class OrderCardTech extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  'Description Of Service :'.tr(),
-                  style: GoogleFonts.castoro(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : Colors.black,
-                    decoration: TextDecoration.underline,
-                    decorationColor: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : Colors.black,
-                    decorationThickness: 2,
-                  ),
-                ),
-                const SizedBox(height: 8),
                 Row(
                   children: [
                     Text(
@@ -328,29 +76,9 @@ class OrderCardTech extends StatelessWidget {
                               : Colors.black),
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      orders.ServiceType.tr(),
-                      style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      "Description :".tr(),
-                      style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        orders.Description,
+                        orders.ServiceType.tr(),
                         style: GoogleFonts.castoro(
                           fontSize: 14,
                           color: isDark ? Colors.white : Colors.black,
@@ -359,43 +87,21 @@ class OrderCardTech extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
                 Row(
                   children: [
-                    Text(
-                      "Location :".tr(),
-                      style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
-                    ),
+                    Text('Status:'.tr(),
+                        style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black)),
                     const SizedBox(width: 8),
-                    Text(
-                      orders.Location,
-                      style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      "Status :".tr(),
-                      style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      orders.Status.tr(),
-                      style: GoogleFonts.castoro(
-                        fontSize: 14,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
+                    Expanded(
+                      child: Text(orders.Status.tr(),
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          )),
                     ),
                   ],
                 ),
@@ -403,40 +109,34 @@ class OrderCardTech extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Icon(Icons.calendar_today,
-                                size: 18,
-                                color: isDark ? Colors.white : Colors.black),
-                            const SizedBox(width: 4),
-                            Text(
-                              orders.Date.tr(),
-                              style: GoogleFonts.castoro(
-                                fontSize: 14,
-                                color: isDark ? Colors.white : Colors.black,
-                              ),
-                            ),
-                          ],
+                        Icon(Icons.calendar_today,
+                            size: 18,
+                            color: isDark ? Colors.white : Colors.black),
+                        const SizedBox(width: 4),
+                        Text(
+                          orders.Date.tr(),
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Icon(Icons.access_time,
-                                size: 18,
-                                color: isDark ? Colors.white : Colors.black),
-                            const SizedBox(width: 4),
-                            Text(
-                              orders.Time.tr(),
-                              style: GoogleFonts.castoro(
-                                fontSize: 14,
-                                color: isDark ? Colors.white : Colors.black,
-                              ),
-                            ),
-                          ],
+                      ],
+                    ),
+                    const SizedBox(width: 15),
+                    Row(
+                      children: [
+                        Icon(Icons.access_time,
+                            size: 18,
+                            color: isDark ? Colors.white : Colors.black),
+                        const SizedBox(width: 4),
+                        Text(
+                          orders.Time.tr(),
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ],
                     ),
@@ -450,3 +150,242 @@ class OrderCardTech extends StatelessWidget {
     );
   }
 }
+//        onTap: () {
+//           showDialog(
+//             context: context,
+//             builder: (context) => Dialog(
+//               backgroundColor: Colors.white,
+//               shape: RoundedRectangleBorder(
+//                   borderRadius: BorderRadius.circular(40)),
+//               child: Padding(
+//                 padding: const EdgeInsets.all(30.0),
+//                 child: Column(
+//                   mainAxisSize: MainAxisSize.min,
+//                   children: [
+//                     // Title
+//                     Row(
+//                       mainAxisAlignment: MainAxisAlignment.start,
+//                       children: [
+//                         Icon(Icons.attach_money,
+//                             size: 32, color: ApplicationColor),
+//                         Text(
+//                           "Offer to".tr(),
+//                           style: GoogleFonts.judson(
+//                               fontSize: 28, fontWeight: FontWeight.w500),
+//                         ),
+//                         const SizedBox(width: 4),
+//                         Expanded(
+//                           child: Text(
+//                             '${orders.FName}',
+//                             style: GoogleFonts.judson(
+//                                 fontSize: 28, fontWeight: FontWeight.w500),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                     const SizedBox(height: 10),
+//                     Row(
+//                       children: [
+//                         Text(
+//                           "Your Offer Price is:".tr(),
+//                           style: GoogleFonts.judson(fontSize: 20),
+//                         ),
+//                         const SizedBox(width: 10),
+//                         Expanded(
+//                           child: Container(
+//                             decoration: BoxDecoration(
+//                               color: Colors.grey.shade200,
+//                               borderRadius: BorderRadius.circular(30),
+//                             ),
+//                             padding: const EdgeInsets.symmetric(
+//                                 horizontal: 20, vertical: 5),
+//                             child: TextField(
+//                               controller: priceController,
+//                               keyboardType: TextInputType.number,
+//                               textAlign: TextAlign.center,
+//                               style: GoogleFonts.judson(
+//                                   fontSize: 19, fontWeight: FontWeight.bold),
+//                               decoration: const InputDecoration(
+//                                 border: InputBorder.none,
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                     Row(
+//                       mainAxisAlignment: MainAxisAlignment.end,
+//                       children: [
+//                         TextButton(
+//                           child: Text(
+//                             "Cancel".tr(),
+//                             style: GoogleFonts.judson(
+//                                 fontSize: 25, color: Colors.black),
+//                           ),
+//                           onPressed: () {
+//                             Navigator.of(context).pop();
+//                           },
+//                         ),
+//                         TextButton(
+//                           child: Text(
+//                             "Offer".tr(),
+//                             style: GoogleFonts.judson(
+//                                 fontSize: 25, color: ApplicationColor),
+//                           ),
+//                           onPressed: () async {
+//                             String offerPrice = priceController.text;
+//                             if (priceController.text.isEmpty) {
+//                               Fluttertoast.showToast(
+//                                   msg: "Please enter a price".tr(),
+//                                   toastLength: Toast.LENGTH_SHORT,
+//                                   gravity: ToastGravity.TOP,
+//                                   backgroundColor: ApplicationColorWithOpacity,
+//                                   textColor: Colors.white,
+//                                   fontSize: 16.0);
+//                               return;
+//                             }
+//
+//                             try {
+//                               final currentUser =
+//                                   FirebaseAuth.instance.currentUser!;
+//                               final uid = currentUser.uid;
+//
+//                               // Fetch technician basic info
+//                               final technicianDoc = await FirebaseFirestore
+//                                   .instance
+//                                   .collection('technician')
+//                                   .doc(uid)
+//                                   .get();
+//                               final techData = technicianDoc.data()!;
+//                               final fullName =
+//                                   "${techData['first_name']} ${techData['last_name']}";
+//                               final phone = techData['phone'];
+//                               final subService = techData['sub_service'];
+//                               final mainService = techData['main_service'];
+//                               final Description = techData['description'];
+//                               final LinkSocialMedia =
+//                                   techData['LinkSocialMedia'];
+//
+//                               // Fetch profile image from uploads
+//                               final uploadsSnapshot = await FirebaseFirestore
+//                                   .instance
+//                                   .collection("user-files")
+//                                   .doc(uid)
+//                                   .collection("uploads")
+//                                   .limit(1)
+//                                   .get();
+//                               String? profileImageUrl;
+//                               if (uploadsSnapshot.docs.isNotEmpty) {
+//                                 profileImageUrl = uploadsSnapshot
+//                                     .docs.first['personalFileUrl'];
+//                               }
+//
+//                               // Fetch latest location
+//                               final locationSnapshot = await FirebaseFirestore
+//                                   .instance
+//                                   .collection("user-files")
+//                                   .doc(uid)
+//                                   .collection("locationDetails")
+//                                   .orderBy("timestamp", descending: true)
+//                                   .limit(1)
+//                                   .get();
+//                               String street = "Street not available";
+//                               String area = "Area not available";
+//                               if (locationSnapshot.docs.isNotEmpty) {
+//                                 final locData =
+//                                     locationSnapshot.docs.first.data();
+//                                 street = locData['street'] ?? street;
+//                                 area = locData['area'] ?? area;
+//                               }
+//
+//                               // Check if an offer already exists for this technician
+//                               final existingOfferQuery = await FirebaseFirestore
+//                                   .instance
+//                                   .doc(orders.docPath!)
+//                                   .collection("offers")
+//                                   .where('technicianId', isEqualTo: uid)
+//                                   .limit(1)
+//                                   .get();
+//
+//                               if (existingOfferQuery.docs.isNotEmpty) {
+//                                 final existingOfferDoc =
+//                                     existingOfferQuery.docs.first;
+//                                 await existingOfferDoc.reference.update({
+//                                   'technicianOffer': offerPrice,
+//                                   'timestamp': FieldValue.serverTimestamp(),
+//                                 });
+//
+//                                 Fluttertoast.showToast(
+//                                     msg: "Offer Updated Successfully".tr(),
+//                                     toastLength: Toast.LENGTH_SHORT,
+//                                     gravity: ToastGravity.TOP,
+//                                     backgroundColor:
+//                                         ApplicationColorWithOpacity,
+//                                     textColor: Colors.white,
+//                                     fontSize: 16.0);
+//                               } else {
+//                                 // If no offer exists, create a new one
+//                                 await FirebaseFirestore.instance
+//                                     .doc(orders.docPath!)
+//                                     .collection("offers")
+//                                     .doc(
+//                                         uid) // Use technician ID as document ID
+//                                     .set({
+//                                   'technicianId': uid,
+//                                   'technicianFirstName': techData['first_name'],
+//                                   'technicianLastName': techData['last_name'],
+//                                   'technicianPhone': phone,
+//                                   'technicianSubService': subService,
+//                                   'technicianMainService': mainService,
+//                                   'technicianName': fullName,
+//                                   'technicianImage': profileImageUrl,
+//                                   'technicianLocationStreet': street,
+//                                   'technicianLocationArea': area,
+//                                   'technicianOffer': offerPrice,
+//                                   'technicianDescription': Description,
+//                                   'technicianLinkSocialMedia': LinkSocialMedia,
+//                                   'status': 'offer-made', // ✅ Add this line
+//                                   'timestamp': FieldValue.serverTimestamp(),
+//                                 });
+//
+//                                 // final NotificationServiceTechniciann =
+//                                 //     NotificationServiceTechnician(
+//                                 //         flutterLocalNotificationsPlugin);
+//                                 // NotificationServiceTechniciann
+//                                 //     .showAndSaveNotificationTech(
+//                                 //   title: 'Offer Submitted',
+//                                 //   preview:
+//                                 //       'Your offer has been submitted successfully. Be waiting for acceptance or rejection from the client',
+//                                 // );
+//
+//                                 Fluttertoast.showToast(
+//                                     msg: "Offer Submitted Successfully".tr(),
+//                                     toastLength: Toast.LENGTH_SHORT,
+//                                     gravity: ToastGravity.TOP,
+//                                     backgroundColor:
+//                                         ApplicationColorWithOpacity,
+//                                     textColor: Colors.white,
+//                                     fontSize: 16.0);
+//                               }
+//
+//                               Navigator.of(context).pop();
+//                             } catch (e) {
+//                               print('Error submitting offer: $e');
+//                               Fluttertoast.showToast(
+//                                   msg: "Failed to submit offer".tr(),
+//                                   toastLength: Toast.LENGTH_SHORT,
+//                                   gravity: ToastGravity.TOP,
+//                                   backgroundColor: ApplicationColorWithOpacity,
+//                                   textColor: Colors.white,
+//                                   fontSize: 16.0);
+//                             }
+//                           },
+//                         )
+//                       ],
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           );
+//         },

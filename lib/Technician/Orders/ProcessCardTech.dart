@@ -88,11 +88,13 @@ class ProcessOrderCardTech extends StatelessWidget {
                                 : Colors.black),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        orders.ServiceType,
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          orders.ServiceType,
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -108,11 +110,13 @@ class ProcessOrderCardTech extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        orders.Description,
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          orders.Description,
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -128,11 +132,13 @@ class ProcessOrderCardTech extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        ' ${orders.Location}',
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          ' ${orders.Location}',
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -148,11 +154,13 @@ class ProcessOrderCardTech extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        ' ${orders.previousOffer}',
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          ' ${orders.previousOffer}',
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -168,11 +176,13 @@ class ProcessOrderCardTech extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        ' ${orders.Status}',
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
+                      Expanded(
+                        child: Text(
+                          ' ${orders.Status}',
+                          style: GoogleFonts.castoro(
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                     ],
@@ -261,8 +271,7 @@ class ProcessOrderCardTech extends StatelessWidget {
     }
   }
 
-  Future<void> _completeOrder(
-      BuildContext context, OrderModelTech order) async {
+  Future<void> _completeOrder(BuildContext context, OrderModelTech order) async {
     try {
       final docRef = FirebaseFirestore.instance.doc(order.docPath!);
       await docRef.update({'Status': 'Finished'});
@@ -292,22 +301,93 @@ class ProcessOrderCardTech extends StatelessWidget {
   }
 
   Future<void> CancelOrder(BuildContext context, OrderModelTech order) async {
-    try {
-      final docRef = FirebaseFirestore.instance.doc(order.docPath!);
-      await docRef.update({'Status': 'Cancelled'});
+    var themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
-      // Show success message
+    bool? confirmCancellation = await showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: themeProvider.themeMode == ThemeMode.dark
+              ? const Color(0xFF333739)
+              : Colors.white,
+          title: Text(
+            "Confirm Cancellation".tr(),
+            style: GoogleFonts.castoro(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: themeProvider.themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Colors.black,
+            ),
+          ),
+          content: Text("Are you sure you want to cancel this order?".tr(),
+              style: GoogleFonts.castoro(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black,
+              )),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // User cancels the action
+              },
+              child: Text("No".tr(),
+                  style: GoogleFonts.castoro(
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black,
+                    fontSize: 25,
+                  )),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pop(true); // User confirms the cancellation
+              },
+              child: Text("Yes".tr(),
+                  style: GoogleFonts.castoro(
+                      fontSize: 25,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : ApplicationColor)),
+            ),
+          ],
+        );
+      },
+    );
+
+    // If the user confirmed the cancellation, proceed with the order update
+    if (confirmCancellation == true) {
+      try {
+        final docRef = FirebaseFirestore.instance.doc(order.docPath!);
+        await docRef.update({'Status': 'Cancelled'});
+
+        // Show success message
+        Fluttertoast.showToast(
+          msg: "Order Cancelled!".tr(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: "Failed to cancel order".tr(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    } else {
+      // If the user cancels, show a cancellation message or handle the action accordingly
       Fluttertoast.showToast(
-        msg: "Order Cancelled!".tr(),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
-        backgroundColor: ApplicationColorWithOpacity,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Failed to cancel order".tr(),
+        msg: "Order cancellation was not confirmed".tr(),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
