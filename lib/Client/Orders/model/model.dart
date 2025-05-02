@@ -4,6 +4,15 @@ class OrderModel {
   final String Status;
   final String Date;
   final String Time;
+  final String Location;
+  final String apartment;
+  final String building;
+  final String street;
+  final List<String> fileUrls;
+  final String ProfileImage;
+  final String Fname;
+  final String Lname;
+  final String ServiceImage;
   final String orderId;
   final String technicianName;
   final String technicianId;
@@ -22,6 +31,15 @@ class OrderModel {
     required this.Status,
     required this.Date,
     required this.Time,
+    required this.Fname,
+    required this.Lname,
+    required this.Location,
+    required this.apartment,
+    required this.building,
+    required this.street,
+    required this.fileUrls,
+    required this.ServiceImage,
+    required this.ProfileImage,
     required this.orderId,
     required this.technicianName,
     required this.technicianId,

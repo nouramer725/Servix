@@ -18,7 +18,7 @@ class PreviousOrderPage extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      return  Center(child: Text('No user logged in'.tr()));
+      return Center(child: Text('No user logged in'.tr()));
     }
 
     return FutureBuilder<QuerySnapshot>(
@@ -26,8 +26,7 @@ class PreviousOrderPage extends StatelessWidget {
           .collection('Services Requests')
           .doc(user.uid)
           .collection('user-services')
-          .where('Status', whereIn: ['Finished', 'Cancelled'])
-          .get(),
+          .where('Status', whereIn: ['Finished', 'Cancelled']).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -39,12 +38,16 @@ class PreviousOrderPage extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return  Center(child: Text('No Previous orders found.'.tr(),style: GoogleFonts.castoro(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: themeProvider.themeMode == ThemeMode.dark
-                  ? Colors.white
-                  : Colors.black),));
+          return Center(
+              child: Text(
+            'No Previous orders found.'.tr(),
+            style: GoogleFonts.castoro(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black),
+          ));
         }
 
         final orders = snapshot.data!.docs.map((doc) {
@@ -85,15 +88,23 @@ class PreviousOrderPage extends StatelessWidget {
 
           return offerFuture.then((updatedData) {
             return OrderModel(
-              ServiceType:
-              data['serviceTitle']?.toString() ?? 'No Service Type'.tr(),
+              ServiceType: data['serviceTitle']?['en'] ?? 'No Service Type',
               Description: updatedData['description'] ?? '',
-              Status: updatedData['Status'] ?? '',
-              Date: updatedData['selectedDate'] ?? '',
-              Time: updatedData['selectedTime'] ?? '',
+              Location: data['area']?.toString() ?? '',
+              apartment: data['apartment']?.toString() ?? '',
+              ServiceImage: data['serviceImage']?.toString() ?? '',
+              building: data['building']?.toString() ?? '',
+              ProfileImage: data['profileImageUrl']?.toString() ?? '',
+              Fname: data['firstName']?.toString() ?? '',
+              Lname: data['lastName']?.toString() ?? '',
+              street: data['street']?.toString() ?? '',
+              fileUrls: List<String>.from(data['fileUrls'] ?? []),
+              Status: updatedData['Status']?.toString() ?? '',
+              Date: updatedData['selectedDate']?.toString() ?? '',
+              Time: updatedData['selectedTime']?.toString() ?? '',
               orderId: doc.id,
-              technicianImage: updatedData['technicianImage'],
-              technicianName: updatedData['technicianName'],
+              technicianImage: updatedData['technicianImage']?.toString() ?? '',
+              technicianName: updatedData['technicianName']?.toString() ?? '',
               technicianLocationArea:
                   updatedData['technicianLocationArea'] ?? '',
               technicianLocationStreet:

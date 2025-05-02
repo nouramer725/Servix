@@ -507,6 +507,7 @@ class _LocationPostingState extends State<LocationPosting> {
                 'apartment': apartment ?? '',
                 'description': widget.description,
                 'serviceTitle': serviceTitleMap, // <-- Store as a map
+                'serviceImage':widget.imagePath,
                 'fileUrls': widget.fileUrls,
                 'selectedDate':
                     DateFormat('dd-MM-yyyy').format(widget.selectedDate!),

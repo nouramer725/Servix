@@ -299,6 +299,8 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
           }
         }
         Navigator.pop(context);
+        Navigator.pop(context);
+
 
         setState(() {
           offers.removeWhere((item) => item.id != offer.id);

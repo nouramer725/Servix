@@ -350,8 +350,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                           if (filteredSnapshot.hasError ||
                               !filteredSnapshot.hasData) {
                             return Center(
-                                child:
-                                    Text("Error loading filtered orders".tr()));
+                                child: Text("loading filtered orders".tr()));
                           }
 
                           final orders = filteredSnapshot.data!;

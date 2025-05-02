@@ -530,12 +530,27 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   Future<void> updateServiceFees(String technicianId, double feesAmount) async {
     try {
+      DocumentSnapshot technicianSnapshot = await FirebaseFirestore.instance
+          .collection('technician')
+          .doc(technicianId)
+          .get();
+
+      double currentFees = 0.0;
+
+      if (technicianSnapshot.exists && technicianSnapshot.data() != null) {
+        final data = technicianSnapshot.data() as Map<String, dynamic>;
+        if (data.containsKey('serviceFees')) {
+          currentFees = (data['serviceFees'] as num).toDouble();
+        }
+      }
+
+      double updatedFees = currentFees + feesAmount;
+
       await FirebaseFirestore.instance
           .collection('technician')
           .doc(technicianId)
           .update({
-        'serviceFees':
-            feesAmount, // Directly set the serviceFees to the provided value
+        'serviceFees': updatedFees,
       });
     } catch (e) {
       print("Error updating service fees: $e");

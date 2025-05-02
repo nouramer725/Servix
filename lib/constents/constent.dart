@@ -6,3 +6,4 @@ Color ApplicationColor3=Color(0xFF1C0505);
 Color ApplicationColor4=Color(0xFF5D1010); // Lighter red
 Color ApplicationColorWithOpacity=Color(0xD0821717);
 Color ApplicationColor6=Color(0xFFB93434);
+Color Blue=Color(0xFF2140AC);

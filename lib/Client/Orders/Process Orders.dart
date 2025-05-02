@@ -87,12 +87,20 @@ class ProcessOrderPage extends StatelessWidget {
 
           return offerFuture.then((updatedData) {
             return OrderModel(
-              ServiceType:
-                  data['serviceTitle']?.toString() ?? 'No Service Type'.tr(),
+              ServiceType: data['serviceTitle']?['en'] ?? 'No Service Type',
               Description: updatedData['description'] ?? '',
               Status: updatedData['Status'] ?? '',
               Date: updatedData['selectedDate'] ?? '',
               Time: updatedData['selectedTime'] ?? '',
+              Location: data['area']?.toString() ?? '',
+              ServiceImage: data['serviceImage']?.toString() ?? '',
+              apartment: data['apartment']?.toString() ?? '',
+              ProfileImage: data['profileImageUrl']?.toString() ?? '',
+              Fname: data['firstName']?.toString() ?? '',
+              Lname: data['lastName']?.toString() ?? '',
+              building: data['building']?.toString() ?? '',
+              street: data['street']?.toString() ?? '',
+              fileUrls: List<String>.from(data['fileUrls'] ?? []),
               orderId: doc.id,
               technicianImage: updatedData['technicianImage'],
               technicianName: updatedData['technicianName'],

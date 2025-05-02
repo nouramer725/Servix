@@ -97,11 +97,15 @@ class OrderCardTech extends StatelessWidget {
                                 : Colors.black)),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: Text(orders.Status.tr(),
-                          style: GoogleFonts.castoro(
-                            fontSize: 14,
-                            color: isDark ? Colors.white : Colors.black,
-                          )),
+                      child: Text(
+                        orders.Status.tr(),
+                        style: GoogleFonts.castoro(
+                          fontSize: 14,
+                          color: orders.Status.toLowerCase() == 'pending'
+                              ? Colors.orangeAccent
+                              : (isDark ? Colors.white : Colors.black),
+                        ),
+                      ),
                     ),
                   ],
                 ),

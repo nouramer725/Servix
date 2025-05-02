@@ -138,12 +138,20 @@ class _OrdersPageState extends State<OrdersPage> {
           final data = doc.data() as Map<String, dynamic>;
 
           return OrderModel(
-            ServiceType:
-                data['serviceTitle']?.toString() ?? 'No Service Type'.tr(),
+            ServiceType: data['serviceTitle']?['en'] ?? 'No Service Type',
             Description: data['description']?.toString() ?? '',
+            ServiceImage: data['serviceImage']?.toString() ?? '',
             Status: data['Status']?.toString() ?? '',
             Date: data['selectedDate']?.toString() ?? '',
             Time: data['selectedTime']?.toString() ?? '',
+            Fname: data['firstName']?.toString() ?? '',
+            Lname: data['lastName']?.toString() ?? '',
+            ProfileImage: data['profileImageUrl']?.toString() ?? '',
+            Location: data['area']?.toString() ?? '',
+            apartment: data['apartment']?.toString() ?? '',
+            building: data['building']?.toString() ?? '',
+            street: data['street']?.toString() ?? '',
+            fileUrls: List<String>.from(data['fileUrls'] ?? []),
             technicianName: data['technicianName']?.toString() ?? '',
             technicianImage: data['technicianImage']?.toString() ?? '',
             technicianLocationArea:

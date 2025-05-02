@@ -264,16 +264,16 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
                     child: CircularProgressIndicator(color: ApplicationColor))
                 : Expanded(
                     child: offers.isEmpty
-                        ?  Center(child: Text(
-                      'No offers found.'.tr()
-                      ,style: GoogleFonts.castoro(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black,
-                    )
-                    ))
+                        ? Center(
+                            child: Text('No offers found.'.tr(),
+                                style: GoogleFonts.castoro(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black,
+                                )))
                         : ListView.builder(
                             itemCount: offers.length,
                             itemBuilder: (context, index) {
@@ -339,6 +339,8 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
         }
 
         Navigator.pop(context);
+        Navigator.pop(context);
+
         setState(() {
           offers.removeWhere((item) => item.id != offer.id);
         });

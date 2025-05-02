@@ -578,6 +578,7 @@ class _NewAddressState extends State<NewAddress> {
           'fileUrls': widget.fileUrls,
           'selectedDate': DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
           'selectedTime': widget.selectedTime!.format(context),
+          'serviceImage':widget.imagePath,
           'Status': 'Pending',
           'userId': user.uid,
           'orderId': widget.orderId,
