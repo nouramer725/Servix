@@ -2,28 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // For accessing the current user
+import 'package:firebase_auth/firebase_auth.dart';
 import '../Theme/Theme_Provider.dart';
 
-class Servicefees extends StatefulWidget {
-  const Servicefees({super.key});
+class ServiceFees extends StatefulWidget {
+  const ServiceFees({super.key});
 
   @override
-  State<Servicefees> createState() => _ServicefeesState();
+  State<ServiceFees> createState() => _ServiceFeesState();
 }
 
-class _ServicefeesState extends State<Servicefees> {
+class _ServiceFeesState extends State<ServiceFees> {
   double? serviceFees;
-  bool isLoading = true; // To manage the loading state
+  bool isLoading = true;
 
-  // Fetch service fees from Firestore
-// Fetch service fees from Firestore
   Future<void> fetchServiceFees() async {
     try {
-      // Get current user's technician ID (assuming it's stored in Firestore or via authentication)
       String technicianId = FirebaseAuth.instance.currentUser!.uid;
 
-      // Fetch the technician document from Firestore
       DocumentSnapshot technicianSnapshot = await FirebaseFirestore.instance
           .collection('technician')
           .doc(technicianId)
@@ -32,23 +28,22 @@ class _ServicefeesState extends State<Servicefees> {
       if (technicianSnapshot.exists) {
         final data = technicianSnapshot.data() as Map<String, dynamic>;
 
-        // Get the service fees from the technician document and ensure it's a double
         setState(() {
           serviceFees = (data['serviceFees'] is int
               ? (data['serviceFees'] as int).toDouble()
               : data['serviceFees'] ?? 0.0) as double?;
 
-          isLoading = false; // Data has been loaded, stop loading indicator
+          isLoading = false;
         });
       } else {
         setState(() {
-          serviceFees = 0.0; // Default value in case data doesn't exist
+          serviceFees = 0.0;
           isLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        serviceFees = 0.0; // Default value in case of error
+        serviceFees = 0.0;
         isLoading = false;
       });
       print("Error fetching service fees: $e");
@@ -58,7 +53,7 @@ class _ServicefeesState extends State<Servicefees> {
   @override
   void initState() {
     super.initState();
-    fetchServiceFees(); // Fetch service fees when the widget is initialized
+    fetchServiceFees();
   }
 
   @override

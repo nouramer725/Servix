@@ -219,7 +219,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Servicefees(),
+                          builder: (context) => const ServiceFees(),
                         ));
                   }),
                   _buildMenuItem(
