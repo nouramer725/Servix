@@ -16,16 +16,18 @@ class Womenservice extends StatelessWidget {
           title: Text(
             'For Women'.tr(),
             style: GoogleFonts.castoro(
-              fontSize: 19,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/home/woman.png'),
-                alignment: Alignment.centerRight,
+                image: const AssetImage('assets/images/home/woman.png'),
+                alignment: context.locale.languageCode == 'ar'
+                    ? Alignment.centerLeft
+                    : Alignment.centerRight,
                 //fit: BoxFit.cover,
               ),
             ),

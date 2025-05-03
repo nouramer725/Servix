@@ -237,9 +237,6 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 50,
-                  ),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -395,38 +392,38 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                           builder: (context) => const Contactus(),
                         ));
                   }),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Row(
-                      children: [
-                        Icon(Icons.dark_mode,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : ApplicationColor),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Text(
-                            "Dark Theme".tr(),
-                            style: GoogleFonts.castoro(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
-                                color: themeProvider.themeMode == ThemeMode.dark
-                                    ? Colors.white
-                                    : Colors.black),
-                          ),
-                        ),
-                        Switch(
-                          activeTrackColor: ApplicationColor,
-                          value: themeProvider.themeMode == ThemeMode.dark,
-                          onChanged: (value) {
-                            themeProvider.setThemeMode(
-                                value ? ThemeMode.dark : ThemeMode.light);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding:
+                  //       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  //   child: Row(
+                  //     children: [
+                  //       Icon(Icons.dark_mode,
+                  //           color: themeProvider.themeMode == ThemeMode.dark
+                  //               ? Colors.white
+                  //               : ApplicationColor),
+                  //       const SizedBox(width: 16),
+                  //       Expanded(
+                  //         child: Text(
+                  //           "Dark Theme".tr(),
+                  //           style: GoogleFonts.castoro(
+                  //               fontSize: 17,
+                  //               fontWeight: FontWeight.w500,
+                  //               color: themeProvider.themeMode == ThemeMode.dark
+                  //                   ? Colors.white
+                  //                   : Colors.black),
+                  //         ),
+                  //       ),
+                  //       Switch(
+                  //         activeTrackColor: ApplicationColor,
+                  //         value: themeProvider.themeMode == ThemeMode.dark,
+                  //         onChanged: (value) {
+                  //           themeProvider.setThemeMode(
+                  //               value ? ThemeMode.dark : ThemeMode.light);
+                  //         },
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   _buildMenuItem(Icons.logout, "Logout".tr(), onTap: () async {
                     showDialog(
                       barrierDismissible: false,

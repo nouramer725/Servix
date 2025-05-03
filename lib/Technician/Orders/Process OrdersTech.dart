@@ -173,6 +173,8 @@ class ProcessOrderTechPage extends StatelessWidget {
           image: data['profileImageUrl'] ??
               "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
           FName: data['firstName'] ?? 'Unknown',
+          ServiceImage: data['serviceImage']?.toString() ?? '',
+
           LName: data['lastName'] ?? 'Unknown',
           docPath: doc.reference.path,
           Status: data['Status'] ?? 'Unknown',

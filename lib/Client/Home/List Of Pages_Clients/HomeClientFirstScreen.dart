@@ -31,25 +31,25 @@ class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
     Category(
       categoryname: 'Private \nTeaching'.tr(),
       image: 'assets/images/home/private_teaching3.png',
-      color: Color(0xFFB93434),
+      color: const Color(0xFFB93434),
       height: 160,
     ),
     Category(
       categoryname: 'Care \nService'.tr(),
       image: 'assets/images/home/care.png',
-      color: Color(0xFFF7C86E),
+      color: const Color(0xFFF7C86E),
       height: 160,
     ),
     Category(
       categoryname: 'For \nMen'.tr(),
       image: 'assets/images/home/man.png',
-      color: Color(0xFF305D67),
+      color: const Color(0xFF305D67),
       height: 160,
     ),
     Category(
       categoryname: 'For \nWomen'.tr(),
       image: 'assets/images/home/woman.png',
-      color: Color(0xFFC37B7B),
+      color: const Color(0xFFC37B7B),
       height: 160,
     ),
     Category(
@@ -61,7 +61,7 @@ class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
     Category(
       categoryname: 'Delivery\nService'.tr(),
       image: 'assets/images/home/delivery.png',
-      color: Color(0xFFA52754),
+      color: const Color(0xFFA52754),
       height: 100,
     ),
   ];

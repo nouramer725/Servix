@@ -1,30 +1,27 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../../../Components/Buttons.dart';
+import 'package:servix/Technician/Orders/model/modelTech.dart';
 import '../../../Technician/Orders/model/VideoPlayerWidget.dart';
 import '../../../Theme/Theme_Provider.dart';
-import '../../../constents/constent.dart';
-import '../../Offers/The Nearest.dart';
-import '../model/model.dart';
 
-class DetailsPending extends StatefulWidget {
-  final OrderModel orders;
+class DetailsPendingOrdersTech extends StatefulWidget {
+  final OrderModelTech orders;
 
-  const DetailsPending({super.key, required this.orders});
+  const DetailsPendingOrdersTech({super.key, required this.orders});
 
   @override
-  State<DetailsPending> createState() => _DetailsPendingState();
+  State<DetailsPendingOrdersTech> createState() =>
+      _DetailsPendingOrdersTechState();
 }
 
-class _DetailsPendingState extends State<DetailsPending> {
+class _DetailsPendingOrdersTechState extends State<DetailsPendingOrdersTech> {
   double _blurValue = 0;
   int currentIndex = 0;
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController feesController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -311,34 +308,46 @@ class _DetailsPendingState extends State<DetailsPending> {
                           : Colors.black12,
                       thickness: 2,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       children: [
-                        Expanded(
-                          child: GradientButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => TheNearestScreen(
-                                            orderId: orders.orderId,
-                                          )));
-                            },
-                            text: "Offers".tr(),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: WhiteButtonOffer(
-                            font: 27,
-                            onPressed: () async {
-                              await CancelOrder(context, orders);
-                            },
-                            text: "Cancel".tr(),
-                          ),
-                        ),
+                        Text("Price:".tr(),
+                            style: GoogleFonts.castoro(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            )),
+                        const SizedBox(width: 8),
+                        Text("${orders.previousOffer}",
+                            style: GoogleFonts.castoro(
+                              fontSize: 20,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            )),
+                        const SizedBox(width: 8),
+                        Text("EGP".tr(),
+                            style: GoogleFonts.castoro(
+                              fontSize: 20,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            )),
                       ],
-                    )
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Divider(
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : Colors.black12,
+                      thickness: 2,
+                    ),
                   ],
                 ),
               );
@@ -347,109 +356,5 @@ class _DetailsPendingState extends State<DetailsPending> {
         ],
       ),
     );
-  }
-
-  Future<void> CancelOrder(BuildContext context, OrderModel order) async {
-    var themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
-    bool? confirmCancellation = await showDialog<bool>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: themeProvider.themeMode == ThemeMode.dark
-              ? const Color(0xFF333739)
-              : Colors.white,
-          title: Text(
-            "Confirm Cancellation".tr(),
-            style: GoogleFonts.castoro(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: themeProvider.themeMode == ThemeMode.dark
-                  ? Colors.white
-                  : Colors.black,
-            ),
-          ),
-          content: Text("Are you sure you want to cancel this order?".tr(),
-              style: GoogleFonts.castoro(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.black,
-              )),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false); // User cancels the action
-              },
-              child: Text("No".tr(),
-                  style: GoogleFonts.castoro(
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : Colors.black,
-                    fontSize: 25,
-                  )),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: Text("Yes".tr(),
-                  style: GoogleFonts.castoro(
-                      fontSize: 25,
-                      color: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.white
-                          : ApplicationColor)),
-            ),
-          ],
-        );
-      },
-    );
-
-    // If the user confirmed the cancellation, proceed with the order update
-    if (confirmCancellation == true) {
-      try {
-        final user = FirebaseAuth.instance.currentUser;
-        final uid = user!.uid;
-
-        await FirebaseFirestore.instance
-            .collection('Services Requests')
-            .doc(uid)
-            .collection('user-services')
-            .doc(order.orderId)
-            .update({'Status': 'Cancelled'});
-
-        Navigator.pop(context);
-
-        Fluttertoast.showToast(
-          msg: "Order cancelled!".tr(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: ApplicationColorWithOpacity,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      } catch (e) {
-        Fluttertoast.showToast(
-          msg: "Failed to cancel order".tr(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: ApplicationColorWithOpacity,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      }
-    } else {
-      // If the user cancels, show a cancellation message or handle the action accordingly
-      Fluttertoast.showToast(
-        msg: "Order cancellation was not confirmed".tr(),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
-        backgroundColor: ApplicationColorWithOpacity,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
   }
 }

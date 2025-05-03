@@ -161,6 +161,8 @@ class FinishedOrderTechPage extends StatelessWidget {
           building: data['building'] ?? 'No building',
           street: data['street'] ?? 'No street',
           fileUrls: List<String>.from(data['fileUrls'] ?? []),
+          ServiceImage: data['serviceImage']?.toString() ?? '',
+
           image: data['profileImageUrl'] ??
               "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
           FName: data['firstName'] ?? 'Unknown',

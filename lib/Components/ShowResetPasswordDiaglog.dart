@@ -34,15 +34,31 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
     });
 
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      Fluttertoast.showToast(
-        msg: "Password reset link sent! Check your email.".tr(),
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-      );
-      Navigator.pop(context);
+      // Check if the email exists in Firebase Auth
+      final methods =
+          await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
+
+      if (methods.isEmpty) {
+        // Email does not exist
+        Fluttertoast.showToast(
+          msg: "This email does not exist in our records.".tr(),
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+        );
+      } else {
+        // Email exists, send password reset
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+        Fluttertoast.showToast(
+          msg: "Password reset link sent! Check your email.".tr(),
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+        );
+        Navigator.pop(context);
+      }
     } catch (e) {
       Fluttertoast.showToast(
         msg: "Error: ${e.toString()}".tr(),
@@ -80,9 +96,7 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
         decoration: InputDecoration(
           labelText: "Enter your email".tr(),
           focusColor: ApplicationColor,
-          labelStyle: GoogleFonts.charisSil(
-              color: Color(0xffAEAEAE)
-          ),
+          labelStyle: GoogleFonts.charisSil(color: Color(0xffAEAEAE)),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: const BorderSide(color: Color(0xffAEAEAE)),
@@ -111,19 +125,21 @@ class _ResetPasswordDialogState extends State<ResetPasswordDialog> {
           ),
         ),
         TextButton(
-          onPressed: _isLoading ? null : () => _resetPassword(_emailController.text.trim()),
+          onPressed: _isLoading
+              ? null
+              : () => _resetPassword(_emailController.text.trim()),
           child: _isLoading
               ? CircularProgressIndicator()
               : Text(
-            "Send Reset Email".tr(),
-            style: GoogleFonts.charisSil(
-              color: themeProvider.themeMode == ThemeMode.dark
-                  ? Colors.white
-                  : ApplicationColor,
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+                  "Send Reset Email".tr(),
+                  style: GoogleFonts.charisSil(
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : ApplicationColor,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
         ),
       ],
     );

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../../Components/Description Screen component.dart';
 import '../../../Components/service_card.dart';
@@ -14,17 +15,19 @@ class DevicesMaintenaceService extends StatelessWidget {
           backgroundColor: const Color(0xff69B5BB),
           title: Text(
             'Devices Service'.tr(),
-            style: TextStyle(
-              fontSize: 19,
+            style: GoogleFonts.castoro(
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/home/devices.png'),
-                alignment: Alignment.centerRight,
+                image: const AssetImage('assets/images/home/devices.png'),
+                alignment: context.locale.languageCode == 'ar'
+                    ? Alignment.centerLeft
+                    : Alignment.centerRight,
                 fit: BoxFit.contain,
               ),
             ),

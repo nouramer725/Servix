@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Client/Notification/notifaction%20really.dart';
@@ -12,6 +13,7 @@ import 'package:servix/Settings/About%20US.dart';
 import 'package:servix/Settings/Contact%20Us.dart';
 import 'package:servix/Settings/Password.dart';
 import 'package:servix/Settings/Privacy%20Policy.dart';
+import 'package:servix/Settings/Service%20Fees.dart';
 import 'package:servix/Settings/Terms%20&%20Conditions.dart';
 import 'package:servix/Settings/percentage%20sidebar.dart';
 import 'package:servix/Technician/AITechnician/Intro.dart';
@@ -212,6 +214,15 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                         ));
                   }),
                   _buildMenuItem(
+                      FontAwesomeIcons.sackDollar,
+                      "Service Fees".tr(), onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Servicefees(),
+                        ));
+                  }),
+                  _buildMenuItem(
                       Icons.privacy_tip_outlined, "Privacy Policy".tr(),
                       onTap: () {
                     Navigator.push(
@@ -298,37 +309,37 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                           builder: (context) => const Contactus(),
                         ));
                   }),
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Row(
-                      children: [
-                        Icon(Icons.dark_mode,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : ApplicationColor),
-                        const SizedBox(width: 16),
-                        Text(
-                          "Dark Theme".tr(),
-                          style: GoogleFonts.castoro(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black),
-                        ),
-                        const Spacer(),
-                        Switch(
-                          activeTrackColor: ApplicationColor,
-                          value: themeProvider.themeMode == ThemeMode.dark,
-                          onChanged: (value) {
-                            themeProvider.setThemeMode(
-                                value ? ThemeMode.dark : ThemeMode.light);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding:
+                  //       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  //   child: Row(
+                  //     children: [
+                  //       Icon(Icons.dark_mode,
+                  //           color: themeProvider.themeMode == ThemeMode.dark
+                  //               ? Colors.white
+                  //               : ApplicationColor),
+                  //       const SizedBox(width: 16),
+                  //       Text(
+                  //         "Dark Theme".tr(),
+                  //         style: GoogleFonts.castoro(
+                  //             fontSize: 17,
+                  //             fontWeight: FontWeight.w500,
+                  //             color: themeProvider.themeMode == ThemeMode.dark
+                  //                 ? Colors.white
+                  //                 : Colors.black),
+                  //       ),
+                  //       const Spacer(),
+                  //       Switch(
+                  //         activeTrackColor: ApplicationColor,
+                  //         value: themeProvider.themeMode == ThemeMode.dark,
+                  //         onChanged: (value) {
+                  //           themeProvider.setThemeMode(
+                  //               value ? ThemeMode.dark : ThemeMode.light);
+                  //         },
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   _buildMenuItem(Icons.logout, "Logout".tr(), onTap: () async {
                     showDialog(
                       barrierDismissible: false,

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Technician/Orders/DetailsScreen/Details_PendingOrders.dart';
 import '../../Theme/Theme_Provider.dart';
 import 'model/modelTech.dart';
 
@@ -17,194 +18,162 @@ class PreviousOrderCard extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: const Color(0xFFAEAEAE), width: 1.5),
-        ),
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(25),
-                        child: Image.network(
-                          orders.image ??
-                              'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          "${orders.FName} ${orders.LName}",
-                          style: GoogleFonts.cantataOne(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : Colors.black,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailsPendingOrdersTech(orders: orders),
+              ));
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: const Color(0xFFAEAEAE), width: 1.5),
+          ),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(25),
+                          child: Image.network(
+                            orders.image ??
+                                'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Description Of Service :'.tr(),
-                    style: GoogleFonts.castoro(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.white
-                          : Colors.black,
-                      decoration: TextDecoration.underline,
-                      decorationColor: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.white
-                          : Colors.black,
-                      decorationThickness: 2,
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            "${orders.FName} ${orders.LName}",
+                            style: GoogleFonts.cantataOne(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: isDark ? Colors.white : Colors.black,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        DetailsPendingOrdersTech(orders: orders)));
+                          },
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
+                            color: Color(0xFFAEAEAE),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Text(
-                        'Type of service :'.tr(),
-                        style: GoogleFonts.castoro(
-                            fontSize: 14,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          orders.ServiceType.tr(),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Text(
+                          'Type of service :'.tr(),
                           style: GoogleFonts.castoro(
-                            fontSize: 14,
-                            color: isDark ? Colors.white : Colors.black,
-                          ),
+                              fontSize: 14,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        'Description :'.tr(),
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          orders.Description,
-                          style: GoogleFonts.castoro(
-                            fontSize: 14,
-                            color: isDark ? Colors.white : Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        "Location :".tr(),
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          color: isDark ? Colors.white : Colors.black,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          orders.Location,
-                          style: GoogleFonts.castoro(
-                            fontSize: 14,
-                            color: isDark ? Colors.white : Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        'Your Offer:'.tr(),
-                        style: GoogleFonts.castoro(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          '${orders.previousOffer}'.tr(),
-                          style: GoogleFonts.castoro(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.calendar_today,
-                              size: 20,
-                              color: isDark ? Colors.white : Colors.black),
-                          const SizedBox(width: 4),
-                          Text(
-                            orders.Date.tr(),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            orders.ServiceType.tr(),
                             style: GoogleFonts.castoro(
                               fontSize: 14,
                               color: isDark ? Colors.white : Colors.black,
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(width: 20),
-                      Row(
-                        children: [
-                          Icon(Icons.access_time,
-                              size: 20,
-                              color: isDark ? Colors.white : Colors.black),
-                          const SizedBox(width: 4),
-                          Text(
-                            orders.Time.tr(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Text(
+                          "Status :".tr(),
+                          style: GoogleFonts.castoro(
+                              fontSize: 14,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black),
+                        ),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            orders.Status.tr(),
                             style: GoogleFonts.castoro(
                               fontSize: 14,
-                              color: isDark ? Colors.white : Colors.black,
-                              fontWeight: FontWeight.bold,
+                              color: orders.Status.toLowerCase() == 'pending'
+                                  ? Colors.orangeAccent
+                                  : (themeProvider.themeMode == ThemeMode.dark
+                                      ? Colors.white
+                                      : Colors.black),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.calendar_today,
+                                size: 20,
+                                color: isDark ? Colors.white : Colors.black),
+                            const SizedBox(width: 4),
+                            Text(
+                              orders.Date.tr(),
+                              style: GoogleFonts.castoro(
+                                fontSize: 14,
+                                color: isDark ? Colors.white : Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 20),
+                        Row(
+                          children: [
+                            Icon(Icons.access_time,
+                                size: 20,
+                                color: isDark ? Colors.white : Colors.black),
+                            const SizedBox(width: 4),
+                            Text(
+                              orders.Time.tr(),
+                              style: GoogleFonts.castoro(
+                                fontSize: 14,
+                                color: isDark ? Colors.white : Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

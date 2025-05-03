@@ -7,6 +7,7 @@ class OrderModelTech {
   final String? LName;
   final String? image;
   final String Location;
+  final String ServiceImage;
   final String apartment;
   final String building;
   final String street;
@@ -22,6 +23,7 @@ class OrderModelTech {
       required this.Date,
       required this.Time,
       required this.Location,
+      required this.ServiceImage,
       required this.apartment,
       required this.building,
       required this.street,

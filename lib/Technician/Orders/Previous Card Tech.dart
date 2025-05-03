@@ -2,9 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:servix/Technician/Orders/Details_Pervious,Process_Screen.dart';
+import 'package:servix/Technician/Orders/DetailsScreen/Details_Previous.dart';
 import '../../Theme/Theme_Provider.dart';
-import 'Details_Screen.dart';
 import 'model/modelTech.dart';
 
 class PreviousOrderCardTech extends StatelessWidget {
@@ -23,7 +22,7 @@ class PreviousOrderCardTech extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DetailsPreviousScreen(
+                builder: (context) => DetailsPreviousTech(
                   orders: orders,
                 ),
               ));
@@ -63,6 +62,20 @@ class PreviousOrderCardTech extends StatelessWidget {
                             ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        DetailsPreviousTech(orders: orders)));
+                          },
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
+                            color: Color(0xFFAEAEAE),
                           ),
                         ),
                       ],
@@ -117,8 +130,6 @@ class PreviousOrderCardTech extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Row(
                           children: [

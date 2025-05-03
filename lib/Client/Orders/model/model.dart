@@ -23,6 +23,7 @@ class OrderModel {
   final String technicianSub;
   final String technicianMain;
   final String technicianDescription;
+  final String technicianOffer;
   final String technicianLinkSocialMedia;
 
   const OrderModel({
@@ -49,6 +50,7 @@ class OrderModel {
     required this.technicianPhone,
     required this.technicianSub,
     required this.technicianMain,
+    required this.technicianOffer,
     required this.technicianDescription,
     required this.technicianLinkSocialMedia,
   });

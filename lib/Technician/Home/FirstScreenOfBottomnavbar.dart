@@ -181,7 +181,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                                 FirebaseAuth.instance.currentUser!.uid),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
-                                return Text("Error fetching data");
+                                return Text("Error loading data".tr());
                               } else if (snapshot.hasData) {
                                 return Text(
                                   snapshot.data.toString(),
@@ -350,7 +350,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                           if (filteredSnapshot.hasError ||
                               !filteredSnapshot.hasData) {
                             return Center(
-                                child: Text("loading filtered orders".tr()));
+                                child: Text("loading orders...".tr()));
                           }
 
                           final orders = filteredSnapshot.data!;
@@ -445,6 +445,7 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
           Time: data['selectedTime'] ?? 'No Time',
           Location: data['area'] ?? 'No Location',
           apartment: data['apartment'] ?? 'No Apartment',
+          ServiceImage: data['serviceImage']?.toString() ?? '',
           building: data['building'] ?? 'No building',
           street: data['street'] ?? 'No street',
           fileUrls: List<String>.from(data['fileUrls'] ?? []),

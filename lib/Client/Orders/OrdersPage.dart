@@ -139,6 +139,7 @@ class _OrdersPageState extends State<OrdersPage> {
 
           return OrderModel(
             ServiceType: data['serviceTitle']?['en'] ?? 'No Service Type',
+            technicianOffer: data['technicianOffer']?.toString() ?? '',
             Description: data['description']?.toString() ?? '',
             ServiceImage: data['serviceImage']?.toString() ?? '',
             Status: data['Status']?.toString() ?? '',

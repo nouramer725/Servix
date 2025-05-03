@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:servix/Technician/Orders/Details_Screen.dart';
+import 'package:servix/Technician/Orders/DetailsScreen/Details_Pending.dart';
 import '../../Theme/Theme_Provider.dart';
 import 'model/modelTech.dart';
 
@@ -22,7 +22,7 @@ class OrderCardTech extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => DetailsScreen(
+                builder: (context) => DetailsPendingTech(
                   orders: orders,
                 ),
               ));
@@ -60,6 +60,20 @@ class OrderCardTech extends StatelessWidget {
                         ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailsPendingTech(orders: orders)));
+                      },
+                      child: const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 20,
+                        color: Color(0xFFAEAEAE),
                       ),
                     ),
                   ],
@@ -110,8 +124,6 @@ class OrderCardTech extends StatelessWidget {
                   ],
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Row(
                       children: [
@@ -154,242 +166,3 @@ class OrderCardTech extends StatelessWidget {
     );
   }
 }
-//        onTap: () {
-//           showDialog(
-//             context: context,
-//             builder: (context) => Dialog(
-//               backgroundColor: Colors.white,
-//               shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(40)),
-//               child: Padding(
-//                 padding: const EdgeInsets.all(30.0),
-//                 child: Column(
-//                   mainAxisSize: MainAxisSize.min,
-//                   children: [
-//                     // Title
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.start,
-//                       children: [
-//                         Icon(Icons.attach_money,
-//                             size: 32, color: ApplicationColor),
-//                         Text(
-//                           "Offer to".tr(),
-//                           style: GoogleFonts.judson(
-//                               fontSize: 28, fontWeight: FontWeight.w500),
-//                         ),
-//                         const SizedBox(width: 4),
-//                         Expanded(
-//                           child: Text(
-//                             '${orders.FName}',
-//                             style: GoogleFonts.judson(
-//                                 fontSize: 28, fontWeight: FontWeight.w500),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                     const SizedBox(height: 10),
-//                     Row(
-//                       children: [
-//                         Text(
-//                           "Your Offer Price is:".tr(),
-//                           style: GoogleFonts.judson(fontSize: 20),
-//                         ),
-//                         const SizedBox(width: 10),
-//                         Expanded(
-//                           child: Container(
-//                             decoration: BoxDecoration(
-//                               color: Colors.grey.shade200,
-//                               borderRadius: BorderRadius.circular(30),
-//                             ),
-//                             padding: const EdgeInsets.symmetric(
-//                                 horizontal: 20, vertical: 5),
-//                             child: TextField(
-//                               controller: priceController,
-//                               keyboardType: TextInputType.number,
-//                               textAlign: TextAlign.center,
-//                               style: GoogleFonts.judson(
-//                                   fontSize: 19, fontWeight: FontWeight.bold),
-//                               decoration: const InputDecoration(
-//                                 border: InputBorder.none,
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.end,
-//                       children: [
-//                         TextButton(
-//                           child: Text(
-//                             "Cancel".tr(),
-//                             style: GoogleFonts.judson(
-//                                 fontSize: 25, color: Colors.black),
-//                           ),
-//                           onPressed: () {
-//                             Navigator.of(context).pop();
-//                           },
-//                         ),
-//                         TextButton(
-//                           child: Text(
-//                             "Offer".tr(),
-//                             style: GoogleFonts.judson(
-//                                 fontSize: 25, color: ApplicationColor),
-//                           ),
-//                           onPressed: () async {
-//                             String offerPrice = priceController.text;
-//                             if (priceController.text.isEmpty) {
-//                               Fluttertoast.showToast(
-//                                   msg: "Please enter a price".tr(),
-//                                   toastLength: Toast.LENGTH_SHORT,
-//                                   gravity: ToastGravity.TOP,
-//                                   backgroundColor: ApplicationColorWithOpacity,
-//                                   textColor: Colors.white,
-//                                   fontSize: 16.0);
-//                               return;
-//                             }
-//
-//                             try {
-//                               final currentUser =
-//                                   FirebaseAuth.instance.currentUser!;
-//                               final uid = currentUser.uid;
-//
-//                               // Fetch technician basic info
-//                               final technicianDoc = await FirebaseFirestore
-//                                   .instance
-//                                   .collection('technician')
-//                                   .doc(uid)
-//                                   .get();
-//                               final techData = technicianDoc.data()!;
-//                               final fullName =
-//                                   "${techData['first_name']} ${techData['last_name']}";
-//                               final phone = techData['phone'];
-//                               final subService = techData['sub_service'];
-//                               final mainService = techData['main_service'];
-//                               final Description = techData['description'];
-//                               final LinkSocialMedia =
-//                                   techData['LinkSocialMedia'];
-//
-//                               // Fetch profile image from uploads
-//                               final uploadsSnapshot = await FirebaseFirestore
-//                                   .instance
-//                                   .collection("user-files")
-//                                   .doc(uid)
-//                                   .collection("uploads")
-//                                   .limit(1)
-//                                   .get();
-//                               String? profileImageUrl;
-//                               if (uploadsSnapshot.docs.isNotEmpty) {
-//                                 profileImageUrl = uploadsSnapshot
-//                                     .docs.first['personalFileUrl'];
-//                               }
-//
-//                               // Fetch latest location
-//                               final locationSnapshot = await FirebaseFirestore
-//                                   .instance
-//                                   .collection("user-files")
-//                                   .doc(uid)
-//                                   .collection("locationDetails")
-//                                   .orderBy("timestamp", descending: true)
-//                                   .limit(1)
-//                                   .get();
-//                               String street = "Street not available";
-//                               String area = "Area not available";
-//                               if (locationSnapshot.docs.isNotEmpty) {
-//                                 final locData =
-//                                     locationSnapshot.docs.first.data();
-//                                 street = locData['street'] ?? street;
-//                                 area = locData['area'] ?? area;
-//                               }
-//
-//                               // Check if an offer already exists for this technician
-//                               final existingOfferQuery = await FirebaseFirestore
-//                                   .instance
-//                                   .doc(orders.docPath!)
-//                                   .collection("offers")
-//                                   .where('technicianId', isEqualTo: uid)
-//                                   .limit(1)
-//                                   .get();
-//
-//                               if (existingOfferQuery.docs.isNotEmpty) {
-//                                 final existingOfferDoc =
-//                                     existingOfferQuery.docs.first;
-//                                 await existingOfferDoc.reference.update({
-//                                   'technicianOffer': offerPrice,
-//                                   'timestamp': FieldValue.serverTimestamp(),
-//                                 });
-//
-//                                 Fluttertoast.showToast(
-//                                     msg: "Offer Updated Successfully".tr(),
-//                                     toastLength: Toast.LENGTH_SHORT,
-//                                     gravity: ToastGravity.TOP,
-//                                     backgroundColor:
-//                                         ApplicationColorWithOpacity,
-//                                     textColor: Colors.white,
-//                                     fontSize: 16.0);
-//                               } else {
-//                                 // If no offer exists, create a new one
-//                                 await FirebaseFirestore.instance
-//                                     .doc(orders.docPath!)
-//                                     .collection("offers")
-//                                     .doc(
-//                                         uid) // Use technician ID as document ID
-//                                     .set({
-//                                   'technicianId': uid,
-//                                   'technicianFirstName': techData['first_name'],
-//                                   'technicianLastName': techData['last_name'],
-//                                   'technicianPhone': phone,
-//                                   'technicianSubService': subService,
-//                                   'technicianMainService': mainService,
-//                                   'technicianName': fullName,
-//                                   'technicianImage': profileImageUrl,
-//                                   'technicianLocationStreet': street,
-//                                   'technicianLocationArea': area,
-//                                   'technicianOffer': offerPrice,
-//                                   'technicianDescription': Description,
-//                                   'technicianLinkSocialMedia': LinkSocialMedia,
-//                                   'status': 'offer-made', // ✅ Add this line
-//                                   'timestamp': FieldValue.serverTimestamp(),
-//                                 });
-//
-//                                 // final NotificationServiceTechniciann =
-//                                 //     NotificationServiceTechnician(
-//                                 //         flutterLocalNotificationsPlugin);
-//                                 // NotificationServiceTechniciann
-//                                 //     .showAndSaveNotificationTech(
-//                                 //   title: 'Offer Submitted',
-//                                 //   preview:
-//                                 //       'Your offer has been submitted successfully. Be waiting for acceptance or rejection from the client',
-//                                 // );
-//
-//                                 Fluttertoast.showToast(
-//                                     msg: "Offer Submitted Successfully".tr(),
-//                                     toastLength: Toast.LENGTH_SHORT,
-//                                     gravity: ToastGravity.TOP,
-//                                     backgroundColor:
-//                                         ApplicationColorWithOpacity,
-//                                     textColor: Colors.white,
-//                                     fontSize: 16.0);
-//                               }
-//
-//                               Navigator.of(context).pop();
-//                             } catch (e) {
-//                               print('Error submitting offer: $e');
-//                               Fluttertoast.showToast(
-//                                   msg: "Failed to submit offer".tr(),
-//                                   toastLength: Toast.LENGTH_SHORT,
-//                                   gravity: ToastGravity.TOP,
-//                                   backgroundColor: ApplicationColorWithOpacity,
-//                                   textColor: Colors.white,
-//                                   fontSize: 16.0);
-//                             }
-//                           },
-//                         )
-//                       ],
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           );
-//         },

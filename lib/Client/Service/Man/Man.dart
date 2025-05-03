@@ -16,16 +16,18 @@ class Manservice extends StatelessWidget {
           title: Text(
             'For Men'.tr(),
             style: GoogleFonts.castoro(
-              fontSize: 19,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/home/man.png'),
-                alignment: Alignment.centerRight,
+                image: const AssetImage('assets/images/home/man.png'),
+                alignment: context.locale.languageCode == 'ar'
+                    ? Alignment.centerLeft
+                    : Alignment.centerRight,
                 fit: BoxFit.contain,
               ),
             ),

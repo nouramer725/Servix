@@ -6,23 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Technician/Orders/model/modelTech.dart';
 import '../../../Components/Buttons.dart';
 import '../../../Technician/Orders/model/VideoPlayerWidget.dart';
 import '../../../Theme/Theme_Provider.dart';
 import '../../../constents/constent.dart';
-import '../../Offers/The Nearest.dart';
-import '../model/model.dart';
 
-class DetailsPending extends StatefulWidget {
-  final OrderModel orders;
+class DetailsProcessTech extends StatefulWidget {
+  final OrderModelTech orders;
 
-  const DetailsPending({super.key, required this.orders});
+  const DetailsProcessTech({super.key, required this.orders});
 
   @override
-  State<DetailsPending> createState() => _DetailsPendingState();
+  State<DetailsProcessTech> createState() => _DetailsProcessTechState();
 }
 
-class _DetailsPendingState extends State<DetailsPending> {
+class _DetailsProcessTechState extends State<DetailsProcessTech> {
   double _blurValue = 0;
   int currentIndex = 0;
 
@@ -30,6 +29,7 @@ class _DetailsPendingState extends State<DetailsPending> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final orders = widget.orders;
+    // number of url files in carousel
     return Scaffold(
       body: Stack(
         children: [
@@ -97,7 +97,6 @@ class _DetailsPendingState extends State<DetailsPending> {
                     ],
                   ),
           ),
-
           // Bottom sheet
           DraggableScrollableSheet(
             initialChildSize: 0.6,
@@ -255,7 +254,7 @@ class _DetailsPendingState extends State<DetailsPending> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                orders.Time,
+                                orders.Time.tr(),
                                 style: GoogleFonts.castoro(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -290,7 +289,7 @@ class _DetailsPendingState extends State<DetailsPending> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                orders.Date,
+                                orders.Date.tr(),
                                 style: GoogleFonts.castoro(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -311,30 +310,68 @@ class _DetailsPendingState extends State<DetailsPending> {
                           : Colors.black12,
                       thickness: 2,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       children: [
-                        Expanded(
-                          child: GradientButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => TheNearestScreen(
-                                            orderId: orders.orderId,
-                                          )));
-                            },
-                            text: "Offers".tr(),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
+                        Text("Price:".tr(),
+                            style: GoogleFonts.castoro(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            )),
+                        const SizedBox(width: 8),
+                        Text("${orders.previousOffer}",
+                            style: GoogleFonts.castoro(
+                              fontSize: 20,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            )),
+                        const SizedBox(width: 8),
+                        Text("EGP".tr(),
+                            style: GoogleFonts.castoro(
+                              fontSize: 20,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            )),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Divider(
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : Colors.black12,
+                      thickness: 2,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
                         Expanded(
                           child: WhiteButtonOffer(
-                            font: 27,
+                            text: "Cancel".tr(),
                             onPressed: () async {
                               await CancelOrder(context, orders);
                             },
-                            text: "Cancel".tr(),
+                            font: 18,
+                          ),
+                        ),
+                        Expanded(
+                          child: GradientButtonOffer(
+                            text: "Complete".tr(),
+                            onPressed: () async {
+                              await _completeOrder(context, orders);
+                            },
+                            font: 18,
                           ),
                         ),
                       ],
@@ -349,7 +386,51 @@ class _DetailsPendingState extends State<DetailsPending> {
     );
   }
 
-  Future<void> CancelOrder(BuildContext context, OrderModel order) async {
+  Future<void> incrementServiceCount(String technicianId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('technician') // Collection: technicians
+          .doc(technicianId) // Document: technicianId
+          .update({
+        'serviceCount': FieldValue.increment(1), // Increment serviceCount by 1
+      });
+    } catch (e) {
+      print("Error incrementing service count: $e");
+    }
+  }
+
+  Future<void> _completeOrder(
+      BuildContext context, OrderModelTech order) async {
+    try {
+      final docRef = FirebaseFirestore.instance.doc(order.docPath!);
+      await docRef.update({'Status': 'Finished'});
+
+      await incrementServiceCount(FirebaseAuth.instance.currentUser!.uid);
+
+      // Show success message
+      Fluttertoast.showToast(
+        msg: "Order completed successfully!".tr(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Navigator.pop(context);
+    } catch (e) {
+      // Handle errors
+      Fluttertoast.showToast(
+        msg: 'Failed to complete order'.tr(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  Future<void> CancelOrder(BuildContext context, OrderModelTech order) async {
     var themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
     bool? confirmCancellation = await showDialog<bool>(
@@ -393,7 +474,8 @@ class _DetailsPendingState extends State<DetailsPending> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(true);
+                Navigator.of(context)
+                    .pop(true); // User confirms the cancellation
               },
               child: Text("Yes".tr(),
                   style: GoogleFonts.castoro(
@@ -410,26 +492,19 @@ class _DetailsPendingState extends State<DetailsPending> {
     // If the user confirmed the cancellation, proceed with the order update
     if (confirmCancellation == true) {
       try {
-        final user = FirebaseAuth.instance.currentUser;
-        final uid = user!.uid;
+        final docRef = FirebaseFirestore.instance.doc(order.docPath!);
+        await docRef.update({'Status': 'Cancelled'});
 
-        await FirebaseFirestore.instance
-            .collection('Services Requests')
-            .doc(uid)
-            .collection('user-services')
-            .doc(order.orderId)
-            .update({'Status': 'Cancelled'});
-
-        Navigator.pop(context);
-
+        // Show success message
         Fluttertoast.showToast(
-          msg: "Order cancelled!".tr(),
+          msg: "Order Cancelled!".tr(),
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
           backgroundColor: ApplicationColorWithOpacity,
           textColor: Colors.white,
           fontSize: 16.0,
         );
+        Navigator.pop(context);
       } catch (e) {
         Fluttertoast.showToast(
           msg: "Failed to cancel order".tr(),

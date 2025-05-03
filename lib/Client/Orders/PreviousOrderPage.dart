@@ -82,6 +82,7 @@ class PreviousOrderPage extends StatelessWidget {
               data['technicianLinkSocialMedia'] =
                   offerData['technicianLinkSocialMedia'];
               data['technicianId'] = offerData['technicianId'];
+              data['technicianOffer'] = offerData['technicianOffer'];
             }
             return data;
           });
@@ -89,6 +90,7 @@ class PreviousOrderPage extends StatelessWidget {
           return offerFuture.then((updatedData) {
             return OrderModel(
               ServiceType: data['serviceTitle']?['en'] ?? 'No Service Type',
+              technicianOffer: data['technicianOffer']?.toString() ?? '',
               Description: updatedData['description'] ?? '',
               Location: data['area']?.toString() ?? '',
               apartment: data['apartment']?.toString() ?? '',

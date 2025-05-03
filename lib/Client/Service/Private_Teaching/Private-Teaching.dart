@@ -17,16 +17,19 @@ class Privateteachingservice extends StatelessWidget {
           title: Text(
             'Private Teaching'.tr(),
             style: GoogleFonts.castoro(
-              fontSize: 19,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/home/private_teaching2.png'),
-                alignment: Alignment.centerRight,
+                image: const AssetImage(
+                    'assets/images/home/private_teaching2.png'),
+                alignment: context.locale.languageCode == 'ar'
+                    ? Alignment.centerLeft
+                    : Alignment.centerRight,
               ),
             ),
           ),

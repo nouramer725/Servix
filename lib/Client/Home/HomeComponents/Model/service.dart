@@ -8,7 +8,6 @@ import 'package:servix/Client/Service/Home_Service/Home-Service.dart';
 import 'package:servix/Client/Service/Man/Man.dart';
 import 'package:servix/Client/Service/Private_Teaching/Private-Teaching.dart';
 import 'package:servix/Client/Service/Woman/Woman.dart';
-
 import '../../../../Components/Description Screen component.dart';
 
 class Service {
@@ -37,7 +36,7 @@ class SubService {
 List<Service> Allservices = [
   Service(
     title: 'Home Service'.tr(),
-    image: 'assets/images/search/Home.png',
+    image: 'assets/images/home/home5.png',
     onTap: () {
       HomeService();
     },
