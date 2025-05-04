@@ -516,40 +516,53 @@ class _DetailsPreviousState extends State<DetailsPrevious> {
                                         ],
                                       ),
                                       const SizedBox(height: 10),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "Comment:".tr(),
-                                            style: GoogleFonts.castoro(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: themeProvider.themeMode ==
-                                                      ThemeMode.dark
-                                                  ? Colors.white
-                                                  : Colors.black,
+                                      if ((userRating['comment'] ?? '')
+                                          .trim()
+                                          .isNotEmpty) ...[
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Comment:".tr(),
+                                              style: GoogleFonts.castoro(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    themeProvider.themeMode ==
+                                                            ThemeMode.dark
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            userRating['comment'],
-                                            style: GoogleFonts.castoro(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: themeProvider.themeMode ==
-                                                      ThemeMode.dark
-                                                  ? Colors.white
-                                                  : Colors.black,
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                userRating['comment'],
+                                                style: GoogleFonts.castoro(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.normal,
+                                                  color:
+                                                      themeProvider.themeMode ==
+                                                              ThemeMode.dark
+                                                          ? Colors.white
+                                                          : Colors.black,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                                maxLines: 5,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             ),
-                                            textAlign: TextAlign.left,
-                                          ),
-                                          Divider(
-                                            color: themeProvider.themeMode ==
-                                                    ThemeMode.dark
-                                                ? Colors.white
-                                                : Colors.black12,
-                                            thickness: 2,
-                                          ),
-                                        ],
+                                          ],
+                                        ),
+                                      ],
+                                      const SizedBox(height: 10),
+                                      Divider(
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.white
+                                            : Colors.black12,
+                                        thickness: 2,
                                       ),
                                     ],
                                   );

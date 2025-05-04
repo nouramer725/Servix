@@ -20,6 +20,7 @@ class HomeTechFirstScreen extends StatefulWidget {
 
 class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
   Map<String, dynamic>? userData;
+  int selectedIndex = 0;
 
   Future<Map<String, dynamic>?> getUserData() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -288,111 +289,116 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                         ? Colors.white
                         : const Color(0xFF7B7B7B)),
               ),
-              FutureBuilder<String>(
-                future: getTechnicianSubservice(),
-                builder: (context, subserviceSnapshot) {
-                  if (subserviceSnapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    // Show loading indicator while waiting for data
-                    return Center(
-                        child: CircularProgressIndicator(
-                      color: ApplicationColor,
-                    ));
-                  }
+              if (selectedIndex == 0) ...[
+                const SizedBox(height: 10),
+                FutureBuilder<String>(
+                  future: getTechnicianSubservice(),
+                  builder: (context, subserviceSnapshot) {
+                    if (subserviceSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      // Show loading indicator while waiting for data
+                      return Center(
+                          child: CircularProgressIndicator(
+                        color: ApplicationColor,
+                      ));
+                    }
 
-                  if (subserviceSnapshot.hasError ||
-                      !subserviceSnapshot.hasData) {
-                    // Handle error and no data case
-                    return Center(
-                        child: Text("Error fetching subservice".tr()));
-                  }
+                    if (subserviceSnapshot.hasError ||
+                        !subserviceSnapshot.hasData) {
+                      // Handle error and no data case
+                      return Center(
+                          child: Text("Error fetching subservice".tr()));
+                    }
 
-                  final technicianSubservice = subserviceSnapshot
-                      .data!; // Ensure that data is non-null here
-                  final uid = FirebaseAuth.instance.currentUser!.uid;
+                    final technicianSubservice = subserviceSnapshot
+                        .data!; // Ensure that data is non-null here
+                    final uid = FirebaseAuth.instance.currentUser!.uid;
 
-                  return FutureBuilder<QuerySnapshot>(
-                    future: FirebaseFirestore.instance
-                        .collectionGroup('user-services')
-                        .where('Status', isEqualTo: 'Pending')
-                        .get(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        // Show loading indicator while waiting for orders data
-                        // return Center(child: CircularProgressIndicator(
-                        //   color: ApplicationColor,
-                        // ));
-                      }
-
-                      if (snapshot.hasError || !snapshot.hasData) {
-                        // Handle error or no data in orders
-                        return Center(child: Text("loading orders...".tr()));
-                      }
-
-                      final docs = snapshot.data!.docs;
-
-                      // Filter by localized service title
-                      final filteredDocs = docs.where((doc) {
-                        final data = doc.data() as Map<String, dynamic>;
-                        final serviceTitle = data['serviceTitle'];
-                        if (serviceTitle is Map<String, dynamic>) {
-                          return serviceTitle.values.any(
-                            (val) =>
-                                val.toString().toLowerCase().trim() ==
-                                technicianSubservice.toLowerCase().trim(),
-                          );
+                    return FutureBuilder<QuerySnapshot>(
+                      future: FirebaseFirestore.instance
+                          .collectionGroup('user-services')
+                          .where('Status', isEqualTo: 'Pending')
+                          .get(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          // Show loading indicator while waiting for orders data
+                          // return Center(child: CircularProgressIndicator(
+                          //   color: ApplicationColor,
+                          // ));
                         }
-                        return false;
-                      }).toList();
 
-                      return FutureBuilder<List<OrderModelTech>>(
-                        future: _filterOrdersWithOffers(filteredDocs, uid),
-                        builder: (context, filteredSnapshot) {
-                          if (filteredSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            // Show loading indicator while filtering orders
-                            // return Center(
-                            //     child: CircularProgressIndicator(
-                            //   color: ApplicationColor,
-                            // ));
-                          }
+                        if (snapshot.hasError || !snapshot.hasData) {
+                          // Handle error or no data in orders
+                          return Center(child: Text("loading orders...".tr()));
+                        }
 
-                          if (filteredSnapshot.hasError ||
-                              !filteredSnapshot.hasData) {
-                            return Center(
-                                child: Text("loading orders...".tr()));
-                          }
+                        final docs = snapshot.data!.docs;
 
-                          final orders = filteredSnapshot.data!;
-                          if (orders.isEmpty) {
-                            return Center(
-                              child: Text(
-                                "No Offers Made".tr(),
-                                style: GoogleFonts.castoro(
-                                    fontSize: 12,
-                                    color: themeProvider.themeMode ==
-                                            ThemeMode.dark
-                                        ? Colors.white
-                                        : Colors.black),
-                              ),
+                        // Filter by localized service title
+                        final filteredDocs = docs.where((doc) {
+                          final data = doc.data() as Map<String, dynamic>;
+                          final serviceTitle = data['serviceTitle'];
+                          if (serviceTitle is Map<String, dynamic>) {
+                            return serviceTitle.values.any(
+                              (val) =>
+                                  val.toString().toLowerCase().trim() ==
+                                  technicianSubservice.toLowerCase().trim(),
                             );
                           }
+                          return false;
+                        }).toList();
 
-                          return SizedBox(
-                            height: 250,
-                            child: ListView.builder(
-                              itemCount: orders.length,
-                              itemBuilder: (context, index) {
-                                return PreviousOrderCard(orders: orders[index]);
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  );
-                },
-              )
+                        return FutureBuilder<List<OrderModelTech>>(
+                          future: _filterOrdersWithOffers(filteredDocs, uid),
+                          builder: (context, filteredSnapshot) {
+                            if (filteredSnapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              // Show loading indicator while filtering orders
+                              // return Center(
+                              //     child: CircularProgressIndicator(
+                              //   color: ApplicationColor,
+                              // ));
+                            }
+
+                            if (filteredSnapshot.hasError ||
+                                !filteredSnapshot.hasData) {
+                              return Center(
+                                  child: Text("loading orders...".tr()));
+                            }
+
+                            final orders = filteredSnapshot.data!;
+                            if (orders.isEmpty) {
+                              return Center(
+                                child: Text(
+                                  "No Offers Made".tr(),
+                                  style: GoogleFonts.castoro(
+                                      fontSize: 12,
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black),
+                                ),
+                              );
+                            }
+
+                            return SizedBox(
+                              height: 250,
+                              child: ListView.builder(
+                                itemCount: orders.length,
+                                itemBuilder: (context, index) {
+                                  return PreviousOrderCard(
+                                      orders: orders[index]);
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                )
+              ],
             ],
           ),
         ),

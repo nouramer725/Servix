@@ -557,9 +557,9 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                 size: 27,
               ),
               Image.asset(
-                "assets/NavigationBar/robot.png",
-                width: 30,
-                height: 30,
+                "assets/Application/robotfill.png",
+                width: 27,
+                height: 27,
               )
             ]),
       ),

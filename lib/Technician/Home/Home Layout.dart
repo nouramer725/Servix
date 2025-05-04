@@ -463,7 +463,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                 size: 27,
               ),
               Image.asset(
-                "assets/NavigationBar/robot.png",
+                "assets/Application/robotfill.png",
                 width: 27,
                 height: 27,
               )

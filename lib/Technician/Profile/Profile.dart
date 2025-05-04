@@ -427,63 +427,68 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                 },
               ),
               const SizedBox(height: 10),
-          userData == null
-              ? SizedBox.shrink() // No content to display when userData is null
-              : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Main Service:".tr(),
-                    style: GoogleFonts.castoro(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : const Color(0xFF676767)),
-                  ),
-                  SizedBox(width: 5),
-                  Text(
-                    "${userData!['main_service'] ?? 'N/A'}",
-                    style: GoogleFonts.castoro(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : const Color(0xFF676767)),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Sub Service:".tr(),
-                    style: GoogleFonts.castoro(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : const Color(0xFF676767)),
-                  ),
-                  SizedBox(width: 5),
-                  Text(
-                    "${userData!['sub_service'] ?? 'N/A'}",
-                    style: GoogleFonts.castoro(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : const Color(0xFF676767)),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Container(
+              userData == null
+                  ? SizedBox
+                      .shrink() // No content to display when userData is null
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Main Service:".tr(),
+                              style: GoogleFonts.castoro(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : const Color(0xFF676767)),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              "${userData!['main_service'] ?? 'N/A'}",
+                              style: GoogleFonts.castoro(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : const Color(0xFF676767)),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Sub Service:".tr(),
+                              style: GoogleFonts.castoro(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : const Color(0xFF676767)),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              "${userData!['sub_service'] ?? 'N/A'}",
+                              style: GoogleFonts.castoro(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : const Color(0xFF676767)),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+              Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: MediaQuery.of(context).size.height * 0.19,
                 margin: const EdgeInsets.all(17),
@@ -746,69 +751,87 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                           children: [
                             CircleAvatar(
                               radius: 30,
-                              backgroundImage:
-                                  NetworkImage(review['clientImage']),
+                              backgroundImage: NetworkImage(
+                                (review['clientImage'] != null &&
+                                        review['clientImage']
+                                            .toString()
+                                            .trim()
+                                            .isNotEmpty)
+                                    ? review['clientImage']
+                                    : 'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
+                              ),
                             ),
                             const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "${review['clientName']} ${review['clientLastName']}",
-                                  style: GoogleFonts.castoro(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: themeProvider.themeMode ==
-                                            ThemeMode.dark
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    review['comment'],
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${review['clientName']} ${review['clientLastName']}",
                                     style: GoogleFonts.castoro(
-                                      fontSize: 18,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       color: themeProvider.themeMode ==
                                               ThemeMode.dark
                                           ? Colors.white
-                                          : Colors.grey[400],
+                                          : Colors.black,
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 4),
-                                Row(
-                                  children: [
-                                    Row(
-                                      children: List.generate(
-                                        5,
-                                        (index) {
-                                          if (index < review['rating']) {
-                                            return const Icon(Icons.star,
-                                                color: Colors.yellow, size: 22);
-                                          } else {
-                                            return const Icon(Icons.star_border,
-                                                color: Colors.grey, size: 22);
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
+                                  if ((review['comment'] ?? '')
+                                      .trim()
+                                      .isNotEmpty) ...[
+                                    const SizedBox(height: 4),
                                     Text(
-                                      review['rating'].toString(),
+                                      review['comment'],
                                       style: GoogleFonts.castoro(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal,
                                         color: themeProvider.themeMode ==
                                                 ThemeMode.dark
                                             ? Colors.white
-                                            : Colors.black,
+                                            : Colors.grey[600],
                                       ),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
                                     ),
                                   ],
-                                ),
-                              ],
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Row(
+                                        children: List.generate(
+                                          5,
+                                          (index) {
+                                            if (index < review['rating']) {
+                                              return const Icon(Icons.star,
+                                                  color: Colors.yellow,
+                                                  size: 20);
+                                            } else {
+                                              return const Icon(
+                                                  Icons.star_border,
+                                                  color: Colors.grey,
+                                                  size: 20);
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        review['rating'].toString(),
+                                        style: GoogleFonts.castoro(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: themeProvider.themeMode ==
+                                                  ThemeMode.dark
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),

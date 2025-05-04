@@ -140,9 +140,7 @@ flutter:
     - assets/images/private-teaching/
     - assets/images/woman/
     - assets/images/social_media/
-    - assets/Application/SplashServix.mp4
     - assets/Application/
-    - assets/NavigationBar/
     - assets/Translation/ar.json
     - assets/Translation/en.json
     - .env
