@@ -50,6 +50,14 @@ class OrderCardImg extends StatelessWidget {
                             width: 50,
                             height: 50,
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.network(
+                                'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -70,10 +78,12 @@ class OrderCardImg extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        DetailsProcess(orders: orders)));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailsProcess(orders: orders),
+                              ),
+                            );
                           },
                           child: const Icon(
                             Icons.arrow_forward_ios,

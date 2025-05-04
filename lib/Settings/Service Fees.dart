@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart'; // For date formatting
+import 'package:intl/intl.dart';
 import 'package:servix/constents/constent.dart';
 import '../Theme/Theme_Provider.dart';
 
@@ -33,93 +33,77 @@ class _ServiceFeesState extends State<ServiceFees> {
           .get();
 
       Map<String, List<TechnicianOffer>> tempGroupedOffers = {};
-      Map<String, double> tempMonthlyTotalFees =
-          {}; // Temporary map for total fees per month
+      Map<String, double> tempMonthlyTotalFees = {};
 
       if (serviceRequestsSnapshot.docs.isNotEmpty) {
         for (final serviceDoc in serviceRequestsSnapshot.docs) {
           final serviceData = serviceDoc.data() as Map<String, dynamic>;
           print('Service Data for ${serviceDoc.id}: $serviceData');
 
-          // Fetch the technician's offer from the offers subcollection
+          // Check offer exists for this technician
           final offerSnapshot = await firestore
               .doc(serviceDoc.reference.path)
               .collection('offers')
               .doc(technicianId)
               .get();
 
-          if (offerSnapshot.exists) {
-            final offerData = offerSnapshot.data()!;
-            final dynamic rawFees = offerData['technicianFees'];
-            double parsedFees = 0.0;
-
-            if (rawFees is int) {
-              parsedFees = rawFees.toDouble();
-            } else if (rawFees is double) {
-              parsedFees = rawFees;
-            } else if (rawFees is String) {
-              parsedFees = double.tryParse(rawFees) ?? 0.0;
-            }
-
-            final date = serviceData['selectedDate'] ?? '';
-            final time = serviceData['selectedTime'] ?? '';
-            final fname = serviceData['firstName'] ?? '';
-            final lname = serviceData['lastName'] ?? '';
-
-            // Parse the date correctly
-            DateTime parsedDate = DateTime.now(); // Default value if invalid
-            try {
-              // Ensure the date string matches the format "dd-MM-yyyy"
-              parsedDate = DateFormat('dd-MM-yyyy').parse(date);
-            } catch (e) {
-              print("Error parsing date: $e");
-            }
-
-            final String monthKey = DateFormat.yMMMM()
-                .format(parsedDate); // Format month (e.g., May 2025)
-
-            if (!tempGroupedOffers.containsKey(monthKey)) {
-              tempGroupedOffers[monthKey] = [];
-              tempMonthlyTotalFees[monthKey] =
-                  0.0; // Initialize the total for this month
-            }
-
-            tempGroupedOffers[monthKey]!.add(TechnicianOffer(
-              clientId: serviceData['userId'] ?? '',
-              serviceId: serviceDoc.id,
-              firstName: fname,
-              lastName: lname,
-              time: time,
-              date: date,
-              serviceFees: parsedFees,
-            ));
-
-            // Add the fees for this service to the monthly total
-            tempMonthlyTotalFees[monthKey] =
-                (tempMonthlyTotalFees[monthKey] ?? 0.0) + parsedFees;
-          } else {
-            print(
-                'No offer document found for technician $technicianId in service ${serviceDoc.id}');
-            tempGroupedOffers.putIfAbsent(
-              'N/A',
-              () => [
-                TechnicianOffer(
-                  clientId: serviceData['userId'] ?? '',
-                  serviceId: serviceDoc.id,
-                  firstName: serviceData['firstName'] ?? 'N/A',
-                  lastName: serviceData['lastName'] ?? 'N/A',
-                  time: serviceData['selectedTime'] ?? 'N/A',
-                  date: serviceData['selectedDate'] ?? 'N/A',
-                  serviceFees: 0.0,
-                ),
-              ],
-            );
+          if (!offerSnapshot.exists) {
+            print('No offer for this technician in ${serviceDoc.id}');
+            continue;
           }
+
+          final offerData = offerSnapshot.data()!;
+          final dynamic rawFees = offerData['technicianFees'];
+          double parsedFees = 0.0;
+
+          if (rawFees is int) {
+            parsedFees = rawFees.toDouble();
+          } else if (rawFees is double) {
+            parsedFees = rawFees;
+          } else if (rawFees is String) {
+            parsedFees = double.tryParse(rawFees) ?? 0.0;
+          }
+
+          final dateStr = serviceData['selectedDate'] ?? '';
+          final time = serviceData['selectedTime'] ?? '';
+          final fname = serviceData['firstName'] ?? '';
+          final lname = serviceData['lastName'] ?? '';
+
+          if (dateStr.isEmpty) {
+            print("Skipping service ${serviceDoc.id} due to missing date");
+            continue;
+          }
+
+          DateTime parsedDate;
+          try {
+            parsedDate = DateFormat('dd-MM-yyyy').parse(dateStr);
+          } catch (e) {
+            print("Skipping invalid date format in ${serviceDoc.id}: $dateStr");
+            continue;
+          }
+
+          final String monthKey = DateFormat.yMMMM().format(parsedDate);
+
+          tempGroupedOffers.putIfAbsent(monthKey, () => []);
+          tempMonthlyTotalFees[monthKey] ??= 0.0;
+
+          tempGroupedOffers[monthKey]!.add(TechnicianOffer(
+            clientId: serviceData['userId'] ?? '',
+            serviceId: serviceDoc.id,
+            firstName: fname,
+            lastName: lname,
+            time: time,
+            date: dateStr,
+            serviceFees: parsedFees,
+          ));
+
+          tempMonthlyTotalFees[monthKey] =
+              (tempMonthlyTotalFees[monthKey]! + parsedFees);
         }
 
         setState(() {
           groupedOffers = tempGroupedOffers;
-          monthlyTotalFees = tempMonthlyTotalFees; // Store monthly totals
+          monthlyTotalFees = tempMonthlyTotalFees;
           print("Grouped Offers: $groupedOffers");
           print("Monthly Totals: $monthlyTotalFees");
         });
@@ -215,28 +199,32 @@ class _ServiceFeesState extends State<ServiceFees> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text(
-                                  'Month: $month',
-                                  style: GoogleFonts.castoro(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: themeProvider.themeMode ==
-                                            ThemeMode.dark
-                                        ? Colors.white
-                                        : Colors.black,
+                                Expanded(
+                                  child: Text(
+                                    'Month: $month',
+                                    style: GoogleFonts.castoro(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 10),
-                                Text(
-                                  'Total Fees: ${monthlyTotalFees[month]?.toStringAsFixed(2)} EGP',
-                                  style: GoogleFonts.castoro(
-                                    fontSize: 18,
-                                    color: themeProvider.themeMode ==
-                                            ThemeMode.dark
-                                        ? Colors.white
-                                        : Colors.black,
+                                Expanded(
+                                  child: Text(
+                                    'Total Fees: ${monthlyTotalFees[month]?.toStringAsFixed(2)} EGP',
+                                    style: GoogleFonts.castoro(
+                                      fontSize: 18,
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                    maxLines: 5,
                                   ),
                                 ),
                               ],

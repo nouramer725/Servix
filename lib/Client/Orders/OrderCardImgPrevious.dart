@@ -43,12 +43,20 @@ class OrderCardImgPrevious extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(25),
                           child: Image.network(
-                            orders.ProfileImage.isEmpty
+                            orders.ProfileImage.isNotEmpty
                                 ? orders.ProfileImage
                                 : 'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
                             width: 50,
                             height: 50,
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.network(
+                                'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -69,10 +77,11 @@ class OrderCardImgPrevious extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        DetailsPrevious(orders: orders)));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailsPrevious(orders: orders),
+                              ),
+                            );
                           },
                           child: const Icon(
                             Icons.arrow_forward_ios,
