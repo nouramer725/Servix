@@ -20,7 +20,7 @@ class ChatScreenTechnician extends StatefulWidget {
 
 class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
   ChatUser? _technician;
-  final ChatUser _bot = ChatUser(id: '2', firstName: 'Gemini');
+  final ChatUser _bot = ChatUser(id: '3', firstName: 'Gemini');
   final GeminiService _geminiService = GeminiService();
   List<ChatMessage> messages = [];
 
@@ -175,47 +175,12 @@ class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
         currentUser: _technician!,
         onSend: onSend,
         messages: messages,
-        messageListOptions:
-            MessageListOptions(dateSeparatorBuilder: (DateTime date) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              DateFormat('yyyy-MM-dd').format(date),
-              style: GoogleFonts.castoro(
-                fontWeight: FontWeight.bold,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.black,
-              ),
-            ),
-          );
-        }),
         inputOptions: InputOptions(
           cursorStyle: CursorStyle(
             color: themeProvider.themeMode == ThemeMode.dark
                 ? Colors.grey[300]
                 : Colors.grey[700],
           ),
-          // trailing: [
-          //   IconButton(
-          //       icon: Icon(Icons.camera_alt,
-          //           color: themeProvider.themeMode == ThemeMode.dark
-          //               ? Colors.white
-          //               : Colors.black,
-          //           size: 30),
-          //       onPressed: () async {
-          //         final ImagePicker picker = ImagePicker();
-          //         final XFile? image =
-          //             await picker.pickImage(source: ImageSource.camera);
-          //
-          //         if (image != null) {
-          //           File imageFile = File(image.path);
-          //           print("Picked image path: ${imageFile.path}");
-          //         } else {
-          //           print("No image selected.");
-          //         }
-          //       }),
-          // ],
           inputDecoration: InputDecoration(
             hintText: 'Type your message here'.tr(),
             filled: true,

@@ -181,26 +181,6 @@ class _ChatScreenClientState extends State<ChatScreenClient> {
                 ? Colors.grey[300]
                 : Colors.grey[700],
           ),
-          // trailing: [
-          //   IconButton(
-          //       icon: Icon(Icons.camera_alt,
-          //           color: themeProvider.themeMode == ThemeMode.dark
-          //               ? Colors.white
-          //               : Colors.black,
-          //           size: 30),
-          //       onPressed: () async {
-          //         final ImagePicker picker = ImagePicker();
-          //         final XFile? image =
-          //             await picker.pickImage(source: ImageSource.camera);
-          //
-          //         if (image != null) {
-          //           File imageFile = File(image.path);
-          //           print("Picked image path: ${imageFile.path}");
-          //         } else {
-          //           print("No image selected.");
-          //         }
-          //       }),
-          // ],
           inputDecoration: InputDecoration(
             hintText: 'Type your message here'.tr(),
             filled: true,
