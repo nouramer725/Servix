@@ -621,6 +621,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
         gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
         textColor: Colors.white,
+        fontSize: 16.0,
       );
       return;
     }
@@ -673,9 +674,10 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
       Fluttertoast.showToast(
         msg: 'Post uploaded successfully!'.tr(),
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
         textColor: Colors.white,
+        fontSize: 16.0,
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -943,9 +945,10 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
       Fluttertoast.showToast(
         msg: 'Comment added successfully!'.tr(),
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
         textColor: Colors.white,
+        fontSize: 16.0,
       );
     } catch (e) {
       print('Error adding comment: $e');

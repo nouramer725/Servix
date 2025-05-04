@@ -144,6 +144,13 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
       });
       _loadUserData();
       Navigator.pop(context);
+      Fluttertoast.showToast(
+          msg: 'Profile updated successfully'.tr(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 
@@ -252,6 +259,13 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
         'main_service': mainService,
         'sub_service': subService,
       });
+      Fluttertoast.showToast(
+          msg: 'Profile updated successfully'.tr(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0);
       _loadUserData(); // Refresh UI
     }
   }
@@ -439,6 +453,13 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
     setState(() {
       description = newDescription;
     });
+    Fluttertoast.showToast(
+        msg: 'Profile updated successfully'.tr(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 
   void _showEditDialogDiscription() {
@@ -615,6 +636,13 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                 }
 
                 Navigator.pop(context);
+                Fluttertoast.showToast(
+                    msg: 'Profile updated successfully'.tr(),
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.TOP,
+                    backgroundColor: ApplicationColorWithOpacity,
+                    textColor: Colors.white,
+                    fontSize: 16.0);
               },
               child: Text("Update".tr(),
                   style: GoogleFonts.castoro(
@@ -670,6 +698,13 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
     setState(() {
       linkSocialMedia = newSocial;
     });
+    Fluttertoast.showToast(
+        msg: 'Profile updated successfully'.tr(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 
   void _showEditDialogSocialMedia() {

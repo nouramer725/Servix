@@ -429,7 +429,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Text(
                           "Change Your Location".tr(),
                           style: GoogleFonts.castoro(
-                            fontSize: 25,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: themeProvider.themeMode == ThemeMode.dark
                                 ? Colors.white
