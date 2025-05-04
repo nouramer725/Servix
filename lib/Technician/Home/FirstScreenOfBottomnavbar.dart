@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Settings/Service%20Fees.dart';
 import 'package:servix/Technician/Profile/Profile.dart';
 import '../../../../Theme/Theme_Provider.dart';
 import '../../constents/constent.dart';
@@ -158,54 +159,63 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(18),
-                      decoration: BoxDecoration(
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.grey.shade700
-                            : Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            spreadRadius: 0.5,
-                            blurRadius: 5,
-                            offset: const Offset(3, 3),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          FutureBuilder<int>(
-                            future: getServiceCount(
-                                FirebaseAuth.instance.currentUser!.uid),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return Text("Error loading data".tr());
-                              } else if (snapshot.hasData) {
-                                return Text(
-                                  snapshot.data.toString(),
-                                  style: GoogleFonts.castoro(
-                                    fontSize: 40,
-                                    color: const Color(0xFF9A9A9A),
-                                  ),
-                                );
-                              } else {
-                                // Fallback value if no data or loading
-                                return Text("0",
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ServiceFees(),
+                            ));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.grey.shade700
+                              : Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              spreadRadius: 0.5,
+                              blurRadius: 5,
+                              offset: const Offset(3, 3),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            FutureBuilder<int>(
+                              future: getServiceCount(
+                                  FirebaseAuth.instance.currentUser!.uid),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text("Error loading data".tr());
+                                } else if (snapshot.hasData) {
+                                  return Text(
+                                    snapshot.data.toString(),
                                     style: GoogleFonts.castoro(
                                       fontSize: 40,
                                       color: const Color(0xFF9A9A9A),
-                                    ));
-                              }
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          Text("Total Jobs".tr(),
-                              style: GoogleFonts.castoro(
-                                  fontSize: 16,
-                                  color: const Color(0xFF9A9A9A))),
-                        ],
+                                    ),
+                                  );
+                                } else {
+                                  // Fallback value if no data or loading
+                                  return Text("0",
+                                      style: GoogleFonts.castoro(
+                                        fontSize: 40,
+                                        color: const Color(0xFF9A9A9A),
+                                      ));
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            Text("Total Jobs".tr(),
+                                style: GoogleFonts.castoro(
+                                    fontSize: 16,
+                                    color: const Color(0xFF9A9A9A))),
+                          ],
+                        ),
                       ),
                     ),
                   ),
