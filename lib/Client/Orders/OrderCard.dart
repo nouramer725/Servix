@@ -36,6 +36,7 @@ class OrderCard extends StatelessWidget {
             child: Stack(
               children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
@@ -92,56 +93,24 @@ class OrderCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Text(
-                          'Type of service :'.tr(),
-                          style: GoogleFonts.castoro(
-                              fontSize: 14,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            orders.ServiceType.tr(),
-                            style: GoogleFonts.castoro(
-                                fontSize: 14,
-                                color: themeProvider.themeMode == ThemeMode.dark
-                                    ? Colors.white
-                                    : Colors.black),
-                            maxLines: 5,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "${'Service Type:'.tr()} ${orders.ServiceType.tr()}",
+                      style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Text(
-                          'Status :'.tr(),
-                          style: GoogleFonts.castoro(
-                              fontSize: 14,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            orders.Status.tr(),
-                            style: GoogleFonts.castoro(
-                              fontSize: 14,
-                              color: orders.Status.toLowerCase() == 'pending'
-                                  ? Colors.orangeAccent
-                                  : (themeProvider.themeMode == ThemeMode.dark
-                                      ? Colors.white
-                                      : Colors.black),
-                            ),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "${'Status :'.tr()} ${orders.Status.tr()}",
+                      style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.orangeAccent,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Row(

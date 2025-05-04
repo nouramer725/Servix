@@ -849,6 +849,14 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                 child: TextButton(
                   onPressed: () async {
                     _deleteAccount(context);
+                    Fluttertoast.showToast(
+                      msg: "Your Account has been deleted successfully.",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.TOP,
+                      backgroundColor: ApplicationColorWithOpacity,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                    );
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(

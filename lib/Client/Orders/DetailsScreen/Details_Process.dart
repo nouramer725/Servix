@@ -128,32 +128,15 @@ class _DetailsProcessState extends State<DetailsProcess> {
                 child: ListView(
                   controller: scrollController,
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          "Service Type:".tr(),
-                          style: GoogleFonts.castoro(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            orders.ServiceType.tr(),
-                            style: GoogleFonts.castoro(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "${'Service Type:'.tr()} ${orders.ServiceType.tr()}",
+                      style: GoogleFonts.castoro(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
                     ),
                     const SizedBox(
                       height: 5,
@@ -179,31 +162,15 @@ class _DetailsProcessState extends State<DetailsProcess> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          "Status :".tr(),
-                          style: GoogleFonts.castoro(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Flexible(
-                          child: Text(
-                            orders.Status.tr(),
-                            style: GoogleFonts.castoro(
-                              fontSize: 20,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "${'Status :'.tr()} ${orders.Status.tr()}",
+                      style: GoogleFonts.castoro(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -316,41 +283,14 @@ class _DetailsProcessState extends State<DetailsProcess> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Column(
-                          children: [
-                            Text("Price:".tr(),
-                                style: GoogleFonts.castoro(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: themeProvider.themeMode ==
-                                            ThemeMode.dark
-                                        ? Colors.white
-                                        : const Color(0xFF9E9E9E))),
-                            Row(
-                              children: [
-                                Text(orders.technicianOffer,
-                                    style: GoogleFonts.castoro(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        color: themeProvider.themeMode ==
-                                                ThemeMode.dark
-                                            ? Colors.white
-                                            : Colors.black)),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text("EGP".tr(),
-                                    style: GoogleFonts.castoro(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        color: themeProvider.themeMode ==
-                                                ThemeMode.dark
-                                            ? Colors.white
-                                            : Colors.black))
-                              ],
-                            ),
-                          ],
-                        ),
+                        Text(
+                            '${'Price:'.tr()} ${orders.technicianOffer} ${'EGP'.tr()}',
+                            style: GoogleFonts.castoro(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black)),
                         Column(
                           children: [
                             GestureDetector(

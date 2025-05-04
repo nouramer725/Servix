@@ -62,7 +62,7 @@ class CurrentLocationButton extends StatelessWidget {
       right: 20,
       child: FloatingActionButton(
         backgroundColor: ApplicationColor,
-        child: Icon(Icons.my_location, color: Colors.white),
+        child: const Icon(Icons.my_location, color: Colors.white),
         onPressed: () => _getCurrentLocation(context),
       ),
     );

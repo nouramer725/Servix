@@ -109,6 +109,14 @@
 
 
   "Please try another image": "Please try another image",
+  "Service Fees": "Service Fees",
+  "Note: Service fees are calculated based on the services you made and finished.": "Note: Service fees are calculated based on the services you made and finished.",
+  "Reminder: You are required to pay the total service fees to the application at the end of each month.": "Reminder: You are required to pay the total service fees to the application at the end of each month.",
+  "Services:": "Services:",
+  "Month:": "Month:",
+  "Total Fees:": "Total Fees:",
+  "Service from": "Service from",
+  "Fees:": "Fees:",
   "loading orders...": "loading orders...",
   "This Technician doesn't has a social media link": "This Technician doesn't has a social media link",
   "Order cancellation was not confirmed": "Order cancellation was not confirmed",

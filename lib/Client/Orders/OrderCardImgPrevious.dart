@@ -13,6 +13,19 @@ class OrderCardImgPrevious extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    Color _getStatusColor(String status) {
+      if (status == "Finished") {
+        return Colors.green; // Green color for Finished status
+      } else if (status == "Cancelled") {
+        return Colors.red; // Red color for Cancelled status
+      } else {
+        return themeProvider.themeMode == ThemeMode.dark
+            ? Colors.white
+            : Colors
+                .black; // Default color if status is neither Finished nor Cancelled
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       child: GestureDetector(
@@ -79,7 +92,8 @@ class OrderCardImgPrevious extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DetailsPrevious(orders: orders),
+                                builder: (context) =>
+                                    DetailsPrevious(orders: orders),
                               ),
                             );
                           },
@@ -92,58 +106,26 @@ class OrderCardImgPrevious extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Text(
-                          'Type of service :'.tr(),
-                          style: GoogleFonts.castoro(
-                              fontSize: 14,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          orders.ServiceType.tr(),
-                          style: GoogleFonts.castoro(
-                              fontSize: 14,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black),
-                        ),
-                      ],
+                    Text(
+                      "${'Service Type:'.tr()} ${orders.ServiceType.tr()}",
+                      style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
                     ),
                     const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Text(
-                          'Status :'.tr(),
-                          style: GoogleFonts.castoro(
-                              fontSize: 14,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            orders.Status.tr(),
-                            style: GoogleFonts.castoro(
-                              fontSize: 14,
-                              color: orders.Status == "Finished"
-                                  ? Colors.green
-                                  : orders.Status == "Cancelled"
-                                      ? Colors.red
-                                      : (themeProvider.themeMode ==
-                                              ThemeMode.dark
-                                          ? Colors.white
-                                          : Colors.black),
-                            ),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "${'Status :'.tr()} ${orders.Status.tr()}",
+                      style: GoogleFonts.castoro(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: _getStatusColor(orders.Status),
+                      ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Icon(Icons.calendar_today_outlined,

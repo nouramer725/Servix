@@ -30,8 +30,9 @@ class _SearchBarLocationState extends State<SearchBarLocation> {
       return;
     }
 
+    final locale = context.locale.languageCode;
     final url =
-        "https://nominatim.openstreetmap.org/search?q=$query&format=json&limit=5";
+        "https://nominatim.openstreetmap.org/search?q=$query&format=json&limit=5&accept-language=$locale";
 
     setState(() => isLoading = true);
 

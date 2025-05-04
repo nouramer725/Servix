@@ -85,7 +85,12 @@ class _OfferCardState extends State<OfferCard> {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(widget.offer.technicianImage),
+                    backgroundImage: NetworkImage(
+                      (widget.offer.technicianImage != null &&
+                              widget.offer.technicianImage.trim().isNotEmpty)
+                          ? widget.offer.technicianImage
+                          : 'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
+                    ),
                     radius: 25,
                   ),
                   const SizedBox(width: 10),
@@ -105,7 +110,8 @@ class _OfferCardState extends State<OfferCard> {
                       FutureBuilder<double>(
                         future: getAverageRating(widget.offer.technicianId),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                           } else if (snapshot.hasError) {
                             print('Error loading rating');
                           }
@@ -115,7 +121,8 @@ class _OfferCardState extends State<OfferCard> {
                           // Determine how many full, half, and empty stars to show
                           int fullStars = avgRating.floor();
                           bool hasHalfStar = (avgRating - fullStars) >= 0.5;
-                          int emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+                          int emptyStars =
+                              5 - fullStars - (hasHalfStar ? 1 : 0);
 
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -160,27 +167,13 @@ class _OfferCardState extends State<OfferCard> {
                 ],
               ),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  Text(
-                    "EGP".tr(),
-                    style: GoogleFonts.castoro(
-                        fontSize: 20,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black),
-                  ),
-                  const SizedBox(width: 5,),
-                  Text(
-                    "${widget.offer.offer}",
-                    style: GoogleFonts.castoro(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black),
-                  ),
-                ],
+              Text(
+                "${'EGP'.tr()} ${widget.offer.offer}".tr(),
+                style: GoogleFonts.castoro(
+                    fontSize: 20,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.white
+                        : Colors.black),
               ),
               Row(
                 children: [

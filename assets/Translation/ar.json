@@ -108,6 +108,14 @@
 
 
   "Please try another image": "ارجو اختيار صورة شخصية اخري",
+  "Service Fees": "رسوم الخدمة",
+  "Note: Service fees are calculated based on the services you made and finished.": "ملاحظة: يتم حساب رسوم الخدمة بناءً على الخدمات التي قمت بها وأكملتها.",
+  "Reminder: You are required to pay the total service fees to the application at the end of each month.": "تذكير: يجب عليك دفع إجمالي رسوم الخدمة للتطبيق في نهاية كل شهر.",
+  "Services:": "الخدمات:",
+  "Month:": "الشهر:",
+  "Total Fees:": "إجمالي الرسوم:",
+  "Service from": "خدمة من ",
+  "Fees:": "الرسوم:",
   "loading orders...": "جاري التحميل...",
   "Time:": "الوقت:",
   "Date:": "التاريخ:",

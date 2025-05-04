@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -17,15 +18,12 @@ class ServiceFees extends StatefulWidget {
 class _ServiceFeesState extends State<ServiceFees> {
   bool isLoading = true;
   Map<String, List<TechnicianOffer>> groupedOffers = {};
-  Map<String, double> monthlyTotalFees =
-      {}; // To store total fees for each month
+  Map<String, double> monthlyTotalFees = {};
 
   Future<void> fetchFinishedServices() async {
     try {
       final String technicianId = FirebaseAuth.instance.currentUser!.uid;
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-      print('Fetching finished services for technician: $technicianId');
 
       final QuerySnapshot serviceRequestsSnapshot = await firestore
           .collectionGroup('user-services')
@@ -38,19 +36,14 @@ class _ServiceFeesState extends State<ServiceFees> {
       if (serviceRequestsSnapshot.docs.isNotEmpty) {
         for (final serviceDoc in serviceRequestsSnapshot.docs) {
           final serviceData = serviceDoc.data() as Map<String, dynamic>;
-          print('Service Data for ${serviceDoc.id}: $serviceData');
 
-          // Check offer exists for this technician
           final offerSnapshot = await firestore
               .doc(serviceDoc.reference.path)
               .collection('offers')
               .doc(technicianId)
               .get();
 
-          if (!offerSnapshot.exists) {
-            print('No offer for this technician in ${serviceDoc.id}');
-            continue;
-          }
+          if (!offerSnapshot.exists) continue;
 
           final offerData = offerSnapshot.data()!;
           final dynamic rawFees = offerData['technicianFees'];
@@ -69,20 +62,17 @@ class _ServiceFeesState extends State<ServiceFees> {
           final fname = serviceData['firstName'] ?? '';
           final lname = serviceData['lastName'] ?? '';
 
-          if (dateStr.isEmpty) {
-            print("Skipping service ${serviceDoc.id} due to missing date");
-            continue;
-          }
+          if (dateStr.isEmpty) continue;
 
           DateTime parsedDate;
           try {
             parsedDate = DateFormat('dd-MM-yyyy').parse(dateStr);
           } catch (e) {
-            print("Skipping invalid date format in ${serviceDoc.id}: $dateStr");
             continue;
           }
 
-          final String monthKey = DateFormat.yMMMM().format(parsedDate);
+          final String monthKey =
+              DateFormat.yMMMM(context.locale.languageCode).format(parsedDate);
 
           tempGroupedOffers.putIfAbsent(monthKey, () => []);
           tempMonthlyTotalFees[monthKey] ??= 0.0;
@@ -104,11 +94,7 @@ class _ServiceFeesState extends State<ServiceFees> {
         setState(() {
           groupedOffers = tempGroupedOffers;
           monthlyTotalFees = tempMonthlyTotalFees;
-          print("Grouped Offers: $groupedOffers");
-          print("Monthly Totals: $monthlyTotalFees");
         });
-      } else {
-        print('No finished services found.');
       }
     } catch (e) {
       print('Error fetching finished services: $e');
@@ -131,7 +117,7 @@ class _ServiceFeesState extends State<ServiceFees> {
             ? const Color(0xFF333739)
             : Colors.white,
         title: Text(
-          'Service Fees',
+          'Service Fees'.tr(),
           style: GoogleFonts.castoro(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -148,7 +134,8 @@ class _ServiceFeesState extends State<ServiceFees> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Note: Service fees are calculated based on the services you made and finished.',
+                'Note: Service fees are calculated based on the services you made and finished.'
+                    .tr(),
                 style: GoogleFonts.castoro(
                   fontSize: 17,
                   color: themeProvider.themeMode == ThemeMode.dark
@@ -157,7 +144,8 @@ class _ServiceFeesState extends State<ServiceFees> {
                 ),
               ),
               Text(
-                'Reminder: You are required to pay the total service fees to the application at the end of each month.',
+                'Reminder: You are required to pay the total service fees to the application at the end of each month.'
+                    .tr(),
                 style: GoogleFonts.castoro(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -172,7 +160,7 @@ class _ServiceFeesState extends State<ServiceFees> {
                 thickness: 2,
               ),
               Text(
-                'Services:',
+                'Services:'.tr(),
                 style: GoogleFonts.castoro(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -187,9 +175,7 @@ class _ServiceFeesState extends State<ServiceFees> {
               ),
               groupedOffers.isEmpty
                   ? Center(
-                      child: LinearProgressIndicator(
-                      color: ApplicationColor,
-                    ))
+                      child: LinearProgressIndicator(color: ApplicationColor))
                   : Column(
                       children: groupedOffers.entries.map((entry) {
                         final String month = entry.key;
@@ -202,7 +188,7 @@ class _ServiceFeesState extends State<ServiceFees> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    'Month: $month',
+                                    '${'Month:'.tr()} $month',
                                     style: GoogleFonts.castoro(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
@@ -216,7 +202,7 @@ class _ServiceFeesState extends State<ServiceFees> {
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
-                                    'Total Fees: ${monthlyTotalFees[month]?.toStringAsFixed(2)} EGP',
+                                    '${'Total Fees:'.tr()} ${monthlyTotalFees[month]?.toStringAsFixed(2).tr()} ${'EGP'.tr()}',
                                     style: GoogleFonts.castoro(
                                       fontSize: 18,
                                       color: themeProvider.themeMode ==
@@ -230,35 +216,71 @@ class _ServiceFeesState extends State<ServiceFees> {
                               ],
                             ),
                             const SizedBox(height: 5),
-                            ...offers.map((offer) => Card(
-                                  color:
-                                      themeProvider.themeMode == ThemeMode.dark
-                                          ? Colors.grey[900]
-                                          : Colors.grey[200],
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 6.0),
-                                  child: ListTile(
-                                    title: Text(
-                                      'Service from ${offer.firstName} ${offer.lastName}',
-                                      style: GoogleFonts.castoro(
-                                        fontWeight: FontWeight.bold,
-                                        color: themeProvider.themeMode ==
-                                                ThemeMode.dark
-                                            ? Colors.white
-                                            : Colors.black,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      'Date: ${offer.date}\nTime: ${offer.time}\nFees: ${offer.serviceFees} EGP',
-                                      style: GoogleFonts.castoro(
-                                        color: themeProvider.themeMode ==
-                                                ThemeMode.dark
-                                            ? Colors.white70
-                                            : Colors.black38,
-                                      ),
+                            ...offers.map((offer) {
+                              // Parse the date to display localized format
+                              DateTime dateObj;
+                              try {
+                                dateObj =
+                                    DateFormat('dd-MM-yyyy').parse(offer.date);
+                              } catch (e) {
+                                dateObj = DateTime.now();
+                              }
+                              final localizedDate =
+                                  DateFormat.yMMMd(context.locale.languageCode)
+                                      .format(dateObj);
+                              return Card(
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.grey[900]
+                                    : Colors.grey[200],
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 6.0),
+                                child: ListTile(
+                                  title: Text(
+                                    '${'Service from'.tr()} ${offer.firstName} ${offer.lastName}',
+                                    style: GoogleFonts.castoro(
+                                      fontWeight: FontWeight.bold,
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black,
                                     ),
                                   ),
-                                )),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${'Date:'.tr()} $localizedDate',
+                                        style: GoogleFonts.castoro(
+                                          color: themeProvider.themeMode ==
+                                                  ThemeMode.dark
+                                              ? Colors.white70
+                                              : Colors.black38,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${'Time:'.tr()} ${offer.time}',
+                                        style: GoogleFonts.castoro(
+                                          color: themeProvider.themeMode ==
+                                                  ThemeMode.dark
+                                              ? Colors.white70
+                                              : Colors.black38,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${'Fees:'.tr()} ${offer.serviceFees} ${'EGP'.tr()}',
+                                        style: GoogleFonts.castoro(
+                                          color: themeProvider.themeMode ==
+                                                  ThemeMode.dark
+                                              ? Colors.white70
+                                              : Colors.black38,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
                             const SizedBox(height: 20),
                           ],
                         );

@@ -127,32 +127,15 @@ class _DetailsPendingState extends State<DetailsPending> {
                 child: ListView(
                   controller: scrollController,
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          "Service Type:".tr(),
-                          style: GoogleFonts.castoro(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            orders.ServiceType.tr(),
-                            style: GoogleFonts.castoro(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "${'Service Type:'.tr()} ${orders.ServiceType.tr()}",
+                      style: GoogleFonts.castoro(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
                     ),
                     const SizedBox(
                       height: 5,
@@ -178,31 +161,15 @@ class _DetailsPendingState extends State<DetailsPending> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          "Status :".tr(),
-                          style: GoogleFonts.castoro(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Flexible(
-                          child: Text(
-                            orders.Status.tr(),
-                            style: GoogleFonts.castoro(
-                              fontSize: 20,
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "${'Status :'.tr()} ${orders.Status.tr()}",
+                      style: GoogleFonts.castoro(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
                     ),
                     const SizedBox(
                       height: 10,

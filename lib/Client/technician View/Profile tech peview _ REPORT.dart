@@ -59,20 +59,14 @@ class _ReportScreenState extends State<ReportScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Why are you reporting'.tr(),
-                          style: GoogleFonts.charisSil(
-                            fontSize: 24,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
+                  Text(
+                    'Why are you reporting'.tr(),
+                    style: GoogleFonts.charisSil(
+                      fontSize: 24,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -180,47 +174,25 @@ class _ReportScreenState extends State<ReportScreen> {
                             themeProvider.themeMode == ThemeMode.dark
                                 ? const Color(0xFF333739)
                                 : Colors.white,
-                        title: Row(
-                          children: [
-                            Text(
-                              'Block'.tr(),
-                              style: GoogleFonts.castoro(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: themeProvider.themeMode == ThemeMode.dark
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(widget.technicianName,
-                                style: GoogleFonts.castoro(
-                                    color: themeProvider.themeMode ==
-                                            ThemeMode.dark
-                                        ? Colors.white
-                                        : Colors.black))
-                          ],
+                        title: Text(
+                          '${'Block'.tr()} ${widget.technicianName}'.tr(),
+                          style: GoogleFonts.castoro(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
-                        content: Row(
-                          children: [
-                            Text('${widget.technicianName}',
-                                style: GoogleFonts.castoro(
-                                  fontSize: 18,
-                                  color:
-                                      themeProvider.themeMode == ThemeMode.dark
-                                          ? Colors.white
-                                          : Colors.black,
-                                )),
-                            Text(
-                                'will no longer be able to see your posts or start a conversation with you'
-                                    .tr(),
-                                style: GoogleFonts.castoro(
-                                    fontSize: 18,
-                                    color: themeProvider.themeMode ==
-                                            ThemeMode.dark
-                                        ? Colors.white
-                                        : Colors.black))
-                          ],
+                        content: Text(
+                          '${widget.technicianName} ${'will no longer be able to see your posts or start a conversation with you'.tr()}'
+                              .tr(),
+                          style: GoogleFonts.castoro(
+                              fontSize: 18,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black),
+                          maxLines: 5,
                         ),
                         actions: [
                           TextButton(
