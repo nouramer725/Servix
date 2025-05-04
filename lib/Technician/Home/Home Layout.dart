@@ -214,8 +214,8 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                         ));
                   }),
                   _buildMenuItem(
-                      FontAwesomeIcons.sackDollar,
-                      "Service Fees".tr(), onTap: () {
+                      FontAwesomeIcons.sackDollar, "Service Fees".tr(),
+                      onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -244,34 +244,33 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Icon(Icons.language,
                             color: themeProvider.themeMode == ThemeMode.dark
                                 ? Colors.white
                                 : ApplicationColor),
                         const SizedBox(width: 16),
-                        Text(
-                          "Language".tr(),
-                          style: GoogleFonts.castoro(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black,
+                        Expanded(
+                          child: Text(
+                            "Language".tr(),
+                            style: GoogleFonts.castoro(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                           ),
                         ),
                         const Spacer(),
                         DropdownButton<Locale>(
-                          value:
-                              localeProvider.locale, // Get the current locale
+                          value: localeProvider.locale,
                           onChanged: (Locale? locale) async {
                             if (locale != null) {
-                              await _saveLocale(
-                                  locale); // Save the selected locale in preferences
-                              context
-                                  .setLocale(locale); // Update the app's locale
-                              localeProvider
-                                  .setLocale(locale); // Update LocaleProvider
+                              await _saveLocale(locale);
+                              context.setLocale(locale);
+                              localeProvider.setLocale(locale);
                             }
                           },
                           dropdownColor:

@@ -228,32 +228,35 @@ class _SignInFormTechState extends State<SignInFormTech> {
               text: "Sign In".tr(),
             ),
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Don't have an account? ".tr(),
-                  style: GoogleFonts.charisSil(fontSize: 20),
-                ),
-                const SizedBox(width: 5),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SignUpTechnician()),
-                    );
-                  },
-                  child: Text(
-                    " SignUp".tr(),
-                    style: GoogleFonts.charisSil(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: ApplicationColor,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don't have an account? ".tr(),
+                    style: GoogleFonts.charisSil(fontSize: 20),
+                  ),
+                  const SizedBox(width: 5), // Space between the two texts
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SignUpTechnician()),
+                      );
+                    },
+                    child: Text(
+                      " SignUp".tr(),
+                      style: GoogleFonts.charisSil(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: ApplicationColor,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

@@ -247,7 +247,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
           'sub_service': selectedSubService ?? "",
           'role': role,
           'serviceCount': 0,
-          'serviceFees':0,
+          'serviceFees': 0,
           'status': 'pending',
           'created_at': Timestamp.now(),
         });
@@ -436,34 +436,36 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                         ),
                         const SizedBox(height: 10),
                         // Already have an account?
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Flexible(
-                              child: Text(
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
                                 "Already have an account? ".tr(),
                                 style: GoogleFonts.charisSil(fontSize: 20),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignInTechnician()),
-                                );
-                              },
-                              child: Text(
-                                " SignIn".tr(),
-                                style: GoogleFonts.charisSil(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: ApplicationColor,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SignInTechnician()),
+                                  );
+                                },
+                                child: Text(
+                                  " SignIn".tr(),
+                                  style: GoogleFonts.charisSil(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: ApplicationColor,
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),
