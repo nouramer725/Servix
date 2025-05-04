@@ -57,7 +57,7 @@ class _SignUpClientState extends State<SignUpClient> {
       _phoneError = null;
       _LnameError = null;
       _FnameError = null;
-      Gender== null;
+      Gender == null;
     });
 
     bool isValid = true;
@@ -255,7 +255,7 @@ class _SignUpClientState extends State<SignUpClient> {
       }
 
       final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
+          await googleUser.authentication;
 
       // Debug logging to inspect tokens
       print("Access Token: ${googleAuth.accessToken}");
@@ -272,7 +272,7 @@ class _SignUpClientState extends State<SignUpClient> {
       );
 
       final UserCredential userCredential =
-      await FirebaseAuth.instance.signInWithCredential(credential);
+          await FirebaseAuth.instance.signInWithCredential(credential);
       final User? user = userCredential.user;
 
       if (user == null) {
@@ -530,34 +530,35 @@ class _SignUpClientState extends State<SignUpClient> {
                           text: "Sign Up".tr(),
                         ),
                         const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Flexible(
-                              child: Text(
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
                                 "Already have an account? ".tr(),
                                 style: GoogleFonts.charisSil(fontSize: 20),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignInClient()),
-                                );
-                              },
-                              child: Text(
-                                " SignIn".tr(),
-                                style: GoogleFonts.charisSil(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: ApplicationColor,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SignInClient()),
+                                  );
+                                },
+                                child: Text(
+                                  " SignIn".tr(),
+                                  style: GoogleFonts.charisSil(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: ApplicationColor,
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 10),
                         Column(
@@ -604,12 +605,16 @@ class _SignUpClientState extends State<SignUpClient> {
                                             height: 28,
                                             width: 29,
                                           ),
-                                          const SizedBox(width: 10),
-                                          Text(
-                                            "Google".tr(),
-                                            style: GoogleFonts.inter(
-                                                fontSize: 16,
-                                                color: const Color(0xFF828282)),
+                                          Expanded(
+                                            child: Text(
+                                              "Google".tr(),
+                                              style: GoogleFonts.inter(
+                                                  fontSize: 16,
+                                                  color:
+                                                      const Color(0xFF828282)),
+                                              maxLines: 5,
+                                              textAlign: TextAlign.center,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -638,12 +643,16 @@ class _SignUpClientState extends State<SignUpClient> {
                                             color: Color(0xFF1877F2),
                                             size: 28,
                                           ),
-                                          const SizedBox(width: 10),
-                                          Text(
-                                            "Facebook".tr(),
-                                            style: GoogleFonts.inter(
-                                                fontSize: 16,
-                                                color: const Color(0xFF828282)),
+                                          Expanded(
+                                            child: Text(
+                                              "Facebook".tr(),
+                                              style: GoogleFonts.inter(
+                                                  fontSize: 16,
+                                                  color:
+                                                      const Color(0xFF828282)),
+                                              maxLines: 5,
+                                              textAlign: TextAlign.center,
+                                            ),
                                           ),
                                         ],
                                       ),

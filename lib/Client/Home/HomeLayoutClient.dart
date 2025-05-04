@@ -331,20 +331,23 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Icon(Icons.language,
                             color: themeProvider.themeMode == ThemeMode.dark
                                 ? Colors.white
                                 : ApplicationColor),
                         const SizedBox(width: 16),
-                        Text(
-                          "Language".tr(),
-                          style: GoogleFonts.castoro(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black,
+                        Expanded(
+                          child: Text(
+                            "Language".tr(),
+                            style: GoogleFonts.castoro(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
                           ),
                         ),
                         const Spacer(),

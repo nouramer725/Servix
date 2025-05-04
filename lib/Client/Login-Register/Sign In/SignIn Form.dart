@@ -373,31 +373,34 @@ class _SignInFormState extends State<SignInForm> {
                 onPressed: _isLoading ? null : _validateAndSubmit,
                 text: "Sign In".tr()),
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Don't have an account? ".tr(),
-                  style: GoogleFonts.charisSil(fontSize: 20),
-                ),
-                const SizedBox(width: 5),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignUpClient()),
-                    );
-                  },
-                  child: Text(
-                    " SignUp".tr(),
-                    style: GoogleFonts.charisSil(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: ApplicationColor,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don't have an account? ".tr(),
+                    style: GoogleFonts.charisSil(fontSize: 20),
+                  ),
+                  const SizedBox(width: 5), // Space between the two texts
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpClient()),
+                      );
+                    },
+                    child: Text(
+                      " SignUp".tr(),
+                      style: GoogleFonts.charisSil(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: ApplicationColor,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             const SizedBox(height: 10),
             Column(
@@ -431,7 +434,6 @@ class _SignInFormState extends State<SignInForm> {
                             border: Border.all(color: const Color(0xFFAEAEAE)),
                           ),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
                                 'assets/images/social_media/google.png',
@@ -439,11 +441,15 @@ class _SignInFormState extends State<SignInForm> {
                                 width: 29,
                               ),
                               const SizedBox(width: 10),
-                              Text(
-                                "Continue With Google".tr(),
-                                style: GoogleFonts.inter(
-                                    fontSize: 16,
-                                    color: const Color(0xFF828282)),
+                              Expanded(
+                                child: Text(
+                                  "Continue With Google".tr(),
+                                  style: GoogleFonts.inter(
+                                      fontSize: 20,
+                                      color: const Color(0xFF828282)),
+                                  maxLines: 5,
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ],
                           ),

@@ -21,7 +21,7 @@ class OrderCard extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => DetailsPending(orders:orders)));
+                  builder: (context) => DetailsPending(orders: orders)));
         },
         child: Container(
           decoration: BoxDecoration(
@@ -42,7 +42,9 @@ class OrderCard extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(25),
                           child: Image.network(
-                            orders.ProfileImage,
+                            orders.ProfileImage.isNotEmpty
+                                ? orders.ProfileImage
+                                : 'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg', // Use default image if ProfileImage is empty
                             width: 50,
                             height: 50,
                             fit: BoxFit.cover,
