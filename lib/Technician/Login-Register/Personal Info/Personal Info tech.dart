@@ -190,7 +190,7 @@ class _PersonalInformationState extends State<PersonalInformation> {
       Fluttertoast.showToast(
         msg: "Data uploaded successfully.".tr(),
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.SNACKBAR,
+        gravity: ToastGravity.TOP,
         backgroundColor: ApplicationColorWithOpacity,
         textColor: Colors.white,
       );

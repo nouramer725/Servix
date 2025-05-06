@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
@@ -34,13 +35,25 @@ class _WaitingScreenState extends State<WaitingScreen> {
         .collection("technician")
         .doc(user.uid)
         .snapshots()
-        .listen((snapshot) {
+        .listen((snapshot) async {
       if (snapshot.exists) {
         String status = snapshot.data()?['status'] ?? 'pending';
 
         if (!mounted) return;
 
         if (status == "approved") {
+          print("Technician approved, trying to save token...");
+          String? token = await FirebaseMessaging.instance.getToken();
+          print("FCM Token is: $token");
+          try {
+            FirebaseFirestore.instance
+                .collection('technician')
+                .doc(user.uid)
+                .set({'fcmToken': token}, SetOptions(merge: true));
+            print("FCM token saved to Firestore.");
+          } catch (e) {
+            print("Error saving FCM token: $e");
+          }
           Future.microtask(() {
             Navigator.pushAndRemoveUntil(
               context,
