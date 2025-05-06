@@ -101,84 +101,91 @@ class _OrdersPageState extends State<OrdersPage> {
       return Center(child: Text('No user logged in'.tr()));
     }
 
-    return FutureBuilder<QuerySnapshot>(
-      future: FirebaseFirestore.instance
-          .collection('Services Requests')
-          .doc(user.uid)
-          .collection('user-services')
-          .where('Status', whereIn: ['Pending']).get(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(color: ApplicationColor),
-          );
-        }
-
-        if (snapshot.hasError) {
-          print('Error: ${snapshot.error}');
-          return Center(child: Text('An error occurred'.tr()));
-        }
-
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(
-            child: Text(
-              'No current orders found.'.tr(),
-              style: GoogleFonts.castoro(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.black,
-              ),
-            ),
-          );
-        }
-
-        final orders = snapshot.data!.docs.map((doc) {
-          final data = doc.data() as Map<String, dynamic>;
-
-          return OrderModel(
-            ServiceType: data['serviceTitle']?['en'] ?? 'No Service Type',
-            technicianOffer: data['technicianOffer']?.toString() ?? '',
-            Description: data['description']?.toString() ?? '',
-            ServiceImage: data['serviceImage']?.toString() ?? '',
-            Status: data['Status']?.toString() ?? '',
-            Date: data['selectedDate']?.toString() ?? '',
-            Time: data['selectedTime']?.toString() ?? '',
-            Fname: data['firstName']?.toString() ?? '',
-            Lname: data['lastName']?.toString() ?? '',
-            ProfileImage: data['profileImageUrl']?.toString() ?? '',
-            Location: data['area']?.toString() ?? '',
-            apartment: data['apartment']?.toString() ?? '',
-            building: data['building']?.toString() ?? '',
-            street: data['street']?.toString() ?? '',
-            fileUrls: List<String>.from(data['fileUrls'] ?? []),
-            technicianName: data['technicianName']?.toString() ?? '',
-            technicianImage: data['technicianImage']?.toString() ?? '',
-            technicianLocationArea:
-                data['technicianLocationArea']?.toString() ?? '',
-            technicianLocationStreet:
-                data['technicianLocationStreet']?.toString() ?? '',
-            technicianPhone: data['technicianPhone']?.toString() ?? '',
-            technicianSub: data['technicianSubService']?.toString() ?? '',
-            technicianMain: data['technicianMainService']?.toString() ?? '',
-            technicianDescription:
-                data['technicianDescription']?.toString() ?? '',
-            technicianLinkSocialMedia:
-                data['technicianLinkSocialMedia']?.toString() ?? '',
-            technicianId: data['technicianId']?.toString() ?? '',
-            orderId: doc.id,
-          );
-        }).toList();
-
-        return ListView.builder(
-          itemCount: orders.length,
-          itemBuilder: (context, index) {
-            final order = orders[index];
-            return OrderCard(orders: order);
-          },
-        );
+    return RefreshIndicator(
+      backgroundColor: Colors.white,
+      color: ApplicationColor,
+      onRefresh: () async {
+        setState(() {});
       },
+      child: FutureBuilder<QuerySnapshot>(
+        future: FirebaseFirestore.instance
+            .collection('Services Requests')
+            .doc(user.uid)
+            .collection('user-services')
+            .where('Status', whereIn: ['Pending']).get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(color: ApplicationColor),
+            );
+          }
+
+          if (snapshot.hasError) {
+            print('Error: ${snapshot.error}');
+            return Center(child: Text('An error occurred'.tr()));
+          }
+
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Text(
+                'No current orders found.'.tr(),
+                style: GoogleFonts.castoro(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: themeProvider.themeMode == ThemeMode.dark
+                      ? Colors.white
+                      : Colors.black,
+                ),
+              ),
+            );
+          }
+
+          final orders = snapshot.data!.docs.map((doc) {
+            final data = doc.data() as Map<String, dynamic>;
+
+            return OrderModel(
+              ServiceType: data['serviceTitle']?['en'] ?? 'No Service Type',
+              technicianOffer: data['technicianOffer']?.toString() ?? '',
+              Description: data['description']?.toString() ?? '',
+              ServiceImage: data['serviceImage']?.toString() ?? '',
+              Status: data['Status']?.toString() ?? '',
+              Date: data['selectedDate']?.toString() ?? '',
+              Time: data['selectedTime']?.toString() ?? '',
+              Fname: data['firstName']?.toString() ?? '',
+              Lname: data['lastName']?.toString() ?? '',
+              ProfileImage: data['profileImageUrl']?.toString() ?? '',
+              Location: data['area']?.toString() ?? '',
+              apartment: data['apartment']?.toString() ?? '',
+              building: data['building']?.toString() ?? '',
+              street: data['street']?.toString() ?? '',
+              fileUrls: List<String>.from(data['fileUrls'] ?? []),
+              technicianName: data['technicianName']?.toString() ?? '',
+              technicianImage: data['technicianImage']?.toString() ?? '',
+              technicianLocationArea:
+                  data['technicianLocationArea']?.toString() ?? '',
+              technicianLocationStreet:
+                  data['technicianLocationStreet']?.toString() ?? '',
+              technicianPhone: data['technicianPhone']?.toString() ?? '',
+              technicianSub: data['technicianSubService']?.toString() ?? '',
+              technicianMain: data['technicianMainService']?.toString() ?? '',
+              technicianDescription:
+                  data['technicianDescription']?.toString() ?? '',
+              technicianLinkSocialMedia:
+                  data['technicianLinkSocialMedia']?.toString() ?? '',
+              technicianId: data['technicianId']?.toString() ?? '',
+              orderId: doc.id,
+            );
+          }).toList();
+
+          return ListView.builder(
+            itemCount: orders.length,
+            itemBuilder: (context, index) {
+              final order = orders[index];
+              return OrderCard(orders: order);
+            },
+          );
+        },
+      ),
     );
   }
 }

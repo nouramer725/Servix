@@ -127,95 +127,112 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
 
         final technicianSubservice = subserviceSnapshot.data!;
 
-        return FutureBuilder<QuerySnapshot>(
-          future: FirebaseFirestore.instance
-              .collectionGroup('user-services')
-              .where('Status', isEqualTo: 'Pending')
-              .get(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                  child: CircularProgressIndicator(color: ApplicationColor));
-            }
+        return RefreshIndicator(
+          color: ApplicationColor,
+          backgroundColor: Colors.white,
+          onRefresh: () async {
+            setState(() {});
+          },
+          child: FutureBuilder<QuerySnapshot>(
+            future: FirebaseFirestore.instance
+                .collectionGroup('user-services')
+                .where('Status', isEqualTo: 'Pending')
+                .get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                    child: CircularProgressIndicator(color: ApplicationColor));
+              }
 
-            if (snapshot.hasError || !snapshot.hasData) {
-              print('Error fetching orders: ${snapshot.error}');
-              return Center(child: Text('Error loading orders'.tr()));
-            }
+              if (snapshot.hasError || !snapshot.hasData) {
+                print('Error fetching orders: ${snapshot.error}');
+                return Center(child: Text('Error loading orders'.tr()));
+              }
 
-            final docs = snapshot.data!.docs;
+              final docs = snapshot.data!.docs;
+              final filteredOrders = docs.where((doc) {
+                final data = doc.data() as Map<String, dynamic>;
+                final serviceTitleMap = data['serviceTitle'];
+                if (serviceTitleMap is Map<String, dynamic>) {
+                  final localizedMap =
+                      Map<String, String>.from(serviceTitleMap);
+                  final normalizedSubservice =
+                      technicianSubservice.toLowerCase().trim();
+                  return localizedMap.values.any(
+                    (title) =>
+                        title.toLowerCase().trim() == normalizedSubservice,
+                  );
+                }
+                return false;
+              }).toList();
 
-            // 🔎 Filter orders where service title (localized) == technician subservice
-            final filteredOrders = docs.where((doc) {
-              final data = doc.data() as Map<String, dynamic>;
-              final serviceTitleMap = data['serviceTitle'];
-
-              if (serviceTitleMap is Map<String, dynamic>) {
-                final localizedMap = Map<String, String>.from(serviceTitleMap);
-                final normalizedSubservice =
-                    technicianSubservice.toLowerCase().trim();
-
-                // Check against all language values
-                return localizedMap.values.any(
-                  (title) => title.toLowerCase().trim() == normalizedSubservice,
+              if (filteredOrders.isEmpty) {
+                return ListView(
+                  physics:
+                      const AlwaysScrollableScrollPhysics(), // Required for RefreshIndicator
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Text(
+                          'No orders available'.tr(),
+                          style: GoogleFonts.castoro(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               }
-              return false;
-            }).toList();
 
-            if (filteredOrders.isEmpty) {
-              return Center(
-                child: Text('No orders available'.tr(),
-                    style: GoogleFonts.castoro(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black)),
+              final orders = filteredOrders.map((doc) {
+                final data = doc.data() as Map<String, dynamic>;
+                final serviceTitleMap = data['serviceTitle'];
+                Map<String, String> serviceTitleMapChecked = {};
+                if (serviceTitleMap is Map<String, dynamic>) {
+                  serviceTitleMapChecked =
+                      Map<String, String>.from(serviceTitleMap);
+                }
+
+                final localizedServiceTitle =
+                    _getServiceTitle(serviceTitleMapChecked);
+
+                return OrderModelTech(
+                  ServiceType: localizedServiceTitle,
+                  Description: data['description'] ?? '',
+                  Date: data['selectedDate'] ?? '',
+                  Time: data['selectedTime'] ?? '',
+                  Location: data['area'] ?? 'No Location',
+                  apartment: data['apartment'] ?? 'No Apartment',
+                  building: data['building'] ?? 'No building',
+                  street: data['street'] ?? 'No street',
+                  fileUrls: List<String>.from(data['fileUrls'] ?? []),
+                  ServiceImage: data['serviceImage']?.toString() ?? '',
+                  image: data['profileImageUrl'] ??
+                      "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
+                  FName: data['firstName'] ?? 'Unknown',
+                  LName: data['lastName'] ?? 'Unknown',
+                  docPath: doc.reference.path,
+                  previousOffer: data['technicianOffer'],
+                  Status: data['Status'] ?? 'Pending',
+                );
+              }).toList();
+
+              return ListView.builder(
+                itemCount: orders.length,
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final order = orders[index];
+                  return OrderCardTech(orders: order);
+                },
               );
-            }
-
-            final orders = filteredOrders.map((doc) {
-              final data = doc.data() as Map<String, dynamic>;
-              final serviceTitleMap = data['serviceTitle'];
-              Map<String, String> serviceTitleMapChecked = {};
-              if (serviceTitleMap is Map<String, dynamic>) {
-                serviceTitleMapChecked =
-                    Map<String, String>.from(serviceTitleMap);
-              }
-
-              final localizedServiceTitle =
-                  _getServiceTitle(serviceTitleMapChecked);
-
-              return OrderModelTech(
-                ServiceType: localizedServiceTitle,
-                Description: data['description'] ?? '',
-                Date: data['selectedDate'] ?? '',
-                Time: data['selectedTime'] ?? '',
-                Location: data['area'] ?? 'No Location',
-                apartment: data['apartment'] ?? 'No Apartment',
-                building: data['building'] ?? 'No building',
-                street: data['street'] ?? 'No street',
-                fileUrls: List<String>.from(data['fileUrls'] ?? []),
-                ServiceImage: data['serviceImage']?.toString() ?? '',
-                image: data['profileImageUrl'] ??
-                    "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
-                FName: data['firstName'] ?? 'Unknown',
-                LName: data['lastName'] ?? 'Unknown',
-                docPath: doc.reference.path,
-                previousOffer: data['technicianOffer'],
-                Status: data['Status'] ?? 'Pending',
-              );
-            }).toList();
-
-            return ListView.builder(
-              itemCount: orders.length,
-              itemBuilder: (context, index) {
-                final order = orders[index];
-                return OrderCardTech(orders: order);
-              },
-            );
-          },
+            },
+          ),
         );
       },
     );

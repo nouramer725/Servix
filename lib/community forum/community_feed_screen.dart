@@ -609,8 +609,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
     }
   }
 
-  Future<void> _uploadPost(
-      BuildContext context, TextEditingController _contentController) async {
+  Future<void> _uploadPost(BuildContext context, TextEditingController _contentController) async {
     final user = FirebaseAuth.instance.currentUser;
 
     // Check if content is empty

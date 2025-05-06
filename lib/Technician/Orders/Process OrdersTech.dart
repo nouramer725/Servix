@@ -7,103 +7,81 @@ import 'package:servix/Technician/Orders/model/modelTech.dart';
 import 'package:servix/constents/constent.dart';
 import 'ProcessCardTech.dart';
 
-class ProcessOrderTechPage extends StatelessWidget {
+class ProcessOrderTechPage extends StatefulWidget {
   const ProcessOrderTechPage({super.key});
 
   @override
+  State<ProcessOrderTechPage> createState() => _ProcessOrderTechPageState();
+}
+
+class _ProcessOrderTechPageState extends State<ProcessOrderTechPage> {
+  late Future<List<OrderModelTech>> _futureOrders;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureOrders = _loadOrders();
+  }
+
+  Future<List<OrderModelTech>> _loadOrders() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return [];
+
+    final technicianSubservice = await getTechnicianSubservice();
+    final snapshot = await FirebaseFirestore.instance
+        .collectionGroup('user-services')
+        .where('Status', isEqualTo: 'In Progress')
+        .get();
+
+    final docs = snapshot.docs.where((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      final serviceTitle = data['serviceTitle'];
+      if (serviceTitle is Map<String, dynamic>) {
+        return serviceTitle.values.any((val) =>
+            val.toString().toLowerCase().trim() ==
+            technicianSubservice.toLowerCase().trim());
+      }
+      return false;
+    }).toList();
+
+    return await _filterOrdersWithOffers(docs, uid, context);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-
-    if (user == null) {
-      return Center(child: Text('No user logged in'.tr()));
-    }
-
-    return FutureBuilder<String>(
-      future: getTechnicianSubservice(),
-      builder: (context, subserviceSnapshot) {
-        if (subserviceSnapshot.connectionState == ConnectionState.waiting) {
+    return FutureBuilder<List<OrderModelTech>>(
+      future: _futureOrders,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-              child: CircularProgressIndicator(
-            color: ApplicationColor,
-          ));
+              child: CircularProgressIndicator(color: ApplicationColor));
         }
 
-        if (subserviceSnapshot.hasError || !subserviceSnapshot.hasData) {
-          return Center(child: Text('Error fetching subservice'.tr()));
+        if (snapshot.hasError || !snapshot.hasData) {
+          return Center(child: Text("Error loading orders".tr()));
         }
 
-        final technicianSubservice = subserviceSnapshot.data!;
-        final uid = FirebaseAuth.instance.currentUser!.uid;
+        final orders = snapshot.data!;
+        if (orders.isEmpty) {
+          return Center(
+              child: Text("No Offers Made".tr(),
+                  style: GoogleFonts.castoro(fontSize: 18)));
+        }
 
-        return FutureBuilder<QuerySnapshot>(
-          future: FirebaseFirestore.instance
-              .collectionGroup('user-services')
-              .where('Status', isEqualTo: 'In Progress')
-              .get(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                  child: CircularProgressIndicator(
-                color: ApplicationColor,
-              ));
-            }
-
-            if (snapshot.hasError || !snapshot.hasData) {
-              print('Error fetching orders: ${snapshot.error}');
-              return Center(child: Text('Error loading orders'.tr()));
-            }
-
-            final docs = snapshot.data!.docs;
-            // Filter by localized service title
-            final filteredDocs = docs.where((doc) {
-              final data = doc.data() as Map<String, dynamic>;
-              final serviceTitle = data['serviceTitle'];
-              if (serviceTitle is Map<String, dynamic>) {
-                return serviceTitle.values.any(
-                  (val) =>
-                      val.toString().toLowerCase().trim() ==
-                      technicianSubservice.toLowerCase().trim(),
-                );
-              }
-              return false;
-            }).toList();
-
-            return FutureBuilder<List<OrderModelTech>>(
-              future: _filterOrdersWithOffers(filteredDocs, uid, context),
-              builder: (context, filteredSnapshot) {
-                if (filteredSnapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  return Center(
-                      child:
-                          CircularProgressIndicator(color: ApplicationColor));
-                }
-
-                if (filteredSnapshot.hasError || !filteredSnapshot.hasData) {
-                  return Center(
-                      child: Text("Error loading filtered orders".tr()));
-                }
-
-                final orders = filteredSnapshot.data!;
-                if (orders.isEmpty) {
-                  return Center(
-                      child: Text(
-                    "No Offers Made".tr(),
-                    style: GoogleFonts.castoro(
-                      fontSize: 18,
-                    ),
-                  ));
-                }
-
-                return ListView.builder(
-                  itemCount: orders.length,
-                  itemBuilder: (context, index) {
-                    final order = orders[index];
-                    return ProcessOrderCardTech(orders: order);
-                  },
-                );
-              },
-            );
+        return RefreshIndicator(
+          color: ApplicationColor,
+          backgroundColor: Colors.white,
+          onRefresh: () async {
+            setState(() {
+              _futureOrders = _loadOrders(); // Reload orders on refresh
+            });
           },
+          child: ListView.builder(
+            itemCount: orders.length,
+            itemBuilder: (context, index) {
+              return ProcessOrderCardTech(orders: orders[index]);
+            },
+          ),
         );
       },
     );
