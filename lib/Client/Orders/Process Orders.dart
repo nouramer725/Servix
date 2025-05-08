@@ -142,7 +142,7 @@ class _ProcessOrderPageState extends State<ProcessOrderPage> {
               children: [
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 100),
+                    padding: const EdgeInsets.only(top: 10),
                     child: Text(
                       'No Processing orders found.'.tr(),
                       style: GoogleFonts.castoro(

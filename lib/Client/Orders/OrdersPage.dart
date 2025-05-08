@@ -22,6 +22,32 @@ class OrdersPage extends StatefulWidget {
 
 class _OrdersPageState extends State<OrdersPage> {
   int _selectedIndex = 0;
+  late Future<QuerySnapshot> _currentOrdersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentOrdersFuture = _fetchCurrentOrders();
+  }
+
+  Future<QuerySnapshot> _fetchCurrentOrders() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return Future.error("No user logged in");
+    }
+
+    return FirebaseFirestore.instance
+        .collection('Services Requests')
+        .doc(user.uid)
+        .collection('user-services')
+        .where('Status', whereIn: ['Pending']).get();
+  }
+
+  void _refreshOrders() {
+    setState(() {
+      _currentOrdersFuture = _fetchCurrentOrders();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,14 +131,10 @@ class _OrdersPageState extends State<OrdersPage> {
       backgroundColor: Colors.white,
       color: ApplicationColor,
       onRefresh: () async {
-        setState(() {});
+        _refreshOrders();
       },
       child: FutureBuilder<QuerySnapshot>(
-        future: FirebaseFirestore.instance
-            .collection('Services Requests')
-            .doc(user.uid)
-            .collection('user-services')
-            .where('Status', whereIn: ['Pending']).get(),
+        future: _currentOrdersFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -121,23 +143,27 @@ class _OrdersPageState extends State<OrdersPage> {
           }
 
           if (snapshot.hasError) {
-            print('Error: ${snapshot.error}');
             return Center(child: Text('An error occurred'.tr()));
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(
-              child: Text(
-                'No current orders found.'.tr(),
-                style: GoogleFonts.castoro(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white
-                      : Colors.black,
+            return ListView(children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(
+                    'No current orders found.'.tr(),
+                    style: GoogleFonts.castoro(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  ),
                 ),
               ),
-            );
+            ]);
           }
 
           final orders = snapshot.data!.docs.map((doc) {

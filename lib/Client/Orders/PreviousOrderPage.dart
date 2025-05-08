@@ -118,7 +118,7 @@ class _PreviousOrderPageState extends State<PreviousOrderPage> {
               children: [
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.only(top: 10),
                     child: Text(
                       'No Previous orders found.'.tr(),
                       style: GoogleFonts.castoro(

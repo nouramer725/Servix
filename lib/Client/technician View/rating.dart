@@ -193,7 +193,8 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
       // Check if the 'profile' document exists
       if (imageDoc.exists) {
         // Check if the 'personalImageUrl' field exists
-        if (imageDoc.data() != null && imageDoc.data()!.containsKey('personalImageUrl')) {
+        if (imageDoc.data() != null &&
+            imageDoc.data()!.containsKey('personalImageUrl')) {
           clientImage = imageDoc['personalImageUrl'];
         } else {
           // Handle case where the 'personalImageUrl' field is missing
@@ -212,11 +213,16 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
       String? clientimage2;
       if (imagetech.docs.isNotEmpty) {
         final docData = imagetech.docs.first.data();
-        clientimage2 = docData['personalFileUrl']; // Access personalFileUrl from the first document
+        clientimage2 = docData[
+            'personalFileUrl']; // Access personalFileUrl from the first document
       }
 
+      // Fallback default image
+      const defaultImageUrl =
+          'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg';
+
+      final finalClientImage = clientimage2 ?? clientImage ?? defaultImageUrl;
       // Final image to use for technician rating submission
-      final finalClientImage = clientimage2 ?? clientImage;
 
       // Ensure that a valid image URL is available
       if (finalClientImage == null) {
@@ -243,7 +249,8 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
             'clientId': user.uid,
             'clientName': clientName,
             'clientLastName': clientLastName,
-            'clientImage': finalClientImage, // Use the final image (either from 'image' or 'imagetech')
+            'clientImage':
+                finalClientImage, // Use the final image (either from 'image' or 'imagetech')
             'rating': ratingValue,
             'comment': comment,
             'serviceId': widget.serviceId,
