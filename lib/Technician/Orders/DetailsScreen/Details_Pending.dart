@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Technician/Orders/model/modelTech.dart';
 import '../../../Components/Buttons.dart';
+import '../../../Notification/notification_send_to_tech.dart';
 import '../../../Technician/Orders/model/VideoPlayerWidget.dart';
 import '../../../Theme/Theme_Provider.dart';
 import '../../../constents/constent.dart';
@@ -500,6 +501,21 @@ class _DetailsPendingTechState extends State<DetailsPendingTech> {
                             await updateServiceFees(
                                 uid, double.tryParse(fees) ?? 0);
 
+                            final serviceTitle = widget.orders.ServiceType;
+                            final clientId = widget.orders.userId;
+                            final orderPath = widget.orders.docPath;
+
+                            if (clientId == null || orderPath == null) {
+                              print(
+                                  "❌ clientId or orderPath is null. Cannot send notification.");
+                            } else {
+                              print(
+                                  '📤 Sending notification to client: $clientId for service: $serviceTitle');
+                              print('🆔 Order ID: $orderPath');
+
+                              await sendClientOfferNotification(
+                                  clientId, orderPath, serviceTitle);
+                            }
                             Fluttertoast.showToast(
                               msg: "Offer Updated Successfully".tr(),
                               toastLength: Toast.LENGTH_SHORT,
@@ -532,6 +548,22 @@ class _DetailsPendingTechState extends State<DetailsPendingTech> {
                               'status': 'offer-made',
                               'timestamp': FieldValue.serverTimestamp(),
                             });
+
+                            final serviceTitle = widget.orders.ServiceType;
+                            final clientId = widget.orders.userId;
+                            final orderPath = widget.orders.docPath;
+
+                            if (clientId == null || orderPath == null) {
+                              print(
+                                  "❌ clientId or orderPath is null. Cannot send notification.");
+                            } else {
+                              print(
+                                  '📤 Sending notification to client: $clientId for service: $serviceTitle');
+                              print('🆔 Order ID: $orderPath');
+
+                              await sendClientOfferNotification(
+                                  clientId, orderPath, serviceTitle);
+                            }
 
                             Fluttertoast.showToast(
                               msg: "Offer Submitted Successfully".tr(),

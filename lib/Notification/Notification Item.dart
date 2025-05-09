@@ -5,11 +5,13 @@ import 'package:provider/provider.dart';
 import '../../Theme/Theme_Provider.dart';
 import '../../constents/constent.dart';
 
-class NotificationItem extends StatelessWidget {
+class NotificationItem extends StatefulWidget {
   final String profileImageUrl;
   final String title;
   final String preview;
   final String time;
+  final String date;
+
   final VoidCallback onDelete; // Delete function
 
   const NotificationItem({
@@ -18,8 +20,23 @@ class NotificationItem extends StatelessWidget {
     required this.title,
     required this.preview,
     required this.time,
+    required this.date,
     required this.onDelete,
   }) : super(key: key);
+
+  @override
+  State<NotificationItem> createState() => _NotificationItemState();
+}
+
+class _NotificationItemState extends State<NotificationItem> {
+  String _formatTimeTo12Hour(String time24) {
+    try {
+      final parsedTime = DateFormat("HH:mm:ss").parse(time24);
+      return DateFormat("h:mm:ss a").format(parsedTime);
+    } catch (e) {
+      return time24;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +73,7 @@ class NotificationItem extends StatelessWidget {
                 children: [
                   // Title (User Name)
                   Text(
-                    title,
+                    widget.title,
                     style: GoogleFonts.castoro(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -67,7 +84,7 @@ class NotificationItem extends StatelessWidget {
 
                   // Preview Text
                   Text(
-                    preview,
+                    widget.preview,
                     style: GoogleFonts.castoro(
                       fontSize: 16,
                       color: isDarkMode ? Colors.grey.shade400 : Colors.black54,
@@ -77,13 +94,18 @@ class NotificationItem extends StatelessWidget {
               ),
             ),
 
-            // Time and Three-dot menu
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // Time
                 Text(
-                  time,
+                  widget.date,
+                  style: GoogleFonts.castoro(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+                Text(
+                  _formatTimeTo12Hour(widget.time),
                   style: GoogleFonts.castoro(
                     fontSize: 14,
                     color: Colors.grey,
@@ -99,7 +121,7 @@ class NotificationItem extends StatelessWidget {
                       bool confirmDelete =
                           await showDeleteDialog(context, themeProvider);
                       if (confirmDelete) {
-                        onDelete(); // Call delete function
+                        widget.onDelete(); // Call delete function
                       }
                     }
                   },

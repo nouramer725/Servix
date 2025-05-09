@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Technician/Login-Register/LocationTechnician/Access_Location1.dart';
 import 'package:servix/Technician/Login-Register/Personal%20Info/Personal%20Info%20tech.dart';
@@ -26,35 +27,109 @@ import 'Splash Screen/Splash.dart';
 import 'Theme/Theme_Provider.dart';
 import 'firebase_options.dart';
 
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message: ${message.messageId}');
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseMessaging.instance
-      .subscribeToTopic("servix"); // Subscribe to topic
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // Subscribe to FCM topic
+  await FirebaseMessaging.instance.subscribeToTopic("servix");
+
+  // Print FCM token
   final fcmToken = await FirebaseMessaging.instance.getToken();
-  print("FCM Token: $fcmToken"); // Print FCM token
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+  print("FCM Token: $fcmToken");
+
+  // Load .env and EasyLocalization
   await dotenv.load(fileName: ".env");
   await EasyLocalization.ensureInitialized();
+
+  // Initialize local and push notifications
+  initializeNotifications();
 
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ar')],
-      path: 'assets/Translation', // translation files path
+      path: 'assets/Translation',
       fallbackLocale: const Locale('en'),
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => ThemeProvider()),
-          ChangeNotifierProvider(create: (_) => LocaleProvider()), // Add this
+          ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ],
         child: const MyApp(),
       ),
     ),
   );
+}
+
+void initializeNotifications() async {
+  // Request permissions
+  NotificationSettings settings =
+      await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    print('User granted permission');
+  } else {
+    print('User declined or has not accepted permission');
+    return;
+  }
+
+  // Create notification channel for Android
+  const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel',
+    'High Importance Notifications',
+    description: 'This channel is used for important notifications.',
+    importance: Importance.max,
+  );
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  // Set foreground notification presentation options for iOS
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  // Listen for foreground messages
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    RemoteNotification? notification = message.notification;
+    AndroidNotification? android = message.notification?.android;
+
+    if (notification != null && android != null) {
+      flutterLocalNotificationsPlugin.show(
+        notification.hashCode,
+        notification.title,
+        notification.body,
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            channel.id,
+            channel.name,
+            channelDescription: channel.description,
+            importance: Importance.max,
+            priority: Priority.high,
+            icon: '@mipmap/ic_launcher',
+          ),
+        ),
+      );
+    }
+  });
 }
 
 class MyApp extends StatelessWidget {

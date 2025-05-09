@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../../Components/Buttons.dart';
 import '../../../../Theme/Theme_Provider.dart';
 import '../../../../constents/constent.dart';
+import '../../Notification/notification_send_to_tech.dart';
 import '../Home/HomeLayoutClient.dart';
 import 'google maps new address.dart';
 
@@ -578,7 +579,7 @@ class _NewAddressState extends State<NewAddress> {
           'fileUrls': widget.fileUrls,
           'selectedDate': DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
           'selectedTime': widget.selectedTime!.format(context),
-          'serviceImage':widget.imagePath,
+          'serviceImage': widget.imagePath,
           'Status': 'Pending',
           'userId': user.uid,
           'orderId': widget.orderId,
@@ -597,6 +598,14 @@ class _NewAddressState extends State<NewAddress> {
           .collection('user-services')
           .doc(widget.orderId)
           .set(selectedLocation);
+      await sendTechnicianNotification(
+        user.uid,
+        widget.orderId ?? '',
+        serviceTitleMap['en'] ?? '',
+      );
+
+      // ✅ Then notify the client
+      await sendClientNotification(user.uid);
     } catch (e) {
       Fluttertoast.showToast(
         msg: "Error saving service: $e",

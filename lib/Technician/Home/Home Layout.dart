@@ -22,7 +22,7 @@ import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Language/Local_Provider.dart';
-import '../../Notification/notifaction really.dart';
+import '../../Notification/home_screen.dart';
 import '../../Theme/Theme_Provider.dart';
 import '../../community forum/community_feed_screen.dart';
 import '../Orders/OrdersPageTech.dart';
@@ -52,7 +52,7 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
   bool isDarkMode = false; // Default mode
 
   final List<Widget> pages = [
-    const NotificationScreenReal(),
+    const NotificationHomeScreen(),
     const OrdersPageTech(),
     const HomeTechFirstScreen(),
     CommunityFeedScreen(),
@@ -391,14 +391,35 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                                   const SizedBox(width: 8),
                                   TextButton(
                                     onPressed: () async {
-                                      await FirebaseAuth.instance.signOut();
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MemberShip()),
-                                        (route) => false,
-                                      );
+                                      // Check if there's a signed-in user before signing out
+                                      User? currentUser = FirebaseAuth.instance.currentUser;
+                                      if (currentUser != null) {
+                                        // Proceed with sign-out
+                                        await FirebaseAuth.instance.signOut();
+
+                                        String technicianId = currentUser.uid;
+                                        final technicianRef = FirebaseFirestore.instance.collection('technician').doc(technicianId);
+
+                                        await technicianRef.update({
+                                          'isActive': false, // Update status to false
+                                        });
+
+                                        Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => const MemberShip()),
+                                              (route) => false,
+                                        );
+                                      } else {
+                                        // Handle the case where there is no signed-in user
+                                        Fluttertoast.showToast(
+                                          msg: "No user is currently signed in.".tr(),
+                                          toastLength: Toast.LENGTH_LONG,
+                                          gravity: ToastGravity.BOTTOM,
+                                          backgroundColor: ApplicationColorWithOpacity,
+                                          textColor: Colors.white,
+                                          fontSize: 15.0,
+                                        );
+                                      }
                                     },
                                     child: Text(
                                       "LOG OUT".tr(),

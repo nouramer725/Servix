@@ -54,6 +54,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
   String? _mainServiceError;
   String? genderError;
   bool _isLoading = false;
+  bool isActive = true;
 
   @override
   void initState() {
@@ -246,6 +247,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
           'main_service': selectedMainService ?? "",
           'sub_service': selectedSubService ?? "",
           'role': role,
+          'isActive': isActive,
           'serviceCount': 0,
           'serviceFees': 0,
           'status': 'pending',

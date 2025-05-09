@@ -75,7 +75,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
 
     try {
       UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
@@ -97,20 +97,21 @@ class _SignInFormTechState extends State<SignInFormTech> {
           String roleTech = techDoc['role'] ?? '';
 
           if (roleTech == 'Technician') {
+            // Set isActive to true for the technician
+            await techDoc.reference.update({'isActive': true}); // Toggle isActive to true
+
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                  builder: (context) => const HomeTechnicianLayout()),
+              MaterialPageRoute(builder: (context) => const HomeTechnicianLayout()),
             );
           } else if (roleTech == 'Client') {
-            // Update role to Technician
-            await techDoc.reference.update({'role': 'Technician'});
+            // Update role to Technician and set isActive to true
+            await techDoc.reference.update({'role': 'Technician', 'isActive': true});
 
             // Navigate to technician home
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                  builder: (context) => const HomeTechnicianLayout()),
+              MaterialPageRoute(builder: (context) => const HomeTechnicianLayout()),
             );
           } else {
             Fluttertoast.showToast(

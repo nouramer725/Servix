@@ -8,6 +8,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:servix/Client/AIClient/Welcome%20AI.dart';
 import '../../../Components/Buttons.dart';
 import '../../../Components/location textfield.dart';
+import '../../../Notification/notification_nodejs.dart';
 import '../../../constents/constent.dart';
 
 class SaveAddressScreenClient extends StatefulWidget {
@@ -84,6 +85,18 @@ class _SaveAddressScreenClientState extends State<SaveAddressScreenClient> {
       });
 
       print("Address saved successfully!");
+      // 👇 Send welcome notification
+      final notificationService = NotificationServices();
+      String? token = await notificationService.getDeviceToken();
+
+      if (token != null) {
+        await notificationService.sendNotifications(
+          fcmToken: token,
+          title: "Welcome to Servix!",
+          body: "Let’s get started.",
+          userId: user!.uid,
+        );
+      }
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(

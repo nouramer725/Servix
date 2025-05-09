@@ -11,6 +11,8 @@ import 'package:servix/Client/Home/HomeLayoutClient.dart';
 import 'package:servix/Components/Buttons.dart';
 import '../../../../Theme/Theme_Provider.dart';
 import '../../../../constents/constent.dart';
+import '../../Notification/notification_send_to_tech.dart';
+import '../../Notification/notification_nodejs.dart';
 import 'add new address.dart';
 
 class LocationPosting extends StatefulWidget {
@@ -46,9 +48,6 @@ class _LocationPostingState extends State<LocationPosting> {
   bool rememberMe = false;
 
   String get orderId => widget.orderId;
-
-  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  //     FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
@@ -507,7 +506,7 @@ class _LocationPostingState extends State<LocationPosting> {
                 'apartment': apartment ?? '',
                 'description': widget.description,
                 'serviceTitle': serviceTitleMap, // <-- Store as a map
-                'serviceImage':widget.imagePath,
+                'serviceImage': widget.imagePath,
                 'fileUrls': widget.fileUrls,
                 'selectedDate':
                     DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
@@ -528,6 +527,17 @@ class _LocationPostingState extends State<LocationPosting> {
                   .doc(widget.orderId)
                   .set(selectedLocation);
 
+              // ✅ Send notification to technicians (AFTER posting)
+              await sendTechnicianNotification(
+                user.uid,
+                widget.orderId ?? '',
+                serviceTitleMap['en'] ?? '',
+              );
+
+              // ✅ Then notify the client
+              await sendClientNotification(user.uid);
+
+              // Wait for 2 seconds to simulate delay
               await Future.delayed(const Duration(seconds: 2));
 
               Fluttertoast.showToast(
@@ -539,7 +549,6 @@ class _LocationPostingState extends State<LocationPosting> {
                 gravity: ToastGravity.TOP,
                 timeInSecForIosWeb: 1,
               );
-
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

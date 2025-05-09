@@ -11,6 +11,7 @@ import 'package:servix/Client/Home/List%20Of%20Pages_Clients/HomeClientFirstScre
 import 'package:servix/Client/Orders/OrdersPage.dart';
 import 'package:servix/Client/Profile/profile.dart';
 import 'package:servix/Member/MemberShip.dart';
+import 'package:servix/Notification/home_screen.dart';
 import 'package:servix/Settings/About%20US.dart';
 import 'package:servix/Settings/Contact%20Us.dart';
 import 'package:servix/Settings/Password.dart';
@@ -20,7 +21,6 @@ import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Language/Local_Provider.dart';
-import '../../Notification/notifaction really.dart';
 import '../../Theme/Theme_Provider.dart';
 import '../../community forum/community_feed_screen.dart';
 
@@ -124,7 +124,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
   bool isDarkMode = false;
 
   final List<Widget> pages = [
-    const NotificationScreenReal(),
+    const NotificationHomeScreen(),
     const OrdersPage(),
     const HomeClientFirstScreen(),
     CommunityFeedScreen(),

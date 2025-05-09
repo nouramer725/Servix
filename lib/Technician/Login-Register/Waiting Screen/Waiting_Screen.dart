@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/On-Boarding/On_Boarding_Screen.dart';
 import 'package:servix/Technician/AITechnician/Welcome%20AI.dart';
+import '../../../Notification/notification_nodejs.dart';
 import '../../../constents/constent.dart';
 
 class WaitingScreen extends StatefulWidget {
@@ -54,7 +55,19 @@ class _WaitingScreenState extends State<WaitingScreen> {
           } catch (e) {
             print("Error saving FCM token: $e");
           }
-          Future.microtask(() {
+          Future.microtask(() async {
+            // 👇 Send welcome notification
+            final notificationService = NotificationServices();
+            String? token = await notificationService.getDeviceToken();
+
+            if (token != null) {
+              await notificationService.sendNotifications(
+                fcmToken: token,
+                title: "Congratulations! you have been accepted.",
+                body: "Welcome to Servix!, Let’s get started.",
+                userId: user.uid,
+              );
+            }
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => WelcomeAiTech()),
@@ -62,12 +75,22 @@ class _WaitingScreenState extends State<WaitingScreen> {
             );
           });
         } else if (status == "rejected") {
-          Future.microtask(() {
+          Future.microtask(() async {
+            final notificationService = NotificationServices();
+            String? token = await notificationService.getDeviceToken();
+
+            if (token != null) {
+              await notificationService.sendNotifications(
+                fcmToken: token,
+                title: "Account Rejected",
+                body:
+                    "Unfortunately, your registration was not approved. Please review the requirements or contact support.",
+                userId: user.uid,
+              );
+            }
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      const OnboardingScreen()), // Replace with your member screen widget
+              MaterialPageRoute(builder: (context) => const OnboardingScreen()),
               (route) => false,
             );
           });

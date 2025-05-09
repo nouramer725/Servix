@@ -11,6 +11,7 @@ import 'package:servix/constents/constent.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Components/OrderGradientButton.dart';
 import '../../Components/OrderWhiteButton.dart';
+import '../../Notification/notification_nodejs.dart';
 import '../../Theme/Theme_Provider.dart';
 import 'Process OrdersTech.dart';
 
@@ -24,20 +25,9 @@ class OrdersPageTech extends StatefulWidget {
 class _OrdersPageTechState extends State<OrdersPageTech> {
   int _selectedIndex = 0;
 
-  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  //     FlutterLocalNotificationsPlugin();
-
-  Set<String> notifiedOrderIds = {};
-
   @override
   void initState() {
     super.initState();
-    _loadNotifiedOrderIds();
-  }
-
-  Future<void> _loadNotifiedOrderIds() async {
-    final prefs = await SharedPreferences.getInstance();
-    notifiedOrderIds = prefs.getStringList('notifiedOrderIds')?.toSet() ?? {};
   }
 
   @override
@@ -220,6 +210,7 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
                   docPath: doc.reference.path,
                   previousOffer: data['technicianOffer'],
                   Status: data['Status'] ?? 'Pending',
+                  userId: data['userId'],
                 );
               }).toList();
 

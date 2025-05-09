@@ -92,6 +92,8 @@ class _FinishedOrderTechPageState extends State<FinishedOrderTechPage> {
 
                 if (orders.isEmpty) {
                   return RefreshIndicator(
+                    color: ApplicationColor,
+                    backgroundColor: Colors.white,
                     onRefresh: _refreshData,
                     child: ListView(
                       children: [

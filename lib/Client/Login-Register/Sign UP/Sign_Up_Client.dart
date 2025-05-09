@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -182,6 +183,9 @@ class _SignUpClientState extends State<SignUpClient> {
         // Send verification email
         await userCredential.user?.sendEmailVerification();
 
+        final fcmToken = await FirebaseMessaging.instance.getToken();
+        print("FCM Token: $fcmToken");
+
         await FirebaseFirestore.instance
             .collection('users')
             .doc(userCredential.user?.uid)
@@ -192,6 +196,7 @@ class _SignUpClientState extends State<SignUpClient> {
           'phone': _PhoneNumberController.text.trim(),
           'gender': gender?.trim(),
           'role': role,
+          'fcmToken': fcmToken, // ✅ Add FCM token here
           'created_at': Timestamp.now(),
         });
 

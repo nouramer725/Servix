@@ -3,8 +3,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:servix/Technician/Orders/model/modelTech.dart';
 import 'package:servix/constents/constent.dart';
+import '../../Theme/Theme_Provider.dart';
 import 'ProcessCardTech.dart';
 
 class ProcessOrderTechPage extends StatefulWidget {
@@ -49,6 +51,8 @@ class _ProcessOrderTechPageState extends State<ProcessOrderTechPage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return FutureBuilder<List<OrderModelTech>>(
       future: _futureOrders,
       builder: (context, snapshot) {
@@ -63,9 +67,35 @@ class _ProcessOrderTechPageState extends State<ProcessOrderTechPage> {
 
         final orders = snapshot.data!;
         if (orders.isEmpty) {
-          return Center(
-              child: Text("No Offers Made".tr(),
-                  style: GoogleFonts.castoro(fontSize: 18)));
+          return RefreshIndicator(
+            color: ApplicationColor,
+            backgroundColor: Colors.white,
+            onRefresh: () async {
+              setState(() {
+                _futureOrders = _loadOrders(); // when orders exist
+              });
+            },
+            child: ListView(
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      "No Processing orders available".tr(),
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.castoro(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
         }
 
         return RefreshIndicator(
