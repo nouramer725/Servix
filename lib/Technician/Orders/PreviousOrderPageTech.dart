@@ -207,6 +207,7 @@ class _FinishedOrderTechPageState extends State<FinishedOrderTechPage> {
           LName: data['lastName'] ?? 'Unknown',
           docPath: doc.reference.path,
           Status: data['Status'] ?? 'Unknown',
+          userId: data['userId'],
           previousOffer: offerValue, // assign offer value here
         ));
       }

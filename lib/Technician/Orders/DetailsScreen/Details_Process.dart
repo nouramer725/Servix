@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Technician/Orders/model/modelTech.dart';
 import '../../../Components/Buttons.dart';
+import '../../../Notification/notification_nodejs.dart';
+import '../../../Notification/notification_send_to_tech.dart';
 import '../../../Technician/Orders/model/VideoPlayerWidget.dart';
 import '../../../Theme/Theme_Provider.dart';
 import '../../../constents/constent.dart';
@@ -386,14 +388,19 @@ class _DetailsProcessTechState extends State<DetailsProcessTech> {
     );
   }
 
-  Future<void> incrementServiceCount(String technicianId) async {
+  Future<void> incrementServiceCount(
+      String technicianId, String docPath) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('technician') // Collection: technicians
-          .doc(technicianId) // Document: technicianId
-          .update({
-        'serviceCount': FieldValue.increment(1), // Increment serviceCount by 1
-      });
+      final docSnapshot = await FirebaseFirestore.instance.doc(docPath).get();
+
+      if (docSnapshot.exists && docSnapshot.data()?['Status'] == 'Finished') {
+        await FirebaseFirestore.instance
+            .collection('technician')
+            .doc(technicianId)
+            .update({
+          'serviceCount': FieldValue.increment(1),
+        });
+      }
     } catch (e) {
       print("Error incrementing service count: $e");
     }
@@ -405,9 +412,49 @@ class _DetailsProcessTechState extends State<DetailsProcessTech> {
       final docRef = FirebaseFirestore.instance.doc(order.docPath!);
       await docRef.update({'Status': 'Finished'});
 
-      await incrementServiceCount(FirebaseAuth.instance.currentUser!.uid);
+      await incrementServiceCount(
+          FirebaseAuth.instance.currentUser!.uid, order.docPath!);
 
-      // Show success message
+      String user = FirebaseAuth.instance.currentUser!.uid;
+
+      final fcmTechToken = await getTechnicianFcmToken(user);
+
+      // Notify technician: Order completed and fees
+      if (fcmTechToken != null && fcmTechToken.isNotEmpty) {
+        final notificationService = NotificationServices();
+
+        await notificationService.sendNotifications(
+          fcmToken: fcmTechToken,
+          title: "Order Completed",
+          body:
+              "You have completed the order for ${order.FName} ${order.LName}. You earned ${order.previousOffer} EGP for this service.",
+          userId: user,
+        );
+      }
+      // Fetch client FCM token
+      final fcmToken = await getClientFcmToken(order.userId!);
+
+      if (fcmToken != null && fcmToken.isNotEmpty) {
+        final notificationService = NotificationServices();
+        // Notify client: Order completed
+        await notificationService.sendNotifications(
+          fcmToken: fcmToken,
+          title: "Order Completed",
+          body:
+              "Your order has been completed by ${order.FName} ${order.LName}. You paid ${order.previousOffer} EGP.",
+          userId: order.userId!,
+        );
+
+        // Notify client: Please rate the technician
+        await notificationService.sendNotifications(
+          fcmToken: fcmToken,
+          title: "Rate Technician",
+          body:
+              "Please rate the service of technician ${order.FName} ${order.LName}.",
+          userId: order.userId!,
+        );
+      }
+
       Fluttertoast.showToast(
         msg: "Order completed successfully!".tr(),
         toastLength: Toast.LENGTH_SHORT,
@@ -418,7 +465,6 @@ class _DetailsProcessTechState extends State<DetailsProcessTech> {
       );
       Navigator.pop(context);
     } catch (e) {
-      // Handle errors
       Fluttertoast.showToast(
         msg: 'Failed to complete order'.tr(),
         toastLength: Toast.LENGTH_SHORT,
@@ -461,9 +507,7 @@ class _DetailsProcessTechState extends State<DetailsProcessTech> {
               )),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false); // User cancels the action
-              },
+              onPressed: () => Navigator.of(context).pop(false),
               child: Text("No".tr(),
                   style: GoogleFonts.castoro(
                     color: themeProvider.themeMode == ThemeMode.dark
@@ -473,10 +517,7 @@ class _DetailsProcessTechState extends State<DetailsProcessTech> {
                   )),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .pop(true); // User confirms the cancellation
-              },
+              onPressed: () => Navigator.of(context).pop(true),
               child: Text("Yes".tr(),
                   style: GoogleFonts.castoro(
                       fontSize: 25,
@@ -489,13 +530,42 @@ class _DetailsProcessTechState extends State<DetailsProcessTech> {
       },
     );
 
-    // If the user confirmed the cancellation, proceed with the order update
     if (confirmCancellation == true) {
       try {
         final docRef = FirebaseFirestore.instance.doc(order.docPath!);
         await docRef.update({'Status': 'Cancelled'});
 
-        // Show success message
+        String user = FirebaseAuth.instance.currentUser!.uid;
+
+        final fcmTechToken = await getTechnicianFcmToken(user);
+
+        // Notify technician: Order completed and fees
+        if (fcmTechToken != null && fcmTechToken.isNotEmpty) {
+          final notificationService = NotificationServices();
+
+          await notificationService.sendNotifications(
+            fcmToken: fcmTechToken,
+            title: "Order Cancelled",
+            body:
+                "You have cancelled the order for ${order.FName} ${order.LName}. You lost ${order.previousOffer} EGP for this service.!!",
+            userId: user,
+          );
+        }
+
+        final fcmToken = await getClientFcmToken(order.userId!);
+
+        if (fcmToken != null && fcmToken.isNotEmpty) {
+          final notificationService = NotificationServices();
+
+          await notificationService.sendNotifications(
+            fcmToken: fcmToken,
+            title: "Order Cancelled",
+            body:
+                "Your order was cancelled by ${order.FName} ${order.LName}. We apologize for the inconvenience.",
+            userId: order.userId!,
+          );
+        }
+
         Fluttertoast.showToast(
           msg: "Order Cancelled!".tr(),
           toastLength: Toast.LENGTH_SHORT,
@@ -516,7 +586,6 @@ class _DetailsProcessTechState extends State<DetailsProcessTech> {
         );
       }
     } else {
-      // If the user cancels, show a cancellation message or handle the action accordingly
       Fluttertoast.showToast(
         msg: "Order cancellation was not confirmed".tr(),
         toastLength: Toast.LENGTH_SHORT,

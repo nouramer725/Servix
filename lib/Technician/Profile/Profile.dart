@@ -354,18 +354,21 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    userData != null
-                        ? " ${userData!['first_name']} ${userData!['last_name']}"
-                        : "Welcome".tr(),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 5,
-                    style: GoogleFonts.castoro(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.white
-                          : Colors.black,
+                  Expanded(
+                    child: Text(
+                      userData != null
+                          ? " ${userData!['first_name']} ${userData!['last_name']}"
+                          : "Welcome".tr(),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.castoro(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.themeMode == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
                     ),
                   ),
                 ],

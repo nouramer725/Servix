@@ -501,21 +501,19 @@ class _DetailsPendingTechState extends State<DetailsPendingTech> {
                             await updateServiceFees(
                                 uid, double.tryParse(fees) ?? 0);
 
-                            final serviceTitle = widget.orders.ServiceType;
-                            final clientId = widget.orders.userId;
-                            final orderPath = widget.orders.docPath;
-
-                            if (clientId == null || orderPath == null) {
-                              print(
-                                  "❌ clientId or orderPath is null. Cannot send notification.");
-                            } else {
-                              print(
-                                  '📤 Sending notification to client: $clientId for service: $serviceTitle');
-                              print('🆔 Order ID: $orderPath');
-
+                            final orderDoc = await FirebaseFirestore.instance
+                                .doc(widget.orders.docPath!)
+                                .get();
+                            final orderData = orderDoc.data();
+                            final clientId =
+                                orderData?['userId']; // adjust if needed
+                            if (clientId != null) {
                               await sendClientOfferNotification(
-                                  clientId, orderPath, serviceTitle);
+                                clientId: clientId,
+                                technicianName: fullName,
+                              );
                             }
+
                             Fluttertoast.showToast(
                               msg: "Offer Updated Successfully".tr(),
                               toastLength: Toast.LENGTH_SHORT,
@@ -549,20 +547,17 @@ class _DetailsPendingTechState extends State<DetailsPendingTech> {
                               'timestamp': FieldValue.serverTimestamp(),
                             });
 
-                            final serviceTitle = widget.orders.ServiceType;
-                            final clientId = widget.orders.userId;
-                            final orderPath = widget.orders.docPath;
-
-                            if (clientId == null || orderPath == null) {
-                              print(
-                                  "❌ clientId or orderPath is null. Cannot send notification.");
-                            } else {
-                              print(
-                                  '📤 Sending notification to client: $clientId for service: $serviceTitle');
-                              print('🆔 Order ID: $orderPath');
-
+                            final orderDoc = await FirebaseFirestore.instance
+                                .doc(widget.orders.docPath!)
+                                .get();
+                            final orderData = orderDoc.data();
+                            final clientId =
+                            orderData?['userId']; // adjust if needed
+                            if (clientId != null) {
                               await sendClientOfferNotification(
-                                  clientId, orderPath, serviceTitle);
+                                clientId: clientId,
+                                technicianName: fullName,
+                              );
                             }
 
                             Fluttertoast.showToast(

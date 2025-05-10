@@ -348,12 +348,6 @@ class _DetailsProcessState extends State<DetailsProcess> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    GradientButton(
-                      onPressed: () async {
-                        await CancelOrder(context, orders);
-                      },
-                      text: "Cancel".tr(),
-                    )
                   ],
                 ),
               );
@@ -362,109 +356,5 @@ class _DetailsProcessState extends State<DetailsProcess> {
         ],
       ),
     );
-  }
-
-  Future<void> CancelOrder(BuildContext context, OrderModel order) async {
-    var themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
-    bool? confirmCancellation = await showDialog<bool>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: themeProvider.themeMode == ThemeMode.dark
-              ? const Color(0xFF333739)
-              : Colors.white,
-          title: Text(
-            "Confirm Cancellation".tr(),
-            style: GoogleFonts.castoro(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: themeProvider.themeMode == ThemeMode.dark
-                  ? Colors.white
-                  : Colors.black,
-            ),
-          ),
-          content: Text("Are you sure you want to cancel this order?".tr(),
-              style: GoogleFonts.castoro(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.black,
-              )),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false); // User cancels the action
-              },
-              child: Text("No".tr(),
-                  style: GoogleFonts.castoro(
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : Colors.black,
-                    fontSize: 25,
-                  )),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: Text("Yes".tr(),
-                  style: GoogleFonts.castoro(
-                      fontSize: 25,
-                      color: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.white
-                          : ApplicationColor)),
-            ),
-          ],
-        );
-      },
-    );
-
-    // If the user confirmed the cancellation, proceed with the order update
-    if (confirmCancellation == true) {
-      try {
-        final user = FirebaseAuth.instance.currentUser;
-        final uid = user!.uid;
-
-        await FirebaseFirestore.instance
-            .collection('Services Requests')
-            .doc(uid)
-            .collection('user-services')
-            .doc(order.orderId)
-            .update({'Status': 'Cancelled'});
-
-        Navigator.pop(context);
-
-        Fluttertoast.showToast(
-          msg: "Order cancelled!".tr(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: ApplicationColorWithOpacity,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      } catch (e) {
-        Fluttertoast.showToast(
-          msg: "Failed to cancel order".tr(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: ApplicationColorWithOpacity,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      }
-    } else {
-      // If the user cancels, show a cancellation message or handle the action accordingly
-      Fluttertoast.showToast(
-        msg: "Order cancellation was not confirmed".tr(),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
-        backgroundColor: ApplicationColorWithOpacity,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
   }
 }

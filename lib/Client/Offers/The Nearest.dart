@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../Components/Buttons.dart';
+import '../../Notification/notification_nodejs.dart';
+import '../../Notification/notification_send_to_tech.dart';
 import '../../Theme/Theme_Provider.dart';
 import '../../constents/constent.dart';
 import 'Highest Rating.dart';
@@ -25,6 +28,7 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
   int selectedIndex = 0;
   List<Offer> offers = [];
   bool isLoading = true;
+
   Future<void> fetchOffers() async {
     setState(() {
       isLoading = true;
@@ -223,16 +227,17 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
                     child: CircularProgressIndicator(color: ApplicationColor))
                 : Expanded(
                     child: offers.isEmpty
-                        ? Center(child: Text(
-                      'No offers found.'.tr(),
-                      style: GoogleFonts.castoro(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                      ))
+                        ? Center(
+                            child: Text(
+                            'No offers found.'.tr(),
+                            style: GoogleFonts.castoro(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ))
                         : ListView.builder(
                             itemCount: offers.length,
                             itemBuilder: (context, index) {
@@ -297,6 +302,18 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
           }
         }
 
+        // Step 3: Send notification to the technician whose offer was accepted
+        await sendOfferAcceptedNotification(offer);
+
+        Fluttertoast.showToast(
+          msg: "Offer accepted successfully",
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+        );
         Navigator.pop(context);
         Navigator.pop(context);
 
@@ -350,19 +367,25 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
             .doc(technicianId)
             .delete();
 
+        // Step 5: Send notification to the technician whose offer was rejected
+        await sendOfferRejectedNotification(technicianId);
+
+        Fluttertoast.showToast(
+          msg: "Offer rejected successfully",
+          backgroundColor: ApplicationColorWithOpacity,
+          textColor: Colors.white,
+          fontSize: 16.0,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+        );
+
         print("✅ Offer deleted for technicianId: $technicianId");
         fetchOffers(); // Refresh the list of offers
         setState(() {
           offers.removeWhere((offer) => offer.technicianId == technicianId);
         });
         print("✅ Offers list updated after deletion.");
-
-        // final NotificationServiceTechniciann =
-        //     NotificationServiceTechnician(flutterLocalNotificationsPlugin);
-        // NotificationServiceTechniciann.showAndSaveNotificationTech(
-        //   title: 'Offer Updates!',
-        //   preview: 'Client Rejected your offer',
-        // );
       } else {
         print('🚨 No service found for the given orderId');
       }

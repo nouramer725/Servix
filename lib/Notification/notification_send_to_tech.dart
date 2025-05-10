@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../Client/Offers/Model/Offer.dart';
 import 'notification_nodejs.dart';
 
-Future<void> sendTechnicianNotification(
-    String userId, String orderId, String serviceTitle) async {
+Future<void> sendTechnicianNotification(String userId, String orderId, String serviceTitle) async {
   final techniciansRef = FirebaseFirestore.instance.collection('technician');
   final techniciansSnapshot = await techniciansRef.get();
 
@@ -62,36 +62,129 @@ Future<void> sendClientNotification(String userId) async {
   }
 }
 
-Future<void> sendClientOfferNotification(
-    String userId, String orderId, String serviceTitle) async {
-  try {
-    final clientDoc =
-        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+bool _isSending = false;
 
-    if (!clientDoc.exists) {
-      print("❌ Client document not found for $userId");
+Future<void> sendClientOfferNotification({required String clientId, required String technicianName,}) async {
+  if (_isSending) return; // Prevent duplicate execution
+  _isSending = true;
+
+  try {
+    final clientDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(clientId)
+        .get();
+    final clientData = clientDoc.data();
+
+    if (clientData == null) {
+      print("❌ Client data not found");
       return;
     }
 
-    // Get the FCM token for the client
-    String? clientToken = clientDoc['fcmToken'];
-    print("📦 FCM Token: $clientToken");
-
-    // Send notification to client if their FCM token is valid
-    if (clientToken != null && clientToken.isNotEmpty) {
+    final fcmToken = clientData['fcmToken'];
+    if (fcmToken != null && fcmToken.isNotEmpty) {
       final notificationService = NotificationServices();
       await notificationService.sendNotifications(
-        fcmToken: clientToken,
-        title: 'New Offer for Your Service',
-        body: 'A technician has made an offer on your service: $serviceTitle',
-        userId: userId,
-        orderId: orderId,
+        fcmToken: fcmToken,
+        title: "You've Received an Offer",
+        body: "$technicianName has sent you an offer for your request.",
+        userId: clientId,
       );
-      print("✅ Push notification sent to client $userId");
+      print("✅ Notification sent to client $clientId");
     } else {
-      print("⚠️ No valid FCM token found for $userId");
+      print("❌ Client FCM token is missing");
+    }
+  } finally {
+    _isSending = false;
+  }
+}
+
+Future<void> sendOfferRejectedNotification(String technicianId) async {
+  try {
+    // Fetch the technician's FCM token
+    final technicianDoc = await FirebaseFirestore.instance
+        .collection('technician')
+        .doc(technicianId)
+        .get();
+
+    if (technicianDoc.exists) {
+      final technicianData = technicianDoc.data();
+      final fcmToken = technicianData?['fcmToken'];
+
+      if (fcmToken != null && fcmToken.isNotEmpty) {
+        // Send a notification to the technician
+        final notificationService = NotificationServices();
+        await notificationService.sendNotifications(
+          fcmToken: fcmToken,
+          title: "Offer Rejected",
+          body: "Your offer for the order has been rejected.",
+          userId: technicianId,
+        );
+        print("✅ Notification sent to technician $technicianId");
+      } else {
+        print("❌ Technician FCM token is missing");
+      }
     }
   } catch (e) {
-    print("❌ Error sending notification: $e");
+    print("🚨 Error sending notification to technician: $e");
+  }
+}
+
+// Function to send notification to the technician when their offer is accepted
+Future<void> sendOfferAcceptedNotification(Offer offer) async {
+  try {
+    final technicianId = offer.technicianId;
+
+    // Fetch the technician's FCM token
+    final technicianDoc = await FirebaseFirestore.instance
+        .collection('technician')
+        .doc(technicianId)
+        .get();
+
+    if (technicianDoc.exists) {
+      final technicianData = technicianDoc.data();
+      final fcmToken = technicianData?['fcmToken'];
+
+      if (fcmToken != null && fcmToken.isNotEmpty) {
+        // Send a notification to the technician
+        final notificationService = NotificationServices();
+        await notificationService.sendNotifications(
+          fcmToken: fcmToken,
+          title: "Offer Accepted",
+          body:
+              "Your offer for the order is accepted and the order is now in progress.",
+          userId: technicianId,
+        );
+        print("✅ Notification sent to technician $technicianId");
+      } else {
+        print("❌ Technician FCM token is missing");
+      }
+    }
+  } catch (e) {
+    print("🚨 Error sending notification to technician: $e");
+  }
+}
+
+Future<String?> getClientFcmToken(String clientId) async {
+  final clientDoc = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(clientId)
+      .get();
+  if (clientDoc.exists) {
+    final data = clientDoc.data();
+    return data?['fcmToken'];
+  }
+  return null;
+}
+
+Future<String?> getTechnicianFcmToken(String technicianId) async {
+  try {
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection('technician') // Assuming you store technicians under this collection
+        .doc(technicianId) // Use the technician's ID
+        .get();
+    return docSnapshot.data()?['fcmToken']; // Assuming the token is stored as 'fcmToken'
+  } catch (e) {
+    print("Error fetching technician FCM token: $e");
+    return null;
   }
 }
