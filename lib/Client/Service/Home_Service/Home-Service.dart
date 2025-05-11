@@ -24,9 +24,13 @@ class HomeService extends StatelessWidget {
             ),
           ),
           flexibleSpace: Container(
-            decoration:  BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: const AssetImage('assets/images/home/home-service.png'),
+                image: AssetImage(
+                  context.locale.languageCode == 'ar'
+                      ? 'assets/images/home/home5.png'
+                      : 'assets/images/home/home-service.png',
+                ),
                 alignment: context.locale.languageCode == 'ar'
                     ? Alignment.centerLeft
                     : Alignment.centerRight,

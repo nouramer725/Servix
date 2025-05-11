@@ -21,50 +21,6 @@ class HomeClientFirstScreen extends StatefulWidget {
 
 class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
   final TextEditingController searchController = TextEditingController();
-  final List<Category> categories = [
-    Category(
-      categoryname: 'Home \nService'.tr(),
-      image: 'assets/images/home/home-service2.png',
-      color: const Color(0xFFE37D3E),
-      height: 160,
-    ),
-    Category(
-      categoryname: 'Private \nTeaching'.tr(),
-      image: 'assets/images/home/private_teaching3.png',
-      color: const Color(0xFFB93434),
-      height: 160,
-    ),
-    Category(
-      categoryname: 'Care \nService'.tr(),
-      image: 'assets/images/home/care.png',
-      color: const Color(0xFFF7C86E),
-      height: 160,
-    ),
-    Category(
-      categoryname: 'For \nMen'.tr(),
-      image: 'assets/images/home/man.png',
-      color: const Color(0xFF305D67),
-      height: 160,
-    ),
-    Category(
-      categoryname: 'For \nWomen'.tr(),
-      image: 'assets/images/home/woman.png',
-      color: const Color(0xFFC37B7B),
-      height: 160,
-    ),
-    Category(
-      categoryname: 'Devices\nMaintenance'.tr(),
-      image: 'assets/images/home/devices.png',
-      color: const Color(0xFF69B5BB),
-      height: 160,
-    ),
-    Category(
-      categoryname: 'Delivery\nService'.tr(),
-      image: 'assets/images/home/delivery.png',
-      color: const Color(0xFFA52754),
-      height: 100,
-    ),
-  ];
 
   @override
   void initState() {
@@ -73,6 +29,52 @@ class _HomeClientFirstScreenState extends State<HomeClientFirstScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Category> categories = [
+      Category(
+        categoryname: 'Home \nService'.tr(),
+        image: context.locale.languageCode == 'ar'
+            ? 'assets/images/home/home5.png'
+            : 'assets/images/home/home-service2.png',
+        color: const Color(0xFFE37D3E),
+        height: 160,
+      ),
+      Category(
+        categoryname: 'Private \nTeaching'.tr(),
+        image: 'assets/images/home/private_teaching3.png',
+        color: const Color(0xFFB93434),
+        height: 160,
+      ),
+      Category(
+        categoryname: 'Care \nService'.tr(),
+        image: 'assets/images/home/care.png',
+        color: const Color(0xFFF7C86E),
+        height: 160,
+      ),
+      Category(
+        categoryname: 'For \nMen'.tr(),
+        image: 'assets/images/home/man.png',
+        color: const Color(0xFF305D67),
+        height: 160,
+      ),
+      Category(
+        categoryname: 'For \nWomen'.tr(),
+        image: 'assets/images/home/woman.png',
+        color: const Color(0xFFC37B7B),
+        height: 160,
+      ),
+      Category(
+        categoryname: 'Devices\nMaintenance'.tr(),
+        image: 'assets/images/home/devices.png',
+        color: const Color(0xFF69B5BB),
+        height: 160,
+      ),
+      Category(
+        categoryname: 'Delivery\nService'.tr(),
+        image: 'assets/images/home/delivery.png',
+        color: const Color(0xFFA52754),
+        height: 100,
+      ),
+    ];
     return Scaffold(
         body: ListView(
       children: [

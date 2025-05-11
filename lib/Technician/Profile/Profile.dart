@@ -745,6 +745,8 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                   itemCount: reviewData.length,
                   itemBuilder: (context, index) {
                     final review = reviewData[index];
+                    final hasComment = (review['comment'] ?? '').trim().isNotEmpty;
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -756,10 +758,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                               radius: 30,
                               backgroundImage: NetworkImage(
                                 (review['clientImage'] != null &&
-                                        review['clientImage']
-                                            .toString()
-                                            .trim()
-                                            .isNotEmpty)
+                                    review['clientImage'].toString().trim().isNotEmpty)
                                     ? review['clientImage']
                                     : 'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
                               ),
@@ -774,23 +773,19 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                     style: GoogleFonts.castoro(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
-                                      color: themeProvider.themeMode ==
-                                              ThemeMode.dark
+                                      color: themeProvider.themeMode == ThemeMode.dark
                                           ? Colors.white
                                           : Colors.black,
                                     ),
                                   ),
-                                  if ((review['comment'] ?? '')
-                                      .trim()
-                                      .isNotEmpty) ...[
+                                  if (hasComment) ...[
                                     const SizedBox(height: 4),
                                     Text(
                                       review['comment'],
                                       style: GoogleFonts.castoro(
                                         fontSize: 16,
                                         fontWeight: FontWeight.normal,
-                                        color: themeProvider.themeMode ==
-                                                ThemeMode.dark
+                                        color: themeProvider.themeMode == ThemeMode.dark
                                             ? Colors.white
                                             : Colors.grey[600],
                                       ),
@@ -798,23 +793,26 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                       overflow: TextOverflow.ellipsis,
                                       softWrap: true,
                                     ),
+                                    const SizedBox(height: 4),
                                   ],
-                                  const SizedBox(height: 4),
                                   Row(
                                     children: [
                                       Row(
                                         children: List.generate(
                                           5,
-                                          (index) {
+                                              (index) {
                                             if (index < review['rating']) {
-                                              return const Icon(Icons.star,
-                                                  color: Colors.yellow,
-                                                  size: 20);
+                                              return const Icon(
+                                                Icons.star,
+                                                color: Colors.yellow,
+                                                size: 20,
+                                              );
                                             } else {
                                               return const Icon(
-                                                  Icons.star_border,
-                                                  color: Colors.grey,
-                                                  size: 20);
+                                                Icons.star_border,
+                                                color: Colors.grey,
+                                                size: 20,
+                                              );
                                             }
                                           },
                                         ),
@@ -825,8 +823,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                         style: GoogleFonts.castoro(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
-                                          color: themeProvider.themeMode ==
-                                                  ThemeMode.dark
+                                          color: themeProvider.themeMode == ThemeMode.dark
                                               ? Colors.white
                                               : Colors.black,
                                         ),

@@ -355,28 +355,20 @@ class _DetailsProcessTechState extends State<DetailsProcessTech> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: WhiteButtonOffer(
-                            text: "Cancel".tr(),
-                            onPressed: () async {
-                              await CancelOrder(context, orders);
-                            },
-                            font: 18,
-                          ),
-                        ),
-                        Expanded(
-                          child: GradientButtonOffer(
-                            text: "Complete".tr(),
-                            onPressed: () async {
-                              await _completeOrder(context, orders);
-                            },
-                            font: 18,
-                          ),
-                        ),
-                      ],
+                    // Expanded(
+                    //   child: WhiteButtonOffer(
+                    //     text: "Cancel".tr(),
+                    //     onPressed: () async {
+                    //       await CancelOrder(context, orders);
+                    //     },
+                    //     font: 18,
+                    //   ),
+                    // ),
+                    GradientButton(
+                      text: "Complete".tr(),
+                      onPressed: () async {
+                        await _completeOrder(context, orders);
+                      },
                     )
                   ],
                 ),
@@ -476,124 +468,124 @@ class _DetailsProcessTechState extends State<DetailsProcessTech> {
     }
   }
 
-  Future<void> CancelOrder(BuildContext context, OrderModelTech order) async {
-    var themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
-    bool? confirmCancellation = await showDialog<bool>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: themeProvider.themeMode == ThemeMode.dark
-              ? const Color(0xFF333739)
-              : Colors.white,
-          title: Text(
-            "Confirm Cancellation".tr(),
-            style: GoogleFonts.castoro(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: themeProvider.themeMode == ThemeMode.dark
-                  ? Colors.white
-                  : Colors.black,
-            ),
-          ),
-          content: Text("Are you sure you want to cancel this order?".tr(),
-              style: GoogleFonts.castoro(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.black,
-              )),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text("No".tr(),
-                  style: GoogleFonts.castoro(
-                    color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.white
-                        : Colors.black,
-                    fontSize: 25,
-                  )),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text("Yes".tr(),
-                  style: GoogleFonts.castoro(
-                      fontSize: 25,
-                      color: themeProvider.themeMode == ThemeMode.dark
-                          ? Colors.white
-                          : ApplicationColor)),
-            ),
-          ],
-        );
-      },
-    );
-
-    if (confirmCancellation == true) {
-      try {
-        final docRef = FirebaseFirestore.instance.doc(order.docPath!);
-        await docRef.update({'Status': 'Cancelled'});
-
-        String user = FirebaseAuth.instance.currentUser!.uid;
-
-        final fcmTechToken = await getTechnicianFcmToken(user);
-
-        // Notify technician: Order completed and fees
-        if (fcmTechToken != null && fcmTechToken.isNotEmpty) {
-          final notificationService = NotificationServices();
-
-          await notificationService.sendNotifications(
-            fcmToken: fcmTechToken,
-            title: "Order Cancelled",
-            body:
-                "You have cancelled the order for ${order.FName} ${order.LName}. You lost ${order.previousOffer} EGP for this service.!!",
-            userId: user,
-          );
-        }
-
-        final fcmToken = await getClientFcmToken(order.userId!);
-
-        if (fcmToken != null && fcmToken.isNotEmpty) {
-          final notificationService = NotificationServices();
-
-          await notificationService.sendNotifications(
-            fcmToken: fcmToken,
-            title: "Order Cancelled",
-            body:
-                "Your order was cancelled by ${order.FName} ${order.LName}. We apologize for the inconvenience.",
-            userId: order.userId!,
-          );
-        }
-
-        Fluttertoast.showToast(
-          msg: "Order Cancelled!".tr(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: ApplicationColorWithOpacity,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-        Navigator.pop(context);
-      } catch (e) {
-        Fluttertoast.showToast(
-          msg: "Failed to cancel order".tr(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: ApplicationColorWithOpacity,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      }
-    } else {
-      Fluttertoast.showToast(
-        msg: "Order cancellation was not confirmed".tr(),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
-        backgroundColor: ApplicationColorWithOpacity,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
-  }
+  // Future<void> CancelOrder(BuildContext context, OrderModelTech order) async {
+  //   var themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+  //
+  //   bool? confirmCancellation = await showDialog<bool>(
+  //     context: context,
+  //     barrierDismissible: true,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         backgroundColor: themeProvider.themeMode == ThemeMode.dark
+  //             ? const Color(0xFF333739)
+  //             : Colors.white,
+  //         title: Text(
+  //           "Confirm Cancellation".tr(),
+  //           style: GoogleFonts.castoro(
+  //             fontSize: 28,
+  //             fontWeight: FontWeight.bold,
+  //             color: themeProvider.themeMode == ThemeMode.dark
+  //                 ? Colors.white
+  //                 : Colors.black,
+  //           ),
+  //         ),
+  //         content: Text("Are you sure you want to cancel this order?".tr(),
+  //             style: GoogleFonts.castoro(
+  //               fontSize: 18,
+  //               fontWeight: FontWeight.w500,
+  //               color: themeProvider.themeMode == ThemeMode.dark
+  //                   ? Colors.white
+  //                   : Colors.black,
+  //             )),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () => Navigator.of(context).pop(false),
+  //             child: Text("No".tr(),
+  //                 style: GoogleFonts.castoro(
+  //                   color: themeProvider.themeMode == ThemeMode.dark
+  //                       ? Colors.white
+  //                       : Colors.black,
+  //                   fontSize: 25,
+  //                 )),
+  //           ),
+  //           TextButton(
+  //             onPressed: () => Navigator.of(context).pop(true),
+  //             child: Text("Yes".tr(),
+  //                 style: GoogleFonts.castoro(
+  //                     fontSize: 25,
+  //                     color: themeProvider.themeMode == ThemeMode.dark
+  //                         ? Colors.white
+  //                         : ApplicationColor)),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  //
+  //   if (confirmCancellation == true) {
+  //     try {
+  //       final docRef = FirebaseFirestore.instance.doc(order.docPath!);
+  //       await docRef.update({'Status': 'Cancelled'});
+  //
+  //       String user = FirebaseAuth.instance.currentUser!.uid;
+  //
+  //       final fcmTechToken = await getTechnicianFcmToken(user);
+  //
+  //       // Notify technician: Order completed and fees
+  //       if (fcmTechToken != null && fcmTechToken.isNotEmpty) {
+  //         final notificationService = NotificationServices();
+  //
+  //         await notificationService.sendNotifications(
+  //           fcmToken: fcmTechToken,
+  //           title: "Order Cancelled",
+  //           body:
+  //               "You have cancelled the order for ${order.FName} ${order.LName}. You lost ${order.previousOffer} EGP for this service.!!",
+  //           userId: user,
+  //         );
+  //       }
+  //
+  //       final fcmToken = await getClientFcmToken(order.userId!);
+  //
+  //       if (fcmToken != null && fcmToken.isNotEmpty) {
+  //         final notificationService = NotificationServices();
+  //
+  //         await notificationService.sendNotifications(
+  //           fcmToken: fcmToken,
+  //           title: "Order Cancelled",
+  //           body:
+  //               "Your order was cancelled by ${order.FName} ${order.LName}. We apologize for the inconvenience.",
+  //           userId: order.userId!,
+  //         );
+  //       }
+  //
+  //       Fluttertoast.showToast(
+  //         msg: "Order Cancelled!".tr(),
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.TOP,
+  //         backgroundColor: ApplicationColorWithOpacity,
+  //         textColor: Colors.white,
+  //         fontSize: 16.0,
+  //       );
+  //       Navigator.pop(context);
+  //     } catch (e) {
+  //       Fluttertoast.showToast(
+  //         msg: "Failed to cancel order".tr(),
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.TOP,
+  //         backgroundColor: ApplicationColorWithOpacity,
+  //         textColor: Colors.white,
+  //         fontSize: 16.0,
+  //       );
+  //     }
+  //   } else {
+  //     Fluttertoast.showToast(
+  //       msg: "Order cancellation was not confirmed".tr(),
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.TOP,
+  //       backgroundColor: ApplicationColorWithOpacity,
+  //       textColor: Colors.white,
+  //       fontSize: 16.0,
+  //     );
+  //   }
+  // }
 }

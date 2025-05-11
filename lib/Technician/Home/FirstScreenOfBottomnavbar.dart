@@ -158,110 +158,54 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
               ),
               const SizedBox(height: 10),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Total Jobs Container
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ServiceFees(),
-                            ));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ServiceFees()),
+                        );
                       },
-                      child: Container(
-                        padding: const EdgeInsets.all(18),
-                        decoration: BoxDecoration(
-                          color: themeProvider.themeMode == ThemeMode.dark
-                              ? Colors.grey.shade700
-                              : Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              spreadRadius: 0.5,
-                              blurRadius: 5,
-                              offset: const Offset(3, 3),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            FutureBuilder<int>(
-                              future: getServiceCount(
-                                  FirebaseAuth.instance.currentUser!.uid),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text("Error loading data".tr());
-                                } else if (snapshot.hasData) {
-                                  return Text(
-                                    snapshot.data.toString(),
-                                    style: GoogleFonts.castoro(
-                                      fontSize: 40,
-                                      color: const Color(0xFF9A9A9A),
-                                    ),
-                                  );
-                                } else {
-                                  // Fallback value if no data or loading
-                                  return Text("0",
-                                      style: GoogleFonts.castoro(
-                                        fontSize: 40,
-                                        color: const Color(0xFF9A9A9A),
-                                      ));
-                                }
-                              },
-                            ),
-                            const SizedBox(height: 10),
-                            Text("Total Jobs".tr(),
+                      child: _buildStatCard(
+                        context,
+                        title: "Total Jobs".tr(),
+                        futureBuilder: FutureBuilder<int>(
+                          future: getServiceCount(
+                              FirebaseAuth.instance.currentUser!.uid),
+                          builder: (context, snapshot) {
+                            final count = snapshot.hasData
+                                ? snapshot.data.toString()
+                                : "0";
+                            return Text(count,
                                 style: GoogleFonts.castoro(
-                                    fontSize: 16,
-                                    color: const Color(0xFF9A9A9A))),
-                          ],
+                                    fontSize: 40,
+                                    color: const Color(0xFF9A9A9A)));
+                          },
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(width: 15),
+                  // Rating Container
                   Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(18),
-                      decoration: BoxDecoration(
-                        color: themeProvider.themeMode == ThemeMode.dark
-                            ? Colors.grey.shade700
-                            : Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            spreadRadius: 0.5,
-                            blurRadius: 5,
-                            offset: const Offset(3, 3),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          FutureBuilder<double>(
-                            future: getAverageRating(
-                                FirebaseAuth.instance.currentUser!.uid),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                // return const Text("Error loading rating").tr();
-                              }
-                              final avgRating = snapshot.data ?? 0.0;
-                              return Text(
-                                avgRating.toStringAsFixed(1),
-                                style: GoogleFonts.castoro(
-                                    fontSize: 40,
-                                    color: const Color(0xFF9A9A9A)),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          Text("Rating".tr(),
-                              style: GoogleFonts.castoro(
-                                  fontSize: 16,
-                                  color: const Color(0xFF9A9A9A))),
-                        ],
+                    child: _buildStatCard(
+                      context,
+                      title: "Rating".tr(),
+                      futureBuilder: FutureBuilder<double>(
+                        future: getAverageRating(
+                            FirebaseAuth.instance.currentUser!.uid),
+                        builder: (context, snapshot) {
+                          final rating = snapshot.data ?? 0.0;
+                          return Text(
+                            rating.toStringAsFixed(1),
+                            style: GoogleFonts.castoro(
+                                fontSize: 40, color: const Color(0xFF9A9A9A)),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -330,7 +274,14 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
 
                         if (snapshot.hasError || !snapshot.hasData) {
                           // Handle error or no data in orders
-                          return Center(child: Text("loading orders...".tr()));
+                          return Center(
+                              child: Text(
+                            "loading orders...".tr(),
+                            style: GoogleFonts.castoro(
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black),
+                          ));
                         }
 
                         final docs = snapshot.data!.docs;
@@ -364,7 +315,14 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                             if (filteredSnapshot.hasError ||
                                 !filteredSnapshot.hasData) {
                               return Center(
-                                  child: Text("loading orders...".tr()));
+                                  child: Text(
+                                "loading orders...".tr(),
+                                style: GoogleFonts.castoro(
+                                    color: themeProvider.themeMode ==
+                                            ThemeMode.dark
+                                        ? Colors.white
+                                        : Colors.black),
+                              ));
                             }
 
                             final orders = filteredSnapshot.data!;
@@ -382,15 +340,13 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
                               );
                             }
 
-                            return SizedBox(
-                              height: 250,
-                              child: ListView.builder(
-                                itemCount: orders.length,
-                                itemBuilder: (context, index) {
-                                  return PreviousOrderCard(
-                                      orders: orders[index]);
-                                },
-                              ),
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: orders.length,
+                              itemBuilder: (context, index) {
+                                return PreviousOrderCard(orders: orders[index]);
+                              },
                             );
                           },
                         );
@@ -483,4 +439,35 @@ class _HomeTechFirstScreenState extends State<HomeTechFirstScreen> {
     final locale = context.locale.languageCode;
     return serviceTitleMap[locale] ?? serviceTitleMap['en'] ?? '';
   }
+}
+
+Widget _buildStatCard(BuildContext context,
+    {required String title, required Widget futureBuilder}) {
+  final themeProvider = Provider.of<ThemeProvider>(context);
+  return Container(
+    padding: const EdgeInsets.all(18),
+    decoration: BoxDecoration(
+      color: themeProvider.themeMode == ThemeMode.dark
+          ? Colors.grey.shade700
+          : Colors.grey.shade200,
+      borderRadius: BorderRadius.circular(10),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.3),
+          spreadRadius: 0.5,
+          blurRadius: 5,
+          offset: const Offset(3, 3),
+        ),
+      ],
+    ),
+    child: Column(
+      children: [
+        futureBuilder,
+        const SizedBox(height: 10),
+        Text(title,
+            style: GoogleFonts.castoro(
+                fontSize: 16, color: const Color(0xFF9A9A9A))),
+      ],
+    ),
+  );
 }

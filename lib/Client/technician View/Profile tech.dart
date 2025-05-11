@@ -300,7 +300,9 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                           style: GoogleFonts.castoro(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
-                            color: ApplicationColor3,
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.white
+                                : ApplicationColor3,
                           ),
                         ),
                       ],
@@ -369,18 +371,19 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                   padding: const EdgeInsets.all(17),
                   decoration: BoxDecoration(
                     color: themeProvider.themeMode == ThemeMode.dark
-                        ? Colors.grey[600]
+                        ? Colors.grey[500]
                         : Colors.grey[200],
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
                     child: Text(
-                      widget.technicianDescription,
-                      style: TextStyle(
-                          color: themeProvider.themeMode == ThemeMode.dark
-                              ? Colors.white
-                              : Colors.black,
-                          fontSize: 18),
+                      (widget.technicianDescription.trim().isEmpty)
+                          ? 'No details'.tr()
+                          : widget.technicianDescription,
+                      style: GoogleFonts.castoro(
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 20,
@@ -417,6 +420,10 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                     GestureDetector(
                       onTap: () {
                         showModalBottomSheet(
+                          backgroundColor:
+                              themeProvider.themeMode == ThemeMode.dark
+                                  ? const Color(0xFF333739)
+                                  : Colors.white,
                           context: context,
                           shape: const RoundedRectangleBorder(
                             borderRadius:
@@ -429,52 +436,34 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                               children: [
                                 Text("Technician Location".tr(),
                                     style: GoogleFonts.castoro(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                                const SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Area:".tr(),
-                                      style: GoogleFonts.castoro(
-                                        fontSize: 20,
+                                        fontSize: 30,
                                         fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: Text(
-                                        widget.technicianLocationArea,
-                                        style: GoogleFonts.castoro(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        maxLines: 5,
-                                      ),
-                                    )
-                                  ],
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.white
+                                            : Colors.black)),
+                                const SizedBox(height: 10),
+                                Text(
+                                  "${"Area:".tr()} ${widget.technicianLocationArea}",
+                                  style: GoogleFonts.castoro(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: themeProvider.themeMode ==
+                                            ThemeMode.dark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
                                 ),
-                                Row(
-                                  children: [
-                                    Text("Street:".tr(),
-                                        style: GoogleFonts.castoro(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: Text(
-                                        widget.technicianLocationStreet,
-                                        style: GoogleFonts.castoro(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        maxLines: 5,
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                Text(
+                                    "${"Street:".tr()} ${widget.technicianLocationStreet}",
+                                    style: GoogleFonts.castoro(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    )),
                               ],
                             ),
                           ),
@@ -653,7 +642,10 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                                     style: GoogleFonts.castoro(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.black,
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black,
                                     ),
                                   ),
                                   Text(
@@ -661,7 +653,10 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                                     style: GoogleFonts.castoro(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.grey[600],
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.grey[600],
                                     ),
                                   ),
                                   const SizedBox(height: 4),
@@ -671,10 +666,14 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                                       (index) {
                                         if (index < review['rating']) {
                                           return const Icon(Icons.star,
-                                              color: Colors.black, size: 22);
+                                              color: Colors.yellow, size: 22);
                                         } else {
-                                          return const Icon(Icons.star_border,
-                                              color: Colors.black, size: 22);
+                                          return Icon(Icons.star_border,
+                                              color: themeProvider.themeMode ==
+                                                      ThemeMode.dark
+                                                  ? Colors.white
+                                                  : Colors.grey[600],
+                                              size: 22);
                                         }
                                       },
                                     ),

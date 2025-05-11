@@ -326,6 +326,10 @@ class _DetailsPendingTechState extends State<DetailsPendingTech> {
                                 style: GoogleFonts.castoro(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
+                                  color: themeProvider.themeMode ==
+                                          ThemeMode.dark
+                                      ? Colors.white
+                                      : Colors.black,
                                 )),
                             const SizedBox(width: 80),
                             Expanded(
@@ -356,7 +360,12 @@ class _DetailsPendingTechState extends State<DetailsPendingTech> {
                                     fontWeight: FontWeight.bold),
                                 decoration: InputDecoration(
                                   hintText: "Enter Your Offer Price".tr(),
-                                  hintStyle: GoogleFonts.judson(fontSize: 15),
+                                  hintStyle: GoogleFonts.judson(
+                                      fontSize: 15,
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black),
                                   border: const OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10)),
@@ -387,6 +396,9 @@ class _DetailsPendingTechState extends State<DetailsPendingTech> {
                         style: GoogleFonts.castoro(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
+                          color: themeProvider.themeMode == ThemeMode.dark
+                              ? Colors.white
+                              : Colors.black,
                         )),
                     const SizedBox(width: 25),
                     Expanded(
@@ -552,7 +564,7 @@ class _DetailsPendingTechState extends State<DetailsPendingTech> {
                                 .get();
                             final orderData = orderDoc.data();
                             final clientId =
-                            orderData?['userId']; // adjust if needed
+                                orderData?['userId']; // adjust if needed
                             if (clientId != null) {
                               await sendClientOfferNotification(
                                 clientId: clientId,

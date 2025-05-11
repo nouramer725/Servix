@@ -331,7 +331,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                   items: subServicesMap.keys.map((String service) {
                     return DropdownMenuItem<String>(
                       value: service,
-                      child: Text(service,
+                      child: Text(service.tr(),
                           style: GoogleFonts.castoro(
                               fontSize: 15,
                               color: themeProvider.themeMode == ThemeMode.dark
@@ -375,7 +375,7 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                       ? subServicesMap[selectedMainService]!
                           .map((String sub) => DropdownMenuItem<String>(
                                 value: sub,
-                                child: Text(sub,
+                                child: Text(sub.tr(),
                                     style: GoogleFonts.castoro(
                                         fontSize: 15,
                                         color: themeProvider.themeMode ==
@@ -874,34 +874,30 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               ProfileImageWidget(onTap: updateProfileImage),
               const SizedBox(height: 20),
               EditableRow(
-                title: "Name:".tr(),
                 text: userData != null
-                    ? "${userData!['first_name']} ${userData!['last_name']}"
+                    ? "${"Name:".tr()}${userData!['first_name']} ${userData!['last_name']}"
                     : "Welcome".tr(),
                 onEdit: _showEditDialog,
                 icon: FontAwesomeIcons.pencil,
               ),
               const ThemedDivider(),
               EditableRow(
-                title: "Main Service:\nSub Service:".tr(),
                 text:
-                    "${userData?['main_service'] ?? 'N/A'}\n${userData?['sub_service'] ?? 'N/A'}"
+                    "${'Main Service:'.tr()}${userData?['main_service'.tr()] ?? 'N/A'}\n ${'Sub Service:'.tr()}${userData?['sub_service'.tr()] ?? 'N/A'}"
                         .tr(),
                 onEdit: _showEditDialogService,
                 icon: FontAwesomeIcons.pencil,
               ),
               const ThemedDivider(),
               EditableRow(
-                title: "Description:".tr(),
-                text: description,
+                text: '${"Description:".tr()} $description',
                 onEdit: _showEditDialogDiscription,
                 maxLines: 20,
                 icon: FontAwesomeIcons.pencil,
               ),
               const ThemedDivider(),
               EditableRow(
-                title: "Phone Number:".tr(),
-                text: phoneNumber,
+                text: "${"Phone Number:".tr()} $phoneNumber",
                 onEdit: _showEditPhoneDialog,
                 icon: FontAwesomeIcons.pencil,
               ),
@@ -952,8 +948,8 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: themeProvider.themeMode == ThemeMode.dark
-                      ? const Color(0x9DEAEAEA)
-                      : const Color(0xFFF9F4F4),
+                      ? const Color(0xFF333739)
+                      : Color(0xFFF9F4F4),
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: const [
                     BoxShadow(
@@ -976,7 +972,9 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                             style: GoogleFonts.castoro(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: const Color(0xFF676565),
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 10,
@@ -984,7 +982,6 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -1000,11 +997,16 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
                           child: Text(
                             "Change Your Location".tr(),
                             style: GoogleFonts.castoro(
-                              fontSize: 20,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: ApplicationColor,
+                              color: themeProvider.themeMode == ThemeMode.dark
+                                  ? Colors.white
+                                  : ApplicationColor,
                               decoration: TextDecoration.underline,
-                              decorationColor: ApplicationColor,
+                              decorationColor:
+                                  themeProvider.themeMode == ThemeMode.dark
+                                      ? Colors.white
+                                      : ApplicationColor,
                             ),
                           ),
                         )
@@ -1016,15 +1018,13 @@ class _ProfileTechnicianEditState extends State<ProfileTechnicianEdit> {
               const SizedBox(height: 20),
               const ThemedDivider(),
               EditableRow(
-                  title: "Facebook Link:".tr(),
-                  text: linkSocialMedia,
+                  text: "${"Facebook Link:".tr()} $linkSocialMedia",
                   onEdit: _showEditDialogSocialMedia,
                   maxLines: 20,
                   icon: FontAwesomeIcons.pencil),
               const ThemedDivider(),
               EditableRow(
-                title: "Products:".tr(),
-                text: "Upload images of work".tr(),
+                text: "${"Products:".tr()}${"Upload images of work".tr()}",
                 onEdit: _pickAndUploadImages,
                 maxLines: 20,
                 icon: FontAwesomeIcons.image,

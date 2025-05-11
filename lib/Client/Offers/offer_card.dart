@@ -155,7 +155,10 @@ class _OfferCardState extends State<OfferCard> {
                                 style: GoogleFonts.castoro(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: ApplicationColor3,
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : ApplicationColor3,
                                 ),
                               ),
                             ],

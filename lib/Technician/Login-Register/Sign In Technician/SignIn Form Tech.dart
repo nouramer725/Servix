@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:servix/Components/reset_password_white.dart';
 import 'package:servix/Technician/Home/Home%20Layout.dart';
 import 'package:servix/Technician/Login-Register/SignUP/Sign_Up_Tech.dart';
 import '../../../../Components/Buttons.dart';
@@ -211,7 +212,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => ResetPasswordDialog(),
+                    builder: (context) => ResetPasswordDialogWhite(),
                   );
                 },
                 child: Text(
