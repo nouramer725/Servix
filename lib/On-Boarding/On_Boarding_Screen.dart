@@ -28,14 +28,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       image: 'assets/images/on-boarding/client.svg',
       title: 'Explore Our Services'.tr(),
       body:
-          'Our app offers a seamless experience, connecting you with skilled technicians for home repairs and maintenance.'
+          'Our app offers a seamless experience, connecting you with skilled technicians for home repairs and maintenance. You can easily schedule appointments and track service progress in real time.'
               .tr(),
     ),
     Onboarding(
       image: 'assets/images/on-boarding/tech.svg',
       title: 'Find Skilled Technicians'.tr(),
       body:
-          'Need a repair, installation, or maintenance service? Our platform connects you with certified and experienced technicians.'
+          'Need a repair, installation, or maintenance service? Our platform connects you with certified and experienced technicians. Book your service in just a few taps and enjoy hassle-free solutions at your doorstep.'
               .tr(),
     ),
     Onboarding(
@@ -158,8 +158,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       );
                     }
                   },
-                  child: Icon(Icons.keyboard_arrow_right_sharp,
-                      color: ApplicationColor, size: screenWidth * 0.1),
+                  child: Icon(
+                    context.locale.languageCode == 'ar'
+                        ? Icons.keyboard_arrow_left_sharp
+                        : Icons.keyboard_arrow_right_sharp,
+                    color: ApplicationColor,
+                    size: screenWidth * 0.1,
+                  ),
                   elevation: 5,
                 ),
               ],

@@ -138,9 +138,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, child)
-    {
-      return AnnotatedRegion<SystemUiOverlayStyle>(
+      builder: (context, themeProvider, child) {
+        return AnnotatedRegion<SystemUiOverlayStyle>(
           value: const SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
             statusBarIconBrightness: Brightness.dark,
@@ -153,31 +152,27 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-            home: OnboardingScreen(),
+            routes: {
+              "/": (context) => const CheckUserState(),
+              "/splash": (context) => const SplashScreen(),
+              "/onboarding": (context) => const OnboardingScreen(),
+              "/signinChoice": (context) => const Language(),
+              "/signinClient": (context) => SignInClient(),
+              "/signinTech": (context) => SignInTechnician(),
+              "/signupClient": (context) => SignUpClient(),
+              "/signupTech": (context) => SignUpTechnician(),
+              "/clientHome": (context) => const HomeClientLayout(),
+              "/techHome": (context) => const HomeTechnicianLayout(),
+              "/waiting": (context) => WaitingScreen(),
+              "/locationRequest": (context) =>
+                  const LocationRequestScreenClient(),
+              "/locationRequesttech": (context) =>
+                  const LocationRequestScreenTech(),
+              "/personalInfoTech": (context) => const PersonalInformation(),
+            },
           ),
-      );
-    }
-      //       routes: {
-      //         "/": (context) => const CheckUserState(),
-      //         "/splash": (context) => const SplashScreen(),
-      //         "/onboarding": (context) => const OnboardingScreen(),
-      //         "/signinChoice": (context) => const Language(),
-      //         "/signinClient": (context) => SignInClient(),
-      //         "/signinTech": (context) => SignInTechnician(),
-      //         "/signupClient": (context) => SignUpClient(),
-      //         "/signupTech": (context) => SignUpTechnician(),
-      //         "/clientHome": (context) => const HomeClientLayout(),
-      //         "/techHome": (context) => const HomeTechnicianLayout(),
-      //         "/waiting": (context) => WaitingScreen(),
-      //         "/locationRequest": (context) =>
-      //             const LocationRequestScreenClient(),
-      //         "/locationRequesttech": (context) =>
-      //             const LocationRequestScreenTech(),
-      //         "/personalInfoTech": (context) => const PersonalInformation(),
-      //       },
-      //     ),
-      //   );
-      // },
+        );
+      },
     );
   }
 }
