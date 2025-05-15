@@ -577,7 +577,7 @@ class _SignUpClientState extends State<SignUpClient> {
                                       horizontal: 8.0),
                                   child: Text(
                                     "or signup by".tr(),
-                                    style: GoogleFonts.inter(
+                                    style: GoogleFonts.castoro(
                                         color: const Color(0xFF898989),
                                         fontSize: 12),
                                   ),

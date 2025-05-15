@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:servix/constents/constent.dart';
 import '../../Components/Buttons.dart';
 import '../../Theme/Theme_Provider.dart';
+import '../technician View/Profile tech.dart';
 import 'Model/Offer.dart';
 
 class OfferCard extends StatefulWidget {
@@ -84,14 +85,39 @@ class _OfferCardState extends State<OfferCard> {
             children: [
               Row(
                 children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      (widget.offer.technicianImage != null &&
-                              widget.offer.technicianImage.trim().isNotEmpty)
-                          ? widget.offer.technicianImage
-                          : 'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TechnicianProfileScreen(
+                            technicianName: widget.offer.technicianName,
+                            technicianId: widget.offer.technicianId,
+                            technicianImage: widget.offer.technicianImage,
+                            technicianLocationArea:
+                                widget.offer.technicianLocationArea,
+                            technicianLocationStreet:
+                                widget.offer.technicianLocationStreet,
+                            technicianPhone: widget.offer.technicianPhone,
+                            technicianSub: widget.offer.technicianSub,
+                            technicianMain: widget.offer.technicianMain,
+                            technicianDescription:
+                                widget.offer.technicianDescription,
+                            technicianLinkSocialMedia:
+                                widget.offer.technicianLinkSocialMedia,
+                          ),
+                        ),
+                      );
+                    },
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        (widget.offer.technicianImage != null &&
+                                widget.offer.technicianImage.trim().isNotEmpty)
+                            ? widget.offer.technicianImage
+                            : 'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
+                      ),
+                      radius: 25,
                     ),
-                    radius: 25,
                   ),
                   const SizedBox(width: 10),
                   Column(

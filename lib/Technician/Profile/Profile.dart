@@ -745,7 +745,8 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                   itemCount: reviewData.length,
                   itemBuilder: (context, index) {
                     final review = reviewData[index];
-                    final hasComment = (review['comment'] ?? '').trim().isNotEmpty;
+                    final hasComment =
+                        (review['comment'] ?? '').trim().isNotEmpty;
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -758,7 +759,10 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                               radius: 30,
                               backgroundImage: NetworkImage(
                                 (review['clientImage'] != null &&
-                                    review['clientImage'].toString().trim().isNotEmpty)
+                                        review['clientImage']
+                                            .toString()
+                                            .trim()
+                                            .isNotEmpty)
                                     ? review['clientImage']
                                     : 'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
                               ),
@@ -773,7 +777,8 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                     style: GoogleFonts.castoro(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
-                                      color: themeProvider.themeMode == ThemeMode.dark
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
                                           ? Colors.white
                                           : Colors.black,
                                     ),
@@ -785,7 +790,8 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                       style: GoogleFonts.castoro(
                                         fontSize: 16,
                                         fontWeight: FontWeight.normal,
-                                        color: themeProvider.themeMode == ThemeMode.dark
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
                                             ? Colors.white
                                             : Colors.grey[600],
                                       ),
@@ -800,11 +806,11 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                       Row(
                                         children: List.generate(
                                           5,
-                                              (index) {
+                                          (index) {
                                             if (index < review['rating']) {
-                                              return const Icon(
+                                              return Icon(
                                                 Icons.star,
-                                                color: Colors.yellow,
+                                                color: ApplicationColor,
                                                 size: 20,
                                               );
                                             } else {
@@ -823,7 +829,8 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                                         style: GoogleFonts.castoro(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
-                                          color: themeProvider.themeMode == ThemeMode.dark
+                                          color: themeProvider.themeMode ==
+                                                  ThemeMode.dark
                                               ? Colors.white
                                               : Colors.black,
                                         ),

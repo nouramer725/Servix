@@ -14,7 +14,7 @@ class DeliveryServices extends StatelessWidget {
           backgroundColor: const Color(0xffA52754),
           iconTheme: const IconThemeData(color: Colors.white),
           title: Text(
-            'Delivery Service'.tr(),
+            'Delivery\nService'.tr(),
             style: GoogleFonts.castoro(
               fontSize: 20,
               fontWeight: FontWeight.bold,

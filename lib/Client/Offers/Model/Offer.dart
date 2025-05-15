@@ -4,23 +4,39 @@ class Offer {
   final String technicianId;
   final String technicianName;
   final String technicianImage;
+  final String technicianLocationArea;
+  final String technicianLocationStreet;
+  final String technicianPhone;
+  final String technicianSub;
+  final String technicianMain;
+  final String technicianDescription;
+  final String technicianOffer;
+  final String technicianLinkSocialMedia;
   final double offer;
   final String street;
   final String area;
   final List<dynamic> rating;
   final String id;
-  final double averageRating;  // Add averageRating field
+  final double averageRating; // Add averageRating field
 
   Offer({
     required this.technicianId,
     required this.technicianName,
     required this.technicianImage,
+    required this.technicianLocationArea,
+    required this.technicianLocationStreet,
+    required this.technicianPhone,
+    required this.technicianSub,
+    required this.technicianMain,
+    required this.technicianDescription,
+    required this.technicianOffer,
+    required this.technicianLinkSocialMedia,
     required this.offer,
     required this.street,
     required this.area,
     required this.rating,
     required this.id,
-    required this.averageRating,  // Initialize averageRating in constructor
+    required this.averageRating, // Initialize averageRating in constructor
   });
 
   factory Offer.fromFirestore(DocumentSnapshot doc) {
@@ -51,11 +67,12 @@ class Offer {
         if (technicianDoc.exists) {
           final technicianData = technicianDoc.data() as Map<String, dynamic>;
 
-          if (technicianData['Ratings'] != null && technicianData['Ratings'].isNotEmpty) {
+          if (technicianData['Ratings'] != null &&
+              technicianData['Ratings'].isNotEmpty) {
             double total = 0.0;
             List<dynamic> ratings = technicianData['Ratings'];
             for (var rating in ratings) {
-              total += rating['rating'];  // Assuming the field name is 'rating'
+              total += rating['rating']; // Assuming the field name is 'rating'
             }
             averageRating = total / ratings.length;
           }
@@ -68,13 +85,22 @@ class Offer {
     return Offer(
       id: doc.id,
       technicianId: data['technicianId'] ?? '',
+      technicianLocationArea: data['technicianLocationArea'] ?? '',
+      technicianLocationStreet: data['technicianLocationStreet'] ?? '',
+      technicianPhone: data['technicianPhone'] ?? '',
+      technicianSub: data['technicianSubService'] ?? '',
+      technicianMain: data['technicianMainService'] ?? '',
+      technicianDescription: data['technicianDescription'] ?? '',
+      technicianOffer: data['technicianOffer'] ?? '',
+      technicianLinkSocialMedia: data['technicianLinkSocialMedia'] ?? '',
       technicianName: data['technicianName'] ?? '',
-      technicianImage: data['technicianImage'] ?? '',
+      technicianImage: data['technicianImage'] ??
+          'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
       offer: parsedOffer,
       street: data['technicianLocationStreet'] ?? '',
       area: data['technicianLocationArea'] ?? '',
-      rating: data['technicianRating'] ?? [],  // Still storing the rating array, though you can use it for display
-      averageRating: averageRating,  // Store calculated averageRating
+      rating: data['technicianRating'] ?? [],
+      averageRating: averageRating, // Store calculated averageRating
     );
   }
 }

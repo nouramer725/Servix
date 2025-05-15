@@ -77,7 +77,6 @@ class _ResetPasswordDialogWhiteState extends State<ResetPasswordDialogWhite> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     return AlertDialog(
       backgroundColor: Colors.white,
       title: Text(

@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Components/OrderGradientButton.dart';
+import 'package:servix/Components/OrderWhiteButton.dart';
+import 'package:servix/Components/White%20Buttons.dart';
 import '../../../Components/Buttons.dart';
 import '../../../Technician/Orders/model/VideoPlayerWidget.dart';
 import '../../../Theme/Theme_Provider.dart';
@@ -282,7 +285,7 @@ class _DetailsPendingState extends State<DetailsPending> {
                     Row(
                       children: [
                         Expanded(
-                          child: GradientButton(
+                          child: OrderGradientButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -296,8 +299,7 @@ class _DetailsPendingState extends State<DetailsPending> {
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          child: WhiteButtonOffer(
-                            font: 27,
+                          child: OrderWhiteButton(
                             onPressed: () async {
                               await CancelOrder(context, orders);
                             },

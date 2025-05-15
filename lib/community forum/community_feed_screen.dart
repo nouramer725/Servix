@@ -126,7 +126,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                                       themeProvider.themeMode ==
                                                               ThemeMode.dark
                                                           ? Colors.white
-                                                          : ApplicationColor,
+                                                          : Colors.black,
                                                   fontSize: 25)),
                                         ],
                                       ),
@@ -137,7 +137,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                               color: themeProvider.themeMode ==
                                                       ThemeMode.dark
                                                   ? Colors.white
-                                                  : ApplicationColor,
+                                                  : Colors.black,
                                               fontSize: 20)),
                                       actions: [
                                         TextButton(

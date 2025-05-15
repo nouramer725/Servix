@@ -436,8 +436,8 @@ class _DescriptionnScreenState extends State<DescriptionnScreen> {
             fontSize: 15),
         hintStyle: GoogleFonts.castoro(
             color: themeProvider.themeMode == ThemeMode.dark
-                ? Colors.white
-                : Colors.black,
+                ? Colors.white54
+                : Colors.black54,
             fontSize: 15),
         filled: true,
         fillColor: Colors.transparent,

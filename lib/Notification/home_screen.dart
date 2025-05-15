@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'No_notification.dart';
 import 'Notification Item.dart';
 import 'notification_nodejs.dart';
 
@@ -56,7 +57,7 @@ class _NotificationHomeScreenState extends State<NotificationHomeScreen> {
             }
 
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(child: Text("No notifications found."));
+              return const Center(child: NotificationScreen());
             }
 
             final notifications = snapshot.data!.docs;

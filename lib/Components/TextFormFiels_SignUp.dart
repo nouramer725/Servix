@@ -48,6 +48,7 @@ Widget customTextField({
               filled: false,
               fillColor: Colors.grey[100],
               prefixIcon: prefixIcon,
+              prefixIconColor: Colors.black,
               enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
               ),

@@ -621,6 +621,8 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                     itemCount: reviewData.length,
                     itemBuilder: (context, index) {
                       final review = reviewData[index];
+                      final hasComment =
+                          (review['comment'] ?? '').trim().isNotEmpty;
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -648,35 +650,58 @@ class _TechnicianProfileScreenState extends State<TechnicianProfileScreen> {
                                           : Colors.black,
                                     ),
                                   ),
-                                  Text(
-                                    review['comment'],
-                                    style: GoogleFonts.castoro(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: themeProvider.themeMode ==
-                                              ThemeMode.dark
-                                          ? Colors.white
-                                          : Colors.grey[600],
+                                  if (hasComment) ...[
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      review['comment'],
+                                      style: GoogleFonts.castoro(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal,
+                                        color: themeProvider.themeMode ==
+                                            ThemeMode.dark
+                                            ? Colors.white
+                                            : Colors.grey[600],
+                                      ),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
                                     ),
-                                  ),
-                                  const SizedBox(height: 4),
+                                    const SizedBox(height: 4),
+                                  ],
                                   Row(
-                                    children: List.generate(
-                                      5,
-                                      (index) {
-                                        if (index < review['rating']) {
-                                          return const Icon(Icons.star,
-                                              color: Colors.yellow, size: 22);
-                                        } else {
-                                          return Icon(Icons.star_border,
-                                              color: themeProvider.themeMode ==
-                                                      ThemeMode.dark
-                                                  ? Colors.white
-                                                  : Colors.grey[600],
-                                              size: 22);
-                                        }
-                                      },
-                                    ),
+                                    children: [
+                                      Row(
+                                        children: List.generate(
+                                          5,
+                                          (index) {
+                                            if (index < review['rating']) {
+                                              return Icon(Icons.star,
+                                                  color: ApplicationColor,
+                                                  size: 22);
+                                            } else {
+                                              return Icon(Icons.star_border,
+                                                  color: themeProvider.themeMode ==
+                                                          ThemeMode.dark
+                                                      ? Colors.white
+                                                      : Colors.grey[600],
+                                                  size: 22);
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Text(
+                                        review['rating'].toString(),
+                                        style: GoogleFonts.castoro(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
