@@ -5,7 +5,8 @@ import 'package:servix/Theme/Theme_Provider.dart';
 
 Widget countryCodePhoneFieldContactUs({
   required TextEditingController controller,
-  required String? errorText, required ThemeProvider themeProvider,
+  required String? errorText,
+  required ThemeProvider themeProvider,
 }) {
   return Column(
     children: [
@@ -17,12 +18,15 @@ Widget countryCodePhoneFieldContactUs({
             decoration: BoxDecoration(
               border: Border.all(color: Color(0xE0E8E6E6)),
               borderRadius: BorderRadius.circular(10),
-
             ),
-            child:  Center(
+            child: Center(
               child: Text(
                 "+20".tr(),
-                style: GoogleFonts.castoro(fontSize: 16, color: themeProvider.themeMode == ThemeMode.dark ? Colors.grey.shade400 : Colors.black),
+                style: GoogleFonts.castoro(
+                    fontSize: 16,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.grey.shade400
+                        : Colors.black),
               ),
             ),
           ),
@@ -39,14 +43,21 @@ Widget countryCodePhoneFieldContactUs({
                   fontWeight: FontWeight.w400,
                   color: Colors.grey.shade400,
                 ),
-                prefixIcon: Icon(Icons.local_phone_sharp, color: themeProvider.themeMode == ThemeMode.dark ? Colors.grey.shade400 : Colors.black),
+                prefixIcon: Icon(Icons.local_phone_sharp,
+                    color: themeProvider.themeMode == ThemeMode.dark
+                        ? Colors.grey.shade400
+                        : Colors.black),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Color(0xE0E8E6E6), width: 1),
-                  borderRadius: BorderRadius.circular(10), // Increased rounded corners
+                  borderSide:
+                      const BorderSide(color: Color(0xE0E8E6E6), width: 1),
+                  borderRadius:
+                      BorderRadius.circular(10), // Increased rounded corners
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Color(0xE0E8E6E6), width: 1),
-                  borderRadius: BorderRadius.circular(10), // Increased rounded corners
+                  borderSide:
+                      const BorderSide(color: Color(0xE0E8E6E6), width: 1),
+                  borderRadius:
+                      BorderRadius.circular(10), // Increased rounded corners
                 ),
               ),
             ),
@@ -61,7 +72,7 @@ Widget countryCodePhoneFieldContactUs({
             children: [
               Text(
                 errorText,
-                style:GoogleFonts.castoro(color: Colors.red, fontSize: 14),
+                style: GoogleFonts.castoro(color: Colors.red, fontSize: 14),
               ),
             ],
           ),

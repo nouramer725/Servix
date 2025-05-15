@@ -17,7 +17,7 @@ Widget countryCodePhoneField({
   final containerPaddingVertical = screenHeight * 0.02; // ~16 px
   final containerPaddingHorizontal = screenWidth * 0.03; // ~12 px
   final fontSizeLabel = screenWidth * 0.045; // ~18 px
-  final fontSizeText = screenWidth * 0.033; // ~16 px
+  final fontSizeText = screenWidth * 0.034; // ~16 px
   final errorFontSize = screenWidth * 0.035; // ~14 px
   final spacingWidth = screenWidth * 0.02; // ~8 px
   final spacingHeight = screenHeight * 0.022; // ~17 px
@@ -27,7 +27,6 @@ Widget countryCodePhoneField({
       Row(
         children: [
           Container(
-            height: 80,
             width: 70,
             padding: EdgeInsets.symmetric(
               horizontal: containerPaddingHorizontal,
