@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -24,28 +25,28 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   List<Onboarding> boarding = [
     Onboarding(
-      image: 'assets/images/on-boarding/explore.png',
+      image: 'assets/images/on-boarding/client.svg',
       title: 'Explore Our Services'.tr(),
       body:
           'Our app offers a seamless experience, connecting you with skilled technicians for home repairs and maintenance.'
               .tr(),
     ),
     Onboarding(
-      image: 'assets/images/on-boarding/tech.png',
+      image: 'assets/images/on-boarding/tech.svg',
       title: 'Find Skilled Technicians'.tr(),
       body:
           'Need a repair, installation, or maintenance service? Our platform connects you with certified and experienced technicians.'
               .tr(),
     ),
     Onboarding(
-      image: 'assets/images/on-boarding/robot.png',
+      image: 'assets/images/on-boarding/community.svg',
       title: 'Community Forum'.tr(),
       body:
           'Join our vibrant community to connect, share ideas, and learn from fellow language learners. Together, we can achieve more!'
               .tr(),
     ),
     Onboarding(
-      image: 'assets/images/on-boarding/robot.png',
+      image: 'assets/images/on-boarding/ai.svg',
       title: 'Smart AI'.tr(),
       body:
           'Our AI assistant helps with instant troubleshooting, smart recommendations, and automated support for various tasks.'
@@ -86,7 +87,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               onPressed: completeOnboarding, // Skip onboarding
               child: Text(
                 'Skip'.tr(),
-                style: GoogleFonts.charisSil(
+                style: GoogleFonts.castoro(
                   fontSize: screenWidth * 0.07, // responsive font size
                   color: Colors.white,
                 ),
@@ -136,10 +137,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   controller: swipeController,
                   count: boarding.length,
                   effect: ExpandingDotsEffect(
-                    dotColor: Colors.white.withOpacity(0.5),
+                    dotColor: Colors.white,
                     spacing: 6,
                     dotWidth: screenWidth * 0.025,
-                    expansionFactor: 4,
+                    expansionFactor: 3,
                     activeDotColor: Colors.white,
                     dotHeight: screenWidth * 0.025,
                   ),
@@ -157,10 +158,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       );
                     }
                   },
-                  child: Icon(Icons.arrow_forward_ios,
-                      color: ApplicationColor,
-                      size: screenWidth * 0.06 // responsive icon size
-                      ),
+                  child: Icon(Icons.keyboard_arrow_right_sharp,
+                      color: ApplicationColor, size: screenWidth * 0.1),
                   elevation: 5,
                 ),
               ],
@@ -188,7 +187,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             SizedBox(height: topSpacing),
             Text(
               model.title,
-              style: GoogleFonts.charisSil(
+              style: GoogleFonts.castoro(
                 fontSize: titleFontSize,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -196,17 +195,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: screenHeight * 0.03),
-            Image.asset(
-              model.image,
-              width: imageWidth,
-              height: imageHeight,
-            ),
+            model.image.endsWith('.svg')
+                ? SvgPicture.asset(
+                    model.image,
+                    width: imageWidth,
+                    height: imageHeight,
+                  )
+                : Image.asset(
+                    model.image,
+                    width: imageWidth,
+                    height: imageHeight,
+                  ),
             SizedBox(height: screenHeight * 0.02),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: bodyHorizontalPadding),
               child: Text(
                 model.body,
-                style: GoogleFonts.baskervville(
+                style: GoogleFonts.castoro(
                   fontSize: bodyFontSize,
                   color: Colors.white,
                 ),

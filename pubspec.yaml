@@ -89,6 +89,7 @@ dependencies:
   curved_navigation_bar: ^1.0.6
   salomon_bottom_bar: ^3.3.2
   carousel_slider: ^5.0.0
+  flutter_svg: ^2.1.0
 
 
 flutter_launcher_icons:
@@ -140,6 +141,10 @@ flutter:
     - assets/images/notification/
     - assets/images/offers/
     - assets/images/on-boarding/
+    - assets/images/on-boarding/client.svg
+    - assets/images/on-boarding/ai.svg
+    - assets/images/on-boarding/community.svg
+    - assets/images/on-boarding/tech.svg
     - assets/images/search/
     - assets/images/private-teaching/
     - assets/images/woman/
