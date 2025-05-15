@@ -13,6 +13,7 @@ class DevicesMaintenaceService extends StatelessWidget {
         preferredSize: const Size.fromHeight(100.0), // Increased AppBar height
         child: AppBar(
           backgroundColor: const Color(0xff69B5BB),
+          iconTheme: const IconThemeData(color: Colors.white),
           title: Text(
             'Devices Service'.tr(),
             style: GoogleFonts.castoro(

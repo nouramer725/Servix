@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -322,13 +323,18 @@ class _SignInFormState extends State<SignInForm> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    double scaleWidth(double size) => size * (screenWidth / 375);
+    double scaleHeight(double size) => size * (screenHeight / 812);
+
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: EdgeInsets.all(scaleWidth(20)),
       child: Form(
         key: _formKey,
         child: Column(
           children: [
-            const SizedBox(height: 50),
+            SizedBox(height: scaleHeight(40)),
             CustomTextFormField(
               label: "Email".tr(),
               controller: _emailController,
@@ -336,7 +342,7 @@ class _SignInFormState extends State<SignInForm> {
               errorText: _emailError,
               keyboardType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 17),
+            SizedBox(height: scaleHeight(17)),
             CustomTextFormField(
               label: "Password".tr(),
               controller: _passwordController,
@@ -360,67 +366,64 @@ class _SignInFormState extends State<SignInForm> {
                 },
                 child: Text(
                   "Forgot Password?".tr(),
-                  style: GoogleFonts.cantataOne(
-                    fontSize: 20,
+                  style: GoogleFonts.castoro(
+                    fontSize: scaleWidth(20),
                     color: ApplicationColor,
                   ),
                 ),
               ),
             ),
-            SizedBox(
-              height: 70,
-            ),
+            SizedBox(height: scaleHeight(20)),
             GradientButton(
-                onPressed: _isLoading ? null : _validateAndSubmit,
-                text: "Sign In".tr()),
-            const SizedBox(height: 10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              onPressed: _isLoading ? null : _validateAndSubmit,
+              text: "Sign In".tr(),
+            ),
+            SizedBox(height: scaleHeight(10)),
+            Text.rich(
+              TextSpan(
                 children: [
-                  Text(
-                    "Don't have an account? ".tr(),
-                    style: GoogleFonts.charisSil(fontSize: 20),
+                  TextSpan(
+                    text: "Don't have an account? ".tr(),
+                    style: GoogleFonts.castoro(fontSize: scaleWidth(20)),
                   ),
-                  const SizedBox(width: 5), // Space between the two texts
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignUpClient()),
-                      );
-                    },
-                    child: Text(
-                      " SignUp".tr(),
-                      style: GoogleFonts.charisSil(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: ApplicationColor,
-                      ),
+                  TextSpan(
+                    text: " SignUp".tr(),
+                    style: GoogleFonts.castoro(
+                      fontSize: scaleWidth(20),
+                      color: ApplicationColor,
                     ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignUpClient()),
+                        );
+                      },
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: scaleHeight(10)),
             Column(
               children: [
                 Row(
                   children: [
-                    const Expanded(child: Divider(color: Color(0xFFD6D6D6))),
+                    Expanded(child: Divider(color: Color(0xFFD6D6D6))),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: EdgeInsets.symmetric(horizontal: scaleWidth(8)),
                       child: Text(
                         "or signin by".tr(),
                         style: GoogleFonts.castoro(
-                            color: const Color(0xFF898989), fontSize: 12),
+                          color: Color(0xFF898989),
+                          fontSize: scaleWidth(12),
+                        ),
                       ),
                     ),
-                    const Expanded(child: Divider(color: Color(0xFFD6D6D6))),
+                    Expanded(child: Divider(color: Color(0xFFD6D6D6))),
                   ],
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: scaleHeight(20)),
                 Row(
                   children: [
                     Expanded(
@@ -429,26 +432,27 @@ class _SignInFormState extends State<SignInForm> {
                           signInWithGoogle(context);
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(14),
+                          padding: EdgeInsets.all(scaleWidth(14)),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: const Color(0xFFAEAEAE)),
+                            borderRadius: BorderRadius.circular(scaleWidth(10)),
+                            border: Border.all(color: Color(0xFFAEAEAE)),
                           ),
                           child: Row(
                             children: [
                               Image.asset(
                                 'assets/images/social_media/google.png',
-                                height: 28,
-                                width: 29,
+                                height: scaleHeight(28),
+                                width: scaleWidth(29),
                               ),
-                              const SizedBox(width: 10),
+                              SizedBox(width: scaleWidth(10)),
                               Expanded(
                                 child: Text(
                                   "Continue With Google".tr(),
-                                  style: GoogleFonts.inter(
-                                      fontSize: 20,
-                                      color: const Color(0xFF828282)),
-                                  maxLines: 5,
+                                  style: GoogleFonts.castoro(
+                                    fontSize: scaleWidth(20),
+                                    color: Color(0xFF828282),
+                                  ),
+                                  maxLines: 2,
                                   textAlign: TextAlign.center,
                                 ),
                               ),

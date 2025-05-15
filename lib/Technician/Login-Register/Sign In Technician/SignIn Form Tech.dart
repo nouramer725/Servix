@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -76,7 +77,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
 
     try {
       UserCredential userCredential =
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
@@ -99,20 +100,24 @@ class _SignInFormTechState extends State<SignInFormTech> {
 
           if (roleTech == 'Technician') {
             // Set isActive to true for the technician
-            await techDoc.reference.update({'isActive': true}); // Toggle isActive to true
+            await techDoc.reference
+                .update({'isActive': true}); // Toggle isActive to true
 
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const HomeTechnicianLayout()),
+              MaterialPageRoute(
+                  builder: (context) => const HomeTechnicianLayout()),
             );
           } else if (roleTech == 'Client') {
             // Update role to Technician and set isActive to true
-            await techDoc.reference.update({'role': 'Technician', 'isActive': true});
+            await techDoc.reference
+                .update({'role': 'Technician', 'isActive': true});
 
             // Navigate to technician home
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const HomeTechnicianLayout()),
+              MaterialPageRoute(
+                  builder: (context) => const HomeTechnicianLayout()),
             );
           } else {
             Fluttertoast.showToast(
@@ -182,13 +187,18 @@ class _SignInFormTechState extends State<SignInFormTech> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    double scaleWidth(double size) => size * (screenWidth / 375);
+    double scaleHeight(double size) => size * (screenHeight / 812);
+
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Form(
         key: _formKey,
         child: Column(
           children: [
-            const SizedBox(height: 50),
+            SizedBox(height: scaleHeight(40)),
             CustomTextFormField(
               label: "Email".tr(),
               controller: emailController,
@@ -196,7 +206,7 @@ class _SignInFormTechState extends State<SignInFormTech> {
               errorText: emailError,
               icon: Icons.email,
             ),
-            const SizedBox(height: 17),
+            SizedBox(height: scaleHeight(17)),
             CustomTextFormField(
               label: "Password".tr(),
               controller: passwordController,
@@ -217,45 +227,40 @@ class _SignInFormTechState extends State<SignInFormTech> {
                 },
                 child: Text(
                   "Forgot Password?".tr(),
-                  style: GoogleFonts.cantataOne(
-                    fontSize: 20,
+                  style: GoogleFonts.castoro(
+                    fontSize: scaleWidth(20),
                     color: ApplicationColor,
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 100),
+            SizedBox(height: scaleHeight(20)),
             GradientButton(
               onPressed: _isLoading ? null : _validateAndSubmit,
               text: "Sign In".tr(),
             ),
-            const SizedBox(height: 10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            SizedBox(height: scaleHeight(10)),
+            Text.rich(
+              TextSpan(
                 children: [
-                  Text(
-                    "Don't have an account? ".tr(),
-                    style: GoogleFonts.charisSil(fontSize: 20),
+                  TextSpan(
+                    text: "Don't have an account? ".tr(),
+                    style: GoogleFonts.castoro(fontSize: scaleWidth(20)),
                   ),
-                  const SizedBox(width: 5), // Space between the two texts
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SignUpTechnician()),
-                      );
-                    },
-                    child: Text(
-                      " SignUp".tr(),
-                      style: GoogleFonts.charisSil(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: ApplicationColor,
-                      ),
+                  TextSpan(
+                    text: " SignUp".tr(),
+                    style: GoogleFonts.castoro(
+                      fontSize: scaleWidth(20),
+                      color: ApplicationColor,
                     ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignUpTechnician()),
+                        );
+                      },
                   ),
                 ],
               ),

@@ -6,7 +6,16 @@ Widget genderDropdown({
   required String? selectedValue,
   required Function(String?) onChanged,
   String? errorText,
+  required BuildContext context, // Added context to use MediaQuery
 }) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  final screenHeight = MediaQuery.of(context).size.height;
+
+  final fontSize = screenWidth * 0.04; // ~16 for standard phones
+  final errorFontSize = screenWidth * 0.035; // ~14
+  final paddingTop = screenHeight * 0.006; // ~5
+  final paddingLeft = screenWidth * 0.013; // ~5
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -24,19 +33,22 @@ Widget genderDropdown({
             borderSide: BorderSide(color: Color(0xFFAEAEAE), width: 1),
           ),
         ),
-        hint: Text("Gender".tr(),
-            style: GoogleFonts.castoro(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-            )),
-        dropdownColor: Colors.white, // Dropdown background color
+        hint: Text(
+          "Gender".tr(),
+          style: GoogleFonts.castoro(
+            fontSize: fontSize,
+            fontWeight: FontWeight.w400,
+            color: Colors.grey,
+          ),
+        ),
+        dropdownColor: Colors.white,
         items: ["Male".tr(), "Female".tr()].map((String category) {
           return DropdownMenuItem(
             value: category,
             child: Text(
               category,
               style: GoogleFonts.castoro(
-                fontSize: 16,
+                fontSize: fontSize,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -46,13 +58,14 @@ Widget genderDropdown({
       ),
       if (errorText != null)
         Padding(
-          padding: const EdgeInsets.only(top: 5, left: 5),
+          padding: EdgeInsets.only(top: paddingTop, left: paddingLeft),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 errorText,
-                style: GoogleFonts.castoro(color: Colors.red, fontSize: 14),
+                style: GoogleFonts.castoro(
+                    color: Colors.red, fontSize: errorFontSize),
               ),
             ],
           ),

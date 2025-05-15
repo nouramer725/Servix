@@ -12,33 +12,45 @@ class MemberShip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenWidth = mediaQuery.size.width;
+    final screenHeight = mediaQuery.size.height;
+
+    // Dynamic sizes based on screen dimensions
+    final imageWidth = screenWidth * 0.5;
+    final imageHeight = screenHeight * 0.25;
+
+    final titleFontSize = screenWidth * 0.07;
+    final spacingLarge = screenHeight * 0.06;
+    final spacingMedium = screenHeight * 0.02;
+    final paddingAll = screenWidth * 0.05;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(paddingAll),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
                   "assets/images/lang-member/langmem.png",
-                  width: 191,
-                  height: 196,
+                  width: imageWidth,
+                  height: imageHeight,
+                  fit: BoxFit.contain,
                 ),
-                const SizedBox(
-                  height: 115,
-                ),
+                SizedBox(height: spacingLarge),
                 Text(
                   tr("Select MemberShip"),
                   style: GoogleFonts.castoro(
-                    fontSize: 28,
+                    fontSize: titleFontSize,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(
-                  height: 60,
-                ),
+                SizedBox(height: spacingLarge),
                 WhiteButton(
                   text: "Technician",
                   onPressed: () {
@@ -49,17 +61,16 @@ class MemberShip extends StatelessWidget {
                     );
                   },
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: spacingMedium),
                 GradientButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignInClient()),
-                      );
-                    },
-                    text: tr("Client"))
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInClient()),
+                    );
+                  },
+                  text: tr("Client"),
+                ),
               ],
             ),
           ),

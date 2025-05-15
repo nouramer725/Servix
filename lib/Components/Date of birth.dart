@@ -20,7 +20,7 @@ Widget customDOBField({
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: GoogleFonts.castoro(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.w400,
             color: Colors.black.withOpacity(0.31),
           ),

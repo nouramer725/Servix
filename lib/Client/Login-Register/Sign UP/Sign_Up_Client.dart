@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -441,6 +442,13 @@ class _SignUpClientState extends State<SignUpClient> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    // Helper scaling functions based on screen width/height
+    double scaleWidth(double inputWidth) => (inputWidth / 375.0) * size.width;
+    double scaleHeight(double inputHeight) =>
+        (inputHeight / 812.0) * size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -450,7 +458,7 @@ class _SignUpClientState extends State<SignUpClient> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 30),
+                    padding: EdgeInsets.only(right: scaleWidth(30)),
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Image.asset(
@@ -458,34 +466,43 @@ class _SignUpClientState extends State<SignUpClient> {
                             ? "assets/images/sign/upArabic.png"
                             : "assets/images/sign/up.png",
                         alignment: Alignment.topLeft,
-                        width: 502,
+                        width: scaleWidth(502),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(scaleWidth(20)),
                     child: Column(
                       children: [
                         customTextField(
                           controller: _FirstNameController,
                           keyboardTypee: TextInputType.name,
                           labelText: "First Name".tr(),
-                          prefixIcon: const Icon(Icons.person_outline_rounded),
+                          prefixIcon: Icon(
+                            Icons.person_outline_rounded,
+                            size: scaleWidth(24),
+                          ),
                           errorText: _FnameError,
                         ),
                         customTextField(
                           controller: _LastNameController,
                           keyboardTypee: TextInputType.name,
                           labelText: "Last Name".tr(),
-                          prefixIcon: const Icon(Icons.person_outline_rounded),
+                          prefixIcon: Icon(
+                            Icons.person_outline_rounded,
+                            size: scaleWidth(24),
+                          ),
                           errorText: _LnameError,
                         ),
                         customTextField(
                           controller: _emailController,
                           keyboardTypee: TextInputType.emailAddress,
                           labelText: "Email".tr(),
-                          prefixIcon:
-                              const Icon(Icons.email, color: Colors.black),
+                          prefixIcon: Icon(
+                            Icons.email,
+                            color: Colors.black,
+                            size: scaleWidth(24),
+                          ),
                           errorText: _emailError,
                         ),
                         customTextField(
@@ -493,8 +510,11 @@ class _SignUpClientState extends State<SignUpClient> {
                           keyboardTypee: TextInputType.visiblePassword,
                           labelText: "Password".tr(),
                           obscureText: _obscureText,
-                          prefixIcon:
-                              const Icon(Icons.lock, color: Colors.black),
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Colors.black,
+                            size: scaleWidth(24),
+                          ),
                           errorText: _passwordError,
                           onVisibilityToggle: () {
                             setState(() {
@@ -507,8 +527,11 @@ class _SignUpClientState extends State<SignUpClient> {
                           keyboardTypee: TextInputType.visiblePassword,
                           labelText: "Confirm Password".tr(),
                           obscureText: _obscureConfirmText,
-                          prefixIcon:
-                              const Icon(Icons.lock, color: Colors.black),
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Colors.black,
+                            size: scaleWidth(24),
+                          ),
                           errorText: _confirmError,
                           onVisibilityToggle: () {
                             setState(() {
@@ -519,9 +542,11 @@ class _SignUpClientState extends State<SignUpClient> {
                         countryCodePhoneField(
                           controller: _PhoneNumberController,
                           errorText: _phoneError,
+                          context: context,
                         ),
                         genderDropdown(
                           errorText: Gender,
+                          context: context,
                           selectedValue: gender,
                           onChanged: (newValue) {
                             setState(() {
@@ -529,64 +554,60 @@ class _SignUpClientState extends State<SignUpClient> {
                             });
                           },
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: scaleHeight(30)),
                         GradientButton(
                           onPressed: _isLoading ? null : _validateAndSubmit,
                           text: "Sign Up".tr(),
                         ),
-                        const SizedBox(height: 10),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        SizedBox(height: scaleHeight(10)),
+                        Text.rich(
+                          TextSpan(
                             children: [
-                              Text(
-                                "Already have an account? ".tr(),
-                                style: GoogleFonts.charisSil(fontSize: 20),
-                                overflow: TextOverflow.ellipsis,
+                              TextSpan(
+                                text: "Already have an account? ".tr(),
+                                style: GoogleFonts.castoro(
+                                    fontSize: scaleWidth(20)),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SignInClient()),
-                                  );
-                                },
-                                child: Text(
-                                  " SignIn".tr(),
-                                  style: GoogleFonts.charisSil(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: ApplicationColor,
-                                  ),
+                              TextSpan(
+                                text: " SignIn".tr(),
+                                style: GoogleFonts.castoro(
+                                  fontSize: scaleWidth(20),
+                                  color: ApplicationColor,
                                 ),
-                              )
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SignInClient()),
+                                    );
+                                  },
+                              ),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: scaleHeight(10)),
                         Column(
                           children: [
                             Row(
                               children: [
-                                const Expanded(
+                                Expanded(
                                     child: Divider(color: Color(0xFFD6D6D6))),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: scaleWidth(8)),
                                   child: Text(
                                     "or signup by".tr(),
                                     style: GoogleFonts.castoro(
-                                        color: const Color(0xFF898989),
-                                        fontSize: 12),
+                                        color: Color(0xFF898989),
+                                        fontSize: scaleWidth(12)),
                                   ),
                                 ),
-                                const Expanded(
+                                Expanded(
                                     child: Divider(color: Color(0xFFD6D6D6))),
                               ],
                             ),
-                            const SizedBox(height: 20),
+                            SizedBox(height: scaleHeight(20)),
                             Row(
                               children: [
                                 Expanded(
@@ -595,11 +616,12 @@ class _SignUpClientState extends State<SignUpClient> {
                                       signInWithGoogle(context);
                                     },
                                     child: Container(
-                                      padding: const EdgeInsets.all(14),
+                                      padding: EdgeInsets.all(scaleWidth(14)),
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.circular(
+                                            scaleWidth(10)),
                                         border: Border.all(
-                                            color: const Color(0xFFAEAEAE)),
+                                            color: Color(0xFFAEAEAE)),
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
@@ -607,17 +629,16 @@ class _SignUpClientState extends State<SignUpClient> {
                                         children: [
                                           Image.asset(
                                             'assets/images/social_media/google.png',
-                                            height: 28,
-                                            width: 29,
+                                            height: scaleWidth(28),
+                                            width: scaleWidth(29),
                                           ),
                                           Expanded(
                                             child: Text(
                                               "Google".tr(),
                                               style: GoogleFonts.inter(
-                                                  fontSize: 16,
-                                                  color:
-                                                      const Color(0xFF828282)),
-                                              maxLines: 5,
+                                                  fontSize: scaleWidth(14),
+                                                  color: Color(0xFF828282)),
+                                              maxLines: 1,
                                               textAlign: TextAlign.center,
                                             ),
                                           ),
@@ -626,36 +647,36 @@ class _SignUpClientState extends State<SignUpClient> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 10),
+                                SizedBox(width: scaleWidth(10)),
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: () {
                                       signInWithFacebook(context);
                                     },
                                     child: Container(
-                                      padding: const EdgeInsets.all(14),
+                                      padding: EdgeInsets.all(scaleWidth(14)),
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.circular(
+                                            scaleWidth(10)),
                                         border: Border.all(
-                                            color: const Color(0xFFAEAEAE)),
+                                            color: Color(0xFFAEAEAE)),
                                       ),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          const FaIcon(
+                                          FaIcon(
                                             FontAwesomeIcons.facebook,
                                             color: Color(0xFF1877F2),
-                                            size: 28,
+                                            size: scaleWidth(28),
                                           ),
                                           Expanded(
                                             child: Text(
                                               "Facebook".tr(),
                                               style: GoogleFonts.inter(
-                                                  fontSize: 16,
-                                                  color:
-                                                      const Color(0xFF828282)),
-                                              maxLines: 5,
+                                                  fontSize: scaleWidth(14),
+                                                  color: Color(0xFF828282)),
+                                              maxLines: 1,
                                               textAlign: TextAlign.center,
                                             ),
                                           ),

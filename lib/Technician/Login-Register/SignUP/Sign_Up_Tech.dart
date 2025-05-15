@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -306,6 +307,13 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    // Helper scaling functions based on screen width/height
+    double scaleWidth(double inputWidth) => (inputWidth / 375.0) * size.width;
+    double scaleHeight(double inputHeight) =>
+        (inputHeight / 812.0) * size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -330,7 +338,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                   ),
                   // Form Fields
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(scaleWidth(20)),
                     child: Column(
                       children: [
                         // First Name
@@ -338,7 +346,10 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                           controller: _FirstNameController,
                           keyboardTypee: TextInputType.name,
                           labelText: "First Name".tr(),
-                          prefixIcon: const Icon(Icons.person_outline_rounded),
+                          prefixIcon: Icon(
+                            Icons.person_outline_rounded,
+                            size: scaleWidth(24),
+                          ),
                           errorText: _FnameError,
                         ),
                         // Last Name
@@ -346,7 +357,10 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                           controller: _LastNameController,
                           keyboardTypee: TextInputType.name,
                           labelText: "Last Name".tr(),
-                          prefixIcon: const Icon(Icons.person_outline_rounded),
+                          prefixIcon: Icon(
+                            Icons.person_outline_rounded,
+                            size: scaleWidth(24),
+                          ),
                           errorText: _LnameError,
                         ),
                         // Email
@@ -354,8 +368,11 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                           controller: _emailController,
                           keyboardTypee: TextInputType.emailAddress,
                           labelText: "Email".tr(),
-                          prefixIcon:
-                              const Icon(Icons.email, color: Colors.black),
+                          prefixIcon: Icon(
+                            Icons.email,
+                            color: Colors.black,
+                            size: scaleWidth(24),
+                          ),
                           errorText: _emailError,
                         ),
                         // Password
@@ -365,7 +382,8 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                           labelText: "Password".tr(),
                           obscureText: _obscureText,
                           prefixIcon:
-                              const Icon(Icons.lock, color: Colors.black),
+                               Icon(Icons.lock, color: Colors.black,                            size: scaleWidth(24),
+                              ),
                           errorText: _passwordError,
                           onVisibilityToggle: () {
                             setState(() {
@@ -380,7 +398,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                           labelText: "Confirm Password".tr(),
                           obscureText: _obscureConfirmText,
                           prefixIcon:
-                              const Icon(Icons.lock, color: Colors.black),
+                               Icon(Icons.lock, color: Colors.black,                            size: scaleWidth(24),),
                           errorText: _confirmError,
                           onVisibilityToggle: () {
                             setState(() {
@@ -390,11 +408,12 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                         ),
                         // Phone
                         countryCodePhoneField(
-                          controller: _PhoneNumberController,
-                          errorText: _phoneError,
-                        ),
+                            controller: _PhoneNumberController,
+                            errorText: _phoneError,
+                            context: context),
                         genderDropdown(
                           selectedValue: gender,
+                          context: context,
                           errorText: genderError,
                           onChanged: (newValue) {
                             setState(() {
@@ -430,7 +449,7 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                             });
                           },
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: scaleHeight(30)),
                         // Sign Up Button
                         GradientButton(
                           onPressed: _isLoading ? null : _validateAndSubmit,
@@ -438,34 +457,30 @@ class _SignUpTechnicianState extends State<SignUpTechnician> {
                         ),
                         const SizedBox(height: 10),
                         // Already have an account?
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                        Text.rich(
+                          TextSpan(
                             children: [
-                              Text(
-                                "Already have an account? ".tr(),
-                                style: GoogleFonts.charisSil(fontSize: 20),
-                                overflow: TextOverflow.ellipsis,
+                              TextSpan(
+                                text: "Already have an account? ".tr(),
+                                style: GoogleFonts.castoro(
+                                    fontSize: scaleWidth(20)),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            SignInTechnician()),
-                                  );
-                                },
-                                child: Text(
-                                  " SignIn".tr(),
-                                  style: GoogleFonts.charisSil(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: ApplicationColor,
-                                  ),
+                              TextSpan(
+                                text: " SignIn".tr(),
+                                style: GoogleFonts.castoro(
+                                  fontSize: scaleWidth(20),
+                                  color: ApplicationColor,
                                 ),
-                              )
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SignInTechnician()),
+                                    );
+                                  },
+                              ),
                             ],
                           ),
                         ),

@@ -39,6 +39,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ),
     Onboarding(
       image: 'assets/images/on-boarding/robot.png',
+      title: 'Community Forum'.tr(),
+      body:
+          'Join our vibrant community to connect, share ideas, and learn from fellow language learners. Together, we can achieve more!'
+              .tr(),
+    ),
+    Onboarding(
+      image: 'assets/images/on-boarding/robot.png',
       title: 'Smart AI'.tr(),
       body:
           'Our AI assistant helps with instant troubleshooting, smart recommendations, and automated support for various tasks.'
@@ -60,6 +67,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // MediaQuery for responsiveness
+    final size = MediaQuery.of(context).size;
+    final screenWidth = size.width;
+    final screenHeight = size.height;
+
+    // Responsive padding based on screen width
+    final paddingSize = screenWidth * 0.05;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -72,7 +87,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: Text(
                 'Skip'.tr(),
                 style: GoogleFonts.charisSil(
-                  fontSize: 26,
+                  fontSize: screenWidth * 0.07, // responsive font size
                   color: Colors.white,
                 ),
               ),
@@ -94,7 +109,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             stops: const [0.09, 0.45, 1.0],
           ),
         ),
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(paddingSize),
         child: Column(
           children: [
             Expanded(
@@ -107,22 +122,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   });
                 },
                 itemCount: boarding.length,
-                itemBuilder: (context, index) =>
-                    buildOnBoarding(boarding[index]),
+                itemBuilder: (context, index) => buildOnBoarding(
+                  boarding[index],
+                  screenWidth,
+                  screenHeight,
+                ),
               ),
             ),
-            const SizedBox(height: 35),
+            SizedBox(height: screenHeight * 0.04),
             Row(
               children: [
                 SmoothPageIndicator(
                   controller: swipeController,
                   count: boarding.length,
-                  effect: const ExpandingDotsEffect(
-                    dotColor: Colors.white,
-                    spacing: 3,
-                    dotWidth: 10,
+                  effect: ExpandingDotsEffect(
+                    dotColor: Colors.white.withOpacity(0.5),
+                    spacing: 6,
+                    dotWidth: screenWidth * 0.025,
                     expansionFactor: 4,
                     activeDotColor: Colors.white,
+                    dotHeight: screenWidth * 0.025,
                   ),
                 ),
                 const Spacer(),
@@ -138,7 +157,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       );
                     }
                   },
-                  child: Icon(Icons.arrow_forward_ios, color: ApplicationColor),
+                  child: Icon(Icons.arrow_forward_ios,
+                      color: ApplicationColor,
+                      size: screenWidth * 0.06 // responsive icon size
+                      ),
                   elevation: 5,
                 ),
               ],
@@ -149,33 +171,47 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget buildOnBoarding(Onboarding model) {
+  Widget buildOnBoarding(
+      Onboarding model, double screenWidth, double screenHeight) {
+    // Responsive sizes
+    double titleFontSize = screenWidth * 0.08; // ~30 at 375 width
+    double bodyFontSize = screenWidth * 0.045; // ~17 at 375 width
+    double imageWidth = screenWidth * 0.85;
+    double imageHeight = screenHeight * 0.45;
+    double topSpacing = screenHeight * 0.12;
+    double bodyHorizontalPadding = screenWidth * 0.05;
+
     return SingleChildScrollView(
       child: Center(
         child: Column(
           children: [
-            const SizedBox(height: 100),
-            Center(
-              child: Text(
-                model.title,
-                style: GoogleFonts.charisSil(
-                  fontSize: 30,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            Center(
-              child: Image.asset(
-                model.image,
-                width: 367,
-                height: 395,
-              ),
-            ),
+            SizedBox(height: topSpacing),
             Text(
-              model.body,
-              style:
-                  GoogleFonts.baskervville(fontSize: 17, color: Colors.white),
+              model.title,
+              style: GoogleFonts.charisSil(
+                fontSize: titleFontSize,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: screenHeight * 0.03),
+            Image.asset(
+              model.image,
+              width: imageWidth,
+              height: imageHeight,
+            ),
+            SizedBox(height: screenHeight * 0.02),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: bodyHorizontalPadding),
+              child: Text(
+                model.body,
+                style: GoogleFonts.baskervville(
+                  fontSize: bodyFontSize,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),

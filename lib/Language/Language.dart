@@ -10,11 +10,24 @@ class Language extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size
+    final mediaQuery = MediaQuery.of(context);
+    final screenWidth = mediaQuery.size.width;
+    final screenHeight = mediaQuery.size.height;
+
+    final imageWidth = screenWidth * 0.5;
+    final imageHeight = screenHeight * 0.25;
+
+    final titleFontSize = screenWidth * 0.07;
+    final spacingLarge = screenHeight * 0.06;
+    final spacingMedium = screenHeight * 0.02;
+    final spacingSmall = screenHeight * 0.01;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(screenWidth * 0.05), // 5% padding all around
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -22,21 +35,22 @@ class Language extends StatelessWidget {
               children: [
                 Image.asset(
                   "assets/images/lang-member/langmem.png",
-                  width: 191,
-                  height: 196,
+                  width: imageWidth,
+                  height: imageHeight,
+                  fit: BoxFit.contain,
                 ),
-                const SizedBox(height: 100),
+                SizedBox(height: spacingLarge),
                 Text(
                   "اختر اللغة",
-                  style: GoogleFonts.castoro(fontSize: 28),
+                  style: GoogleFonts.castoro(fontSize: titleFontSize),
                 ),
-                const SizedBox(height: 15),
+                SizedBox(height: spacingSmall),
                 Text(
                   "Choose The Language",
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.castoro(fontSize: 28),
+                  style: GoogleFonts.castoro(fontSize: titleFontSize),
                 ),
-                const SizedBox(height: 60),
+                SizedBox(height: spacingLarge),
                 WhiteButton(
                   text: "العربية",
                   onPressed: () {
@@ -45,11 +59,11 @@ class Language extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => const MemberShip()),
-                        (route) => false,
+                      (route) => false,
                     );
                   },
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: spacingMedium),
                 GradientButton(
                   onPressed: () {
                     context.setLocale(const Locale('en'));

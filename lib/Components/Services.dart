@@ -48,6 +48,7 @@ class ServicesRow extends StatelessWidget {
                       style: GoogleFonts.castoro(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        color: Colors.grey,
                       ),
                     ),
                     dropdownColor: Colors.white,
@@ -90,6 +91,7 @@ class ServicesRow extends StatelessWidget {
                         style: GoogleFonts.castoro(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          color: Colors.grey,
                         )),
                     dropdownColor: Colors.white,
                     isExpanded: true,
