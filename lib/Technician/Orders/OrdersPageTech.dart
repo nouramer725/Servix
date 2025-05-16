@@ -116,119 +116,143 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
         }
 
         final technicianSubservice = subserviceSnapshot.data!;
+        final technicianId = FirebaseAuth.instance.currentUser!.uid;
 
-        return RefreshIndicator(
-          color: ApplicationColor,
-          backgroundColor: Colors.white,
-          onRefresh: () async {
-            setState(() {});
-          },
-          child: FutureBuilder<QuerySnapshot>(
-            future: FirebaseFirestore.instance
-                .collectionGroup('user-services')
-                .where('Status', isEqualTo: 'Pending')
-                .get(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                    child: CircularProgressIndicator(color: ApplicationColor));
-              }
+        return FutureBuilder<List<String>>(
+          future: getBlockedClientIds(technicianId),
+          builder: (context, blockedSnapshot) {
+            if (blockedSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                  child: CircularProgressIndicator(color: ApplicationColor));
+            }
 
-              if (snapshot.hasError || !snapshot.hasData) {
-                print('Error fetching orders: ${snapshot.error}');
-                return Center(child: Text('Error loading orders'.tr()));
-              }
+            if (blockedSnapshot.hasError) {
+              return Center(child: Text('Error loading blocked clients'.tr()));
+            }
 
-              final docs = snapshot.data!.docs;
-              final filteredOrders = docs.where((doc) {
-                final data = doc.data() as Map<String, dynamic>;
-                final serviceTitleMap = data['serviceTitle'];
-                if (serviceTitleMap is Map<String, dynamic>) {
-                  final localizedMap =
-                      Map<String, String>.from(serviceTitleMap);
-                  final normalizedSubservice =
-                      technicianSubservice.toLowerCase().trim();
-                  return localizedMap.values.any(
-                    (title) =>
-                        title.toLowerCase().trim() == normalizedSubservice,
-                  );
-                }
-                return false;
-              }).toList();
+            final blockedClientIds = blockedSnapshot.data ?? [];
 
-              if (filteredOrders.isEmpty) {
-                return ListView(
-                  physics:
-                      const AlwaysScrollableScrollPhysics(), // Required for RefreshIndicator
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Text(
-                          'No orders available'.tr(),
-                          style: GoogleFonts.castoro(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: themeProvider.themeMode == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black,
+            return RefreshIndicator(
+              color: ApplicationColor,
+              backgroundColor: Colors.white,
+              onRefresh: () async {
+                setState(() {});
+              },
+              child: FutureBuilder<QuerySnapshot>(
+                future: FirebaseFirestore.instance
+                    .collectionGroup('user-services')
+                    .where('Status', isEqualTo: 'Pending')
+                    .get(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                        child:
+                            CircularProgressIndicator(color: ApplicationColor));
+                  }
+
+                  if (snapshot.hasError || !snapshot.hasData) {
+                    print('Error fetching orders: ${snapshot.error}');
+                    return Center(child: Text('Error loading orders'.tr()));
+                  }
+
+                  final docs = snapshot.data!.docs;
+
+                  final filteredOrders = docs.where((doc) {
+                    final data = doc.data() as Map<String, dynamic>;
+
+                    // Skip if from a blocked client
+                    final userId = data['userId'];
+                    if (blockedClientIds.contains(userId)) return false;
+
+                    final serviceTitleMap = data['serviceTitle'];
+                    if (serviceTitleMap is Map<String, dynamic>) {
+                      final localizedMap =
+                          Map<String, String>.from(serviceTitleMap);
+                      final normalizedSubservice =
+                          technicianSubservice.toLowerCase().trim();
+                      return localizedMap.values.any(
+                        (title) =>
+                            title.toLowerCase().trim() == normalizedSubservice,
+                      );
+                    }
+                    return false;
+                  }).toList();
+
+                  if (filteredOrders.isEmpty) {
+                    return ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Text(
+                              'No orders available'.tr(),
+                              style: GoogleFonts.castoro(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: themeProvider.themeMode == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ],
-                );
-              }
+                      ],
+                    );
+                  }
 
-              final orders = filteredOrders.map((doc) {
-                final data = doc.data() as Map<String, dynamic>;
-                final serviceTitleMap = data['serviceTitle'];
-                Map<String, String> serviceTitleMapChecked = {};
-                if (serviceTitleMap is Map<String, dynamic>) {
-                  serviceTitleMapChecked =
-                      Map<String, String>.from(serviceTitleMap);
-                }
+                  final orders = filteredOrders.map((doc) {
+                    final data = doc.data() as Map<String, dynamic>;
+                    final serviceTitleMap = data['serviceTitle'];
+                    Map<String, String> serviceTitleMapChecked = {};
+                    if (serviceTitleMap is Map<String, dynamic>) {
+                      serviceTitleMapChecked =
+                          Map<String, String>.from(serviceTitleMap);
+                    }
 
-                final localizedServiceTitle =
-                    _getServiceTitle(serviceTitleMapChecked);
+                    final localizedServiceTitle =
+                        _getServiceTitle(serviceTitleMapChecked);
 
-                return OrderModelTech(
-                  ServiceType: localizedServiceTitle,
-                  Description: data['description'] ?? '',
-                  Date: data['selectedDate'] ?? '',
-                  Time: data['selectedTime'] ?? '',
-                  Location: data['area'] ?? 'No Location',
-                  apartment: data['apartment'] ?? 'No Apartment',
-                  building: data['building'] ?? 'No building',
-                  street: data['street'] ?? 'No street',
-                  fileUrls: List<String>.from(data['fileUrls'] ?? []),
-                  ServiceImage: data['serviceImage']?.toString() ?? '',
-                  image: data['profileImageUrl'] ??
-                      "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
-                  FName: data['firstName'] ?? 'Unknown',
-                  LName: data['lastName'] ?? 'Unknown',
-                  docPath: doc.reference.path,
-                  previousOffer: data['technicianOffer'],
-                  Status: data['Status'] ?? 'Pending',
-                  userId: data['userId'],
-                );
-              }).toList();
+                    return OrderModelTech(
+                      ServiceType: localizedServiceTitle,
+                      Description: data['description'] ?? '',
+                      Date: data['selectedDate'] ?? '',
+                      Time: data['selectedTime'] ?? '',
+                      Location: data['area'] ?? 'No Location',
+                      apartment: data['apartment'] ?? 'No Apartment',
+                      building: data['building'] ?? 'No building',
+                      street: data['street'] ?? 'No street',
+                      fileUrls: List<String>.from(data['fileUrls'] ?? []),
+                      ServiceImage: data['serviceImage']?.toString() ?? '',
+                      image: data['profileImageUrl'] ??
+                          "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
+                      FName: data['firstName'] ?? 'Unknown',
+                      LName: data['lastName'] ?? 'Unknown',
+                      docPath: doc.reference.path,
+                      previousOffer: data['technicianOffer'],
+                      Status: data['Status'] ?? 'Pending',
+                      userId: data['userId'],
+                    );
+                  }).toList();
 
-              return ListView.builder(
-                itemCount: orders.length,
-                physics: const AlwaysScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final order = orders[index];
-                  return OrderCardTech(orders: order);
+                  return ListView.builder(
+                    itemCount: orders.length,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final order = orders[index];
+                      return OrderCardTech(orders: order);
+                    },
+                  );
                 },
-              );
-            },
-          ),
+              ),
+            );
+          },
         );
       },
     );
   }
 
+// Helper to get technician subservice
   Future<String> getTechnicianSubservice() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     final doc = await FirebaseFirestore.instance
@@ -238,6 +262,17 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
     return doc['sub_service'];
   }
 
+// Helper to get blocked client IDs
+  Future<List<String>> getBlockedClientIds(String technicianId) async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('technicians')
+        .doc(technicianId)
+        .collection('blocked_clients')
+        .get();
+    return snapshot.docs.map((doc) => doc.id).toList();
+  }
+
+// Helper to get localized service title
   String _getServiceTitle(Map<String, String> serviceTitleMap) {
     final locale = context.locale.languageCode;
     return serviceTitleMap[locale] ?? serviceTitleMap['en'] ?? '';

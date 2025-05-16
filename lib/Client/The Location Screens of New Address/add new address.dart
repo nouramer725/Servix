@@ -607,11 +607,11 @@ class _NewAddressState extends State<NewAddress> {
       // ✅ Then notify the client
       await sendClientNotification(user.uid);
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Error saving service: $e",
-        backgroundColor: Colors.redAccent,
-        textColor: Colors.white,
-      );
+      // Fluttertoast.showToast(
+      //   msg: "Error saving service: $e",
+      //   backgroundColor: Colors.redAccent,
+      //   textColor: Colors.white,
+      // );
       print("Error saving service: $e");
     }
   }

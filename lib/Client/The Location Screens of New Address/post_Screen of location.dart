@@ -555,11 +555,11 @@ class _LocationPostingState extends State<LocationPosting> {
                     builder: (context) => const HomeClientLayout()),
               );
             } catch (e) {
-              Fluttertoast.showToast(
-                msg: "Error posting location: $e",
-                backgroundColor: Colors.red,
-                textColor: Colors.white,
-              );
+              // Fluttertoast.showToast(
+              //   msg: "Error posting location: $e",
+              //   backgroundColor: Colors.red,
+              //   textColor: Colors.white,
+              // );
               print("Error saving location: $e");
             }
           },

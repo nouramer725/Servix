@@ -376,7 +376,7 @@ class _DetailsPreviousState extends State<DetailsPrevious> {
                                   final technicianData = snapshot.data;
                                   if (technicianData == null ||
                                       !technicianData.exists) {
-                                    return Text("No technician found".tr());
+                                    return Text("".tr());
                                   }
 
                                   final data = technicianData.data()

@@ -54,7 +54,8 @@ class _WelcomeAiClientState extends State<WelcomeAiClient> {
               ),
               const SizedBox(height: 20),
               Text(
-                "It’s me, your AI assistant! Ready to make magic happen? ✨".tr(),
+                "It’s me, your AI assistant! Ready to make magic happen? ✨"
+                    .tr(),
                 style: GoogleFonts.charisSil(
                   fontSize: 25,
                   color: ApplicationColor3,

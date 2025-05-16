@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/Technician/Home/FirstScreenOfBottomnavbar.dart';
+import 'package:servix/Technician/Home/Home%20Layout.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -58,6 +60,7 @@ class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
   }
 
   Future<void> _saveChatHistory() async {
+    if (_technician == null) return;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> chatData = messages
         .map((msg) => jsonEncode({
@@ -66,12 +69,16 @@ class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
               'createdAt': msg.createdAt.toIso8601String(),
             }))
         .toList();
-    await prefs.setStringList('chat_history_technician', chatData);
+    await prefs.setStringList(
+        'chat_history_technician${_technician!.id}', chatData);
   }
 
   Future<void> _loadChatHistory() async {
+    if (_technician == null) return;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? chatData = prefs.getStringList('chat_history_technician');
+    print("Loading chat history for technician: ${_technician!.id}");
+    List<String>? chatData =
+        prefs.getStringList('chat_history_technician${_technician!.id}');
 
     if (chatData != null && _technician != null) {
       setState(() {
@@ -121,128 +128,135 @@ class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: themeProvider.themeMode == ThemeMode.dark
-            ? const Color(0xFF333739)
-            : Colors.white,
-        title: Text(
-          "Ai Chat".tr(),
-          style: GoogleFonts.castoro(
-            fontWeight: FontWeight.w500,
-            color: themeProvider.themeMode == ThemeMode.dark
-                ? Colors.white
-                : Colors.black,
-          ),
-        ),
-        actions: [
-          PopupMenuButton<String>(
-            color: themeProvider.themeMode == ThemeMode.dark
+    return WillPopScope(
+        onWillPop: () async {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => const HomeTechnicianLayout()),
+            (route) => false,
+          );
+          return false; // prevent default back navigation
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: themeProvider.themeMode == ThemeMode.dark
                 ? const Color(0xFF333739)
                 : Colors.white,
-            icon: Icon(
-              Icons.more_vert,
-              color: themeProvider.themeMode == ThemeMode.dark
-                  ? Colors.white
-                  : Colors.black,
-            ),
-            onSelected: (String value) {
-              if (value == 'Delete') {
-                setState(() {
-                  messages.clear();
-                });
-                _saveChatHistory();
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem<String>(
-                  value: 'Delete',
-                  child: Text(
-                    'Delete Chat'.tr(),
-                    style: GoogleFonts.castoro(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15),
-                  ),
-                ),
-              ];
-            },
-          )
-        ],
-      ),
-      body: DashChat(
-        currentUser: _technician!,
-        onSend: onSend,
-        messages: messages,
-        inputOptions: InputOptions(
-          cursorStyle: CursorStyle(
-            color: themeProvider.themeMode == ThemeMode.dark
-                ? Colors.grey[300]
-                : Colors.grey[700],
-          ),
-          inputDecoration: InputDecoration(
-            hintText: 'Type your message here'.tr(),
-            filled: true,
-            fillColor: themeProvider.themeMode == ThemeMode.dark
-                ? const Color(0xFF333739)
-                : Colors.white,
-            hintStyle: GoogleFonts.castoro(
-              fontSize: 17,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
+            title: Text(
+              "Ai Chat".tr(),
+              style: GoogleFonts.castoro(
+                fontWeight: FontWeight.w500,
                 color: themeProvider.themeMode == ThemeMode.dark
                     ? Colors.white
                     : Colors.black,
               ),
             ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
+            actions: [
+              PopupMenuButton<String>(
                 color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.black,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: themeProvider.themeMode == ThemeMode.dark
-                    ? Colors.white
-                    : Colors.black,
-              ),
-            ),
-          ),
-          inputTextStyle: GoogleFonts.castoro(
-            fontSize: 17,
-            fontWeight: FontWeight.w500,
-            color: themeProvider.themeMode == ThemeMode.dark
-                ? Colors.white
-                : Colors.black,
-          ),
-          sendButtonBuilder: (Function send) {
-            return IconButton(
-              icon: Icon(Icons.send,
+                    ? const Color(0xFF333739)
+                    : Colors.white,
+                icon: Icon(
+                  Icons.more_vert,
                   color: themeProvider.themeMode == ThemeMode.dark
                       ? Colors.white
-                      : ApplicationColor,
-                  size: 30),
-              onPressed: () => send(),
-              color: ApplicationColor,
-            );
-          },
-        ),
-        messageOptions: MessageOptions(
-          currentUserContainerColor: ApplicationColor,
-          currentUserTextColor: Colors.white,
-          containerColor: Colors.grey.shade200,
-          textColor: Colors.black,
-        ),
-      ),
-    );
+                      : Colors.black,
+                ),
+                onSelected: (String value) async {
+                  if (value == 'Delete') {
+                    setState(() {
+                      messages.clear();
+                    });
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    await prefs
+                        .remove('chat_history_technician${_technician!.id}');
+                  }
+                },
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem<String>(
+                      value: 'Delete',
+                      child: Text(
+                        'Delete Chat'.tr(),
+                        style: GoogleFonts.castoro(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ];
+                },
+              ),
+            ],
+          ),
+          body: DashChat(
+            currentUser: _technician!,
+            onSend: onSend,
+            messages: messages,
+            inputOptions: InputOptions(
+              cursorStyle: CursorStyle(
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.grey[300]
+                    : Colors.grey[700],
+              ),
+              inputDecoration: InputDecoration(
+                hintText: 'Type your message here'.tr(),
+                filled: true,
+                fillColor: themeProvider.themeMode == ThemeMode.dark
+                    ? const Color(0xFF333739)
+                    : Colors.white,
+                hintStyle: GoogleFonts.castoro(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: Colors.grey,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: Colors.grey,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              inputTextStyle: GoogleFonts.castoro(
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
+                color: themeProvider.themeMode == ThemeMode.dark
+                    ? Colors.white
+                    : Colors.black,
+              ),
+              sendButtonBuilder: (Function send) {
+                return IconButton(
+                  icon: Icon(Icons.send,
+                      color: themeProvider.themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : ApplicationColor,
+                      size: 30),
+                  onPressed: () => send(),
+                  color: ApplicationColor,
+                );
+              },
+            ),
+            messageOptions: MessageOptions(
+              currentUserContainerColor: ApplicationColor,
+              currentUserTextColor: Colors.white,
+              containerColor: Colors.grey.shade200,
+              textColor: Colors.black,
+            ),
+          ),
+        ));
   }
 }
