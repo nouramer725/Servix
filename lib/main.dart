@@ -24,10 +24,8 @@ import 'Client/Login-Register/LocationClient/Access_Location1.dart';
 import 'Client/Login-Register/Sign In/Sign_In_Client.dart';
 import 'Language/Local_Provider.dart';
 import 'Splash Screen/Splash.dart';
-import 'Technician/AITechnician/Welcome AI.dart';
 import 'Theme/Theme_Provider.dart';
 import 'firebase_options.dart';
-
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -153,25 +151,24 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
             locale: context.locale,
-            // routes: {
-            //   "/": (context) => const CheckUserState(),
-            //   "/splash": (context) => const SplashScreen(),
-            //   "/onboarding": (context) => const OnboardingScreen(),
-            //   "/signinChoice": (context) => const Language(),
-            //   "/signinClient": (context) => SignInClient(),
-            //   "/signinTech": (context) => SignInTechnician(),
-            //   "/signupClient": (context) => SignUpClient(),
-            //   "/signupTech": (context) => SignUpTechnician(),
-            //   "/clientHome": (context) => const HomeClientLayout(),
-            //   "/techHome": (context) => const HomeTechnicianLayout(),
-            //   "/waiting": (context) => WaitingScreen(),
-            //   "/locationRequest": (context) =>
-            //       const LocationRequestScreenClient(),
-            //   "/locationRequesttech": (context) =>
-            //       const LocationRequestScreenTech(),
-            //   "/personalInfoTech": (context) => const PersonalInformation(),
-            // },
-            home: WelcomeAiTech(),
+            routes: {
+              "/": (context) => const CheckUserState(),
+              "/splash": (context) => const SplashScreen(),
+              "/onboarding": (context) => const OnboardingScreen(),
+              "/signinChoice": (context) => const Language(),
+              "/signinClient": (context) => SignInClient(),
+              "/signinTech": (context) => SignInTechnician(),
+              "/signupClient": (context) => SignUpClient(),
+              "/signupTech": (context) => SignUpTechnician(),
+              "/clientHome": (context) => const HomeClientLayout(),
+              "/techHome": (context) => const HomeTechnicianLayout(),
+              "/waiting": (context) => WaitingScreen(),
+              "/locationRequest": (context) =>
+                  const LocationRequestScreenClient(),
+              "/locationRequesttech": (context) =>
+                  const LocationRequestScreenTech(),
+              "/personalInfoTech": (context) => const PersonalInformation(),
+            },
           ),
         );
       },
