@@ -40,7 +40,6 @@ class _ReportScreenState extends State<ReportScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final clientId = FirebaseAuth.instance.currentUser?.uid;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: themeProvider.themeMode == ThemeMode.dark
@@ -160,7 +159,10 @@ class _ReportScreenState extends State<ReportScreen> {
             }
 
             try {
-              await FirebaseFirestore.instance.collection('reports').add({
+              await FirebaseFirestore.instance
+                  .collection('reports')
+                  .doc(widget.technicianId)
+                  .set({
                 'technicianId': widget.technicianId,
                 'technicianName': widget.technicianName,
                 'clientId': clientId,
@@ -219,15 +221,30 @@ class _ReportScreenState extends State<ReportScreen> {
                       ),
                       TextButton(
                         onPressed: () async {
+                          // Fetch client name from the 'clients' collection
+                          final clientSnapshot = await FirebaseFirestore
+                              .instance
+                              .collection('users')
+                              .doc(clientId)
+                              .get();
+
+                          final clientName =
+                              clientSnapshot.data()?['first_name'] ?? 'Unknown';
+                          final clientLastName =
+                              clientSnapshot.data()?['last_name'] ?? 'Unknown';
+
                           // Add to blocked_technicians collection
                           await FirebaseFirestore.instance
                               .collection('blocked_technicians')
-                              .add({
+                              .doc(widget.technicianId)
+                              .set({
                             'technicianId': widget.technicianId,
                             'technicianName': widget.technicianName,
                             'reason': selectedReason,
                             'additionalInfo': _controller.text.trim(),
                             'clientId': clientId,
+                            'clientName': clientName,
+                            'clientLastName': clientLastName,
                             'timestamp': FieldValue.serverTimestamp(),
                           });
 
@@ -239,12 +256,8 @@ class _ReportScreenState extends State<ReportScreen> {
                               .doc(clientId)
                               .set({
                             'clientId': clientId,
-                            'clientName': FirebaseAuth.instance.currentUser!
-                                .displayName,
-                            'clientEmail':
-                                FirebaseAuth.instance.currentUser!.email,
-                            'clientPhone': FirebaseAuth.instance.currentUser!
-                                .phoneNumber,
+                            'clientName': clientName,
+                            'clientLastName': clientLastName,
                             'reason': selectedReason,
                             'additionalInfo': _controller.text.trim(),
                             'timestamp': FieldValue.serverTimestamp(),
