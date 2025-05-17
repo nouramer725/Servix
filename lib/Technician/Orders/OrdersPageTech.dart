@@ -265,7 +265,7 @@ class _OrdersPageTechState extends State<OrdersPageTech> {
 // Helper to get blocked client IDs
   Future<List<String>> getBlockedClientIds(String technicianId) async {
     final snapshot = await FirebaseFirestore.instance
-        .collection('technicians')
+        .collection('technician')
         .doc(technicianId)
         .collection('blocked_clients')
         .get();

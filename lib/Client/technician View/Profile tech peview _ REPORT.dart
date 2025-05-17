@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,8 +39,7 @@ class _ReportScreenState extends State<ReportScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final clientId =
-        "CURRENT_CLIENT_ID"; // Replace this with actual logic to get current user/client ID
+    final clientId = FirebaseAuth.instance.currentUser?.uid;
 
     return Scaffold(
       appBar: AppBar(
@@ -160,10 +160,10 @@ class _ReportScreenState extends State<ReportScreen> {
             }
 
             try {
-              // Submit report
               await FirebaseFirestore.instance.collection('reports').add({
                 'technicianId': widget.technicianId,
                 'technicianName': widget.technicianName,
+                'clientId': clientId,
                 'reason': selectedReason,
                 'additionalInfo': _controller.text.trim(),
                 'timestamp': FieldValue.serverTimestamp(),
@@ -233,12 +233,20 @@ class _ReportScreenState extends State<ReportScreen> {
 
                           // Add to technician's blocked_clients
                           await FirebaseFirestore.instance
-                              .collection('technicians')
+                              .collection('technician')
                               .doc(widget.technicianId)
                               .collection('blocked_clients')
                               .doc(clientId)
                               .set({
                             'clientId': clientId,
+                            'clientName': FirebaseAuth.instance.currentUser!
+                                .displayName,
+                            'clientEmail':
+                                FirebaseAuth.instance.currentUser!.email,
+                            'clientPhone': FirebaseAuth.instance.currentUser!
+                                .phoneNumber,
+                            'reason': selectedReason,
+                            'additionalInfo': _controller.text.trim(),
                             'timestamp': FieldValue.serverTimestamp(),
                           });
 
