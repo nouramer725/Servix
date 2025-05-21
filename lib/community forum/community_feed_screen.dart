@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:servix/community%20forum/no_posts_screen.dart';
 import 'package:servix/constents/constent.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../Theme/Theme_Provider.dart';
@@ -39,6 +40,10 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                   child: CircularProgressIndicator(
                 color: ApplicationColor,
               ));
+            }
+
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return const Center(child: NoPostsScreen());
             }
 
             final posts = snapshot.data!.docs;

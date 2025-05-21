@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import '../Theme/Theme_Provider.dart';
 
-import '../../Theme/Theme_Provider.dart';
+class NoPostsScreen extends StatefulWidget {
+  const NoPostsScreen({super.key});
 
-class NotificationScreen extends StatelessWidget {
-  const NotificationScreen({super.key});
+  @override
+  State<NoPostsScreen> createState() => _NoPostsScreenState();
+}
 
+class _NoPostsScreenState extends State<NoPostsScreen> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -20,23 +24,24 @@ class NotificationScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Lottie.asset(
-                'assets/Application/not.json',
+                'assets/Application/community.json',
                 width: 400,
                 height: 400,
                 fit: BoxFit.contain,
               ),
               Text(
-                'No Notification Yet'.tr(),
+                'No Community Discussions Yet!'.tr(),
                 style: GoogleFonts.castoro(
-                  fontSize: 35,
-                  fontWeight: FontWeight.w900,
+                  fontSize: 27,
+                  fontWeight: FontWeight.bold,
                   color: themeProvider.themeMode == ThemeMode.dark
                       ? Colors.white
                       : Colors.black,
                 ),
+                textAlign: TextAlign.center,
               ),
               Text(
-                'Your notification will appear here once if you have received them.'
+                'Once users start posting, you’ll see community discussions here.'
                     .tr(),
                 style: GoogleFonts.castoro(
                   fontSize: 18,

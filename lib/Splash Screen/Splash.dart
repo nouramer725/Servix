@@ -30,6 +30,8 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Lottie.asset(
             'assets/Application/finalbgdddd.json',
             fit: BoxFit.fitWidth,
+            repeat: false,
+            animate: true,
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:servix/Theme/Theme_Provider.dart';
 
@@ -36,6 +37,10 @@ Widget countryCodePhoneFieldContactUs({
               controller: controller,
               keyboardType: TextInputType.phone,
               cursorColor: Colors.grey[100],
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly, // Allow only digits
+                LengthLimitingTextInputFormatter(11), // Limit to 11 digits
+              ],
               decoration: InputDecoration(
                 labelText: "Phone Number".tr(),
                 labelStyle: GoogleFonts.castoro(

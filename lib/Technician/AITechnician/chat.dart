@@ -25,6 +25,7 @@ class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
   final ChatUser _bot = ChatUser(id: '3', firstName: 'Gemini');
   final GeminiService _geminiService = GeminiService();
   List<ChatMessage> messages = [];
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -97,20 +98,34 @@ class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
   void onSend(ChatMessage message) async {
     setState(() {
       messages.insert(0, message);
+      isLoading = true;
+      messages.insert(
+        0,
+        ChatMessage(
+          text: "Typing...".tr(),
+          user: _bot,
+          createdAt: DateTime.now(),
+        ),
+      );
     });
     _saveChatHistory();
 
     String aiResponse = await _geminiService.sendMessage(message.text);
 
-    ChatMessage botMessage = ChatMessage(
-      text: aiResponse,
-      user: _bot,
-      createdAt: DateTime.now(),
-    );
-
+    // Remove "Typing..." message before inserting real response
     setState(() {
-      messages.insert(0, botMessage);
+      messages.removeAt(0); // remove the "Typing..." message
+      messages.insert(
+        0,
+        ChatMessage(
+          text: aiResponse,
+          user: _bot,
+          createdAt: DateTime.now(),
+        ),
+      );
+      isLoading = false;
     });
+
     _saveChatHistory();
   }
 
@@ -203,6 +218,10 @@ class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
               ),
               inputDecoration: InputDecoration(
                 hintText: 'Type your message here'.tr(),
+                contentPadding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 20.0),
+                isDense: true,
+                isCollapsed: true,
                 filled: true,
                 fillColor: themeProvider.themeMode == ThemeMode.dark
                     ? const Color(0xFF333739)

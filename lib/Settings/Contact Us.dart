@@ -73,81 +73,109 @@ class _ContactusState extends State<Contactus> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        width: 150,
-                        decoration: BoxDecoration(
-                          color: themeProvider.themeMode == ThemeMode.dark
-                              ? Colors.grey.shade700
-                              : Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              spreadRadius: 0.5,
-                              blurRadius: 5,
-                              offset: const Offset(3, 3),
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            children: [
-                              FaIcon(
-                                FontAwesomeIcons.whatsapp,
-                                color: Color(0xFF25d366),
-                                size: 30,
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                "01121420810",
-                                style: GoogleFonts.inter(
-                                    fontSize: 14, color: Colors.grey),
+                      GestureDetector(
+                        onTap: () async {
+                          final message = Uri.encodeComponent(
+                              "Hello, I’d like to ask about...");
+                          final url = Uri.parse(
+                              "https://wa.me/201281231790?text=$message");
+
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(url,
+                                mode: LaunchMode.externalApplication);
+                          } else {
+                            throw 'Could not launch WhatsApp chat';
+                          }
+                        },
+                        child: Container(
+                          width: 150,
+                          decoration: BoxDecoration(
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.grey.shade700
+                                : Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 0.5,
+                                blurRadius: 5,
+                                offset: const Offset(3, 3),
                               ),
                             ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              children: [
+                                const FaIcon(
+                                  FontAwesomeIcons.whatsapp,
+                                  color: Color(0xFF25d366),
+                                  size: 30,
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  "01274554479",
+                                  style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(width: 15),
-                      Container(
-                        width: 150,
-                        decoration: BoxDecoration(
-                          color: themeProvider.themeMode == ThemeMode.dark
-                              ? Colors.grey.shade400
-                              : Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              spreadRadius: 0.5,
-                              blurRadius: 5,
-                              offset: const Offset(3, 3),
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.phone,
-                                color: ApplicationColor,
-                                size: 30,
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                "03 4204514",
-                                style: GoogleFonts.inter(
-                                    fontSize: 14, color: ApplicationColor),
+                      GestureDetector(
+                        onTap: () async {
+                          final Uri callUri =
+                              Uri(scheme: 'tel', path: '034204514');
+                          if (await canLaunchUrl(callUri)) {
+                            await launchUrl(callUri);
+                          } else {
+                            print('Could not launch $callUri');
+                          }
+                        },
+                        child: Container(
+                          width: 150,
+                          decoration: BoxDecoration(
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? Colors.grey.shade400
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 0.5,
+                                blurRadius: 5,
+                                offset: const Offset(3, 3),
                               ),
                             ],
                           ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.phone,
+                                  color: ApplicationColor,
+                                  size: 30,
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  "034204514",
+                                  style: GoogleFonts.inter(
+                                      fontSize: 14, color: ApplicationColor),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 Row(
@@ -157,8 +185,8 @@ class _ContactusState extends State<Contactus> {
                       FontAwesomeIcons.facebookF,
                       "https://firebase.flutter.dev/docs/auth/social/",
                       [
-                        Color(0xFF1877F2), // Facebook Blue
-                        Color(0xFF0A66C2), // Slightly darker Blue
+                        const Color(0xFF1877F2), // Facebook Blue
+                        const Color(0xFF0A66C2), // Slightly darker Blue
                       ],
                     ),
                     const SizedBox(width: 10),
@@ -166,11 +194,11 @@ class _ContactusState extends State<Contactus> {
                       FontAwesomeIcons.instagram,
                       "https://firebase.flutter.dev/docs/auth/social/",
                       [
-                        Color(0xFFFEDA75), // Yellow
-                        Color(0xFFFA7E1E), // Orange
-                        Color(0xFFD62976), // Pink
-                        Color(0xFF962FBF), // Purple
-                        Color(0xFF4F5BD5), // Blue
+                        const Color(0xFFFEDA75), // Yellow
+                        const Color(0xFFFA7E1E), // Orange
+                        const Color(0xFFD62976), // Pink
+                        const Color(0xFF962FBF), // Purple
+                        const Color(0xFF4F5BD5), // Blue
                       ],
                     ),
                     const SizedBox(width: 10),
@@ -178,8 +206,8 @@ class _ContactusState extends State<Contactus> {
                       FontAwesomeIcons.xTwitter,
                       "https://firebase.flutter.dev/docs/auth/social/",
                       [
-                        Color(0xFF000000), // Black
-                        Color(0xFF000000), // Black
+                        const Color(0xFF000000), // Black
+                        const Color(0xFF000000), // Black
                       ],
                     ),
                     const SizedBox(width: 10),
@@ -187,19 +215,19 @@ class _ContactusState extends State<Contactus> {
                       FontAwesomeIcons.tiktok,
                       "https://firebase.flutter.dev/docs/auth/social/",
                       [
-                        Color(0xFF000000), // Black
-                        Color(0xFF000000), // Black
+                        const Color(0xFF000000), // Black
+                        const Color(0xFF000000), // Black
                       ],
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 Container(
                     decoration: BoxDecoration(
                       color: themeProvider.themeMode == ThemeMode.dark
-                          ? Color(0xFF333739)
+                          ? const Color(0xFF333739)
                           : Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
@@ -245,13 +273,13 @@ class _ContactusState extends State<Contactus> {
               onPressed: () async {
                 setState(() {
                   _messageError = _messageController.text.isEmpty
-                      ? "Message is required"
+                      ? "Message is required".tr()
                       : null;
                   _userNameError = _UserNameController.text.isEmpty
-                      ? "User Name is required"
+                      ? "User Name is required".tr()
                       : null;
                   _phoneError = _PhoneController.text.isEmpty
-                      ? "Phone number is required"
+                      ? "Phone number is required".tr()
                       : null;
                 });
 
@@ -264,7 +292,7 @@ class _ContactusState extends State<Contactus> {
                   Fluttertoast.showToast(
                     msg: "All fields are required".tr(),
                     toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.SNACKBAR,
+                    gravity: ToastGravity.TOP,
                     backgroundColor: ApplicationColorWithOpacity,
                     textColor: Colors.white,
                     fontSize: 15.0,
@@ -273,7 +301,7 @@ class _ContactusState extends State<Contactus> {
                   Fluttertoast.showToast(
                     msg: "Message sent successfully!".tr(),
                     toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.SNACKBAR,
+                    gravity: ToastGravity.TOP,
                     backgroundColor: Colors.green,
                     textColor: Colors.white,
                     fontSize: 15.0,
@@ -333,31 +361,37 @@ class _ContactusState extends State<Contactus> {
     return TextField(
       maxLines: maxLines,
       controller: controller,
-      keyboardType: TextInputType.multiline,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.done, // Show "Done" button on keyboard
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle:
             GoogleFonts.castoro(color: Colors.grey.shade400, fontSize: 18),
         filled: true,
         fillColor: themeProvider.themeMode == ThemeMode.dark
-            ? Color(0xFF333739)
+            ? const Color(0xFF333739)
             : Colors.white,
         errorText: errorText, // Display error text if not null
+        errorStyle: GoogleFonts.castoro(
+          color: Colors.redAccent,
+          fontSize: 14, // Error text style
+        ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xE0E8E6E6), width: 1),
+          borderSide: const BorderSide(color: Color(0xE0E8E6E6), width: 1),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xE0E8E6E6), width: 1),
+          borderSide: const BorderSide(color: Color(0xE0E8E6E6), width: 1),
           borderRadius: BorderRadius.circular(10),
         ),
         errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red, width: 1), // Error border
+          borderSide: const BorderSide(
+              color: Colors.redAccent, width: 1), // Error border
           borderRadius: BorderRadius.circular(10),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: Colors.red, width: 1), // Focused error border
+          borderSide: const BorderSide(
+              color: Colors.redAccent, width: 1), // Focused error border
           borderRadius: BorderRadius.circular(10),
         ),
         contentPadding:

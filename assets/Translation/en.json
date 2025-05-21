@@ -129,6 +129,8 @@
   "Find Skilled Technicians": "Find Skilled Technicians",
   "Need a repair, installation, or maintenance service? Our platform connects you with certified and experienced technicians. Book your service in just a few taps and enjoy hassle-free solutions at your doorstep.": "Need a repair, installation, or maintenance service? Our platform connects you with certified and experienced technicians. Book your service in just a few taps and enjoy hassle-free solutions at your doorstep.",
   "Smart AI": "Smart AI",
+  "No Community Discussions Yet!": "No Community Discussions Yet!",
+  "Once users start posting, you’ll see community discussions here.": "Once users start posting, you’ll see community discussions here.",
   "Our AI assistant helps with instant troubleshooting, smart recommendations, and automated support for various tasks.": "Our AI assistant helps with instant troubleshooting, smart recommendations, and automated support for various tasks.",
   "Skip": "Skip",
   "Welcome": "Welcome",
@@ -551,5 +553,13 @@
   "No Description Available": "No Description Available",
   "No SocialMedia Link Available": "No SocialMedia Link Available",
   "LinkSocialMedia": "LinkSocialMedia",
-  "Join our vibrant community to connect, share ideas, and learn from fellow language learners. Together, we can achieve more!": "Join our vibrant community to connect, share ideas, and learn from fellow language learners. Together, we can achieve more!"
+  "Join our vibrant community to connect, share ideas, and learn from fellow language learners. Together, we can achieve more!": "Join our vibrant community to connect, share ideas, and learn from fellow language learners. Together, we can achieve more!,,,
+  "Chatbot": "Chatbot",
+  "Typing...": "Typing...",
+  "Message is required": "Message is required",
+  "User Name is required": "User Name is required",
+  "Phone number is required": "Phone number is required",
+  "All fields are required": "All fields are required",
+  "Message sent successfully!": "Message sent successfully!"
+
 }
