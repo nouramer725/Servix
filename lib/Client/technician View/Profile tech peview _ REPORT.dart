@@ -248,21 +248,6 @@ class _ReportScreenState extends State<ReportScreen> {
                             'timestamp': FieldValue.serverTimestamp(),
                           });
 
-                          // Add to technician's blocked_clients
-                          await FirebaseFirestore.instance
-                              .collection('technician')
-                              .doc(widget.technicianId)
-                              .collection('blocked_clients')
-                              .doc(clientId)
-                              .set({
-                            'clientId': clientId,
-                            'clientName': clientName,
-                            'clientLastName': clientLastName,
-                            'reason': selectedReason,
-                            'additionalInfo': _controller.text.trim(),
-                            'timestamp': FieldValue.serverTimestamp(),
-                          });
-
                           Navigator.pop(context);
                           Navigator.pop(context);
                           Navigator.pop(context);
