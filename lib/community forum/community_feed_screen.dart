@@ -119,7 +119,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                               : Colors.white,
                                       title: Row(
                                         children: [
-                                          Icon(Icons.delete,
+                                          Icon(Icons.delete_outline,
                                               color: themeProvider.themeMode ==
                                                       ThemeMode.dark
                                                   ? Colors.white

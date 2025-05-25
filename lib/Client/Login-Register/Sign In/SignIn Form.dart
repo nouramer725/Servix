@@ -14,7 +14,6 @@ import 'package:servix/Client/Login-Register/Sign%20UP/Sign_Up_Client.dart';
 import 'package:servix/Client/Login-Register/Sign%20UP/Verification%20Email.dart';
 import 'package:servix/Components/reset_password_white.dart';
 import '../../../Components/Buttons.dart';
-import '../../../Components/ShowResetPasswordDiaglog.dart';
 import '../../../Components/TextFormField_SignIn.dart';
 import '../../../constents/constent.dart';
 

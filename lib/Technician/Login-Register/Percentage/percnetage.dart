@@ -25,7 +25,7 @@ class _PercentageState extends State<Percentage> {
         backgroundColor: Colors.white,
         title: Text(
           "Technician Policy".tr(),
-          style: GoogleFonts.cantataOne(
+          style: GoogleFonts.castoro(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -64,7 +64,7 @@ class _PercentageState extends State<Percentage> {
                 Text(
                   "As a technician using our platform, you agree that 10% of the total service fee you receive from a customer will be deducted as a commission for the app."
                       .tr(),
-                  style: GoogleFonts.chakraPetch(
+                  style: GoogleFonts.castoro(
                     fontSize: 16,
                     color: ApplicationColor3,
                   ),
@@ -98,7 +98,7 @@ class _PercentageState extends State<Percentage> {
                       .tr(),
                 ].map((policy) => Text(
                       policy,
-                      style: GoogleFonts.chakraPetch(
+                      style: GoogleFonts.castoro(
                         fontSize: 16,
                         color: ApplicationColor3,
                       ),
