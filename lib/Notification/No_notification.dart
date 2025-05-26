@@ -34,6 +34,7 @@ class NotificationScreen extends StatelessWidget {
                       ? Colors.white
                       : Colors.black,
                 ),
+                textAlign: TextAlign.center,
               ),
               Text(
                 'Your notification will appear here once if you have received them.'
