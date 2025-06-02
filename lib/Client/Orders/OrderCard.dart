@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -6,10 +8,77 @@ import '../../Theme/Theme_Provider.dart';
 import 'DetailsScreen/Details_Pending.dart';
 import 'model/model.dart';
 
-class OrderCard extends StatelessWidget {
+class OrderCard extends StatefulWidget {
   const OrderCard({required this.orders, super.key});
 
   final OrderModel orders;
+
+  @override
+  State<OrderCard> createState() => _OrderCardState();
+}
+
+class _OrderCardState extends State<OrderCard> {
+  String? profileImageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImage();
+  }
+
+  Future<void> _loadProfileImage() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+
+    final firestore = FirebaseFirestore.instance;
+
+    // First path
+    final firstDoc = await firestore
+        .collection("user-files")
+        .doc(uid)
+        .collection("personalInformation")
+        .doc("profile")
+        .get();
+
+    if (firstDoc.exists && firstDoc.data()?['personalImageUrl'] != null) {
+      setState(() {
+        profileImageUrl = firstDoc.data()?['personalImageUrl'];
+      });
+      return;
+    }
+
+    // Second path
+    final secondDoc = await firestore
+        .collection("user-files")
+        .doc(uid)
+        .collection("personalInformationProvider")
+        .doc("profile")
+        .get();
+
+    if (secondDoc.exists && secondDoc.data()?['personalImageUrl'] != null) {
+      setState(() {
+        profileImageUrl = secondDoc.data()?['personalImageUrl'];
+      });
+      return;
+    }
+
+    // Third path
+    final thirdSec = await firestore
+        .collection("user-files")
+        .doc(uid)
+        .collection("uploads")
+        .limit(1)
+        .get();
+
+    if (thirdSec.docs.isNotEmpty) {
+      final docData = thirdSec.docs.first.data();
+      if (docData['personalFileUrl'] != null) {
+        setState(() {
+          profileImageUrl = docData['personalFileUrl'];
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +90,7 @@ class OrderCard extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => DetailsPending(orders: orders)));
+                  builder: (context) => DetailsPending(orders: widget.orders)));
         },
         child: Container(
           decoration: BoxDecoration(
@@ -41,26 +110,25 @@ class OrderCard extends StatelessWidget {
                     Row(
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(25),
-                          child: Image.network(
-                             orders.ProfileImage,
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.network(
-                                'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
-                                width: 50,
-                                height: 50,
-                                fit: BoxFit.cover,
-                              );
-                            },
-                          ),
-                        ),
+                            borderRadius: BorderRadius.circular(25),
+                            child: Image.network(
+                              profileImageUrl ?? widget.orders.ProfileImage,
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.network(
+                                  'https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg',
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            )),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            "${orders.Fname} ${orders.Lname}",
+                            "${widget.orders.Fname} ${widget.orders.Lname}",
                             style: GoogleFonts.cantataOne(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -78,7 +146,7 @@ class OrderCard extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    DetailsPending(orders: orders),
+                                    DetailsPending(orders: widget.orders),
                               ),
                             );
                           },
@@ -92,7 +160,7 @@ class OrderCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "${'Service Type:'.tr()} ${orders.ServiceType.tr()}",
+                      "${'Service Type:'.tr()} ${widget.orders.ServiceType.tr()}",
                       style: GoogleFonts.castoro(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -103,7 +171,7 @@ class OrderCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "${'Status :'.tr()} ${orders.Status.tr()}",
+                      "${'Status :'.tr()} ${widget.orders.Status.tr()}",
                       style: GoogleFonts.castoro(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -121,7 +189,7 @@ class OrderCard extends StatelessWidget {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            orders.Date,
+                            widget.orders.Date,
                             style: GoogleFonts.castoro(
                                 fontSize: 14,
                                 color: themeProvider.themeMode == ThemeMode.dark
@@ -137,7 +205,7 @@ class OrderCard extends StatelessWidget {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            orders.Time,
+                            widget.orders.Time,
                             style: GoogleFonts.castoro(
                                 fontSize: 14,
                                 color: themeProvider.themeMode == ThemeMode.dark

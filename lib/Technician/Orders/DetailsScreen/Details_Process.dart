@@ -418,8 +418,11 @@ class _DetailsProcessTechState extends State<DetailsProcessTech> {
         await notificationService.sendNotifications(
           fcmToken: fcmTechToken,
           title: "Order Completed",
-          body:
-              "You have completed the order for ${order.FName} ${order.LName}. You earned ${order.previousOffer} EGP for this service.",
+          body: "You have completed the order for".tr(args: [
+            order.FName ?? "",
+            order.LName ?? "",
+            order.previousOffer.toString()
+          ]),
           userId: user,
         );
       }
@@ -432,8 +435,11 @@ class _DetailsProcessTechState extends State<DetailsProcessTech> {
         await notificationService.sendNotifications(
           fcmToken: fcmToken,
           title: "Order Completed",
-          body:
-              "Your order has been completed by ${order.FName} ${order.LName}. You paid ${order.previousOffer} EGP.",
+          body: "Your order has been completed by".tr(args: [
+            order.FName ?? "",
+            order.LName ?? "",
+            order.previousOffer.toString()
+          ]),
           userId: order.userId!,
         );
 
@@ -441,8 +447,8 @@ class _DetailsProcessTechState extends State<DetailsProcessTech> {
         await notificationService.sendNotifications(
           fcmToken: fcmToken,
           title: "Rate Technician",
-          body:
-              "Please rate the service of technician ${order.FName} ${order.LName}.",
+          body: "Please rate the service of technician"
+              .tr(args: [order.FName ?? "", order.LName ?? ""]),
           userId: order.userId!,
         );
       }

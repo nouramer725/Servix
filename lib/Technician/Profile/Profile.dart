@@ -452,7 +452,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                             ),
                             SizedBox(width: 5),
                             Text(
-                              "${userData!['main_service'] ?? 'N/A'}",
+                              "${userData!['main_service'] ?? 'N/A'}".tr(),
                               style: GoogleFonts.castoro(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -478,7 +478,7 @@ class _ProfileTechnicianState extends State<ProfileTechnician> {
                             ),
                             SizedBox(width: 5),
                             Text(
-                              "${userData!['sub_service'] ?? 'N/A'}",
+                              "${userData!['sub_service'] ?? 'N/A'}".tr(),
                               style: GoogleFonts.castoro(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,

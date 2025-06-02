@@ -392,30 +392,39 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
                                   TextButton(
                                     onPressed: () async {
                                       // Check if there's a signed-in user before signing out
-                                      User? currentUser = FirebaseAuth.instance.currentUser;
+                                      User? currentUser =
+                                          FirebaseAuth.instance.currentUser;
                                       if (currentUser != null) {
                                         // Proceed with sign-out
                                         await FirebaseAuth.instance.signOut();
 
                                         String technicianId = currentUser.uid;
-                                        final technicianRef = FirebaseFirestore.instance.collection('technician').doc(technicianId);
+                                        final technicianRef = FirebaseFirestore
+                                            .instance
+                                            .collection('technician')
+                                            .doc(technicianId);
 
                                         await technicianRef.update({
-                                          'isActive': false, // Update status to false
+                                          'isActive':
+                                              false, // Update status to false
                                         });
 
                                         Navigator.pushAndRemoveUntil(
                                           context,
-                                          MaterialPageRoute(builder: (context) => const MemberShip()),
-                                              (route) => false,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const MemberShip()),
+                                          (route) => false,
                                         );
                                       } else {
                                         // Handle the case where there is no signed-in user
                                         Fluttertoast.showToast(
-                                          msg: "No user is currently signed in.".tr(),
+                                          msg: "No user is currently signed in."
+                                              .tr(),
                                           toastLength: Toast.LENGTH_LONG,
                                           gravity: ToastGravity.BOTTOM,
-                                          backgroundColor: ApplicationColorWithOpacity,
+                                          backgroundColor:
+                                              ApplicationColorWithOpacity,
                                           textColor: Colors.white,
                                           fontSize: 15.0,
                                         );
@@ -690,6 +699,21 @@ class _HomeTechnicianLayoutState extends State<HomeTechnicianLayout> {
         print("Error deleting user from 'ContactUs': $error");
       });
 
+      await firestore
+          .collection('community_posts')
+          .doc(userId)
+          .delete()
+          .catchError((error) {
+        print("Error deleting user from 'users': $error");
+      });
+
+      await firestore
+          .collection('notifications')
+          .doc(userId)
+          .delete()
+          .catchError((error) {
+        print("Error deleting user from 'users': $error");
+      });
       // Delete authentication
       await user.delete();
     }

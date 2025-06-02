@@ -721,47 +721,49 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
     if (user != null) {
       String userId = user.uid;
 
-      // Delete user data from Firestore
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       DocumentReference userDoc =
           firestore.collection('user-files').doc(userId);
 
+      // Delete uploads
       QuerySnapshot uploadsSnapshot = await userDoc.collection('uploads').get();
       for (var doc in uploadsSnapshot.docs) {
         await doc.reference.delete();
       }
 
-      // Delete 'locationDetails' subcollection
+      // Delete locationDetails
       QuerySnapshot locationSnapshot =
           await userDoc.collection('locationDetails').get();
       for (var doc in locationSnapshot.docs) {
         await doc.reference.delete();
       }
 
+      // Delete personalInformation
       QuerySnapshot personalSnapshot =
           await userDoc.collection('personalInformation').get();
       for (var doc in personalSnapshot.docs) {
         await doc.reference.delete();
       }
 
-      QuerySnapshot NewLocationSnapshot =
+      // Delete NewLocationDetails
+      QuerySnapshot newLocationSnapshot =
           await userDoc.collection('NewLocationDetails').get();
-      for (var doc in NewLocationSnapshot.docs) {
+      for (var doc in newLocationSnapshot.docs) {
         await doc.reference.delete();
       }
 
-      // Delete user document fro?m 'user-files'
+      // Delete user doc from user-files
       await userDoc.delete().catchError((error) {
         print("Error deleting user from 'user-files': $error");
       });
 
-      // Delete user document from 'technician'
+      // Delete from users and technician collections
       await firestore
           .collection('users')
           .doc(userId)
           .delete()
           .catchError((error) {
-        print("Error deleting user from 'Clients': $error");
+        print("Error deleting user from 'users': $error");
       });
 
       await firestore
@@ -772,15 +774,18 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
         print("Error deleting user from 'technician': $error");
       });
 
-      DocumentReference services =
-          firestore.collection('Services Requests').doc(userId);
+      // Delete user-services
+      QuerySnapshot servicesSnapshot = await firestore
+          .collection('Services Requests')
+          .doc(userId)
+          .collection('user-services')
+          .get();
 
-      QuerySnapshot servicesSnapshot =
-          await services.collection('user-services').get();
       for (var doc in servicesSnapshot.docs) {
         await doc.reference.delete();
       }
 
+      // Delete from ContactUs
       await firestore
           .collection('ContactUs')
           .doc(userId)
@@ -789,7 +794,35 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
         print("Error deleting user from 'ContactUs': $error");
       });
 
-      // Delete authentication
+      try {
+        final snapshot = await firestore
+            .collection('community_posts')
+            .where('userId', isEqualTo: userId)
+            .get();
+
+        print("Found ${snapshot.docs.length} posts");
+
+        for (final doc in snapshot.docs) {
+          await doc.reference.delete();
+          print("Deleted post: ${doc.id}");
+        }
+
+        print("All posts deleted.");
+      } catch (e) {
+        print("Error deleting posts: $e");
+      }
+
+      // Delete all notifications for this user
+      QuerySnapshot notificationsSnapshot = await firestore
+          .collection('notifications')
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      for (var doc in notificationsSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      // Finally, delete Firebase Auth user
       await FirebaseAuth.instance.currentUser?.delete();
     }
   }

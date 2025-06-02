@@ -92,8 +92,8 @@ class _SaveAddressScreenClientState extends State<SaveAddressScreenClient> {
       if (token != null) {
         await notificationService.sendNotifications(
           fcmToken: token,
-          title: "Welcome to Servix!",
-          body: "Let’s get started.",
+          title: "Welcome to Servix!".tr(),
+          body: "Let’s get started.".tr(),
           userId: user!.uid,
         );
       }

@@ -211,6 +211,7 @@ class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
             onSend: onSend,
             messages: messages,
             inputOptions: InputOptions(
+              textInputAction: TextInputAction.done,
               cursorStyle: CursorStyle(
                 color: themeProvider.themeMode == ThemeMode.dark
                     ? Colors.grey[300]

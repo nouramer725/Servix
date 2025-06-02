@@ -204,6 +204,7 @@ class _ChatScreenClientState extends State<ChatScreenClient> {
             onSend: onSend,
             messages: messages,
             inputOptions: InputOptions(
+              textInputAction: TextInputAction.done,
               cursorStyle: CursorStyle(
                 color: themeProvider.themeMode == ThemeMode.dark
                     ? Colors.grey[300]

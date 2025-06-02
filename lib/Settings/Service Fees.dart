@@ -90,14 +90,19 @@ class _ServiceFeesState extends State<ServiceFees> {
           tempMonthlyTotalFees[monthKey] =
               (tempMonthlyTotalFees[monthKey]! + parsedFees);
         }
-
-        setState(() {
-          groupedOffers = tempGroupedOffers;
-          monthlyTotalFees = tempMonthlyTotalFees;
-        });
       }
+
+      // ✅ Always update the state (even if there’s no data)
+      setState(() {
+        groupedOffers = tempGroupedOffers;
+        monthlyTotalFees = tempMonthlyTotalFees;
+        isLoading = false;
+      });
     } catch (e) {
       print('Error fetching finished services: $e');
+      setState(() {
+        isLoading = false; // Also stop loading on error
+      });
     }
   }
 
@@ -173,119 +178,139 @@ class _ServiceFeesState extends State<ServiceFees> {
                       : Colors.black,
                 ),
               ),
-              groupedOffers.isEmpty
+              isLoading
                   ? Center(
-                      child: LinearProgressIndicator(color: ApplicationColor))
-                  : Column(
-                      children: groupedOffers.entries.map((entry) {
-                        final String month = entry.key;
-                        final List<TechnicianOffer> offers = entry.value;
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    '${'Month:'.tr()} $month',
-                                    style: GoogleFonts.castoro(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: themeProvider.themeMode ==
-                                              ThemeMode.dark
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Text(
-                                    '${'Total Fees:'.tr()} ${monthlyTotalFees[month]?.toStringAsFixed(2).tr()} ${'EGP'.tr()}',
-                                    style: GoogleFonts.castoro(
-                                      fontSize: 18,
-                                      color: themeProvider.themeMode ==
-                                              ThemeMode.dark
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                    maxLines: 5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            ...offers.map((offer) {
-                              // Parse the date to display localized format
-                              DateTime dateObj;
-                              try {
-                                dateObj =
-                                    DateFormat('dd-MM-yyyy').parse(offer.date);
-                              } catch (e) {
-                                dateObj = DateTime.now();
-                              }
-                              final localizedDate =
-                                  DateFormat.yMMMd(context.locale.languageCode)
-                                      .format(dateObj);
-                              return Card(
+                      child: LinearProgressIndicator(color: ApplicationColor),
+                    )
+                  : groupedOffers.isEmpty
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 50),
+                            child: Text(
+                              'No finished orders to calculate service fees.'
+                                  .tr(),
+                              style: GoogleFonts.castoro(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
                                 color: themeProvider.themeMode == ThemeMode.dark
-                                    ? Colors.grey[900]
-                                    : Colors.grey[200],
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 6.0),
-                                child: ListTile(
-                                  title: Text(
-                                    '${'Service from'.tr()} ${offer.firstName} ${offer.lastName}',
-                                    style: GoogleFonts.castoro(
-                                      fontWeight: FontWeight.bold,
-                                      color: themeProvider.themeMode ==
-                                              ThemeMode.dark
-                                          ? Colors.white
-                                          : Colors.black,
+                                    ? Colors.white70
+                                    : Colors.black54,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                      : Column(
+                          children: groupedOffers.entries.map((entry) {
+                            final String month = entry.key;
+                            final List<TechnicianOffer> offers = entry.value;
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        '${'Month:'.tr()} $month',
+                                        style: GoogleFonts.castoro(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: themeProvider.themeMode ==
+                                                  ThemeMode.dark
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '${'Date:'.tr()} $localizedDate',
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text(
+                                        '${'Total Fees:'.tr()} ${monthlyTotalFees[month]?.toStringAsFixed(2).tr()} ${'EGP'.tr()}',
                                         style: GoogleFonts.castoro(
+                                          fontSize: 18,
                                           color: themeProvider.themeMode ==
                                                   ThemeMode.dark
-                                              ? Colors.white70
-                                              : Colors.black38,
+                                              ? Colors.white
+                                              : Colors.black,
                                         ),
+                                        maxLines: 5,
                                       ),
-                                      Text(
-                                        '${'Time:'.tr()} ${offer.time}',
-                                        style: GoogleFonts.castoro(
-                                          color: themeProvider.themeMode ==
-                                                  ThemeMode.dark
-                                              ? Colors.white70
-                                              : Colors.black38,
-                                        ),
-                                      ),
-                                      Text(
-                                        '${'Fees:'.tr()} ${offer.serviceFees} ${'EGP'.tr()}',
-                                        style: GoogleFonts.castoro(
-                                          color: themeProvider.themeMode ==
-                                                  ThemeMode.dark
-                                              ? Colors.white70
-                                              : Colors.black38,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              );
-                            }),
-                            const SizedBox(height: 20),
-                          ],
-                        );
-                      }).toList(),
-                    ),
+                                const SizedBox(height: 5),
+                                ...offers.map((offer) {
+                                  // Parse the date to display localized format
+                                  DateTime dateObj;
+                                  try {
+                                    dateObj = DateFormat('dd-MM-yyyy')
+                                        .parse(offer.date);
+                                  } catch (e) {
+                                    dateObj = DateTime.now();
+                                  }
+                                  final localizedDate = DateFormat.yMMMd(
+                                          context.locale.languageCode)
+                                      .format(dateObj);
+                                  return Card(
+                                    color: themeProvider.themeMode ==
+                                            ThemeMode.dark
+                                        ? Colors.grey[900]
+                                        : Colors.grey[200],
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 6.0),
+                                    child: ListTile(
+                                      title: Text(
+                                        '${'Service from'.tr()} ${offer.firstName} ${offer.lastName}',
+                                        style: GoogleFonts.castoro(
+                                          fontWeight: FontWeight.bold,
+                                          color: themeProvider.themeMode ==
+                                                  ThemeMode.dark
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${'Date:'.tr()} $localizedDate',
+                                            style: GoogleFonts.castoro(
+                                              color: themeProvider.themeMode ==
+                                                      ThemeMode.dark
+                                                  ? Colors.white70
+                                                  : Colors.black38,
+                                            ),
+                                          ),
+                                          Text(
+                                            '${'Time:'.tr()} ${offer.time}',
+                                            style: GoogleFonts.castoro(
+                                              color: themeProvider.themeMode ==
+                                                      ThemeMode.dark
+                                                  ? Colors.white70
+                                                  : Colors.black38,
+                                            ),
+                                          ),
+                                          Text(
+                                            '${'Fees:'.tr()} ${offer.serviceFees} ${'EGP'.tr()}',
+                                            style: GoogleFonts.castoro(
+                                              color: themeProvider.themeMode ==
+                                                      ThemeMode.dark
+                                                  ? Colors.white70
+                                                  : Colors.black38,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }),
+                                const SizedBox(height: 20),
+                              ],
+                            );
+                          }).toList(),
+                        ),
             ],
           ),
         ),

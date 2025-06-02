@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 import '../Client/Offers/Model/Offer.dart';
 import 'notification_nodejs.dart';
 
-Future<void> sendTechnicianNotification(String userId, String orderId, String serviceTitle) async {
+Future<void> sendTechnicianNotification(
+    String userId, String orderId, String serviceTitle) async {
   final techniciansRef = FirebaseFirestore.instance.collection('technician');
   final techniciansSnapshot = await techniciansRef.get();
 
@@ -63,7 +66,10 @@ Future<void> sendClientNotification(String userId) async {
 
 bool _isSending = false;
 
-Future<void> sendClientOfferNotification({required String clientId, required String technicianName,}) async {
+Future<void> sendClientOfferNotification({
+  required String clientId,
+  required String technicianName,
+}) async {
   if (_isSending) return; // Prevent duplicate execution
   _isSending = true;
 
@@ -84,8 +90,8 @@ Future<void> sendClientOfferNotification({required String clientId, required Str
       final notificationService = NotificationServices();
       await notificationService.sendNotifications(
         fcmToken: fcmToken,
-        title: "You've Received an Offer",
-        body: "$technicianName has sent you an offer for your request.",
+        title: "You've Received an Offer".tr(),
+        body: "$technicianName has sent you an offer for your request.".tr(),
         userId: clientId,
       );
       print("✅ Notification sent to client $clientId");
@@ -114,8 +120,8 @@ Future<void> sendOfferRejectedNotification(String technicianId) async {
         final notificationService = NotificationServices();
         await notificationService.sendNotifications(
           fcmToken: fcmToken,
-          title: "Offer Rejected",
-          body: "Your offer for the order has been rejected.",
+          title: "Offer Rejected".tr(),
+          body: "Your offer for the order has been rejected.".tr(),
           userId: technicianId,
         );
         print("✅ Notification sent to technician $technicianId");
@@ -164,10 +170,8 @@ Future<void> sendOfferAcceptedNotification(Offer offer) async {
 }
 
 Future<String?> getClientFcmToken(String clientId) async {
-  final clientDoc = await FirebaseFirestore.instance
-      .collection('users')
-      .doc(clientId)
-      .get();
+  final clientDoc =
+      await FirebaseFirestore.instance.collection('users').doc(clientId).get();
   if (clientDoc.exists) {
     final data = clientDoc.data();
     return data?['fcmToken'];
@@ -178,10 +182,12 @@ Future<String?> getClientFcmToken(String clientId) async {
 Future<String?> getTechnicianFcmToken(String technicianId) async {
   try {
     final docSnapshot = await FirebaseFirestore.instance
-        .collection('technician') // Assuming you store technicians under this collection
+        .collection(
+            'technician') // Assuming you store technicians under this collection
         .doc(technicianId) // Use the technician's ID
         .get();
-    return docSnapshot.data()?['fcmToken']; // Assuming the token is stored as 'fcmToken'
+    return docSnapshot
+        .data()?['fcmToken']; // Assuming the token is stored as 'fcmToken'
   } catch (e) {
     print("Error fetching technician FCM token: $e");
     return null;

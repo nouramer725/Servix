@@ -58,13 +58,11 @@ class _WaitingScreenState extends State<WaitingScreen> {
           Future.microtask(() async {
             // 👇 Send welcome notification
             final notificationService = NotificationServices();
-            String? token = await notificationService.getDeviceToken();
-
             if (token != null) {
               await notificationService.sendNotifications(
                 fcmToken: token,
-                title: "Congratulations! you have been accepted.",
-                body: "Welcome to Servix!, Let’s get started.",
+                title: "Congratulations! you have been accepted.".tr(),
+                body: "Welcome to Servix!, Let’s get started.".tr(),
                 userId: user.uid,
               );
             }
@@ -82,9 +80,10 @@ class _WaitingScreenState extends State<WaitingScreen> {
             if (token != null) {
               await notificationService.sendNotifications(
                 fcmToken: token,
-                title: "Account Rejected",
+                title: "Account Rejected".tr(),
                 body:
-                    "Unfortunately, your registration was not approved. Please review the requirements or contact support.",
+                    "Unfortunately, your registration was not approved. Please review the requirements or contact support."
+                        .tr(),
                 userId: user.uid,
               );
             }

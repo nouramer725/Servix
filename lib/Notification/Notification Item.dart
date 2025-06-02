@@ -73,7 +73,7 @@ class _NotificationItemState extends State<NotificationItem> {
                 children: [
                   // Title (User Name)
                   Text(
-                    widget.title,
+                    widget.title.tr(),
                     style: GoogleFonts.castoro(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -84,7 +84,7 @@ class _NotificationItemState extends State<NotificationItem> {
 
                   // Preview Text
                   Text(
-                    widget.preview,
+                    widget.preview.tr(),
                     style: GoogleFonts.castoro(
                       fontSize: 16,
                       color: isDarkMode ? Colors.grey.shade400 : Colors.black54,
@@ -98,7 +98,7 @@ class _NotificationItemState extends State<NotificationItem> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  widget.date,
+                  widget.date.tr(),
                   style: GoogleFonts.castoro(
                     fontSize: 14,
                     color: Colors.grey,

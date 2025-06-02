@@ -79,12 +79,25 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.white,
-                              backgroundImage: NetworkImage(
-                                  "https://static.vecteezy.com/system/resources/previews/036/280/651/large_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
-                                  scale: 50),
+                            FutureBuilder<String?>(
+                              future: _getProfileImageUrl(
+                                  data['userId'] ?? 'Anonymous'),
+                              builder: (context, snapshot) {
+                                String? personalImageUrl = snapshot.data;
+                                return GestureDetector(
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.grey[200],
+                                    radius: 20,
+                                    backgroundImage: personalImageUrl != null
+                                        ? NetworkImage(personalImageUrl)
+                                        : null,
+                                    child: personalImageUrl == null
+                                        ? const Icon(Icons.person,
+                                            size: 20, color: Colors.grey)
+                                        : null,
+                                  ),
+                                );
+                              },
                             ),
                             const SizedBox(width: 10),
                             Expanded(
@@ -97,134 +110,141 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                                           ? Colors.white
                                           : Colors.black)),
                             ),
-                            PopupMenuButton<String>(
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? const Color(0xFF333739)
-                                  : Colors.white,
-                              icon: Icon(
-                                Icons.more_vert,
+                            if (data['userId'] == currentUser?.uid)
+                              PopupMenuButton<String>(
                                 color: themeProvider.themeMode == ThemeMode.dark
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
-                              onSelected: (String value) async {
-                                if (value == 'Delete') {
-                                  bool confirm = await showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      backgroundColor:
-                                          themeProvider.themeMode ==
-                                                  ThemeMode.dark
-                                              ? const Color(0xFF333739)
-                                              : Colors.white,
-                                      title: Row(
-                                        children: [
-                                          Icon(Icons.delete_outline,
-                                              color: themeProvider.themeMode ==
-                                                      ThemeMode.dark
-                                                  ? Colors.white
-                                                  : Colors.black),
-                                          const SizedBox(width: 10),
-                                          Text('Delete Post'.tr(),
-                                              style: GoogleFonts.castoro(
-                                                  color:
-                                                      themeProvider.themeMode ==
-                                                              ThemeMode.dark
-                                                          ? Colors.white
-                                                          : Colors.black,
-                                                  fontSize: 25)),
-                                        ],
-                                      ),
-                                      content: Text(
-                                          'Are you sure you want to delete this post?'
-                                              .tr(),
-                                          style: GoogleFonts.castoro(
-                                              color: themeProvider.themeMode ==
-                                                      ThemeMode.dark
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                              fontSize: 20)),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.of(context).pop(false),
-                                          child: Text('Cancel'.tr(),
-                                              style: GoogleFonts.castoro(
-                                                  fontSize: 20,
-                                                  color:
-                                                      themeProvider.themeMode ==
-                                                              ThemeMode.dark
-                                                          ? Colors.white
-                                                          : Colors.black)),
+                                    ? const Color(0xFF333739)
+                                    : Colors.white,
+                                icon: Icon(
+                                  Icons.more_vert,
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black,
+                                ),
+                                onSelected: (String value) async {
+                                  if (value == 'Delete') {
+                                    bool confirm = await showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        backgroundColor:
+                                            themeProvider.themeMode ==
+                                                    ThemeMode.dark
+                                                ? const Color(0xFF333739)
+                                                : Colors.white,
+                                        title: Row(
+                                          children: [
+                                            Icon(Icons.delete_outline,
+                                                color:
+                                                    themeProvider.themeMode ==
+                                                            ThemeMode.dark
+                                                        ? Colors.white
+                                                        : Colors.black),
+                                            const SizedBox(width: 10),
+                                            Text('Delete Post'.tr(),
+                                                style: GoogleFonts.castoro(
+                                                    color: themeProvider
+                                                                .themeMode ==
+                                                            ThemeMode.dark
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                    fontSize: 25)),
+                                          ],
                                         ),
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.of(context).pop(true),
-                                          child: Text(
-                                            'Delete'.tr(),
+                                        content: Text(
+                                            'Are you sure you want to delete this post?'
+                                                .tr(),
                                             style: GoogleFonts.castoro(
-                                              color: themeProvider.themeMode ==
-                                                      ThemeMode.dark
-                                                  ? Colors.white
-                                                  : ApplicationColor,
-                                              fontSize: 20,
+                                                color:
+                                                    themeProvider.themeMode ==
+                                                            ThemeMode.dark
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                fontSize: 20)),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.of(context)
+                                                    .pop(false),
+                                            child: Text('Cancel'.tr(),
+                                                style: GoogleFonts.castoro(
+                                                    fontSize: 20,
+                                                    color: themeProvider
+                                                                .themeMode ==
+                                                            ThemeMode.dark
+                                                        ? Colors.white
+                                                        : Colors.black)),
+                                          ),
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(true),
+                                            child: Text(
+                                              'Delete'.tr(),
+                                              style: GoogleFonts.castoro(
+                                                color:
+                                                    themeProvider.themeMode ==
+                                                            ThemeMode.dark
+                                                        ? Colors.white
+                                                        : ApplicationColor,
+                                                fontSize: 20,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                        ],
+                                      ),
+                                    );
 
-                                  if (confirm) {
-                                    try {
-                                      await FirebaseFirestore.instance
-                                          .collection('community_posts')
-                                          .doc(postId)
-                                          .delete();
+                                    if (confirm) {
+                                      try {
+                                        await FirebaseFirestore.instance
+                                            .collection('community_posts')
+                                            .doc(postId)
+                                            .delete();
 
-                                      Fluttertoast.showToast(
-                                        msg: "Post deleted successfully!".tr(),
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.TOP,
-                                        backgroundColor:
-                                            ApplicationColorWithOpacity,
-                                        textColor: Colors.white,
-                                        fontSize: 16.0,
-                                      );
-                                      setState(() {});
-                                    } catch (e) {
-                                      Fluttertoast.showToast(
-                                        msg: "Failed to delete post: $e".tr(),
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.TOP,
-                                        backgroundColor:
-                                            ApplicationColorWithOpacity,
-                                        textColor: Colors.white,
-                                        fontSize: 16.0,
-                                      );
+                                        Fluttertoast.showToast(
+                                          msg:
+                                              "Post deleted successfully!".tr(),
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.TOP,
+                                          backgroundColor:
+                                              ApplicationColorWithOpacity,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0,
+                                        );
+                                        setState(() {});
+                                      } catch (e) {
+                                        Fluttertoast.showToast(
+                                          msg: "Failed to delete post: $e".tr(),
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.TOP,
+                                          backgroundColor:
+                                              ApplicationColorWithOpacity,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0,
+                                        );
+                                      }
                                     }
                                   }
-                                }
-                              },
-                              itemBuilder: (BuildContext context) {
-                                return [
-                                  PopupMenuItem<String>(
-                                    value: 'Delete',
-                                    child: Text(
-                                      'Delete Post'.tr(),
-                                      style: GoogleFonts.castoro(
-                                        color: themeProvider.themeMode ==
-                                                ThemeMode.dark
-                                            ? Colors.white
-                                            : ApplicationColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
+                                },
+                                itemBuilder: (BuildContext context) {
+                                  return [
+                                    PopupMenuItem<String>(
+                                      value: 'Delete',
+                                      child: Text(
+                                        'Delete Post'.tr(),
+                                        style: GoogleFonts.castoro(
+                                          color: themeProvider.themeMode ==
+                                                  ThemeMode.dark
+                                              ? Colors.white
+                                              : ApplicationColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ];
-                              },
-                            ),
+                                  ];
+                                },
+                              )
                           ],
                         ),
                         const SizedBox(height: 6),
@@ -614,7 +634,8 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
     }
   }
 
-  Future<void> _uploadPost(BuildContext context, TextEditingController _contentController) async {
+  Future<void> _uploadPost(
+      BuildContext context, TextEditingController _contentController) async {
     final user = FirebaseAuth.instance.currentUser;
 
     // Check if content is empty
@@ -1017,5 +1038,50 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
   😎 Don't forget to join the conversation and share your thoughts! 💬
   """;
     Share.share(quoteText);
+  }
+
+  Future<String?> _getProfileImageUrl(String uid) async {
+    final firestore = FirebaseFirestore.instance;
+
+    // Check first path
+    final firstDoc = await firestore
+        .collection("user-files")
+        .doc(uid)
+        .collection("personalInformation")
+        .doc("profile")
+        .get();
+
+    if (firstDoc.exists && firstDoc.data()?['personalImageUrl'] != null) {
+      return firstDoc.data()?['personalImageUrl'];
+    }
+
+    // Check second path
+    final secondDoc = await firestore
+        .collection("user-files")
+        .doc(uid)
+        .collection("personalInformationProvider")
+        .doc("profile")
+        .get();
+
+    if (secondDoc.exists && secondDoc.data()?['personalImageUrl'] != null) {
+      return secondDoc.data()?['personalImageUrl'];
+    }
+
+    // Check third path
+    final thirdSec = await firestore
+        .collection("user-files")
+        .doc(uid)
+        .collection("uploads")
+        .limit(1)
+        .get();
+
+    if (thirdSec.docs.isNotEmpty) {
+      final docData = thirdSec.docs.first.data();
+      if (docData['personalFileUrl'] != null) {
+        return docData['personalFileUrl'];
+      }
+    }
+
+    return null;
   }
 }
