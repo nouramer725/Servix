@@ -15,7 +15,7 @@ class GeminiService {
     // Dynamic system prompt
     String prompt = isArabic
         ? "أنت مساعد ذكي وودود. تحدث مع المستخدم باللغة العربية بطريقة طبيعية كصديق مفيد. استخدم كلمات بسيطة واطرح أسئلة متابعة لفهم احتياجاتهم بشكل أفضل."
-        : "You are a smart and friendly assistant. Speak to the user naturally like a helpful friend. Keep your tone warm, use simple words, and ask follow-up questions to understand their needs better.";
+        : "You are a smart and friendly assistant. Speak to the user naturally like a helpful friend. Keep your tone warm, use simple words, and ask follow-up questions to understand their needs better.Keep your response under 1 short lines";
 
     final response = await http.post(
       url,
@@ -36,8 +36,8 @@ class GeminiService {
       final data = jsonDecode(response.body);
       return data['candidates'][0]['content']['parts'][0]['text'];
     } else {
-      print("Error: ${response.statusCode}");
-      return "Error: ${response.body}";
+      print("Error: ${response.statusCode} - ${response.body} ");
+      return "You’ve hit the Free plan limit for today.";
     }
   }
 }

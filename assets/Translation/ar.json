@@ -322,7 +322,8 @@
   "Profile updated successfully": "تم تحديث الملف الشخصي بنجاح",
   "Profile Can not be updated": "لا يمكن تحديث الملف الشخصي",
   "Update": "تحديث",
-  "Saved Address": "العنوان المحفوظ",
+  "Saved Address": "العنوان المسجل",
+  "Saved Addresses": "العناوين المسجلة",
   "Add A New Address": "إضافة عنوان جديد",
   "Please select a valid location.": "يرجى تحديد موقع صالح.",
   "Location not available": "الموقع غير متوفر",
@@ -583,5 +584,8 @@
   "EGP for this service.": "جنيهًا مقابل هذه الخدمة.",
   "Your order has been completed by": "تم إكمال طلبك بواسطة",
   "You paid": "لقد دفعت",
-  "Please rate the service of technician ": "يرجى تقييم خدمة الفني"
+  "Please rate the service of technician ": "يرجى تقييم خدمة الفني",
+  "Add New Address": "اضافة عنوان جديد",
+  "Delete Address": "حذف العنوان",
+  "Are you sure you want to delete this saved address?": "هل أنت متأكد أنك تريد حذف هذا العنوان المسجل؟"
 }

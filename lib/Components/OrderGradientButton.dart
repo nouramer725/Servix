@@ -61,10 +61,11 @@ class OrderGradientButton extends StatelessWidget {
               child: Text(
                 text,
                 style: GoogleFonts.charisSil(
-                  fontSize: 16,
+                  fontSize: 15,
                   color: Colors.white,
                 ),
-                maxLines: 2,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
             ),

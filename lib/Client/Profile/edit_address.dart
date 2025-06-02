@@ -13,7 +13,30 @@ import '../../Theme/Theme_Provider.dart';
 import '../../constents/constent.dart';
 
 class EditAddress extends StatefulWidget {
-  const EditAddress({super.key});
+  final String? area;
+  final String? street;
+  final String? building;
+  final String? apartment;
+  final String? floor;
+  final String? directions;
+  final String? label;
+  final double? latitude;
+  final double? longitude;
+  final String? id;
+
+  const EditAddress({
+    super.key,
+    this.area,
+    this.street,
+    this.building,
+    this.apartment,
+    this.floor,
+    this.directions,
+    this.label,
+    this.latitude,
+    this.longitude,
+    required this.id,
+  });
 
   @override
   State<EditAddress> createState() => _EditAddressState();
@@ -34,54 +57,15 @@ class _EditAddressState extends State<EditAddress> {
   @override
   void initState() {
     super.initState();
-    fetchUserLocation();
-  }
-
-  Future<void> fetchUserLocation() async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) return;
-
-      final userId = user.uid;
-
-      final querySnapshot = await FirebaseFirestore.instance
-          .collection('user-files')
-          .doc(userId)
-          .collection('NewLocationDetails')
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        final doc = querySnapshot.docs.first;
-        final data = doc.data();
-        final lat = data['latitude'];
-        final lng = data['longitude'];
-        final area = data['area'];
-        final street = data['street'];
-        final building = data['building'];
-        final apartment = data['apartment'];
-        final floor = data['floor'];
-        final directions = data['directions'];
-        final label = data['label'];
-
-        if (lat != null && lng != null) {
-          setState(() {
-            userLocation = LatLng(lat.toDouble(), lng.toDouble());
-            _areaController.text = area;
-            _streetController.text = street;
-            _buildingController.text = building;
-            _aptController.text = apartment;
-            _floorController.text = floor;
-            _directionsController.text = directions;
-            _labelController.text = label;
-          });
-        } else {
-          print('Latitude or longitude is null.');
-        }
-      } else {
-        print('No location details found for this user.');
-      }
-    } catch (e) {
-      print('Error fetching location: $e');
+    _areaController.text = widget.area ?? '';
+    _streetController.text = widget.street ?? '';
+    _buildingController.text = widget.building ?? '';
+    _aptController.text = widget.apartment ?? '';
+    _floorController.text = widget.floor ?? '';
+    _directionsController.text = widget.directions ?? '';
+    _labelController.text = widget.label ?? '';
+    if (widget.latitude != null && widget.longitude != null) {
+      userLocation = LatLng(widget.latitude!, widget.longitude!);
     }
   }
 
@@ -89,128 +73,49 @@ class _EditAddressState extends State<EditAddress> {
     setState(() => isLoading = true);
 
     try {
-      User? user = FirebaseAuth.instance.currentUser;
+      final user = FirebaseAuth.instance.currentUser;
       if (user == null) return;
 
       final userId = user.uid;
+      final docId = widget.id; // ✅ Use the specific doc ID
 
-      final querySnapshot = await FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection('user-files')
           .doc(userId)
           .collection('NewLocationDetails')
-          .get();
+          .doc(docId)
+          .update({
+        'latitude': userLocation?.latitude,
+        'longitude': userLocation?.longitude,
+        'area': _areaController.text.trim(),
+        'street': _streetController.text.trim(),
+        'building': _buildingController.text.trim(),
+        'apartment': _aptController.text.trim(),
+        'floor': _floorController.text.trim(),
+        'directions': _directionsController.text.trim(),
+        'label': _labelController.text.trim(),
+      });
 
-      if (querySnapshot.docs.isNotEmpty) {
-        final docId = querySnapshot.docs.first.id;
-
-        await FirebaseFirestore.instance
-            .collection('user-files')
-            .doc(userId)
-            .collection('NewLocationDetails')
-            .doc(docId)
-            .update({
-          'latitude': userLocation?.latitude,
-          'longitude': userLocation?.longitude,
-          'area': _areaController.text.trim(),
-          'street': _streetController.text.trim(),
-          'building': _buildingController.text.trim(),
-          'apartment': _aptController.text.trim(),
-          'floor': _floorController.text.trim(),
-          'directions': _directionsController.text.trim(),
-          'label': _labelController.text.trim(),
-        });
-
-        Fluttertoast.showToast(
-          msg: 'Address updated successfully',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: ApplicationColorWithOpacity,
-          textColor: Colors.white,
-        );
-      } else {
-        // If no document exists, create one
-        await FirebaseFirestore.instance
-            .collection('user-files')
-            .doc(userId)
-            .collection('NewLocationDetails')
-            .add({
-          'latitude': userLocation?.latitude,
-          'longitude': userLocation?.longitude,
-          'area': _areaController.text.trim(),
-          'street': _streetController.text.trim(),
-          'building': _buildingController.text.trim(),
-          'apartment': _aptController.text.trim(),
-          'floor': _floorController.text.trim(),
-          'directions': _directionsController.text.trim(),
-          'label': _labelController.text.trim(),
-        });
-
-        Fluttertoast.showToast(
-          msg: 'Address added successfully',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: ApplicationColorWithOpacity,
-          textColor: Colors.white,
-        );
-      }
+      Fluttertoast.showToast(
+        msg: 'Address updated successfully',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        backgroundColor: ApplicationColorWithOpacity,
+        textColor: Colors.white,
+      );
+      Navigator.pop(context);
+      Navigator.pop(context);
     } catch (e) {
       print('Error updating address: $e');
-    } finally {
-      setState(() => isLoading = false);
-    }
-  }
-
-  Future<void> deleteUserAddress() async {
-    try {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) return;
-
-      final userId = user.uid;
-
-      final querySnapshot = await FirebaseFirestore.instance
-          .collection('user-files')
-          .doc(userId)
-          .collection('NewLocationDetails')
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        final docId = querySnapshot.docs.first.id;
-
-        await FirebaseFirestore.instance
-            .collection('user-files')
-            .doc(userId)
-            .collection('NewLocationDetails')
-            .doc(docId)
-            .delete();
-
-        Fluttertoast.showToast(
-          msg: 'Address deleted successfully',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: Colors.red.withOpacity(0.8),
-          textColor: Colors.white,
-        );
-
-        // Optionally pop or refresh
-        Navigator.pop(context);
-      } else {
-        Fluttertoast.showToast(
-          msg: 'No address found to delete',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          backgroundColor: Colors.orangeAccent,
-          textColor: Colors.white,
-        );
-      }
-    } catch (e) {
-      print('Error deleting address: $e');
       Fluttertoast.showToast(
-        msg: 'Failed to delete address',
+        msg: 'Failed to update address',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
+    } finally {
+      setState(() => isLoading = false);
     }
   }
 
@@ -228,25 +133,6 @@ class _EditAddressState extends State<EditAddress> {
             fontSize: 20,
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 25.0,left: 25),
-            child: GestureDetector(
-              onTap: () {
-                deleteUserAddress();
-              },
-              child: Text(
-                "Delete".tr(),
-                style: GoogleFonts.castoro(
-                  fontSize: 20,
-                  color: themeProvider.themeMode == ThemeMode.dark
-                      ? Colors.white
-                      : ApplicationColor,
-                ),
-              ),
-            ),
-          )
-        ],
       ),
       body: userLocation == null
           ? Center(

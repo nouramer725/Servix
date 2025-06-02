@@ -45,12 +45,13 @@ class OrderWhiteButton extends StatelessWidget {
         child: Text(
           text,
           style: GoogleFonts.charisSil(
-            fontSize: 16,
+            fontSize: 15,
             color: themeProvider.themeMode == ThemeMode.dark
                 ? Colors.white
                 : Color(0xFF979292),
           ),
-          maxLines: 2,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
         ),
       ),

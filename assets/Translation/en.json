@@ -584,5 +584,9 @@
   "EGP for this service.": "EGP for this service.",
   "Your order has been completed by": "Your order has been completed by",
   "You paid": "You paid",
-  "Please rate the service of technician ": "Please rate the service of technician"
+  "Please rate the service of technician ": "Please rate the service of technician",
+  "Add New Address": "Add New Address",
+  "Saved Addresses": "Saved Addresses",
+  "Delete Address": "Delete Address",
+  "Are you sure you want to delete this saved address?": "Are you sure you want to delete this saved address?"
 }

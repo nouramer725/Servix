@@ -467,7 +467,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Expanded(
                         child: Text(
-                          "Saved Address".tr(),
+                          "Saved Addresses".tr(),
                           style: GoogleFonts.castoro(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

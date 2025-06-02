@@ -415,6 +415,8 @@ class _DetailsPreviousState extends State<DetailsPrevious> {
 
                                   // Show rating and comment
                                   return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Divider(
                                         color: themeProvider.themeMode ==
@@ -424,6 +426,8 @@ class _DetailsPreviousState extends State<DetailsPrevious> {
                                         thickness: 2,
                                       ),
                                       Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: [
                                           Text(
                                             "Rating:".tr(),

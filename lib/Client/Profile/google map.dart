@@ -12,18 +12,19 @@ import '../../Technician/Login-Register/LocationTechnician/Google maps Component
 import '../../Technician/Login-Register/LocationTechnician/Google maps Components/Search Bar.dart';
 
 class GoogleMapClient extends StatefulWidget {
-  const GoogleMapClient({super.key,});
+  const GoogleMapClient({
+    super.key,
+  });
 
   @override
-  _GoogleMapClientState createState() =>
-      _GoogleMapClientState();
+  _GoogleMapClientState createState() => _GoogleMapClientState();
 }
 
 class _GoogleMapClientState extends State<GoogleMapClient> {
   final TextEditingController _searchController = TextEditingController();
   late MapController _mapController;
   LatLng _currentLocation =
-  LatLng(31.2001, 29.9187); // Default to Alexandria, Egypt
+      LatLng(31.2001, 29.9187); // Default to Alexandria, Egypt
   String _streetName = "Unknown Street";
   String _areaName = "Unknown Area";
 
@@ -131,11 +132,10 @@ class _GoogleMapClientState extends State<GoogleMapClient> {
             right: 20,
             child: GradientButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => SaveNewAddressClient(
-
                           areaName: _areaName,
                           streetName: _streetName,
                           latitude: _currentLocation.latitude,
