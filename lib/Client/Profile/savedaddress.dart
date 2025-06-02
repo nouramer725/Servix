@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:servix/Client/Profile/edit_address.dart';
@@ -121,17 +122,153 @@ class _SavedAddressesprofileState extends State<SavedAddressesprofile> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text(
-                                  "${"Saved Address".tr()} ${index + 1}".tr(),
-                                  style: GoogleFonts.castoro(
-                                    fontSize: 23,
-                                    color: themeProvider.themeMode ==
-                                            ThemeMode.dark
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 10,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "${"Saved Address".tr()} ${index + 1}"
+                                          .tr(),
+                                      style: GoogleFonts.castoro(
+                                        fontSize: 20,
+                                        color: themeProvider.themeMode ==
+                                                ThemeMode.dark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 10,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                backgroundColor: themeProvider
+                                                            .themeMode ==
+                                                        ThemeMode.dark
+                                                    ? const Color(0xFF333739)
+                                                    : Colors.white,
+                                                title: Row(
+                                                  children: [
+                                                    Icon(Icons.delete_outline,
+                                                        color: themeProvider
+                                                                    .themeMode ==
+                                                                ThemeMode.dark
+                                                            ? Colors.white
+                                                            : Colors.black),
+                                                    const SizedBox(width: 10),
+                                                    Text('Delete Address'.tr(),
+                                                        style: GoogleFonts.castoro(
+                                                            color: themeProvider
+                                                                        .themeMode ==
+                                                                    ThemeMode
+                                                                        .dark
+                                                                ? Colors.white
+                                                                : Colors.black,
+                                                            fontSize: 25)),
+                                                  ],
+                                                ),
+                                                content: Text(
+                                                    'Are you sure you want to delete this saved address?'
+                                                        .tr(),
+                                                    style: GoogleFonts.castoro(
+                                                        color: themeProvider
+                                                                    .themeMode ==
+                                                                ThemeMode.dark
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                        fontSize: 20)),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(false),
+                                                    child: Text('Cancel'.tr(),
+                                                        style: GoogleFonts.castoro(
+                                                            fontSize: 20,
+                                                            color: themeProvider
+                                                                        .themeMode ==
+                                                                    ThemeMode
+                                                                        .dark
+                                                                ? Colors.white
+                                                                : Colors
+                                                                    .black)),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        deleteUserAddress(
+                                                      location['id'],
+                                                    ),
+                                                    child: Text(
+                                                      'Delete'.tr(),
+                                                      style:
+                                                          GoogleFonts.castoro(
+                                                        color: themeProvider
+                                                                    .themeMode ==
+                                                                ThemeMode.dark
+                                                            ? Colors.white
+                                                            : ApplicationColor,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                          child: FaIcon(
+                                            FontAwesomeIcons.trash,
+                                            color: themeProvider.themeMode ==
+                                                    ThemeMode.dark
+                                                ? Colors.white
+                                                : ApplicationColor,
+                                            size: 18,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditAddress(
+                                                    area: location['area'],
+                                                    street: location['street'],
+                                                    building:
+                                                        location['building'],
+                                                    apartment:
+                                                        location['apartment'],
+                                                    floor: location['floor'],
+                                                    directions:
+                                                        location['directions'],
+                                                    label: location['label'],
+                                                    latitude:
+                                                        location['latitude'],
+                                                    longitude:
+                                                        location['longitude'],
+                                                    id: location['id'],
+                                                  ),
+                                                ));
+                                          },
+                                          child: FaIcon(
+                                            FontAwesomeIcons.pencil,
+                                            color: themeProvider.themeMode ==
+                                                    ThemeMode.dark
+                                                ? Colors.white
+                                                : Colors.black54,
+                                            size: 18,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                                 const Divider(
                                   thickness: 1,
@@ -144,16 +281,16 @@ class _SavedAddressesprofileState extends State<SavedAddressesprofile> {
                                     Icon(
                                       Icons.location_on_outlined,
                                       color: ApplicationColor,
-                                      size: 25,
+                                      size: 20,
                                     ),
                                     const SizedBox(
-                                      width: 10,
+                                      width: 3,
                                     ),
                                     Expanded(
                                       child: Text(
                                         "${location['area']}",
                                         style: GoogleFonts.castoro(
-                                          fontSize: 20,
+                                          fontSize: 16,
                                           color: themeProvider.themeMode ==
                                                   ThemeMode.dark
                                               ? Colors.white
@@ -171,7 +308,7 @@ class _SavedAddressesprofileState extends State<SavedAddressesprofile> {
                                 Text(
                                   "${location['street']}, ${location['building']}, apartment no.${location['apartment']}, floor no.${location['floor']}",
                                   style: GoogleFonts.castoro(
-                                    fontSize: 20,
+                                    fontSize: 16,
                                     color: themeProvider.themeMode ==
                                             ThemeMode.dark
                                         ? Colors.white
@@ -179,127 +316,6 @@ class _SavedAddressesprofileState extends State<SavedAddressesprofile> {
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 10,
-                                ),
-                                const SizedBox(
-                                  height: 13,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                            backgroundColor:
-                                                themeProvider.themeMode ==
-                                                        ThemeMode.dark
-                                                    ? const Color(0xFF333739)
-                                                    : Colors.white,
-                                            title: Row(
-                                              children: [
-                                                Icon(Icons.delete_outline,
-                                                    color: themeProvider
-                                                                .themeMode ==
-                                                            ThemeMode.dark
-                                                        ? Colors.white
-                                                        : Colors.black),
-                                                const SizedBox(width: 10),
-                                                Text('Delete Address'.tr(),
-                                                    style: GoogleFonts.castoro(
-                                                        color: themeProvider
-                                                                    .themeMode ==
-                                                                ThemeMode.dark
-                                                            ? Colors.white
-                                                            : Colors.black,
-                                                        fontSize: 25)),
-                                              ],
-                                            ),
-                                            content: Text(
-                                                'Are you sure you want to delete this saved address?'
-                                                    .tr(),
-                                                style: GoogleFonts.castoro(
-                                                    color: themeProvider
-                                                                .themeMode ==
-                                                            ThemeMode.dark
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontSize: 20)),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () =>
-                                                    Navigator.of(context)
-                                                        .pop(false),
-                                                child: Text('Cancel'.tr(),
-                                                    style: GoogleFonts.castoro(
-                                                        fontSize: 20,
-                                                        color: themeProvider
-                                                                    .themeMode ==
-                                                                ThemeMode.dark
-                                                            ? Colors.white
-                                                            : Colors.black)),
-                                              ),
-                                              TextButton(
-                                                onPressed: () =>
-                                                    deleteUserAddress(
-                                                  location['id'],
-                                                ),
-                                                child: Text(
-                                                  'Delete'.tr(),
-                                                  style: GoogleFonts.castoro(
-                                                    color: themeProvider
-                                                                .themeMode ==
-                                                            ThemeMode.dark
-                                                        ? Colors.white
-                                                        : ApplicationColor,
-                                                    fontSize: 20,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                      child: Text(
-                                        "Delete".tr(),
-                                        style: GoogleFonts.castoro(
-                                          fontSize: 20,
-                                          color: ApplicationColor,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => EditAddress(
-                                                area: location['area'],
-                                                street: location['street'],
-                                                building: location['building'],
-                                                apartment:
-                                                    location['apartment'],
-                                                floor: location['floor'],
-                                                directions:
-                                                    location['directions'],
-                                                label: location['label'],
-                                                latitude: location['latitude'],
-                                                longitude:
-                                                    location['longitude'],
-                                                id: location['id'],
-                                              ),
-                                            ));
-                                      },
-                                      child: Text(
-                                        "Edit".tr(),
-                                        style: GoogleFonts.castoro(
-                                          fontSize: 20,
-                                          color: ApplicationColor3,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
                                 ),
                               ],
                             ),
@@ -347,7 +363,6 @@ class _SavedAddressesprofileState extends State<SavedAddressesprofile> {
       );
       Navigator.pop(context);
       Navigator.pop(context);
-
 
       // Refresh list after deletion
       fetchUserNewLocation();
