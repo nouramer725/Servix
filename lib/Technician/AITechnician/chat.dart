@@ -29,45 +29,57 @@ class _ChatScreenTechnicianState extends State<ChatScreenTechnician> {
 
   bool isFirstChat = false;
   final List<String> defaultSuggestions = [
-    'What is Servix?',
-    'What services does Servix offer?',
-    'How to fix a broken appliance?',
-    'How to deep clean a living room?',
-    'How to request home beauty services?',
-    'How to find a caregiver for the elderly?',
-    'Update your profile to get better matches',
-    'Track your service requests in real-time',
-    'Learn how to order a technician with one tap',
-    'Manage your bookings and appointments easily',
-    'Enable notifications to stay updated',
-    'Rate your recent service experience'
+    'What is Servix?'.tr(),
+    'What services does Servix offer?'.tr(),
+    'How to fix a broken appliance?'.tr(),
+    'How to deep clean a living room?'.tr(),
+    'How to request home beauty services?'.tr(),
+    'How to find a caregiver for the elderly?'.tr(),
+    'Update your profile to get better matches'.tr(),
+    'Track your service requests in real-time'.tr(),
+    'Learn how to order a technician with one tap'.tr(),
+    'Manage your bookings and appointments easily'.tr(),
+    'Enable notifications to stay updated'.tr(),
+    'Rate your recent service experience'.tr()
   ];
 
   final Map<String, String> aiResponses = {
-    'How to fix a broken appliance?':
-        '✅ You can book a technician from the Devices Maintenance section. Describe your issue, and an expert will be assigned to help.',
-    'How to deep clean a living room?':
-        '✅ Choose a Home service in the app, select "Cleaning", and schedule your preferred time.',
-    'How to request home beauty services?':
-        '✅ Go to the For Woman section, select the service you need (e.g., Henna, nails), and book an appointment.',
-    'How to find a caregiver for the elderly?':
-        '✅ Visit the Care section, browse available professionals, and request the one that matches your needs.',
-    'Update your profile to get better matches':
-        '✅ Navigate to your profile tab, tap "Edit Profile", and fill out your skills, experience, and availability.',
-    'Track your service requests in real-time':
-        '✅ Go to the "Orders Screen" tab to see updates, technician status, and completion progress.',
-    'Learn how to order a technician with one tap':
-        '✅ From the Navigation Bar, tap on the home icon , you can make any requests for services and confirm your request.',
-    'Manage your bookings and appointments easily':
-        '✅ All your scheduled services can be managed in the "Bookings" tab where you can reschedule or cancel.',
-    'Enable notifications to stay updated':
-        '✅ Go to Settings > Notifications and make sure alerts for new bookings and messages are turned on.',
-    'Rate your recent service experience':
-        '✅ After a service ends, you’ll be prompted to give a star rating and leave a review to help others.',
-    'What is Servix?':
-        '✅ A Comprehensive Multi-Service Platform – Bridging Clients and Technicians',
-    'What services does Servix offer?':
+    'How to fix a broken appliance?'.tr():
+        '✅ You can book a technician from the Devices Maintenance section. Describe your issue, and an expert will be assigned to help.'
+            .tr(),
+    'How to deep clean a living room?'.tr():
+        '✅ Choose a Home service in the app, select "Cleaning", and schedule your preferred time.'
+            .tr(),
+    'How to request home beauty services?'.tr():
+        '✅ Go to the For Woman section, select the service you need (e.g., Henna, nails), and book an appointment.'
+            .tr(),
+    'How to find a caregiver for the elderly?'.tr():
+        '✅ Visit the Care section, browse available professionals, and request the one that matches your needs.'
+            .tr(),
+    'Update your profile to get better matches'.tr():
+        '✅ Navigate to your profile tab, tap "Edit Profile", and fill out your skills, experience, and availability.'
+            .tr(),
+    'Track your service requests in real-time'.tr():
+        '✅ Go to the "Orders Screen" tab to see updates, technician status, and completion progress.'
+            .tr(),
+    'Learn how to order a technician with one tap'.tr():
+        '✅ From the Navigation Bar, tap on the home icon , you can make any requests for services and confirm your request.'
+            .tr(),
+    'Manage your bookings and appointments easily'.tr():
+        '✅ All your scheduled services can be managed in the "Bookings" tab where you can reschedule or cancel.'
+            .tr(),
+    'Enable notifications to stay updated'.tr():
+        '✅ Go to Settings > Notifications and make sure alerts for new bookings and messages are turned on.'
+            .tr(),
+    'Rate your recent service experience'.tr():
+        '✅ After a service ends, you’ll be prompted to give a star rating and leave a review to help others.'
+            .tr(),
+    'What is Servix?'.tr():
+        '✅ A Comprehensive Multi-Service Platform – Bridging Clients and Technicians'
+            .tr(),
+    'What services does Servix offer?'.tr():
         '✅ Home services such as plumbing, electrical repairs, carpentry, and general maintenance. \n Personal services like beauty treatments, grooming, and wellness services.\n Educational services including private tutoring and lessons for various subjects and skills. \n Delivery and transportation services.\n Care services for elderly, children, and people with disabilities'
+            .tr()
   };
 
   @override

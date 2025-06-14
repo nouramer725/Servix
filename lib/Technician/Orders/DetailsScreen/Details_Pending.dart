@@ -326,10 +326,10 @@ class _DetailsPendingTechState extends State<DetailsPendingTech> {
                                 style: GoogleFonts.castoro(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: themeProvider.themeMode ==
-                                          ThemeMode.dark
-                                      ? Colors.white
-                                      : Colors.black,
+                                  color:
+                                      themeProvider.themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black,
                                 )),
                             const SizedBox(width: 80),
                             Expanded(
@@ -401,23 +401,21 @@ class _DetailsPendingTechState extends State<DetailsPendingTech> {
                               : Colors.black,
                         )),
                     const SizedBox(width: 25),
-                    Expanded(
-                      child: ValueListenableBuilder<TextEditingValue>(
-                        valueListenable: feesController,
-                        builder: (context, value, _) {
-                          return Text(
-                            value.text,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.judson(
-                              color: themeProvider.themeMode == ThemeMode.dark
-                                  ? ApplicationColor6
-                                  : ApplicationColor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          );
-                        },
-                      ),
+                    ValueListenableBuilder<TextEditingValue>(
+                      valueListenable: feesController,
+                      builder: (context, value, _) {
+                        return Text(
+                          value.text,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.judson(
+                            color: themeProvider.themeMode == ThemeMode.dark
+                                ? ApplicationColor6
+                                : ApplicationColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(
                       height: 15,

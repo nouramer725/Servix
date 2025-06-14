@@ -141,11 +141,11 @@ class _VerificationState extends State<Verification> {
                         fontSize: 16.0,
                       );
                     } on FirebaseAuthException catch (e) {
-                      Fluttertoast.showToast(
-                        msg: e.message ?? "Too many requests. Try later.".tr(),
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                      );
+                      // Fluttertoast.showToast(
+                      //   msg: e.message ?? "Too many requests. Try later.".tr(),
+                      //   backgroundColor: Colors.red,
+                      //   textColor: Colors.white,
+                      // );
                     }
                   }
                 },
