@@ -177,12 +177,12 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
       child: isSelected
           ? GradientButtonOffer(
               text: text,
-              font: 14,
+              font: 9,
               onPressed: () => onSelect(index),
             )
           : WhiteButtonOffer(
               text: text,
-              font: 14,
+              font: 9,
               onPressed: () => onSelect(index),
             ),
     );
@@ -303,7 +303,7 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
         // Step 3: Send notification to the technician whose offer was accepted
         await sendOfferAcceptedNotification(offer);
         Fluttertoast.showToast(
-          msg: "Offer accepted successfully",
+          msg: "Offer accepted successfully".tr(),
           backgroundColor: ApplicationColorWithOpacity,
           textColor: Colors.white,
           fontSize: 16.0,
@@ -368,7 +368,7 @@ class _LowestPriceScreenState extends State<LowestPriceScreen> {
         // Step 5: Send notification to the technician whose offer was rejected
         await sendOfferRejectedNotification(technicianId);
         Fluttertoast.showToast(
-          msg: "Offer rejected successfully",
+          msg: "Offer rejected successfully".tr(),
           backgroundColor: ApplicationColorWithOpacity,
           textColor: Colors.white,
           fontSize: 16.0,

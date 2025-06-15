@@ -83,6 +83,26 @@ class _OrderCardState extends State<OrderCard> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    String formattedDate = '';
+    String formattedTime = '';
+
+    try {
+      DateTime? dateTime =
+          DateTime.tryParse('${widget.orders.Date} ${widget.orders.Time}');
+      if (dateTime != null) {
+        formattedDate =
+            DateFormat.yMMMMd(context.locale.languageCode).format(dateTime);
+        formattedTime =
+            DateFormat.jm(context.locale.languageCode).format(dateTime);
+      } else {
+        formattedDate = widget.orders.Date;
+        formattedTime = widget.orders.Time;
+      }
+    } catch (e) {
+      formattedDate = widget.orders.Date;
+      formattedTime = widget.orders.Time;
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       child: GestureDetector(
@@ -189,7 +209,7 @@ class _OrderCardState extends State<OrderCard> {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            widget.orders.Date,
+                            formattedDate,
                             style: GoogleFonts.castoro(
                                 fontSize: 14,
                                 color: themeProvider.themeMode == ThemeMode.dark
@@ -205,7 +225,7 @@ class _OrderCardState extends State<OrderCard> {
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
-                            widget.orders.Time,
+                            formattedTime,
                             style: GoogleFonts.castoro(
                                 fontSize: 14,
                                 color: themeProvider.themeMode == ThemeMode.dark

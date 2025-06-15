@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +43,13 @@ class _TimePickerFieldState extends State<TimePickerField> {
       initialEntryMode: TimePickerEntryMode.input, // Allow input mode
     );
     if (pickedTime != null) {
-      _controller.text = pickedTime.format(context);
+      final now = DateTime(2025, 1, 1, pickedTime.hour, pickedTime.minute);
+
+      if (context.locale.languageCode == 'ar') {
+        _controller.text = DateFormat.jm('ar').format(now); // Arabic
+      } else {
+        _controller.text = DateFormat.jm('en').format(now); // English
+      }
       widget.onTimeSelected(pickedTime);
     }
   }

@@ -36,7 +36,7 @@ class SubService {
 List<Service> Allservices = [
   Service(
     title: 'Home Service'.tr(),
-    image: 'assets/images/home/home5.png',
+    image: 'assets/images/home/img.png',
     onTap: () {
       HomeService();
     },
@@ -160,9 +160,9 @@ List<Service> Allservices = [
             DescriptionnScreen(
                 title: "Musical Instrument".tr(),
                 imagePath:
-                    "assets/images/private-teaching/musical_instruments.jpg");
+                    "assets/images/private-teaching/musical-instruments.jpg");
           },
-          image: 'assets/images/private-teaching/musical_instruments.jpg'),
+          image: 'assets/images/private-teaching/musical-instruments.jpg'),
       SubService(
           title: 'Religion'.tr(),
           onTap: () {
@@ -234,9 +234,9 @@ List<Service> Allservices = [
           onTap: () {
             DescriptionnScreen(
                 title: "Hair Styling".tr(),
-                imagePath: "assets/images/woman/hair_styling.jpg");
+                imagePath: "assets/images/woman/hair-styling.jpg");
           },
-          image: 'assets/images/woman/hair_styling.jpg'),
+          image: 'assets/images/woman/hair-styling.jpg'),
       SubService(
           title: 'Pedicure',
           onTap: () {
@@ -419,9 +419,9 @@ List<Service> Allservices = [
           onTap: () {
             DescriptionnScreen(
                 title: "Water Heater".tr(),
-                imagePath: "assets/images/devices/water_heater.jpg");
+                imagePath: "assets/images/devices/water-heating.jpg");
           },
-          image: 'assets/images/devices/water_heater.jpg'),
+          image: 'assets/images/devices/water-heating.jpg'),
       SubService(
           title: 'Fan'.tr(),
           onTap: () {

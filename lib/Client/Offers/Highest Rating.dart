@@ -226,12 +226,12 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
       child: isSelected
           ? GradientButtonOffer(
               text: text,
-              font: 14,
+              font: 9,
               onPressed: () => onSelect(index),
             )
           : WhiteButtonOffer(
               text: text,
-              font: 14,
+              font: 9,
               onPressed: () => onSelect(index),
             ),
     );
@@ -352,7 +352,7 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
         await sendOfferAcceptedNotification(offer);
 
         Fluttertoast.showToast(
-          msg: "Offer accepted successfully",
+          msg: "Offer accepted successfully".tr(),
           backgroundColor: ApplicationColorWithOpacity,
           textColor: Colors.white,
           fontSize: 16.0,
@@ -417,7 +417,7 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
         await sendOfferRejectedNotification(technicianId);
 
         Fluttertoast.showToast(
-          msg: "Offer rejected successfully",
+          msg: "Offer rejected successfully".tr(),
           backgroundColor: ApplicationColorWithOpacity,
           textColor: Colors.white,
           fontSize: 16.0,

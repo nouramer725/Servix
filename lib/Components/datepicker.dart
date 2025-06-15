@@ -43,7 +43,8 @@ class _DatePickerFieldState extends State<DatePickerField> {
       },
     );
     if (pickedDate != null) {
-      _controller.text = DateFormat.yMMMMd().format(pickedDate);
+      _controller.text = DateFormat.yMMMMd(context.locale.toString()).format(pickedDate);
+
       widget.onDateSelected(pickedDate);
     }
   }

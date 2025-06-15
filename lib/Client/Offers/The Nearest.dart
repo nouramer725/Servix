@@ -177,12 +177,12 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
       child: isSelected
           ? GradientButtonOffer(
               text: text,
-              font: 14,
+              font: 9,
               onPressed: () => onSelect(index),
             )
           : WhiteButtonOffer(
               text: text,
-              font: 14,
+              font: 9,
               onPressed: () => onSelect(index),
             ),
     );
@@ -305,7 +305,7 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
         await sendOfferAcceptedNotification(offer);
 
         Fluttertoast.showToast(
-          msg: "Offer accepted successfully",
+          msg: "Offer accepted successfully".tr(),
           backgroundColor: ApplicationColorWithOpacity,
           textColor: Colors.white,
           fontSize: 16.0,
@@ -370,7 +370,7 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
         await sendOfferRejectedNotification(technicianId);
 
         Fluttertoast.showToast(
-          msg: "Offer rejected successfully",
+          msg: "Offer rejected successfully".tr(),
           backgroundColor: ApplicationColorWithOpacity,
           textColor: Colors.white,
           fontSize: 16.0,

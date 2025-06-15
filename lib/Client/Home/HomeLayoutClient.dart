@@ -429,7 +429,7 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                   // ),
                   _buildMenuItem(Icons.logout, "Logout".tr(), onTap: () async {
                     showDialog(
-                      barrierDismissible: false,
+                      barrierDismissible: true,
                       context: context,
                       builder: (context) => Dialog(
                         backgroundColor:
@@ -440,26 +440,26 @@ class _HomeClientLayoutState extends State<HomeClientLayout> {
                             borderRadius:
                                 BorderRadius.circular(10)), // Rounded corners
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 10),
+                          padding: const EdgeInsets.only(
+                            left: 25,
+                            right: 25,
+                            top: 20,
+                          ),
                           child: SingleChildScrollView(
                             child: Column(
                               mainAxisSize:
                                   MainAxisSize.min, // Adjusts to content size
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    "Log out of your account?".tr(),
-                                    style: GoogleFonts.castoro(
-                                        color: themeProvider.themeMode ==
-                                                ThemeMode.dark
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontSize: 20),
-                                    textAlign: TextAlign.center,
-                                  ),
+                                Text(
+                                  "Log out of your account?".tr(),
+                                  style: GoogleFonts.castoro(
+                                      color: themeProvider.themeMode ==
+                                              ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 20),
+                                  textAlign: TextAlign.center,
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,

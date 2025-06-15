@@ -78,8 +78,6 @@ class _DetailsPendingState extends State<DetailsPending> {
                       // File count overlay in top-right corner
                       Positioned(
                         top: 50,
-
-
                         right: context.locale.languageCode == 'ar' ? null : 16,
                         left: context.locale.languageCode == 'ar' ? 16 : null,
                         child: Container(

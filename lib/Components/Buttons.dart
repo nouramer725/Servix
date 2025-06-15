@@ -68,7 +68,7 @@ class GradientButton extends StatelessWidget {
               child: Text(
                 text,
                 style: GoogleFonts.charisSil(
-                  fontSize: 27,
+                  fontSize: 17,
                   color: Colors.white,
                 ),
                 textAlign: TextAlign.center,
@@ -94,7 +94,6 @@ class GradientButtonOffer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 3),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -121,7 +120,7 @@ class GradientButtonOffer extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -133,7 +132,7 @@ class GradientButtonOffer extends StatelessWidget {
             color: Colors.white,
           ),
           textAlign: TextAlign.center,
-          maxLines: 3,
+          maxLines: 2,
         ),
       ),
     );

@@ -72,7 +72,7 @@ class _NewAddressState extends State<NewAddress> {
       "For Men": "للرجال",
       "Haircut": "حلاق",
       "Private Coach": "مدرب خاص",
-      "Massage Man": "مساج",
+      "Massage Man": "مساج للرجال",
       "Tailoring Man": "خياط",
       "For Women": "للنساء",
       "Tailoring": "خياطة",
@@ -133,7 +133,7 @@ class _NewAddressState extends State<NewAddress> {
     "للرجال": "For Men",
     "حلاق": "Haircut",
     "مدرب خاص": "Private Coach",
-    "مساج": "Massage Man",
+    "مساج للرجال": "Massage Man",
     "خياط": "Tailoring Man",
     "للنساء": "For Women",
     "خياطة": "Tailoring",
@@ -553,6 +553,16 @@ class _NewAddressState extends State<NewAddress> {
             : _getArabicTranslation(widget.serviceTitle ?? ''),
       };
 
+      final formattedDate = DateFormat.yMMMMd(context.locale.languageCode)
+          .format(widget.selectedDate!);
+
+      final pickedTime = widget.selectedTime!;
+      final now = DateTime(2025, 1, 1, pickedTime.hour, pickedTime.minute);
+
+      final formattedTime = context.locale.languageCode == 'ar'
+          ? DateFormat.jm('ar').format(now)
+          : DateFormat.jm('en').format(now);
+
       if (selectedIndex == -1) {
         // Use the default address
         selectedLocation = {
@@ -577,8 +587,8 @@ class _NewAddressState extends State<NewAddress> {
           'description': widget.description,
           'serviceTitle': serviceTitleMap,
           'fileUrls': widget.fileUrls,
-          'selectedDate': DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
-          'selectedTime': widget.selectedTime!.format(context),
+          'selectedDate': formattedDate,
+          'selectedTime': formattedTime,
           'serviceImage': widget.imagePath,
           'Status': 'Pending',
           'userId': user.uid,

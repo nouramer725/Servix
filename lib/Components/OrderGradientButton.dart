@@ -24,8 +24,6 @@ class OrderGradientButton extends StatelessWidget {
             ),
           )
         : Container(
-            margin: const EdgeInsets.symmetric(
-                horizontal: 5), // Spacing between buttons
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -52,8 +50,6 @@ class OrderGradientButton extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -61,11 +57,10 @@ class OrderGradientButton extends StatelessWidget {
               child: Text(
                 text,
                 style: GoogleFonts.charisSil(
-                  fontSize: 15,
+                  fontSize: 10,
                   color: Colors.white,
                 ),
                 maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
             ),

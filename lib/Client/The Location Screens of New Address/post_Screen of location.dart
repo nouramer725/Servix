@@ -497,6 +497,18 @@ class _LocationPostingState extends State<LocationPosting> {
                     : _getArabicTranslation(widget.serviceTitle ?? ''),
               };
 
+              final formattedDate = DateFormat.yMMMMd(
+                context.locale.languageCode == 'ar' ? 'ar_EG' : 'en_US',
+              ).format(widget.selectedDate!);
+
+              final pickedTime = widget.selectedTime!;
+              final now =
+                  DateTime(2025, 1, 1, pickedTime.hour, pickedTime.minute);
+
+              final formattedTime = context.locale.languageCode == 'ar'
+                  ? DateFormat.jm('ar_EG').format(now)
+                  : DateFormat.jm('en_US').format(now);
+
               Map<String, dynamic> selectedLocation = {
                 'latitude': userLocation!.latitude,
                 'longitude': userLocation!.longitude,
@@ -508,9 +520,8 @@ class _LocationPostingState extends State<LocationPosting> {
                 'serviceTitle': serviceTitleMap, // <-- Store as a map
                 'serviceImage': widget.imagePath,
                 'fileUrls': widget.fileUrls,
-                'selectedDate':
-                    DateFormat('dd-MM-yyyy').format(widget.selectedDate!),
-                'selectedTime': widget.selectedTime!.format(context),
+                'selectedDate': formattedDate,
+                'selectedTime': formattedTime,
                 'Status': 'Pending',
                 'userId': user.uid,
                 'orderId': widget.orderId,
