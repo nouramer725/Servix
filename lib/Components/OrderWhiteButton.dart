@@ -44,7 +44,7 @@ class OrderWhiteButton extends StatelessWidget {
         child: Text(
           text,
           style: GoogleFonts.charisSil(
-            fontSize: 10,
+            fontSize: 15,
             color: themeProvider.themeMode == ThemeMode.dark
                 ? Colors.white
                 : Color(0xFF979292),

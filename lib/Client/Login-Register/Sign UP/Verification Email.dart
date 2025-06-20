@@ -141,6 +141,14 @@ class _VerificationState extends State<Verification> {
                         fontSize: 16.0,
                       );
                     } on FirebaseAuthException catch (e) {
+                      Fluttertoast.showToast(
+                        msg: "Verification email sent".tr(),
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.TOP,
+                        backgroundColor: ApplicationColorWithOpacity,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
+                      );
                       // Fluttertoast.showToast(
                       //   msg: e.message ?? "Too many requests. Try later.".tr(),
                       //   backgroundColor: Colors.red,

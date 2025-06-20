@@ -177,12 +177,10 @@ class _TheNearestScreenState extends State<TheNearestScreen> {
       child: isSelected
           ? GradientButtonOffer(
               text: text,
-              font: 9,
               onPressed: () => onSelect(index),
             )
           : WhiteButtonOffer(
               text: text,
-              font: 9,
               onPressed: () => onSelect(index),
             ),
     );

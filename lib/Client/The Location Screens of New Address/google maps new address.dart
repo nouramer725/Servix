@@ -14,7 +14,23 @@ import '../../Technician/Login-Register/LocationTechnician/Google maps Component
 
 class GoogleMapNewScreenClient extends StatefulWidget {
   final String orderId;
-  const GoogleMapNewScreenClient({super.key, required this.orderId});
+  final String? description;
+  final String? serviceTitle;
+  final String? imagePath;
+  final List<String> fileUrls;
+  final DateTime? selectedDate;
+  final TimeOfDay? selectedTime;
+
+  const GoogleMapNewScreenClient({
+    super.key,
+    required this.orderId,
+    this.description,
+    this.serviceTitle,
+    this.imagePath,
+    required this.fileUrls,
+    required this.selectedDate,
+    required this.selectedTime,
+  });
 
   @override
   _GoogleMapNewScreenClientState createState() =>
@@ -140,6 +156,12 @@ class _GoogleMapNewScreenClientState extends State<GoogleMapNewScreenClient> {
                   MaterialPageRoute(
                       builder: (context) => SaveNewAddressScreenClient(
                           areaName: _areaName,
+                          description: widget.description,
+                          imagePath: widget.imagePath,
+                          fileUrls: widget.fileUrls,
+                          selectedDate: widget.selectedDate,
+                          selectedTime: widget.selectedTime,
+                          serviceTitle: widget.serviceTitle,
                           orderId: widget.orderId,
                           streetName: _streetName,
                           latitude: _currentLocation.latitude,

@@ -520,7 +520,13 @@ class _NewAddressState extends State<NewAddress> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => GoogleMapNewScreenClient(
-                              orderId: widget.orderId, // Pass the orderId here
+                              orderId: widget.orderId,
+                              description: widget.description,
+                              serviceTitle: widget.serviceTitle,
+                              imagePath: widget.imagePath,
+                              fileUrls: widget.fileUrls,
+                              selectedDate: widget.selectedDate,
+                              selectedTime: widget.selectedTime,
                             ),
                           ));
                     },
@@ -570,7 +576,18 @@ class _NewAddressState extends State<NewAddress> {
           'street': street ?? '',
           'building': building ?? '',
           'apartment': apartment ?? '',
-          'source': 'default',
+          'description': widget.description,
+          'serviceTitle': serviceTitleMap,
+          'fileUrls': widget.fileUrls,
+          'selectedDate': formattedDate,
+          'selectedTime': formattedTime,
+          'serviceImage': widget.imagePath,
+          'Status': 'Pending',
+          'userId': user.uid,
+          'orderId': widget.orderId,
+          'firstName': userNames['first_name'],
+          'lastName': userNames['last_name'],
+          'profileImageUrl': profileImageUrl,
           'timestamp': FieldValue.serverTimestamp(),
         };
       } else if (selectedIndex! >= 0 && selectedIndex! < newLocations.length) {

@@ -17,6 +17,12 @@ class SaveNewAddressScreenClient extends StatefulWidget {
   final double latitude;
   final double longitude;
   final String orderId;
+  final String? description;
+  final String? serviceTitle;
+  final String? imagePath;
+  final List<String> fileUrls;
+  final DateTime? selectedDate;
+  final TimeOfDay? selectedTime;
 
   const SaveNewAddressScreenClient({
     Key? key,
@@ -25,6 +31,12 @@ class SaveNewAddressScreenClient extends StatefulWidget {
     required this.latitude,
     required this.longitude,
     required this.orderId,
+    this.description,
+    this.serviceTitle,
+    this.imagePath,
+    required this.fileUrls,
+    required this.selectedDate,
+    required this.selectedTime,
   }) : super(key: key);
 
   @override
@@ -112,12 +124,12 @@ class _SaveNewAddressScreenClientState
         MaterialPageRoute(
           builder: (context) => NewAddress(
             orderId: widget.orderId,
-            description: '',
-            serviceTitle: '',
-            imagePath: '',
-            fileUrls: [],
-            selectedDate: DateTime.now(),
-            selectedTime: TimeOfDay.now(),
+            description: widget.description,
+            serviceTitle: widget.serviceTitle,
+            imagePath: widget.imagePath,
+            fileUrls: widget.fileUrls,
+            selectedDate: widget.selectedDate,
+            selectedTime: widget.selectedTime,
           ),
         ),
       );

@@ -68,7 +68,7 @@ class GradientButton extends StatelessWidget {
               child: Text(
                 text,
                 style: GoogleFonts.charisSil(
-                  fontSize: 17,
+                  fontSize: 27,
                   color: Colors.white,
                 ),
                 textAlign: TextAlign.center,
@@ -82,12 +82,10 @@ class GradientButton extends StatelessWidget {
 class GradientButtonOffer extends StatelessWidget {
   final VoidCallback? onPressed;
   final String text;
-  final double font;
 
   const GradientButtonOffer({
     required this.onPressed,
     required this.text,
-    required this.font,
     super.key,
   });
 
@@ -128,7 +126,7 @@ class GradientButtonOffer extends StatelessWidget {
         child: Text(
           text,
           style: GoogleFonts.charisSil(
-            fontSize: font,
+            fontSize: 15,
             color: Colors.white,
           ),
           textAlign: TextAlign.center,
@@ -141,13 +139,11 @@ class GradientButtonOffer extends StatelessWidget {
 
 class WhiteButtonOffer extends StatelessWidget {
   final String text;
-  final double font;
   final VoidCallback onPressed;
 
   const WhiteButtonOffer({
     super.key,
     required this.text,
-    required this.font,
     required this.onPressed,
   });
 
@@ -185,7 +181,7 @@ class WhiteButtonOffer extends StatelessWidget {
         child: Text(
           text.tr(),
           style: GoogleFonts.charisSil(
-            fontSize: font,
+            fontSize: 15,
             color: themeProvider.themeMode == ThemeMode.dark
                 ? Colors.white
                 : Color(0xFF979292),

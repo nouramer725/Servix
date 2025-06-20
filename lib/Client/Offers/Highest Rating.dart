@@ -226,12 +226,10 @@ class _HighestRatingScreenState extends State<HighestRatingScreen> {
       child: isSelected
           ? GradientButtonOffer(
               text: text,
-              font: 9,
               onPressed: () => onSelect(index),
             )
           : WhiteButtonOffer(
               text: text,
-              font: 9,
               onPressed: () => onSelect(index),
             ),
     );

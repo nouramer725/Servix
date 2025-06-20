@@ -139,7 +139,6 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
                 Expanded(
                   child: WhiteButtonOffer(
                     onPressed: () => Navigator.pop(context),
-                    font: 20,
                     text: 'Cancel'.tr(),
                   ),
                 ),
@@ -148,7 +147,6 @@ class _RateTechnicianScreenState extends State<RateTechnicianScreen> {
                       onPressed: () {
                         _submitRating(_rating, _commentController.text);
                       },
-                      font: 20,
                       text: 'Submit'.tr()),
                 ),
               ],

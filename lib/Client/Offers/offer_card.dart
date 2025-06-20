@@ -227,7 +227,6 @@ class _OfferCardState extends State<OfferCard> {
                   Expanded(
                     child: GradientButtonOffer(
                       text: "Accept".tr(),
-                      font: 18,
                       onPressed: widget.onAccept,
                     ),
                   ),
@@ -235,7 +234,6 @@ class _OfferCardState extends State<OfferCard> {
                   Expanded(
                     child: WhiteButtonOffer(
                       text: "Reject".tr(),
-                      font: 18,
                       onPressed: widget.onDecline,
                     ),
                   ),
